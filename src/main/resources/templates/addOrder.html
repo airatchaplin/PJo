@@ -1,0 +1,166 @@
+<!--<!DOCTYPE HTML>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <title>Getting Started: Serving Web Content</title>-->
+<!--    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>-->
+<!--    <script type="text/javascript"></script>-->
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"-->
+<!--          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"-->
+<!--            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"-->
+<!--            crossorigin="anonymous"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"-->
+<!--            integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"-->
+<!--            crossorigin="anonymous"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<header th:insert="blocks/header"></header>-->
+<!--<div class="container1">-->
+
+    <h4 class="mb-3">Добавление заказа</h4>
+    <div class="info" style="margin-left: 20px">
+        <form action="addOrder" method="post">
+            <div class="col-sm-6">
+
+                <label for="numberOrder" class="form-label">Номер заказа</label>
+                <input type="text" class="form-control" id="numberOrder" name="numberOrder"
+                       placeholder="Введите номер заказа" value="">
+
+            </div>
+
+            <div class="col-sm-6">
+                <label for="manager" class="form-label">Менеджер</label>
+                <input type="text" class="form-control" id="manager" name="manager" placeholder="Введите менеджера"
+                       value="">
+
+            </div>
+
+            <div class="col-sm-6">
+                <label for="objectName" class="form-label">Объект</label>
+                <input type="text" class="form-control" id="objectName" name="objectName" placeholder="Введите объект"
+                       value=""
+                       >
+            </div>
+
+            <div class="col-sm-6">
+                <label for="dateStart" class="form-label">Дата запуска в производство</label>
+                <input type="date" class="form-control" id="dateStart" name="dateStart" placeholder="" value=""
+                       >
+            </div>
+
+
+            <div class="table_info" style="padding-top: 50px;display: flex">
+                <table class="table table-striped table-sm" id="myTable">
+                    <thead>
+                    <tr>
+                        <th scope="col">Элемент</th>
+                        <th scope="col">Материал</th>
+                        <th scope="col">Количество</th>
+                        <th scope="col">Количество листов</th>
+                        <th scope="col">Коментарий</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+
+                        <td><select class="form-control" name="detailName">
+                            <option th:each="detail : ${details}" th:utext="${detail.name}" ></option>
+                        </select>
+                        </td>
+                        <td><select class="form-control">
+                            <option th:each="material : ${materials}" th:utext="${material.name}"></option>
+                        </select>
+                        </td>
+                        <td><input type="text" class="form-control" placeholder="Введите кол." value="" required="">
+                        </td>
+                        <td><input type="text" class="form-control" placeholder="Введите кол. листов" value=""
+                                   required="">
+                        </td>
+                        <td><input type="text" class="form-control" placeholder="Введите коментарий" value=""
+                                   required="">
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+                    <!--   пока не работает         -->
+<!--            <a href="javascript://" onclick="addRow('myTable');return false;">Добавить элемент'</a>-->
+
+            <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+        </form>
+    </div>
+<!--    <script type="text/javascript" th:inline="javascript">-->
+
+<!--        // var countIdSelect = 1;-->
+<!--        //-->
+<!--        // function addRow(id) {-->
+<!--        //     var tbody = document.getElementById(id).getElementsByTagName("TBODY")[0];-->
+<!--        //     var row = document.createElement("tr")-->
+<!--        //-->
+<!--        //     var td1 = document.createElement("td")-->
+<!--        //     var td2 = document.createElement("td")-->
+<!--        //     var td3 = document.createElement("td")-->
+<!--        //     var td4 = document.createElement("td")-->
+<!--        //     var td5 = document.createElement("td")-->
+<!--        //-->
+<!--        //     var select1 = document.createElement("select")-->
+<!--        //     select1.className = "form-control";-->
+<!--        //     select1.id = countIdSelect;-->
+
+
+
+
+
+<!--            // var a = [[${details.get(0).name}]]-->
+<!--            // alert(a)-->
+<!--            // for (let i = 1; i <= [[${details.size()}]]; i++) {-->
+<!--            //-->
+<!--            //     var option = document.createElement('option');-->
+<!--            //     option.value ="dd"-->
+<!--            //     option.innerHTML = "dd"-->
+<!--            //     select1.append(option);-->
+<!--            // }-->
+<!--            //-->
+<!--            // var select2 = document.createElement("select")-->
+<!--            // select2.className = "form-control";-->
+<!--            // select2.id = countIdSelect;-->
+<!--            // for (let i = 1; i <= 3; i++) {-->
+<!--            //     var option1 = document.createElement('option');-->
+<!--            //     option1.value = "Цинк" + i;-->
+<!--            //     option1.innerHTML = "Цинк" + i;-->
+<!--            //     select2.append(option1);-->
+<!--            // }-->
+<!--            //-->
+<!--            // var input1 = document.createElement("input")-->
+<!--            // input1.className = "form-control";-->
+<!--            // input1.placeholder = "Введите кол."-->
+<!--            //-->
+<!--            // var input2 = document.createElement("input")-->
+<!--            // input2.className = "form-control";-->
+<!--            // input2.placeholder = "Введите кол. листов"-->
+<!--            //-->
+<!--            // var input3 = document.createElement("input")-->
+<!--            // input3.className = "form-control";-->
+<!--            // input3.placeholder = "Введите коментарий";-->
+<!--            //-->
+<!--            // td1.appendChild(select1);-->
+<!--            // td2.appendChild(select2);-->
+<!--            // td3.appendChild(input1);-->
+<!--            // td4.appendChild(input2);-->
+<!--            // td5.appendChild(input3);-->
+<!--            //-->
+<!--            //-->
+<!--            // row.appendChild(td1);-->
+<!--            // row.appendChild(td2);-->
+<!--            // row.appendChild(td3);-->
+<!--            // row.appendChild(td4);-->
+<!--            // row.appendChild(td5);-->
+<!--            // tbody.appendChild(row);-->
+<!--            // countIdSelect++;-->
+<!--        // }-->
+<!--    </script>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
