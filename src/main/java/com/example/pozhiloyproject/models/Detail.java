@@ -15,6 +15,9 @@ public class Detail {
   @ManyToOne
   Material material;
 
+  @OneToMany
+  List<TimeWorkDetail> timeWorkDetails;
+
   @ManyToMany
   List<WorkBench> workBenches;
 
@@ -51,5 +54,13 @@ public class Detail {
 
   public void setMaterial(Material material) {
     this.material = material;
+  }
+
+  public List<TimeWorkDetail> getTimeWorkDetails() {
+    return timeWorkDetails;
+  }
+
+  public void setTimeWorkDetails(List<TimeWorkDetail> timeWorkDetails) {
+    this.timeWorkDetails = timeWorkDetails;
   }
 }

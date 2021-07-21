@@ -237,6 +237,7 @@ public class OrderController {
   @PostMapping("orders/check1/{numberOrder}")
   public String check1(@PathVariable(value = "numberOrder") int numberOrder) {
     System.out.println("");
+    orderService.raschet(numberOrder);
     return "redirect:/orders/check1/" + numberOrder;
   }
 

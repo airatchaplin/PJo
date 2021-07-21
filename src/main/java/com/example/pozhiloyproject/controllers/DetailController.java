@@ -1,9 +1,11 @@
 package com.example.pozhiloyproject.controllers;
 
 import com.example.pozhiloyproject.models.Detail;
+import com.example.pozhiloyproject.models.TimeWorkDetail;
 import com.example.pozhiloyproject.models.WorkBench;
 import com.example.pozhiloyproject.services.DetailService;
 import com.example.pozhiloyproject.services.MaterialService;
+import com.example.pozhiloyproject.services.TimeWorkDetailService;
 import com.example.pozhiloyproject.services.WorkBenchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +32,9 @@ public class DetailController {
   @Autowired
   MaterialService materialService;
 
+  @Autowired
+  TimeWorkDetailService timeWorkDetailService;
+
   @GetMapping("/details")
   public String getAllDetails(Model model) {
     model.addAttribute("details", detailService.getAllDetails());
@@ -49,7 +54,10 @@ public class DetailController {
       @RequestParam(required = false) String materialName,
       @RequestParam(required = false) String workBenchName,
       @RequestParam(required = false) String workBenchName1,
-      @RequestParam(required = false) String workBenchName2
+      @RequestParam(required = false) String workBenchName2,
+      @RequestParam(required = false) String timeWork,
+      @RequestParam(required = false) String timeWork1,
+      @RequestParam(required = false) String timeWork2
   ) {
     Detail detail = new Detail();
     detail.setId(UUID.randomUUID());
@@ -64,6 +72,19 @@ public class DetailController {
         workBenches.add(workBench);
       }
     }
+    List<String> timeWorkDetails = Stream.of(timeWork,timeWork1, timeWork2)
+            .collect(Collectors.toList());
+    List<TimeWorkDetail> timeWorkDetailsList = new ArrayList<>();
+    for (String time : timeWorkDetails){
+      if (!time.equals("")) {
+        TimeWorkDetail timeWorkDetail = new TimeWorkDetail();
+        timeWorkDetail.setId(UUID.randomUUID());
+        timeWorkDetail.setTimeWork(timeWork);
+        timeWorkDetailService.saveTimeWorkDetail(timeWorkDetail);
+        timeWorkDetailsList.add(timeWorkDetail);
+      }
+    }
+    detail.setTimeWorkDetails(timeWorkDetailsList);
     detail.setWorkBenches(workBenches);
 
     detailService.saveDetail(detail);

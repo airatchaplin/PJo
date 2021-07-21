@@ -20,6 +20,8 @@ public class DetailInfo {
   LocalDateTime dateStart;
   LocalDateTime dateEnd;
 
+
+
   public UUID getId() {
     return id;
   }

@@ -41,6 +41,7 @@
                     <th scope="col">Деталь</th>
                     <th scope="col">Материал</th>
                     <th scope="col">Станок</th>
+                    <th scope="col">Время детали на этом станке</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -85,6 +86,23 @@
                                     <option value="${workbench.getName()}">${workbench.getName()}</option>
                                 </c:forEach>
                             </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-sm-6">
+                            <input style="margin: 10px;" type="text" class="form-control" id="timeWork"
+                                   name="timeWork"
+                                   placeholder="Введите время детали">
+                        </div>
+                        <div class="col-sm-6">
+                            <input style="margin: 10px;" type="text" class="form-control" id="timeWork1"
+                                   name="timeWork1"
+                                   placeholder="Введите время детали">
+                        </div>
+                        <div class="col-sm-6">
+                            <input style="margin: 10px;" type="text" class="form-control" id="timeWork2"
+                                   name="timeWork2"
+                                   placeholder="Введите время детали">
                         </div>
                     </td>
                 </tr>

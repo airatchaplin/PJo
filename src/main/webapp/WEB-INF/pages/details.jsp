@@ -40,6 +40,7 @@
         <th scope="col">Деталь</th>
         <th scope="col">Материал</th>
         <th scope="col">Станки</th>
+        <th scope="col">Время детали на этом станке</th>
     </tr>
     </thead>
     <tbody>
@@ -49,10 +50,16 @@
             <td>${detail.getName()}</td>
             <td>${detail.getMaterial().getName()}</td>
             <td>
-            <c:forEach items="${detail.getWorkBenches()}" var="workbench">
-            <pre>${workbench.getName()}</pre>
-            </c:forEach>
+                <c:forEach items="${detail.getWorkBenches()}" var="workbench">
+                    <pre>${workbench.getName()}</pre>
+                </c:forEach>
             </td>
+            <td>
+                <c:forEach items="${detail.getTimeWorkDetails()}" var="timeWork">
+                    <pre>${timeWork.getTimeWork()}</pre>
+                </c:forEach>
+            </td>
+
         </tr>
     </c:forEach>
 
