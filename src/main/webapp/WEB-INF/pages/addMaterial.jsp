@@ -53,7 +53,7 @@
                 </tbody>
             </table>
 
-            <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+            <button class="w-100 btn btn-primary btn-lg" type="submit">Добавить материал</button>
         </form>
     </div>
 

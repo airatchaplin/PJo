@@ -57,7 +57,7 @@
             <!--   пока не работает         -->
             <!--            <a href="javascript://" onclick="addRow('myTable');return false;">Добавить элемент'</a>-->
 
-            <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+            <button class="w-100 btn btn-primary btn-lg" type="submit">Добавить станок</button>
         </form>
     </div>
 
