@@ -38,6 +38,7 @@
     <thead>
     <tr>
         <th scope="col">Деталь</th>
+        <th scope="col">Материал</th>
         <th scope="col">Станки</th>
     </tr>
     </thead>
@@ -46,6 +47,7 @@
     <c:forEach items="${details}" var="detail">
         <tr>
             <td>${detail.getName()}</td>
+            <td>${detail.getMaterial().getName()}</td>
             <td>
             <c:forEach items="${detail.getWorkBenches()}" var="workbench">
             <pre>${workbench.getName()}</pre>

@@ -29,11 +29,17 @@
 </header>
 
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders/change/${order.getNumberOrder()}">Изменить
+    <a style="padding: 10px;color: #000000;text-decoration: none;"
+       href="/orders/change/${order.getNumberOrder()}">Изменить
         заказ</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders/add/${order.getNumberOrder()}">Добавить
+    <a style="padding: 10px;color: #000000;text-decoration: none;"
+       href="/orders/deletion/${order.getNumberOrder()}">Удалить
+        заказ</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;"
+       href="/orders/add/${order.getNumberOrder()}">Добавить
         элемент</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders/check1/${order.getNumberOrder()}">Расчитать
+    <a style="padding: 10px;color: #000000;text-decoration: none;"
+       href="/orders/check1/${order.getNumberOrder()}">Расчитать
         время</a>
 </div>
 
@@ -44,14 +50,12 @@
 <table class="table table-striped table-sm">
     <thead>
     <tr>
-        <th scope="col">Элемент</th>
-        <th scope="col">Материал</th>
+        <th scope="col">Деталь</th>
         <th scope="col">Количество</th>
         <th scope="col">Дата запуска в производство</th>
         <th scope="col">Дата готовности заказа</th>
         <th scope="col">Коментарий</th>
         <th scope="col">Инкремент</th>
-        <th scope="col">Удалить</th>
 
     </tr>
     </thead>
@@ -61,9 +65,6 @@
         <tr>
             <td>
                     ${ord.getDetail().getName()}
-            </td>
-            <td>
-                    ${ord.getMaterial().getName()}
             </td>
             <td>
                     ${ord.getCount()}
@@ -81,11 +82,7 @@
             <td>
                     ${ord.getIncrement()}
             </td>
-            <td>
-                <form:form action="/orders/${order.getNumberOrder()}/${ord.getIncrement()}"  method="post">
-                    <button style="width: auto"   type="submit">Удалить</button>
-                </form:form>
-            </td>
+
 <%--                            <td>${order.getCountDetail()}</td>--%>
 <%--                            <td>${order.getTypeMaterial()}</td>--%>
 <%--                            <td>${order.getDateStart()}</td>--%>
@@ -109,8 +106,5 @@
     </tbody>
 </table>
 
-<form:form  method="post">
-    <button class="w-100 btn btn-primary btn-lg" type="submit">Удалить заказ</button>
-</form:form>
 </body>
 </html>

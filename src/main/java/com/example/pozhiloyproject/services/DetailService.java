@@ -30,7 +30,7 @@ public class DetailService {
         detailRepository.save(detail);
     }
 
-    public List<Detail> findByName(String... names) {
+    public List<Detail> findByNameArr(String... names) {
         List<Detail> details = new ArrayList<>();
         for (String name : names) {
             Detail detail = detailRepository.findByName(name);

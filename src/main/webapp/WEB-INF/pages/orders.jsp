@@ -48,8 +48,7 @@
         <th scope="col">№ заказа</th>
         <th scope="col">Объект</th>
         <th scope="col">Менеджер</th>
-        <th scope="col">Элемент</th>
-        <th scope="col">Материал</th>
+        <th scope="col">Деталь</th>
         <th scope="col">Количество</th>
         <th scope="col">Дата запуска в производство</th>
         <th scope="col">Дата готовности заказа</th>
@@ -61,18 +60,12 @@
     <c:forEach items="${orders}" var="order">
 
         <tr>
-            <td style="display: block"><a style="display: block" href="orders/${order.getNumberOrder()}">${order.getNumberOrder()}</a></td>
+            <td><a style="display: block" href="orders/${order.getNumberOrder()}">${order.getNumberOrder()}</a></td>
             <td><a href="orders/${order.getNumberOrder()}">${order.getObjectName().getName()}</a></td>
             <td>${order.getManager().getFio_i_o()}</td>
             <td>
                 <c:forEach items="${order.getDetailInfos()}" var="detail">
                     <pre> ${detail.getDetail().getName()} </pre>
-                </c:forEach>
-            </td>
-
-            <td>
-                <c:forEach items="${order.getDetailInfos()}" var="detail">
-                    <pre> ${detail.getMaterial().getName()} </pre>
                 </c:forEach>
             </td>
             <td>

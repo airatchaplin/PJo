@@ -7,8 +7,10 @@
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
@@ -24,15 +26,22 @@
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/managers">Менеджеры </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/contragents">Контрагенты </a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;"
+       href="/contragents">Контрагенты </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
 </header>
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders/change/${order.getNumberOrder()}">Изменить
+    <a style="padding: 10px;color: #000000;text-decoration: none;"
+       href="/orders/change/${order.getNumberOrder()}">Изменить
         заказ</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders/add/${order.getNumberOrder()}">Добавить
+    <a style="padding: 10px;color: #000000;text-decoration: none;"
+       href="/orders/deletion/${order.getNumberOrder()}">Удалить
+        заказ</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;"
+       href="/orders/add/${order.getNumberOrder()}">Добавить
         элемент</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders/check1/${order.getNumberOrder()}">Расчитать
+    <a style="padding: 10px;color: #000000;text-decoration: none;"
+       href="/orders/check1/${order.getNumberOrder()}">Расчитать
         время</a>
 </div>
 <h1 style="text-align: center">Редактирование заказа</h1>
@@ -44,15 +53,17 @@
 <table class="table table-striped table-sm">
     <thead>
     <tr>
-        <th scope="col">Элемент</th>
-        <th scope="col">Материал</th>
+        <th scope="col">Деталь</th>
         <th scope="col">Количество</th>
         <th scope="col">Дата запуска в производство</th>
         <th scope="col">Дата готовности заказа</th>
-        <th scope="col">Изменить</th>
+
     </tr>
     </thead>
     <tbody>
+
+    <form:form method="post">
+
 
     <c:forEach items="${order.getDetailInfos()}" var="ord">
         <tr>
@@ -60,29 +71,21 @@
                 <select class="form-control" name="detailName">
                     <option>Выбранная: ${ord.getDetail().getName()}</option>
                     <c:forEach items="${details}" var="detail">
-                        <option value="${detail.getName()}">Изменить на: ${detail.getName()}</option>
+                        <option value="${detail.getName()}">${detail.getName()}</option>
                     </c:forEach>
                 </select>
-            </td>
-            <td>
-                <select class="form-control" name="detailName">
-                    <option>Выбранная: ${ord.getMaterial().getName()}</option>
-                    <c:forEach items="${materials}" var="material">
-                        <option value="${material.getName()}">Изменить на: ${material.getName()}</option>
-                    </c:forEach>
-                </select>
-
             </td>
             <td>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" id="numberOrder" name="numberOrder"
+                    <input type="text" class="form-control" id="countDetail" name="countDetail"
                            placeholder="${ord.getCount()}" value="${ord.getCount()}" required>
                 </div>
 
             </td>
             <td>
                 <div class="col-sm-6">
-                    <input type="datetime-local" class="form-control" id="dateStart" name="dateStart"
+                    <input type="datetime-local" class="form-control" id="dateStart"
+                           name="dateStart"
                     >
                 </div>
             </td>
@@ -93,18 +96,8 @@
                 </div>
             </td>
 
-            <td>
-                <form:form action="http://localhost:8080/orders/${order.getNumberOrder()}/${ord.getIncrement()}"
-                           method="post">
-                    <button class="form-control"
-                            style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">
-                        Удалить
-                    </button>
-                </form:form>
-            </td>
 
         </tr>
-
 
 
     </c:forEach>
@@ -115,8 +108,9 @@
            placeholder="Новый коментарий">
 </div>
 
-<form:form method="post">
-    <button class="w-100 btn btn-primary btn-lg" type="submit">Удалить заказ</button>
+
+    <button class="w-100 btn btn-primary btn-lg" type="submit">Сохранить заказ</button>
+
 </form:form>
 </body>
 </html>

@@ -30,7 +30,6 @@
        href="/contragents">Контрагенты </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
 </header>
-
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
     <a style="padding: 10px;color: #000000;text-decoration: none;"
        href="/orders/change/${order.getNumberOrder()}">Изменить
@@ -45,67 +44,55 @@
        href="/orders/check1/${order.getNumberOrder()}">Расчитать
         время</a>
 </div>
-<h1 style="text-align: center">Расчитывание времяни детали</h1>
+<h1 style="text-align: center">Удаление заказа или элемента заказа</h1>
 <h4>№ заказа ${order.getNumberOrder()}</h4>
 <h4>Объект ${order.getObjectName().getName()}</h4>
-<h4>Менеджер ${order.getManager().getFio_i_o()}</h4>
-<c:forEach items="${order.getDetailInfos()}" var="ord">
-    <table class="table table-striped table-sm">
-        <thead>
+<h4>Менеджер ${order.getManager().getFio_i_o()}</h4><br>
+
+
+<table class="table table-striped table-sm">
+    <thead>
+    <tr>
+        <th scope="col">Деталь</th>
+        <th scope="col">Количество</th>
+        <th scope="col">Дата запуска в производство</th>
+        <th scope="col">Дата готовности заказа</th>
+        <th scope="col">Удалить элемент</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <c:forEach items="${order.getDetailInfos()}" var="ord">
         <tr>
-            <th scope="col">Деталь</th>
-            <th scope="col">Количество</th>
-            <th scope="col">Станки по очередности производства детали</th>
-            <th scope="col">Время окончания других заказов на этих станках</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
             <td>
-                    ${ord.getDetail().getName()}
+                 ${ord.getDetail().getName()}
             </td>
             <td>
-                    ${ord.getCount()}
+                ${ord.getCount()}
             </td>
             <td>
-                <c:forEach items="${ord.getDetail().getWorkBenches()}" var="workbench">
-                    <pre>${workbench.getName()}</pre>
-                </c:forEach>
+                ${ord.getDateStart()}
             </td>
             <td>
-                <c:forEach items="${ord.getDetail().getWorkBenches()}" var="workbench">
-                    <pre>${workbench.getDateEndDetail()}</pre>
-                </c:forEach>
+                    ${ord.getDateEnd()}
             </td>
 
+            <td>
+                <form:form action="/orders/${order.getNumberOrder()}/${ord.getIncrement()}"
+                           method="post">
+                    <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">Удалить</button>
+                </form:form>
+            </td>
 
-                <%--                            <td>${order.getCountDetail()}</td>--%>
-                <%--                            <td>${order.getTypeMaterial()}</td>--%>
-                <%--                            <td>${order.getDateStart()}</td>--%>
-                <%--                            <td>${order.getDateEnd()}</td>--%>
-                <%--                            <td>${order.getComment()}</td>--%>
         </tr>
 
-            <%--                    <td><a href="/index/${user.username}" >${user.username}</a></td>--%>
-            <%--                    <td>--%>
-            <%--                        <c:forEach items="${user.roles}" var="role">${role.name}; </c:forEach>--%>
-            <%--                    </td>--%>
-            <%--                    <td>--%>
-            <%--                        <form action="${pageContext.request.contextPath}/admin" method="post">--%>
-            <%--                            <input type="hidden" name="userId" value="${user.id}"/>--%>
-            <%--                            <input type="hidden" name="action" value="delete"/>--%>
-            <%--                            <button class="but" type="submit">Delete</button>--%>
-            <%--                        </form>--%>
-            <%--                    </td>--%>
 
+    </c:forEach>
+    </tbody>
+</table>
 
-        </tbody>
-
-
-    </table>
-</c:forEach>
-<form:form method="post">
-    <button class="w-100 btn btn-primary btn-lg" type="submit">Расчитать</button>
+<form:form action="/orders/${order.getNumberOrder()}" method="post">
+    <button class="w-100 btn btn-primary btn-lg" type="submit">Удалить заказ</button>
 </form:form>
 </body>
 </html>

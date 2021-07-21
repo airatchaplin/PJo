@@ -30,7 +30,7 @@
 
 <div class="container1">
 
-    <h4 class="mb-3">Добавление заказа</h4>
+    <h4 class="mb-3">Добавление детали</h4>
     <div class="info">
         <form action="addDetail" method="post">
 
@@ -39,6 +39,7 @@
                 <thead>
                 <tr>
                     <th scope="col">Деталь</th>
+                    <th scope="col">Материал</th>
                     <th scope="col">Станок</th>
                 </tr>
                 </thead>
@@ -48,6 +49,16 @@
                         <div class="col-sm-6">
                             <input type="text" class="form-control" id="detailName" name="detailName"
                                    placeholder="Деталь" value="">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-sm-6">
+                            <select class="form-control" name="materialName">
+                                <option selected value="Выбирите станок">Выбирите материал</option>
+                                <c:forEach items="${materials}" var="material">
+                                    <option value="${material.getName()}">${material.getName()}</option>
+                                </c:forEach>
+                            </select>
                         </div>
                     </td>
                     <td>
@@ -84,7 +95,7 @@
             <!--   пока не работает         -->
             <!--            <a href="javascript://" onclick="addRow('myTable');return false;">Добавить элемент'</a>-->
 
-            <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+            <button class="w-100 btn btn-primary btn-lg" type="submit">Добавить деталь</button>
         </form>
     </div>
 

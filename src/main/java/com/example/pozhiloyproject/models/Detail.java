@@ -8,37 +8,48 @@ import java.util.UUID;
 @Table(name = "details")
 public class Detail {
 
-    @Id
-    UUID id;
-    String name;
+  @Id
+  UUID id;
+  String name;
 
-    @ManyToMany
-    List<WorkBench> workBenches;
+  @ManyToOne
+  Material material;
 
-    //    @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToMany
+  List<WorkBench> workBenches;
+
+  //    @ManyToOne(cascade = CascadeType.ALL)
 //    Order order;
 
-    public UUID getId() {
-        return id;
-    }
+  public UUID getId() {
+    return id;
+  }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
+  public void setId(UUID id) {
+    this.id = id;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public List<WorkBench> getWorkBenches() {
-        return workBenches;
-    }
+  public List<WorkBench> getWorkBenches() {
+    return workBenches;
+  }
 
-    public void setWorkBenches(List<WorkBench> workBenches) {
-        this.workBenches = workBenches;
-    }
+  public void setWorkBenches(List<WorkBench> workBenches) {
+    this.workBenches = workBenches;
+  }
+
+  public Material getMaterial() {
+    return material;
+  }
+
+  public void setMaterial(Material material) {
+    this.material = material;
+  }
 }
