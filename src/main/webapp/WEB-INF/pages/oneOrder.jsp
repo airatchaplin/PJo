@@ -29,8 +29,12 @@
 </header>
 
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
-<a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders/change/${order.getNumberOrder()}">Изменить заказ</a>
-<a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders/add/${order.getNumberOrder()}">Добавить элемент</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders/change/${order.getNumberOrder()}">Изменить
+        заказ</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders/add/${order.getNumberOrder()}">Добавить
+        элемент</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders/check1/${order.getNumberOrder()}">Расчитать
+        время</a>
 </div>
 
 <h4>№ заказа ${order.getNumberOrder()}</h4>
@@ -46,6 +50,8 @@
         <th scope="col">Дата запуска в производство</th>
         <th scope="col">Дата готовности заказа</th>
         <th scope="col">Коментарий</th>
+        <th scope="col">Инкремент</th>
+        <th scope="col">Удалить</th>
 
     </tr>
     </thead>
@@ -71,36 +77,40 @@
             <td>
                     ${order.getComment()}
             </td>
-<%--            <td>--%>
-<%--                <form:form action="http://localhost:8080/orders/${order.getNumberOrder()}/${detail.getIncrement()}"  method="post">--%>
-<%--                    <button style="width: auto"   type="submit">Удалить</button>--%>
-<%--                </form:form>--%>
-<%--            </td>--%>
-                <%--            <td>${order.getCountDetail()}</td>--%>
-                <%--            <td>${order.getTypeMaterial()}</td>--%>
-                <%--            <td>${order.getDateStart()}</td>--%>
-                <%--            <td>${order.getDateEnd()}</td>--%>
-                <%--            <td>${order.getComment()}</td>--%>
+
+            <td>
+                    ${ord.getIncrement()}
+            </td>
+            <td>
+                <form:form action="/orders/${order.getNumberOrder()}/${ord.getIncrement()}"  method="post">
+                    <button style="width: auto"   type="submit">Удалить</button>
+                </form:form>
+            </td>
+<%--                            <td>${order.getCountDetail()}</td>--%>
+<%--                            <td>${order.getTypeMaterial()}</td>--%>
+<%--                            <td>${order.getDateStart()}</td>--%>
+<%--                            <td>${order.getDateEnd()}</td>--%>
+<%--                            <td>${order.getComment()}</td>--%>
         </tr>
 
-        <%--            <td><a href="/index/${user.username}" >${user.username}</a></td>--%>
-        <%--            <td>--%>
-        <%--                <c:forEach items="${user.roles}" var="role">${role.name}; </c:forEach>--%>
-        <%--            </td>--%>
-        <%--            <td>--%>
-        <%--                <form action="${pageContext.request.contextPath}/admin" method="post">--%>
-        <%--                    <input type="hidden" name="userId" value="${user.id}"/>--%>
-        <%--                    <input type="hidden" name="action" value="delete"/>--%>
-        <%--                    <button class="but" type="submit">Delete</button>--%>
-        <%--                </form>--%>
-        <%--            </td>--%>
+<%--                    <td><a href="/index/${user.username}" >${user.username}</a></td>--%>
+<%--                    <td>--%>
+<%--                        <c:forEach items="${user.roles}" var="role">${role.name}; </c:forEach>--%>
+<%--                    </td>--%>
+<%--                    <td>--%>
+<%--                        <form action="${pageContext.request.contextPath}/admin" method="post">--%>
+<%--                            <input type="hidden" name="userId" value="${user.id}"/>--%>
+<%--                            <input type="hidden" name="action" value="delete"/>--%>
+<%--                            <button class="but" type="submit">Delete</button>--%>
+<%--                        </form>--%>
+<%--                    </td>--%>
 
     </c:forEach>
     </tbody>
 </table>
 
-<%--<form:form  method="post">--%>
-<%--    <button class="w-100 btn btn-primary btn-lg" type="submit">Удалить заказ</button>--%>
-<%--</form:form>--%>
+<form:form  method="post">
+    <button class="w-100 btn btn-primary btn-lg" type="submit">Удалить заказ</button>
+</form:form>
 </body>
 </html>

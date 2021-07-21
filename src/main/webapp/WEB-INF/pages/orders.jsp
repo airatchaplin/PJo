@@ -61,7 +61,7 @@
     <c:forEach items="${orders}" var="order">
 
         <tr>
-            <td><a href="orders/${order.getNumberOrder()}">${order.getNumberOrder()}</a></td>
+            <td style="display: block"><a style="display: block" href="orders/${order.getNumberOrder()}">${order.getNumberOrder()}</a></td>
             <td><a href="orders/${order.getNumberOrder()}">${order.getObjectName().getName()}</a></td>
             <td>${order.getManager().getFio_i_o()}</td>
             <td>

@@ -27,7 +27,14 @@
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/contragents">Контрагенты </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
 </header>
-
+<div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders/change/${order.getNumberOrder()}">Изменить
+        заказ</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders/add/${order.getNumberOrder()}">Добавить
+        элемент</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders/check1/${order.getNumberOrder()}">Расчитать
+        время</a>
+</div>
 <div class="container1">
     <form:form method="post">
     <h1 style="text-align: center">Добавление элемента к заказу</h1>
