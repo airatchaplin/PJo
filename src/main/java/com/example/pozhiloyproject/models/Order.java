@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "orders")
@@ -21,6 +23,7 @@ public class Order {
 
   @ManyToMany(cascade = CascadeType.ALL)
   private List<DetailInfo> detailInfos;
+
 
 
   private LocalDateTime dateStart;

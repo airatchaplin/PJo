@@ -1,11 +1,15 @@
 package com.example.pozhiloyproject.models;
 
+import java.util.List;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table
@@ -20,6 +24,10 @@ public class DetailInfo {
   LocalDateTime dateStart;
   LocalDateTime dateEnd;
 
+  @ElementCollection
+  @Getter
+  @Setter
+  List<Boolean> isCalculated;
 
 
   public UUID getId() {

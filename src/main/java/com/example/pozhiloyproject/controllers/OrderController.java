@@ -3,6 +3,7 @@ package com.example.pozhiloyproject.controllers;
 import com.example.pozhiloyproject.models.Detail;
 import com.example.pozhiloyproject.models.DetailInfo;
 import com.example.pozhiloyproject.models.Order;
+import com.example.pozhiloyproject.models.WorkBench;
 import com.example.pozhiloyproject.services.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -115,6 +116,7 @@ public class OrderController {
     }
     List<DetailInfo> list = new ArrayList<>();
 
+    List<Boolean> isCalculated = null;
     for (int i = 0; i < times.size(); i++) {
       DetailInfo detailInfo = new DetailInfo();
       detailInfo.setIncrement(i);
@@ -124,13 +126,18 @@ public class OrderController {
         continue;
       } else {
         detailInfo.setDetail(detailService.findByName(details.get(i)));
+        isCalculated = new ArrayList<>();
+        for (WorkBench workBench :detailService.findByName(details.get(i)).getWorkBenches()){
+          isCalculated.add(false);
+        }
+        detailInfo.setIsCalculated(isCalculated);
         detailInfo.setCount(countDetails.get(i));
         detailInfoService.save(detailInfo);
       }
       list.add(detailInfo);
     }
-    order.setDetailInfos(list);
 
+    order.setDetailInfos(list);
     orderService.saveOrder(order);
     return "redirect:/orders";
   }
@@ -205,6 +212,7 @@ public class OrderController {
     order.setDetailInfos(detailInfos);
     order.setComment(comment.equals("") ? order.getComment() : "; " + comment);
     orderService.saveOrder(order);
+//    order.getDetailInfos().get(0).getIsCalculated().get(0).booleanValue()
     return "redirect:/orders";
   }
 

@@ -1,9 +1,13 @@
 package com.example.pozhiloyproject.services;
 
+import com.example.pozhiloyproject.models.Detail;
 import com.example.pozhiloyproject.models.DetailInfo;
 import com.example.pozhiloyproject.models.Order;
 import com.example.pozhiloyproject.models.WorkBench;
 import com.example.pozhiloyproject.repository.OrderRepository;
+import com.example.pozhiloyproject.repository.WorkBenchRepository;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,54 +18,95 @@ import java.util.List;
 @Service
 public class OrderService {
 
-    @Autowired
-    OrderRepository orderRepository;
+  @Autowired
+  OrderRepository orderRepository;
 
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
-    }
+  @Autowired
+  WorkBenchRepository workBenchRepository;
 
-    public void saveOrder(Order order) {
-        orderRepository.save(order);
-    }
+  public List<Order> getAllOrders() {
+    return orderRepository.findAll();
+  }
 
-    public Order findOneOrder(int numberOrder) {
-        return orderRepository.findByNumberOrder(numberOrder);
-    }
+  public void saveOrder(Order order) {
+    orderRepository.save(order);
+  }
 
-    public void deleteOrderByNumberOrder(int numberOrder) {
-        Order order = orderRepository.findByNumberOrder(numberOrder);
-        orderRepository.delete(order);
-    }
+  public Order findOneOrder(int numberOrder) {
+    return orderRepository.findByNumberOrder(numberOrder);
+  }
 
-    public void raschet(int numberOrder) {
-        LocalDateTime dateStart = LocalDateTime.parse("2021-07-22T08:00");
-        LocalDateTime dateEnd = LocalDateTime.parse("2021-07-22T17:00");
-        Order order = orderRepository.findByNumberOrder(numberOrder);
-        List<DetailInfo> detailInfos = order.getDetailInfos();
-        for (int i = 0; i < detailInfos.size(); i++) {
-            LocalDateTime dateTimeStartForCalculation = dateStart;
-            LocalDateTime dateTimeEndForCalculation = dateEnd;
+  public void deleteOrderByNumberOrder(int numberOrder) {
+    Order order = orderRepository.findByNumberOrder(numberOrder);
+    orderRepository.delete(order);
+  }
 
-            WorkBench workBench = detailInfos.get(i).getDetail().getWorkBenches().get(i);
+
+
+
+
+
+  public void raschet(int numberOrder) {
+
+    Order order = orderRepository.findByNumberOrder(numberOrder);
+    List<DetailInfo> detailInfos = order.getDetailInfos();
+
+      for (int i = 0; i < detailInfos.size(); i++) {
+        List<Boolean> isCalculated =new ArrayList<>();
+        for (int j = 0; j < detailInfos.get(i).getDetail().getWorkBenches().size(); j++) {
+          if (detailInfos.get(i).getIsCalculated().get(j).equals(false)) {
+            WorkBench workBench = detailInfos.get(i).getDetail().getWorkBenches().get(j);
+
+            LocalDateTime dateStart = LocalDateTime.parse(workBench.getDateEndDetail().toLocalDate() + "T08:30");
+            LocalDateTime dateEnd = LocalDateTime.parse(workBench.getDateEndDetail().toLocalDate() + "T16:30");
+
             int countDetail = order.getDetailInfos().get(i).getCount();
             LocalDateTime dateTimeWorkbench = workBench.getDateEndDetail();
             while (countDetail != 0) {
-                String[] minSec = detailInfos.get(i).getDetail().getTimeWorkDetails().get(i).getTimeWork().split(",");
-                String min = minSec[0];
+              String[] minSec = detailInfos.get(i).getDetail().getTimeWorkDetails().get(j).getTimeWork().split(",");
+              String min = minSec[0];
+              if (minSec.length>1) {
+
                 String sec = minSec[1];
 
-                dateTimeWorkbench = dateTimeWorkbench.plusMinutes(Long.parseLong(min));
-                dateTimeWorkbench = dateTimeWorkbench.plusSeconds(Long.parseLong(sec));
-                countDetail--;
-                if (dateTimeWorkbench.isAfter(dateTimeEndForCalculation) || dateTimeWorkbench.isEqual(dateTimeEndForCalculation)) {
-                    dateTimeWorkbench = dateTimeStartForCalculation;
-                    dateTimeWorkbench = dateTimeWorkbench.plusDays(1);
-                    dateTimeEndForCalculation = dateTimeEndForCalculation.plusDays(1);
-                    dateTimeStartForCalculation = dateTimeStartForCalculation.plusDays(1);
+                if (!dateTimeWorkbench.plusMinutes(Long.parseLong(min)).plusSeconds(Long.parseLong(sec))
+                    .isAfter(dateEnd)) {
+                  dateTimeWorkbench = dateTimeWorkbench.plusMinutes(Long.parseLong(min));
+                  dateTimeWorkbench = dateTimeWorkbench.plusSeconds(Long.parseLong(sec));
+                  countDetail--;
+                } else {
+                  dateEnd = dateEnd.plusDays(1);
+                  dateStart = dateStart.plusDays(1);
+                  dateTimeWorkbench = dateStart;
                 }
+              }else{
+                if (!dateTimeWorkbench.plusMinutes(Long.parseLong(min))
+                    .isAfter(dateEnd)) {
+                  dateTimeWorkbench = dateTimeWorkbench.plusMinutes(Long.parseLong(min));
+
+                  countDetail--;
+                } else {
+                  dateEnd = dateEnd.plusDays(1);
+                  dateStart = dateStart.plusDays(1);
+                  dateTimeWorkbench = dateStart;
+                }
+              }
+
 
             }
+            workBench.setDateEndDetail(dateTimeWorkbench);
+            workBenchRepository.save(workBench);
+            isCalculated.add(true);
+
+          }
+
+        }
+        if (!isCalculated.isEmpty()) {
+          detailInfos.get(i).setIsCalculated(isCalculated);
+          order.setDetailInfos(detailInfos);
         }
     }
+
+    orderRepository.save(order);
+  }
 }

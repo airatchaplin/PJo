@@ -75,17 +75,21 @@ public class DetailController {
     List<String> timeWorkDetails = Stream.of(timeWork,timeWork1, timeWork2)
             .collect(Collectors.toList());
     List<TimeWorkDetail> timeWorkDetailsList = new ArrayList<>();
+
     for (String time : timeWorkDetails){
       if (!time.equals("")) {
         TimeWorkDetail timeWorkDetail = new TimeWorkDetail();
         timeWorkDetail.setId(UUID.randomUUID());
-        timeWorkDetail.setTimeWork(timeWork);
+        timeWorkDetail.setTimeWork(time);
         timeWorkDetailService.saveTimeWorkDetail(timeWorkDetail);
         timeWorkDetailsList.add(timeWorkDetail);
+
       }
     }
     detail.setTimeWorkDetails(timeWorkDetailsList);
     detail.setWorkBenches(workBenches);
+
+
 
     detailService.saveDetail(detail);
     return "redirect:/details";

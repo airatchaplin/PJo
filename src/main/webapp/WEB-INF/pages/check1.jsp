@@ -57,6 +57,7 @@
             <th scope="col">Количество</th>
             <th scope="col">Станки по очередности производства детали</th>
             <th scope="col">Время окончания других заказов на этих станках</th>
+            <th scope="col">Расчитано Да/нет</th>
         </tr>
         </thead>
         <tbody>
@@ -78,6 +79,14 @@
                 </c:forEach>
             </td>
 
+            <td>
+
+                <c:forEach items="${ord.getIsCalculated()}" var="isCalc">
+                    <pre> ${isCalc?"Да":"Нет"}</pre>
+                </c:forEach>
+
+
+            </td>
 
                 <%--                            <td>${order.getCountDetail()}</td>--%>
                 <%--                            <td>${order.getTypeMaterial()}</td>--%>
