@@ -53,15 +53,22 @@ public class OrderService {
 
       for (int i = 0; i < detailInfos.size(); i++) {
         List<Boolean> isCalculated =new ArrayList<>();
+        WorkBench workBench = null;
+        LocalDateTime dateTimeWorkbench = null;
+        Boolean isCalc = null;
+
         for (int j = 0; j < detailInfos.get(i).getDetail().getWorkBenches().size(); j++) {
-          if (detailInfos.get(i).getIsCalculated().get(j).equals(false)) {
-            WorkBench workBench = detailInfos.get(i).getDetail().getWorkBenches().get(j);
+
+          isCalc= detailInfos.get(i).getIsCalculated().get(j);
+
+          if (isCalc.equals(false)) {
+            workBench = detailInfos.get(i).getDetail().getWorkBenches().get(j);
 
             LocalDateTime dateStart = LocalDateTime.parse(workBench.getDateEndDetail().toLocalDate() + "T08:30");
             LocalDateTime dateEnd = LocalDateTime.parse(workBench.getDateEndDetail().toLocalDate() + "T16:30");
 
             int countDetail = order.getDetailInfos().get(i).getCount();
-            LocalDateTime dateTimeWorkbench = workBench.getDateEndDetail();
+            dateTimeWorkbench = workBench.getDateEndDetail();
             while (countDetail != 0) {
               String[] minSec = detailInfos.get(i).getDetail().getTimeWorkDetails().get(j).getTimeWork().split(",");
               String min = minSec[0];
@@ -94,13 +101,14 @@ public class OrderService {
 
 
             }
-            workBench.setDateEndDetail(dateTimeWorkbench);
-            workBenchRepository.save(workBench);
+
             isCalculated.add(true);
-
           }
-
+          workBench.setDateEndDetail(dateTimeWorkbench);
+          workBenchRepository.save(workBench);
         }
+
+
         if (!isCalculated.isEmpty()) {
           detailInfos.get(i).setIsCalculated(isCalculated);
           order.setDetailInfos(detailInfos);
@@ -109,4 +117,7 @@ public class OrderService {
 
     orderRepository.save(order);
   }
+
+
+
 }

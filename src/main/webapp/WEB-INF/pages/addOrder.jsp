@@ -21,6 +21,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
             integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
             crossorigin="anonymous"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+
 </head>
 <body>
 <header style="height: 50px;
@@ -67,6 +69,9 @@
                     </c:forEach>
                 </select>
             </div>
+
+
+            <input type="button" value="add" id="add_more_fields" />
             <table class="table table-striped table-sm">
                 <thead>
                 <tr>
@@ -76,68 +81,68 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>
-                        <select class="form-control" name="detailName">
-                            <option value="Выбирите деталь">Выбирите деталь</option>
-                            <c:forEach items="${details}" var="detail">
-                                <option value="${detail.getName()}">${detail.getName()}</option>
-                            </c:forEach>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="text" class="form-control" id="countDetail" name="countDetail"
-                               placeholder="Количество">
-                    </td>
-                    <td>
-                        <div class="col-sm-6">
-                            <input type="datetime-local" class="form-control" id="dateStart"
-                                   name="dateStart">
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <select class="form-control" name="detailName1">
-                            <option value="Выбирите деталь">Выбирите деталь</option>
-                            <c:forEach items="${details}" var="detail">
-                                <option value="${detail.getName()}">${detail.getName()}</option>
-                            </c:forEach>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="text" class="form-control" id="countDetail1"
-                               name="countDetail1"
-                               placeholder="Количество">
-                    </td>
-                    <td>
-                        <div class="col-sm-6">
-                            <input type="datetime-local" class="form-control" id="dateStart1"
-                                   name="dateStart1">
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <select class="form-control" name="detailName2">
-                            <option value="Выбирите деталь">Выбирите деталь</option>
-                            <c:forEach items="${details}" var="detail">
-                                <option value="${detail.getName()}">${detail.getName()}</option>
-                            </c:forEach>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="text" class="form-control" id="countDetail2"
-                               name="countDetail2"
-                               placeholder="Количество">
-                    </td>
-                    <td>
-                        <div class="col-sm-6">
-                            <input type="datetime-local" class="form-control" id="dateStart2"
-                                   name="dateStart2">
-                        </div>
-                    </td>
-                </tr>
+<%--                <tr>--%>
+<%--                    <td>--%>
+<%--                        <select class="form-control" name="detailName">--%>
+<%--                            <option value="Выбирите деталь">Выбирите деталь</option>--%>
+<%--                            <c:forEach items="${details}" var="detail">--%>
+<%--                                <option value="${detail.getName()}">${detail.getName()}</option>--%>
+<%--                            </c:forEach>--%>
+<%--                        </select>--%>
+<%--                    </td>--%>
+<%--                    <td>--%>
+<%--                        <input type="text" class="form-control" id="countDetail" name="countDetail"--%>
+<%--                               placeholder="Количество">--%>
+<%--                    </td>--%>
+<%--                    <td>--%>
+<%--                        <div class="col-sm-6">--%>
+<%--                            <input type="datetime-local" class="form-control" id="dateStart"--%>
+<%--                                   name="dateStart">--%>
+<%--                        </div>--%>
+<%--                    </td>--%>
+<%--                </tr>--%>
+<%--                <tr>--%>
+<%--                    <td>--%>
+<%--                        <select class="form-control" name="detailName1">--%>
+<%--                            <option value="Выбирите деталь">Выбирите деталь</option>--%>
+<%--                            <c:forEach items="${details}" var="detail">--%>
+<%--                                <option value="${detail.getName()}">${detail.getName()}</option>--%>
+<%--                            </c:forEach>--%>
+<%--                        </select>--%>
+<%--                    </td>--%>
+<%--                    <td>--%>
+<%--                        <input type="text" class="form-control" id="countDetail1"--%>
+<%--                               name="countDetail1"--%>
+<%--                               placeholder="Количество">--%>
+<%--                    </td>--%>
+<%--                    <td>--%>
+<%--                        <div class="col-sm-6">--%>
+<%--                            <input type="datetime-local" class="form-control" id="dateStart1"--%>
+<%--                                   name="dateStart1">--%>
+<%--                        </div>--%>
+<%--                    </td>--%>
+<%--                </tr>--%>
+<%--                <tr>--%>
+<%--                    <td>--%>
+<%--                        <select class="form-control" name="detailName2">--%>
+<%--                            <option value="Выбирите деталь">Выбирите деталь</option>--%>
+<%--                            <c:forEach items="${details}" var="detail">--%>
+<%--                                <option value="${detail.getName()}">${detail.getName()}</option>--%>
+<%--                            </c:forEach>--%>
+<%--                        </select>--%>
+<%--                    </td>--%>
+<%--                    <td>--%>
+<%--                        <input type="text" class="form-control" id="countDetail2"--%>
+<%--                               name="countDetail2"--%>
+<%--                               placeholder="Количество">--%>
+<%--                    </td>--%>
+<%--                    <td>--%>
+<%--                        <div class="col-sm-6">--%>
+<%--                            <input type="datetime-local" class="form-control" id="dateStart2"--%>
+<%--                                   name="dateStart2">--%>
+<%--                        </div>--%>
+<%--                    </td>--%>
+<%--                </tr>--%>
                 </tbody>
             </table>
 
@@ -157,7 +162,20 @@
 <%--    <button class="w-100 btn btn-primary btn-lg" type="submit">Проверить</button>--%>
 <%--</form:form>--%>
 
+
+
 </body>
+<script>
+  $('#add_more_fields').click(function () {
+    var html = '';
+    html += '<tr>';
+    html += '<td><select class="form-control" name="detailName"> <option value="Выбирите деталь">Выбирите деталь</option><c:forEach items="${details}" var="detail"> <option value="${detail.getName()}">${detail.getName()}</option></c:forEach> </select> </td>';
+    html += '<td><input type="text" class="form-control" id="countDetail" name="countDetail" placeholder="Количество"> </td>';
+    html += '<td><div class="col-sm-6"> <input type="datetime-local" class="form-control" id="dateStart" name="dateStart"> </div></td>';
+    html += '</tr>';
+    $('table').append(html);
+  });
+</script>
 <%--<script>--%>
 
 <%--    function check() {--%>

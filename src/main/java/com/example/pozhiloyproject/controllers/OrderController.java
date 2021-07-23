@@ -60,87 +60,163 @@ public class OrderController {
     return "addOrder";
   }
 
-  @PostMapping("/addOrder")
-  public String addOrderPost(@RequestParam(required = false) String numberOrder,
-      @RequestParam(required = true) String objectName,
-      @RequestParam(required = true) String manager,
-      @RequestParam(required = true) String detailName,
-      @RequestParam(required = true) String countDetail,
-      @RequestParam(required = true) String dateStart,
-      @RequestParam(required = true) String detailName1,
-      @RequestParam(required = true) String countDetail1,
-      @RequestParam(required = true) String dateStart1,
-      @RequestParam(required = true) String detailName2,
-      @RequestParam(required = true) String countDetail2,
-      @RequestParam(required = true) String dateStart2,
-      @RequestParam(required = true) String comment,
-      Model model
-  ) {
-    Order order = new Order();
-    Order order1 = null;
-    try {
-      order1 = orderService.findOneOrder(Integer.parseInt(numberOrder));
-    } catch (NumberFormatException e) {
-      e.printStackTrace();
-    }
-    if (order1 != null) {
-      model.addAttribute("contragents", contragentService.getAllContragents());
-      model.addAttribute("managers", managerService.getAllManagers());
-      model.addAttribute("details", detailService.getAllDetails());
-      model.addAttribute("numberOrderError", "Заказ с таким номером уже существует!");
-      return "addOrder";
-    }
-    order.setId(UUID.randomUUID());
-    order.setNumberOrder(Integer.parseInt(numberOrder));
-    order.setObjectName(contragentService.getOneContragent(objectName));
-    order.setManager(managerService.getOneManager(manager.substring(0, manager.length() - 5)));
-    order.setComment(comment);
-    List<String> details = Stream.of(detailName, detailName1, detailName2).collect(Collectors.toList());
-    List<Integer> countDetails = new ArrayList<>();
-    List<String> counts = Arrays.asList(countDetail, countDetail1, countDetail2);
-    for (String s : counts) {
-      if (s.equals("")) {
-        countDetails.add(0);
-      } else {
-        countDetails.add(Integer.parseInt(s));
-      }
-    }
-    List<LocalDateTime> times = new ArrayList<>();
-    List<String> time = Arrays.asList(dateStart, dateStart1, dateStart2);
-    for (String s : time) {
-      if (s.equals("")) {
-        times.add(null);
-      } else {
-        times.add(LocalDateTime.parse(s));
-      }
-    }
-    List<DetailInfo> list = new ArrayList<>();
+//  @PostMapping("/addOrder")
+//  public String addOrderPost(@RequestParam(required = false) String numberOrder,
+//      @RequestParam(required = true) String objectName,
+//      @RequestParam(required = true) String manager,
+//      @RequestParam(required = true) String detailName,
+//      @RequestParam(required = true) String countDetail,
+//      @RequestParam(required = true) String dateStart,
+//      @RequestParam(required = true) String detailName1,
+//      @RequestParam(required = true) String countDetail1,
+//      @RequestParam(required = true) String dateStart1,
+//      @RequestParam(required = true) String detailName2,
+//      @RequestParam(required = true) String countDetail2,
+//      @RequestParam(required = true) String dateStart2,
+//      @RequestParam(required = true) String comment,
+//      Model model
+//  ) {
+//    Order order = new Order();
+//    Order order1 = null;
+//    try {
+//      order1 = orderService.findOneOrder(Integer.parseInt(numberOrder));
+//    } catch (NumberFormatException e) {
+//      e.printStackTrace();
+//    }
+//    if (order1 != null) {
+//      model.addAttribute("contragents", contragentService.getAllContragents());
+//      model.addAttribute("managers", managerService.getAllManagers());
+//      model.addAttribute("details", detailService.getAllDetails());
+//      model.addAttribute("numberOrderError", "Заказ с таким номером уже существует!");
+//      return "addOrder";
+//    }
+//    order.setId(UUID.randomUUID());
+//    order.setNumberOrder(Integer.parseInt(numberOrder));
+//    order.setObjectName(contragentService.getOneContragent(objectName));
+//    order.setManager(managerService.getOneManager(manager.substring(0, manager.length() - 5)));
+//    order.setComment(comment);
+//    List<String> details = Stream.of(detailName, detailName1, detailName2).collect(Collectors.toList());
+//    List<Integer> countDetails = new ArrayList<>();
+//    List<String> counts = Arrays.asList(countDetail, countDetail1, countDetail2);
+//    for (String s : counts) {
+//      if (s.equals("")) {
+//        countDetails.add(0);
+//      } else {
+//        countDetails.add(Integer.parseInt(s));
+//      }
+//    }
+//    List<LocalDateTime> times = new ArrayList<>();
+//    List<String> time = Arrays.asList(dateStart, dateStart1, dateStart2);
+//    for (String s : time) {
+//      if (s.equals("")) {
+//        times.add(null);
+//      } else {
+//        times.add(LocalDateTime.parse(s));
+//      }
+//    }
+//    List<DetailInfo> list = new ArrayList<>();
+//
+//    List<Boolean> isCalculated = null;
+//    for (int i = 0; i < times.size(); i++) {
+//      DetailInfo detailInfo = new DetailInfo();
+//      detailInfo.setIncrement(i);
+//      detailInfo.setId(UUID.randomUUID());
+//      detailInfo.setDateStart(times.get(i));
+//      if (details.get(i).equals("Выбирите деталь") && countDetails.get(i) == 0) {
+//        continue;
+//      } else {
+//        detailInfo.setDetail(detailService.findByName(details.get(i)));
+//        isCalculated = new ArrayList<>();
+//        for (WorkBench workBench :detailService.findByName(details.get(i)).getWorkBenches()){
+//          isCalculated.add(false);
+//        }
+//        detailInfo.setIsCalculated(isCalculated);
+//        detailInfo.setCount(countDetails.get(i));
+//        detailInfoService.save(detailInfo);
+//      }
+//      list.add(detailInfo);
+//    }
+//
+//    order.setDetailInfos(list);
+//    orderService.saveOrder(order);
+//    return "redirect:/orders";
+//  }
+@PostMapping("/addOrder")
+public String addOrderPost(@RequestParam(required = false) String numberOrder,
+    @RequestParam(required = true) String objectName,
+    @RequestParam(required = true) String manager,
+    @RequestParam(required = true) List<String> detailName,
+    @RequestParam(required = true) List<String> countDetail,
+    @RequestParam(required = true) List<String> dateStart,
+    @RequestParam(required = true) String comment,
 
-    List<Boolean> isCalculated = null;
-    for (int i = 0; i < times.size(); i++) {
-      DetailInfo detailInfo = new DetailInfo();
-      detailInfo.setIncrement(i);
-      detailInfo.setId(UUID.randomUUID());
-      detailInfo.setDateStart(times.get(i));
-      if (details.get(i).equals("Выбирите деталь") && countDetails.get(i) == 0) {
-        continue;
-      } else {
-        detailInfo.setDetail(detailService.findByName(details.get(i)));
-        isCalculated = new ArrayList<>();
-        for (WorkBench workBench :detailService.findByName(details.get(i)).getWorkBenches()){
-          isCalculated.add(false);
-        }
-        detailInfo.setIsCalculated(isCalculated);
-        detailInfo.setCount(countDetails.get(i));
-        detailInfoService.save(detailInfo);
-      }
-      list.add(detailInfo);
-    }
-
-    order.setDetailInfos(list);
-    orderService.saveOrder(order);
-    return "redirect:/orders";
+    Model model
+) {
+  Order order = new Order();
+  Order order1 = null;
+  try {
+    order1 = orderService.findOneOrder(Integer.parseInt(numberOrder));
+  } catch (NumberFormatException e) {
+    e.printStackTrace();
   }
+  if (order1 != null) {
+    model.addAttribute("contragents", contragentService.getAllContragents());
+    model.addAttribute("managers", managerService.getAllManagers());
+    model.addAttribute("details", detailService.getAllDetails());
+    model.addAttribute("numberOrderError", "Заказ с таким номером уже существует!");
+    return "addOrder";
+  }
+  order.setId(UUID.randomUUID());
+  order.setNumberOrder(Integer.parseInt(numberOrder));
+  order.setObjectName(contragentService.getOneContragent(objectName));
+  order.setManager(managerService.getOneManager(manager.substring(0, manager.length() - 5)));
+  order.setComment(comment);
+
+  List<Integer> countDetails = new ArrayList<>();
+
+  for (String s : countDetail) {
+    if (s.equals("")) {
+      countDetails.add(0);
+    } else {
+      countDetails.add(Integer.parseInt(s));
+    }
+  }
+  List<LocalDateTime> times = new ArrayList<>();
+
+  for (String s : dateStart) {
+    if (s.equals("")) {
+      times.add(null);
+    } else {
+      times.add(LocalDateTime.parse(s));
+    }
+  }
+  List<DetailInfo> list = new ArrayList<>();
+
+  List<Boolean> isCalculated = null;
+  for (int i = 0; i < times.size(); i++) {
+    DetailInfo detailInfo = new DetailInfo();
+    detailInfo.setIncrement(i);
+    detailInfo.setId(UUID.randomUUID());
+    detailInfo.setDateStart(times.get(i));
+    if (detailName.get(i).equals("Выбирите деталь") && countDetails.get(i) == 0) {
+      continue;
+    } else {
+      detailInfo.setDetail(detailService.findByName(detailName.get(i)));
+      isCalculated = new ArrayList<>();
+      for (WorkBench workBench :detailService.findByName(detailName.get(i)).getWorkBenches()){
+        isCalculated.add(false);
+      }
+      detailInfo.setIsCalculated(isCalculated);
+      detailInfo.setCount(countDetails.get(i));
+      detailInfoService.save(detailInfo);
+    }
+    list.add(detailInfo);
+  }
+
+  order.setDetailInfos(list);
+  orderService.saveOrder(order);
+  return "redirect:/orders";
+}
 
 
   @GetMapping("/orders/change/{numberOrder}")
