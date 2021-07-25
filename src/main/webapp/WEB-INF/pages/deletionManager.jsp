@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+    <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -20,13 +20,11 @@
             color: #000000;
             text-decoration: none;
         }
-
         .table {
             width: 100%;
             border: none;
             margin-bottom: 20px;
         }
-
         .table thead th {
             font-weight: bold;
             text-align: left;
@@ -37,7 +35,6 @@
             border-left: 1px solid #ddd;
             border-right: 1px solid #ddd;
         }
-
         .table tbody td {
             text-align: left;
             border-left: 1px solid #ddd;
@@ -46,24 +43,19 @@
             font-size: 14px;
             vertical-align: top;
         }
-
         .table thead tr th:first-child, .table tbody tr td:first-child {
             border-left: none;
         }
-
         .table thead tr th:last-child, .table tbody tr td:last-child {
             border-right: none;
         }
-
-        .table tbody tr:nth-child(even) {
+        .table tbody tr:nth-child(even){
             background: #f3f3f3;
         }
-
-        .table > :not(caption) > * > * {
+        .table>:not(caption)>*>* {
             border-bottom-width: 0px;
         }
     </style>
-
 </head>
 <body>
 <header style="height: 50px;
@@ -78,86 +70,45 @@
 </header>
 
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addDetail">Добавить деталь</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;"
-       href="/details/change/${detail.getName()}">Изменить
-        деталь</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;"
-       href="/details/deletion/${detail.getName()}">Удалить
-        деталь</a>
-
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addManager">Добавить менеджера</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/managers/change/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">Изменить менеджера</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/managers/deletion/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">Удалить менеджера</a>
 </div>
 
-
-<h1>Изменение детали</h1>
-<form:form method="post">
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Деталь</th>
-            <th scope="col">Материал</th>
-            <th scope="col">Станки</th>
-            <th scope="col">Время детали на этом станке</th>
-            <th scope="col">Изменить</th>
-        </tr>
-        </thead>
-        <tbody>
+<h1>Менеджер</h1>
 
 
-        <tr>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Фамилия</th>
+        <th scope="col">Имя</th>
+        <th scope="col">Отчество</th>
+        <th scope="col">Удалить</th>
+    </tr>
+    </thead>
+    <tbody>
 
-            <td>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" id="detailName" name="detailName"
-                           placeholder="${detail.getName()}" value="${detail.getName()}" required>
-                </div>
-            </td>
-            <td>
-                <div class="col-sm-6">
-                    <select class="form-control" name="materialName">
-                        <option>Выбранная: ${detail.getMaterial().getName()}</option>
-                        <c:forEach items="${materials}" var="material">
-                            <option value="${material.getName()}">${material.getName()}</option>
-                        </c:forEach>
-                    </select>
-                </div>
 
-            </td>
-
-            <td>
-                <c:forEach items="${detail.getWorkBenches()}" var="det">
-                    <div class="col-sm-6">
-                        <select class="form-control" name="workBench">
-                            <option>Выбранная: ${det.getName()}</option>
-                            <c:forEach items="${detail.getWorkBenches()}" var="workbench">
-                                <option value="${workbench.getName()}">${workbench.getName()}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </c:forEach>
-            </td>
-            <td>
-                <c:forEach items="${detail.getTimeWorkDetails()}" var="timeWork">
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" id="timeWork" name="timeWork"
-                               placeholder="${timeWork.getTimeWork()}" value="${timeWork.getTimeWork()}" required>
-                    </div>
-                </c:forEach>
-            </td>
-            <td>
+    <tr>
+        <td>${manager.getFio()}</td>
+        <td>${manager.getName()}</td>
+        <td>${manager.getLastName()}</td>
+        <td>
+            <form:form action="/managers/deletion/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}"
+                       method="post">
                 <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">
-                    Изменить
+                    Удалить
                 </button>
-            </td>
+            </form:form>
+        </td>
+    </tr>
 
-        </tr>
+
+    </tbody>
+</table>
+<label style="color: red">${managerError}</label>
 
 
-        </tbody>
-    </table>
-</form:form>
-<label style="color: red">${detailError}</label>
 </body>
-
-
 </html>

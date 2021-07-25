@@ -21,8 +21,17 @@ public class ManagerService {
         managerRepository.save(manager);
     }
 
-    public Manager getOneManager(String name){
-        Manager manager = managerRepository.findByFio(name);
+    public Manager getOneManager(String fio,String name,String lastName){
+        Manager manager = managerRepository.findByFioAndAndNameAndLastName(fio, name, lastName);
         return manager;
+    }
+
+    public Manager getOneManager(String name){
+        Manager manager = managerRepository.findByFio( name);
+        return manager;
+    }
+
+    public void deleteManager(Manager manager){
+        managerRepository.delete(manager);
     }
 }

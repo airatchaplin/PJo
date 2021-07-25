@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -37,8 +38,67 @@ public class ManagerController {
         manager.setFio(fio);
         manager.setName(name);
         manager.setLastName(lastName);
-        manager.setFio_i_o(fio + " " + name.substring(0,1) +"." + lastName.substring(0,1)+".");
+        manager.setFio_i_o(fio + " " + name.substring(0, 1) + "." + lastName.substring(0, 1) + ".");
         managerService.saveManager(manager);
+        return "redirect:/managers";
+    }
+
+    @GetMapping("managers/{fio}/{name}/{lastName}")
+    public String getOneManager(@PathVariable(name = "fio") String fio,
+                                @PathVariable(name = "name") String name,
+                                @PathVariable(name = "lastName") String lastName, Model model) {
+        model.addAttribute("manager", managerService.getOneManager(fio, name, lastName));
+        return "oneManager";
+    }
+
+    @GetMapping("managers/change/{fio}/{name}/{lastName}")
+    public String changeManagerGet(@PathVariable(name = "fio") String fio,
+                                   @PathVariable(name = "name") String name,
+                                   @PathVariable(name = "lastName") String lastName,
+                                   Model model) {
+
+        model.addAttribute("manager", managerService.getOneManager(fio, name, lastName));
+        return "changeManager";
+    }
+
+    @PostMapping("managers/change/{fio}/{name}/{lastName}")
+    public String changeManagerPost(@PathVariable(name = "fio") String fio,
+                                    @PathVariable(name = "name") String name,
+                                    @PathVariable(name = "lastName") String lastName,
+                                    @RequestParam(required = false) String fioManager,
+                                    @RequestParam(required = false) String nameManager,
+                                    @RequestParam(required = false) String lastNameManager,
+                                    Model model) {
+        Manager manager = managerService.getOneManager(fio, name, lastName);
+        manager.setFio(fioManager);
+        manager.setName(nameManager);
+        manager.setLastName(lastNameManager);
+        managerService.saveManager(manager);
+        return "redirect:/managers";
+    }
+
+    @GetMapping("managers/deletion/{fio}/{name}/{lastName}")
+    public String deleteManagerGet(@PathVariable(name = "fio") String fio,
+                                   @PathVariable(name = "name") String name,
+                                   @PathVariable(name = "lastName") String lastName,
+                                   Model model) {
+
+        model.addAttribute("manager", managerService.getOneManager(fio, name, lastName));
+        return "deletionManager";
+    }
+
+    @PostMapping("managers/deletion/{fio}/{name}/{lastName}")
+    public String deleteManagerPost(@PathVariable(name = "fio") String fio,
+                                    @PathVariable(name = "name") String name,
+                                    @PathVariable(name = "lastName") String lastName,
+                                    Model model) {
+        try {
+            managerService.deleteManager(managerService.getOneManager(fio, name, lastName));
+        } catch (Exception e) {
+            model.addAttribute("manager", managerService.getOneManager(fio, name, lastName));
+            model.addAttribute("managerError", "Менеджера нельзя удалить, потому что она используется в заказах!");
+            return "deletionManager";
+        }
         return "redirect:/managers";
     }
 }

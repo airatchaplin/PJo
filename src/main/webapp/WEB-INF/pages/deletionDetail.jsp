@@ -70,13 +70,13 @@
 </header>
 
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addDetail">Добавить деталь</a>
     <a style="padding: 10px;color: #000000;text-decoration: none;"
        href="/details/change/${detail.getName()}">Изменить
         деталь</a>
     <a style="padding: 10px;color: #000000;text-decoration: none;"
        href="/details/deletion/${detail.getName()}">Удалить
         деталь</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addDetail">Добавить деталь</a>
 </div>
 
 

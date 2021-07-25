@@ -56,7 +56,6 @@
             border-bottom-width: 0px;
         }
     </style>
-
 </head>
 <body>
 <header style="height: 50px;
@@ -71,51 +70,57 @@
 </header>
 
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addDetail">Добавить деталь</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;"
-       href="/details/change/${detail.getName()}">Изменить
-        деталь</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;"
-       href="/details/deletion/${detail.getName()}">Удалить
-        деталь</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addManager">Добавить менеджера</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/managers/change/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">Изменить менеджера</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/managers/deletion/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">Удалить менеджера</a>
 </div>
 
+<h1>Менеджер</h1>
 
-
-<h1>Деталь</h1>
-
+<form:form method="post">
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">Деталь</th>
-        <th scope="col">Материал</th>
-        <th scope="col">Станки</th>
-        <th scope="col">Время детали на этом станке</th>
+        <th scope="col">Фамилия</th>
+        <th scope="col">Имя</th>
+        <th scope="col">Отчество</th>
+        <th scope="col">Изменить</th>
+
     </tr>
     </thead>
     <tbody>
 
 
-        <tr>
-
-            <td>${detail.getName()}</td>
-            <td>${detail.getMaterial().getName()}</td>
-            <td>
-                <c:forEach items="${detail.getWorkBenches()}" var="workbench">
-                    <pre>${workbench.getName()}</pre>
-                </c:forEach>
-            </td>
-            <td>
-                <c:forEach items="${detail.getTimeWorkDetails()}" var="timeWork">
-                    <pre>${timeWork.getTimeWork()}</pre>
-                </c:forEach>
-            </td>
-
-        </tr>
+    <tr>
+        <td>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="fioManager" name="fioManager"
+                       placeholder="${manager.getFio()}" value="${manager.getFio()}" required>
+            </div>
+        </td>
+        <td>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="nameManager" name="nameManager"
+                       placeholder="${manager.getName()}" value="${manager.getName()}" required>
+            </div>
+        </td>
+        <td>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="lastNameManager" name="lastNameManager"
+                       placeholder="${manager.getLastName()}" value="${manager.getLastName()}" required>
+            </div>
+        </td>
+        <td>
+            <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">
+                Изменить
+            </button>
+        </td>
+    </tr>
 
 
     </tbody>
 </table>
+</form:form>
 
 
 </body>
