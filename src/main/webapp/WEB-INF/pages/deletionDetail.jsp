@@ -70,33 +70,60 @@
 </header>
 
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addManager">Добавить менеджера</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;"
+       href="/details/change/${detail.getName()}">Изменить
+        деталь</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;"
+       href="/details/deletion/${detail.getName()}">Удалить
+        деталь</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addDetail">Добавить деталь</a>
 </div>
 
-<h1>Менеджеры</h1>
 
+<h1>Удаление детали</h1>
 
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">Фамилия</th>
-        <th scope="col">Имя</th>
-        <th scope="col">Отчество</th>
+        <th scope="col">Деталь</th>
+        <th scope="col">Материал</th>
+        <th scope="col">Станки</th>
+        <th scope="col">Время детали на этом станке</th>
+        <th scope="col">Удалить</th>
     </tr>
     </thead>
     <tbody>
 
-    <c:forEach items="${managers}" var="manager">
-        <tr>
-            <td>${manager.getFio()}</td>
-            <td>${manager.getName()}</td>
-            <td>${manager.getLastName()}</td>
-        </tr>
-    </c:forEach>
+
+    <tr>
+
+        <td>${detail.getName()}</td>
+        <td>${detail.getMaterial().getName()}</td>
+        <td>
+            <c:forEach items="${detail.getWorkBenches()}" var="workbench">
+                <pre>${workbench.getName()}</pre>
+            </c:forEach>
+        </td>
+        <td>
+            <c:forEach items="${detail.getTimeWorkDetails()}" var="timeWork">
+                <pre>${timeWork.getTimeWork()}</pre>
+            </c:forEach>
+        </td>
+        <td>
+            <form:form action="/details/deletion/${detail.getName()}"
+                       method="post">
+                <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">
+                    Удалить
+                </button>
+            </form:form>
+        </td>
+
+    </tr>
+
 
     </tbody>
 </table>
-
-
+<label style="color: red">${detailError}</label>
 </body>
+
 </html>

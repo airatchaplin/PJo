@@ -20,6 +20,41 @@
             color: #000000;
             text-decoration: none;
         }
+        .table {
+            width: 100%;
+            border: none;
+            margin-bottom: 20px;
+        }
+        .table thead th {
+            font-weight: bold;
+            text-align: left;
+            border: none;
+            padding: 10px 15px;
+            background: #d8d8d8;
+            font-size: 14px;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+        }
+        .table tbody td {
+            text-align: left;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            padding: 10px 15px;
+            font-size: 14px;
+            vertical-align: top;
+        }
+        .table thead tr th:first-child, .table tbody tr td:first-child {
+            border-left: none;
+        }
+        .table thead tr th:last-child, .table tbody tr td:last-child {
+            border-right: none;
+        }
+        .table tbody tr:nth-child(even){
+            background: #f3f3f3;
+        }
+        .table>:not(caption)>*>* {
+            border-bottom-width: 0px;
+        }
     </style>
 </head>
 <body>
@@ -35,13 +70,16 @@
 </header>
 
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Действующие заказы</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/completed_orders">Завершенные заказы</a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addOrder">Добавить заказ</a>
+
 </div>
 
-<h1>Заказы</h1>
+<h1>Действующие заказы</h1>
 
 
-<table class="table table-striped table-sm">
+<table class="table">
     <thead>
     <tr>
 
@@ -74,13 +112,11 @@
                 </c:forEach>
             </td>
             <td>
-                <c:forEach items="${order.getDetailInfos()}" var="detail">
-                <pre> ${detail.getDateStart()} </pre>
-                </c:forEach>
+                    ${order.getDateStart()}
             <td>
-                <c:forEach items="${order.getDetailInfos()}" var="detail">
-                <pre> ${detail.getDateEnd()} </pre>
-                </c:forEach>
+
+                    ${order.getDateEnd()}
+
             <td>
                     ${order.getComment()}
             </td>

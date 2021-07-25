@@ -7,6 +7,7 @@
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="../css/style.css" type="text/css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -70,29 +71,59 @@
 </header>
 
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addManager">Добавить менеджера</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Действующие заказы</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/completed_orders">Завершенные заказы</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addOrder">Добавить заказ</a>
 </div>
 
-<h1>Менеджеры</h1>
+<h1>Завершенные заказы</h1>
 
 
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">Фамилия</th>
-        <th scope="col">Имя</th>
-        <th scope="col">Отчество</th>
+
+        <th scope="col">№ заказа</th>
+        <th scope="col">Объект</th>
+        <th scope="col">Менеджер</th>
+        <th scope="col">Деталь</th>
+        <th scope="col">Количество</th>
+        <th scope="col">Дата запуска в производство</th>
+        <th scope="col">Дата готовности заказа</th>
+        <th scope="col">Коментарий</th>
     </tr>
     </thead>
     <tbody>
 
-    <c:forEach items="${managers}" var="manager">
+    <c:forEach items="${completed_order}" var="order">
+
         <tr>
-            <td>${manager.getFio()}</td>
-            <td>${manager.getName()}</td>
-            <td>${manager.getLastName()}</td>
+            <td>${order.getNumberOrder()}</td>
+            <td>${order.getObjectName().getName()}</td>
+            <td>${order.getManager().getFio_i_o()}</td>
+            <td>
+                <c:forEach items="${order.getDetailInfos()}" var="detail">
+                    <pre> ${detail.getDetail().getName()} </pre>
+                </c:forEach>
+            </td>
+            <td>
+                <c:forEach items="${order.getDetailInfos()}" var="detail">
+                    <pre> ${detail.getCount()} </pre>
+                </c:forEach>
+            </td>
+            <td>
+                    ${order.getDateStart()}
+            <td>
+
+                    ${order.getDateEnd()}
+
+            <td>
+                    ${order.getComment()}
+            </td>
         </tr>
+
     </c:forEach>
+
 
     </tbody>
 </table>

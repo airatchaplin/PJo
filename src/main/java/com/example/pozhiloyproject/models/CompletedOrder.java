@@ -1,20 +1,18 @@
 package com.example.pozhiloyproject.models;
 
-import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
 @Entity
-@Table(name = "orders")
+@Table(name = "completed_orders")
 @Getter
 @Setter
-public class Order {
+public class CompletedOrder {
 
     @Id
     private UUID id;

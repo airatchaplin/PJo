@@ -24,4 +24,8 @@ public class ContragentService {
     public Contragent getOneContragent(String name){
         return contragentRepository.findByName(name);
     }
+
+    public void deleteContragent(Contragent contragent){
+        contragentRepository.delete(contragent);
+    }
 }

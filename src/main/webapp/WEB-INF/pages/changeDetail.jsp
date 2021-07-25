@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Getting Started: Serving Web Content</title>
+
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -56,6 +56,7 @@
             border-bottom-width: 0px;
         }
     </style>
+
 </head>
 <body>
 <header style="height: 50px;
@@ -70,33 +71,85 @@
 </header>
 
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addManager">Добавить менеджера</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;"
+       href="/details/change/${detail.getName()}">Изменить
+        деталь</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;"
+       href="/details/deletion/${detail.getName()}">Удалить
+        деталь</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addDetail">Добавить деталь</a>
 </div>
 
-<h1>Менеджеры</h1>
 
-
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">Фамилия</th>
-        <th scope="col">Имя</th>
-        <th scope="col">Отчество</th>
-    </tr>
-    </thead>
-    <tbody>
-
-    <c:forEach items="${managers}" var="manager">
+<h1>Изменение детали</h1>
+<form:form method="post">
+    <table class="table">
+        <thead>
         <tr>
-            <td>${manager.getFio()}</td>
-            <td>${manager.getName()}</td>
-            <td>${manager.getLastName()}</td>
+            <th scope="col">Деталь</th>
+            <th scope="col">Материал</th>
+            <th scope="col">Станки</th>
+            <th scope="col">Время детали на этом станке</th>
+            <th scope="col">Изменить</th>
         </tr>
-    </c:forEach>
-
-    </tbody>
-</table>
+        </thead>
+        <tbody>
 
 
+        <tr>
+
+            <td>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="detailName" name="detailName"
+                           placeholder="${detail.getName()}" value="${detail.getName()}" required>
+                </div>
+            </td>
+            <td>
+                <div class="col-sm-6">
+                    <select class="form-control" name="materialName">
+                        <option>Выбранная: ${detail.getMaterial().getName()}</option>
+                        <c:forEach items="${materials}" var="material">
+                            <option value="${material.getName()}">${material.getName()}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+
+            </td>
+
+            <td>
+                <c:forEach items="${detail.getWorkBenches()}" var="det">
+                    <div class="col-sm-6">
+                        <select class="form-control" name="workBench">
+                            <option>Выбранная: ${det.getName()}</option>
+                            <c:forEach items="${detail.getWorkBenches()}" var="workbench">
+                                <option value="${workbench.getName()}">${workbench.getName()}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </c:forEach>
+            </td>
+            <td>
+                <c:forEach items="${detail.getTimeWorkDetails()}" var="timeWork">
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="timeWork" name="timeWork"
+                               placeholder="${timeWork.getTimeWork()}" value="${timeWork.getTimeWork()}" required>
+                    </div>
+                </c:forEach>
+            </td>
+            <td>
+                <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">
+                    Изменить
+                </button>
+            </td>
+
+        </tr>
+
+
+        </tbody>
+    </table>
+</form:form>
+<label style="color: red">${detailError}</label>
 </body>
+
+
 </html>

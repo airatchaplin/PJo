@@ -15,6 +15,47 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
             integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
             crossorigin="anonymous"></script>
+    <style>
+        a {
+            color: #000000;
+            text-decoration: none;
+        }
+        .table {
+            width: 100%;
+            border: none;
+            margin-bottom: 20px;
+        }
+        .table thead th {
+            font-weight: bold;
+            text-align: left;
+            border: none;
+            padding: 10px 15px;
+            background: #d8d8d8;
+            font-size: 14px;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+        }
+        .table tbody td {
+            text-align: left;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            padding: 10px 15px;
+            font-size: 14px;
+            vertical-align: top;
+        }
+        .table thead tr th:first-child, .table tbody tr td:first-child {
+            border-left: none;
+        }
+        .table thead tr th:last-child, .table tbody tr td:last-child {
+            border-right: none;
+        }
+        .table tbody tr:nth-child(even){
+            background: #f3f3f3;
+        }
+        .table>:not(caption)>*>* {
+            border-bottom-width: 0px;
+        }
+    </style>
 </head>
 <body>
 <header style="height: 50px;
@@ -35,7 +76,7 @@
         <form action="addContragent" method="post">
 
 
-            <table class="table table-striped table-sm">
+            <table class="table">
                 <thead>
                 <tr>
                     <th scope="col">Контрагент</th>
@@ -47,6 +88,9 @@
                         <div class="col-sm-6">
                             <input type="text" class="form-control" id="contragentName" name="contragentName"
                                    placeholder="Контрагент" value="">
+                        </div>
+                        <div class="error" style="color: red;">
+                            ${contragentNameError}
                         </div>
                     </td>
 

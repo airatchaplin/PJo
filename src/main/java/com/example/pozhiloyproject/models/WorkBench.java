@@ -1,5 +1,8 @@
 package com.example.pozhiloyproject.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -8,36 +11,15 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "workbench")
+@Getter
+@Setter
 public class WorkBench {
 
     @Id
-    UUID id;
+    private UUID id;
 
-    String name;
+    private String name;
 
-    LocalDateTime dateEndDetail;
+    private LocalDateTime dateEndDetail;
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public LocalDateTime getDateEndDetail() {
-        return dateEndDetail;
-    }
-
-    public void setDateEndDetail(LocalDateTime dateEndDetail) {
-        this.dateEndDetail = dateEndDetail;
-    }
 }

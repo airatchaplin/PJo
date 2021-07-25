@@ -15,6 +15,47 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
             integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
             crossorigin="anonymous"></script>
+    <style>
+        a {
+            color: #000000;
+            text-decoration: none;
+        }
+        .table {
+            width: 100%;
+            border: none;
+            margin-bottom: 20px;
+        }
+        .table thead th {
+            font-weight: bold;
+            text-align: left;
+            border: none;
+            padding: 10px 15px;
+            background: #d8d8d8;
+            font-size: 14px;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+        }
+        .table tbody td {
+            text-align: left;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            padding: 10px 15px;
+            font-size: 14px;
+            vertical-align: top;
+        }
+        .table thead tr th:first-child, .table tbody tr td:first-child {
+            border-left: none;
+        }
+        .table thead tr th:last-child, .table tbody tr td:last-child {
+            border-right: none;
+        }
+        .table tbody tr:nth-child(even){
+            background: #f3f3f3;
+        }
+        .table>:not(caption)>*>* {
+            border-bottom-width: 0px;
+        }
+    </style>
 </head>
 <body>
 <header style="height: 50px;
@@ -47,7 +88,7 @@
 <h4>Объект ${order.getObjectName().getName()}</h4>
 <h4>Менеджер ${order.getManager().getFio_i_o()}</h4>
 
-<table class="table table-striped table-sm">
+<table class="table">
     <thead>
     <tr>
         <th scope="col">Деталь</th>
@@ -56,6 +97,7 @@
         <th scope="col">Дата готовности заказа</th>
         <th scope="col">Коментарий</th>
         <th scope="col">Инкремент</th>
+
 
     </tr>
     </thead>
@@ -83,28 +125,21 @@
                     ${ord.getIncrement()}
             </td>
 
-<%--                            <td>${order.getCountDetail()}</td>--%>
-<%--                            <td>${order.getTypeMaterial()}</td>--%>
-<%--                            <td>${order.getDateStart()}</td>--%>
-<%--                            <td>${order.getDateEnd()}</td>--%>
-<%--                            <td>${order.getComment()}</td>--%>
+
+
         </tr>
 
-<%--                    <td><a href="/index/${user.username}" >${user.username}</a></td>--%>
-<%--                    <td>--%>
-<%--                        <c:forEach items="${user.roles}" var="role">${role.name}; </c:forEach>--%>
-<%--                    </td>--%>
-<%--                    <td>--%>
-<%--                        <form action="${pageContext.request.contextPath}/admin" method="post">--%>
-<%--                            <input type="hidden" name="userId" value="${user.id}"/>--%>
-<%--                            <input type="hidden" name="action" value="delete"/>--%>
-<%--                            <button class="but" type="submit">Delete</button>--%>
-<%--                        </form>--%>
-<%--                    </td>--%>
+
 
     </c:forEach>
     </tbody>
 </table>
+<form:form action="/orders/complete/${order.getNumberOrder()}"
+           method="post">
+    <button class="w-100 btn btn-primary btn-lg" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">
+        Завершить
+    </button>
+</form:form>
 
 </body>
 </html>

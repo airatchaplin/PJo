@@ -56,6 +56,7 @@
             border-bottom-width: 0px;
         }
     </style>
+
 </head>
 <body>
 <header style="height: 50px;
@@ -70,29 +71,48 @@
 </header>
 
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addManager">Добавить менеджера</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;"
+       href="/details/change/${detail.getName()}">Изменить
+        деталь</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;"
+       href="/details/deletion/${detail.getName()}">Удалить
+        деталь</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addDetail">Добавить деталь</a>
 </div>
 
-<h1>Менеджеры</h1>
 
+
+<h1>Детали</h1>
 
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">Фамилия</th>
-        <th scope="col">Имя</th>
-        <th scope="col">Отчество</th>
+        <th scope="col">Деталь</th>
+        <th scope="col">Материал</th>
+        <th scope="col">Станки</th>
+        <th scope="col">Время детали на этом станке</th>
     </tr>
     </thead>
     <tbody>
 
-    <c:forEach items="${managers}" var="manager">
+
         <tr>
-            <td>${manager.getFio()}</td>
-            <td>${manager.getName()}</td>
-            <td>${manager.getLastName()}</td>
+
+            <td>${detail.getName()}</td>
+            <td>${detail.getMaterial().getName()}</td>
+            <td>
+                <c:forEach items="${detail.getWorkBenches()}" var="workbench">
+                    <pre>${workbench.getName()}</pre>
+                </c:forEach>
+            </td>
+            <td>
+                <c:forEach items="${detail.getTimeWorkDetails()}" var="timeWork">
+                    <pre>${timeWork.getTimeWork()}</pre>
+                </c:forEach>
+            </td>
+
         </tr>
-    </c:forEach>
+
 
     </tbody>
 </table>

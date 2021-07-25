@@ -1,5 +1,8 @@
 package com.example.pozhiloyproject.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -7,25 +10,13 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "materials")
+@Getter
+@Setter
 public class Material {
 
     @Id
-     UUID id;
-     String name;
+    private UUID id;
 
-    public UUID getId() {
-        return id;
-    }
+    private String name;
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

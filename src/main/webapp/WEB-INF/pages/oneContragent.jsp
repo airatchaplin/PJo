@@ -70,29 +70,24 @@
 </header>
 
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addManager">Добавить менеджера</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addContragent">Добавить контрагента</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/contragents/change/${contragent.getName()}">Изменить контрагента</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/contragents/deletion/${contragent.getName()}">Удалить контрагента</a>
 </div>
 
-<h1>Менеджеры</h1>
-
+<h1>Контрагенты</h1>
 
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">Фамилия</th>
-        <th scope="col">Имя</th>
-        <th scope="col">Отчество</th>
+        <th scope="col">Контрагент</th>
     </tr>
     </thead>
     <tbody>
 
-    <c:forEach items="${managers}" var="manager">
         <tr>
-            <td>${manager.getFio()}</td>
-            <td>${manager.getName()}</td>
-            <td>${manager.getLastName()}</td>
+            <td>${contragent.getName()}</td>
         </tr>
-    </c:forEach>
 
     </tbody>
 </table>

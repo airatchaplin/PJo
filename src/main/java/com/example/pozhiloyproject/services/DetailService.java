@@ -42,5 +42,8 @@ public class DetailService {
         return details;
     }
 
+    public void deleteDetail(Detail detail) {
+        detailRepository.delete(detail);
+    }
 
 }

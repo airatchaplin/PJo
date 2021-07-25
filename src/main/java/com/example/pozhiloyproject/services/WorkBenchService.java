@@ -24,4 +24,8 @@ public class WorkBenchService {
     public WorkBench getOneWorkBench(String name){
         return workBenchRepository.findByName(name);
     }
+
+    public void deleteWorkBench(WorkBench workBench){
+        workBenchRepository.delete(workBench);
+    }
 }

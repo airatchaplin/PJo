@@ -20,11 +20,13 @@
             color: #000000;
             text-decoration: none;
         }
+
         .table {
             width: 100%;
             border: none;
             margin-bottom: 20px;
         }
+
         .table thead th {
             font-weight: bold;
             text-align: left;
@@ -35,6 +37,7 @@
             border-left: 1px solid #ddd;
             border-right: 1px solid #ddd;
         }
+
         .table tbody td {
             text-align: left;
             border-left: 1px solid #ddd;
@@ -43,16 +46,20 @@
             font-size: 14px;
             vertical-align: top;
         }
+
         .table thead tr th:first-child, .table tbody tr td:first-child {
             border-left: none;
         }
+
         .table thead tr th:last-child, .table tbody tr td:last-child {
             border-right: none;
         }
-        .table tbody tr:nth-child(even){
+
+        .table tbody tr:nth-child(even) {
             background: #f3f3f3;
         }
-        .table>:not(caption)>*>* {
+
+        .table > :not(caption) > * > * {
             border-bottom-width: 0px;
         }
     </style>
@@ -70,32 +77,44 @@
 </header>
 
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addManager">Добавить менеджера</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addContragent">Добавить контрагента</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/contragents/change/${contragent.getName()}">Изменить
+        контрагента</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/contragents/deletion/${contragent.getName()}">Удалить
+        контрагента</a>
 </div>
 
-<h1>Менеджеры</h1>
+<h1>Контрагенты</h1>
 
-
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">Фамилия</th>
-        <th scope="col">Имя</th>
-        <th scope="col">Отчество</th>
-    </tr>
-    </thead>
-    <tbody>
-
-    <c:forEach items="${managers}" var="manager">
+<form:form method="post">
+    <table class="table">
+        <thead>
         <tr>
-            <td>${manager.getFio()}</td>
-            <td>${manager.getName()}</td>
-            <td>${manager.getLastName()}</td>
+            <th scope="col">Контрагент</th>
+            <th scope="col">Изменить</th>
         </tr>
-    </c:forEach>
+        </thead>
+        <tbody>
 
-    </tbody>
-</table>
+        <tr>
+            <td>
+                    ${contragent.getName()}
+            </td>
+            <td>
+                <form:form action="/contragents/deletion/${contragent.getName()}"
+                           method="post">
+                    <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;"
+                            type="submit">
+                        Удалить
+                    </button>
+                </form:form>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</form:form>
+<label style="color: red">${contragentError}</label>
 
 
 </body>

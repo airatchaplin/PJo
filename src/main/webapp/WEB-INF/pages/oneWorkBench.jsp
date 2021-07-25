@@ -20,11 +20,13 @@
             color: #000000;
             text-decoration: none;
         }
+
         .table {
             width: 100%;
             border: none;
             margin-bottom: 20px;
         }
+
         .table thead th {
             font-weight: bold;
             text-align: left;
@@ -35,6 +37,7 @@
             border-left: 1px solid #ddd;
             border-right: 1px solid #ddd;
         }
+
         .table tbody td {
             text-align: left;
             border-left: 1px solid #ddd;
@@ -43,16 +46,20 @@
             font-size: 14px;
             vertical-align: top;
         }
+
         .table thead tr th:first-child, .table tbody tr td:first-child {
             border-left: none;
         }
+
         .table thead tr th:last-child, .table tbody tr td:last-child {
             border-right: none;
         }
-        .table tbody tr:nth-child(even){
+
+        .table tbody tr:nth-child(even) {
             background: #f3f3f3;
         }
-        .table>:not(caption)>*>* {
+
+        .table > :not(caption) > * > * {
             border-bottom-width: 0px;
         }
     </style>
@@ -70,29 +77,31 @@
 </header>
 
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addManager">Добавить менеджера</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addWorkBench">Добавить станок</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches/change/${workbench.getName()}">Изменить
+        станок</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches/deletion/${workbench.getName()}">Удалить
+        станок</a>
 </div>
 
-<h1>Менеджеры</h1>
-
+<h1>Станки</h1>
 
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">Фамилия</th>
-        <th scope="col">Имя</th>
-        <th scope="col">Отчество</th>
+        <th scope="col">Станок</th>
+        <th scope="col">Время окончния</th>
     </tr>
     </thead>
     <tbody>
 
-    <c:forEach items="${managers}" var="manager">
-        <tr>
-            <td>${manager.getFio()}</td>
-            <td>${manager.getName()}</td>
-            <td>${manager.getLastName()}</td>
-        </tr>
-    </c:forEach>
+
+    <tr>
+
+        <td>${workbench.getName()}</td>
+        <td>${workbench.getDateEndDetail()}</td>
+    </tr>
+
 
     </tbody>
 </table>
