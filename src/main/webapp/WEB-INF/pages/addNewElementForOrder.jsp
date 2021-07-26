@@ -96,7 +96,7 @@
 </div>
 <div class="container1">
     <form:form method="post">
-    <h1 style="text-align: center">Добавление детали к заказу</h1>
+    <h1 >Добавление детали к заказу</h1>
     <h4>№ заказа ${order.getNumberOrder()}</h4>
     <h4>Объект ${order.getObjectName().getName()}</h4>
     <h4>Менеджер ${order.getManager().getFio_i_o()}</h4>

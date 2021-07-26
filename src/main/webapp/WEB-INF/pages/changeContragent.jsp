@@ -84,7 +84,7 @@
         контрагента</a>
 </div>
 
-<h1>Контрагенты</h1>
+<h1>Измененение контрагента</h1>
 
 <form:form method="post">
 <table class="table">

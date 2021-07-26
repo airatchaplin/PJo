@@ -71,7 +71,8 @@
 
 <div class="container1">
 
-    <h4 class="mb-3">Добавление контрагента</h4>
+<%--    <h4 class="mb-3">Добавление контрагента</h4>--%>
+    <h1>Добавление контрагента</h1>
     <div class="info">
         <form action="addContragent" method="post">
 
@@ -87,7 +88,7 @@
                     <td>
                         <div class="col-sm-6">
                             <input type="text" class="form-control" id="contragentName" name="contragentName"
-                                   placeholder="Контрагент" value="">
+                                   placeholder="Контрагент" value="" required>
                         </div>
                         <div class="error" style="color: red;">
                             ${contragentNameError}

@@ -75,7 +75,7 @@
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/managers/deletion/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">Удалить менеджера</a>
 </div>
 
-<h1>Менеджер</h1>
+<h1>Изменение менеджера</h1>
 
 <form:form method="post">
 <table class="table">

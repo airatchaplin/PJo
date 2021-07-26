@@ -34,20 +34,6 @@ public class WorkBenchController {
     public String addWorkBenchPost(@RequestParam(required = false) String nameWorkBench,
                                    @RequestParam(required = false) String dateEndDetail, Model model) {
 
-        if (nameWorkBench.equals("") && dateEndDetail.equals("")) {
-            model.addAttribute("workBenchNameError", "Не заполнено название станка!");
-            model.addAttribute("workBenchDateError", "Не заполнено время!");
-            return "addWorkBench";
-        } else if (nameWorkBench.equals("")) {
-            model.addAttribute("dateEndDetail", dateEndDetail);
-            model.addAttribute("workBenchNameError", "Не заполнено название станка!");
-            return "addWorkBench";
-        } else if (dateEndDetail.equals("")) {
-            model.addAttribute("nameWorkBench", nameWorkBench);
-            model.addAttribute("workBenchDateError", "Не заполнено время!");
-            return "addWorkBench";
-        }
-
         WorkBench findWorkBench = null;
         try {
             findWorkBench = workBenchService.getOneWorkBench(nameWorkBench);
@@ -57,7 +43,7 @@ public class WorkBenchController {
 
         if (findWorkBench != null) {
             model.addAttribute("dateEndDetail", dateEndDetail);
-            model.addAttribute("workBenchRepeatError", "Станок с таким названием уже существует! \nПридумайте другое название!");
+            model.addAttribute("workBenchRepeatError", "Станок с таким названием уже существует!");
             return "addWorkBench";
         }
 
@@ -86,20 +72,6 @@ public class WorkBenchController {
     public String changeWorkBenchPost(@PathVariable(name = "nameWorkBench") String nameWorkBench,
                                       @RequestParam(required = false) String workBenchName,
                                       @RequestParam(required = false) String dateEndDetail, Model model) {
-
-        if (workBenchName.equals("") && dateEndDetail.equals("")) {
-            model.addAttribute("workBenchNameError", "Не заполнено название станка!");
-            model.addAttribute("workBenchDateError", "Не заполнено время!");
-            return "changeWorkBench";
-        } else if (workBenchName.equals("")) {
-            model.addAttribute("workbench", workBenchService.getOneWorkBench(nameWorkBench));
-            model.addAttribute("workBenchNameError", "Не заполнено название станка!");
-            return "changeWorkBench";
-        } else if (dateEndDetail.equals("")) {
-            model.addAttribute("workbench", workBenchService.getOneWorkBench(nameWorkBench));
-            model.addAttribute("workBenchDateError", "Не заполнено время!");
-            return "changeWorkBench";
-        }
         WorkBench findWorkBench = null;
         try {
             findWorkBench = workBenchService.getOneWorkBench(workBenchName);
@@ -107,9 +79,9 @@ public class WorkBenchController {
             e.printStackTrace();
         }
 
-        if (findWorkBench != null) {
-            model.addAttribute("dateEndDetail", dateEndDetail);
-            model.addAttribute("workBenchRepeatError", "Станок с таким названием уже существует! \nПридумайте другое название!");
+        if (findWorkBench != null && !findWorkBench.getName().equals(nameWorkBench)) {
+            model.addAttribute("workbench", workBenchService.getOneWorkBench(nameWorkBench));
+            model.addAttribute("workBenchRepeatError", "Станок с таким названием уже существует!");
             return "changeWorkBench";
         }
 

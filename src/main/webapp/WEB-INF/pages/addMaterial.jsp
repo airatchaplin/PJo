@@ -71,7 +71,8 @@
 
 <div class="container1">
 
-    <h4 class="mb-3">Добавление материала</h4>
+<%--    <h4 class="mb-3">Добавление материала</h4>--%>
+    <h1>Добавление материала</h1>
     <div class="info" >
         <form action="addMaterial" method="post">
 
@@ -87,7 +88,10 @@
                     <td>
                         <div class="col-sm-6">
                             <input type="text" class="form-control" id="materialName" name="materialName"
-                                   placeholder="Материал" value="">
+                                   placeholder="Материал" value="" required>
+                        </div>
+                        <div class="error" style="color: red;">
+                            ${materialNameRepeatError}
                         </div>
                     </td>
                 </tr>

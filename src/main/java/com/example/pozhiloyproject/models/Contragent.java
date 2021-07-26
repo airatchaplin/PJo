@@ -1,5 +1,6 @@
 package com.example.pozhiloyproject.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,5 +19,6 @@ public class Contragent {
     private UUID id;
 
     private String name;
+
 
 }

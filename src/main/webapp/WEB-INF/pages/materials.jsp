@@ -87,7 +87,8 @@
 
     <c:forEach items="${materials}" var="material">
         <tr>
-            <td>${material.getName()}</td>
+
+            <td><a style="display: block" href="materials/${material.getName()}">${material.getName()}</a></td>
         </tr>
     </c:forEach>
 

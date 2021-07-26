@@ -84,7 +84,7 @@
         станок</a>
 </div>
 
-<h1>Станки</h1>
+<h1>Станок</h1>
 
 <table class="table">
     <thead>

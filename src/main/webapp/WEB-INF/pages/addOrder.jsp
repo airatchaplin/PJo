@@ -87,7 +87,8 @@
 </header>
 
 <div class="container1">
-    <h4 class="mb-3">Добавление заказа</h4>
+<%--    <h4 class="mb-3">Добавление заказа</h4>--%>
+    <h1>Добавление заказа</h1>
     <div class="info">
         <form:form method="post">
             <div class="col-sm-6">
@@ -143,7 +144,7 @@
                     </td>
                     <td>
                         <input type="text" class="form-control" id="countDetail" name="countDetail"
-                               placeholder="Количество">
+                               placeholder="Количество" required>
                     </td>
                     <td>
                         <div class="col-sm-6">
@@ -176,7 +177,7 @@
         var html = '';
         html += '<tr id="row1">';
         html += '<td><select class="form-control" name="detailName"> <option value="Выбирите деталь">Выбирите деталь</option><c:forEach items="${details}" var="detail"> <option value="${detail.getName()}">${detail.getName()}</option></c:forEach> </select> </td>';
-        html += '<td><input type="text" class="form-control" id="countDetail" name="countDetail" placeholder="Количество"> </td>';
+        html += '<td><input type="text" class="form-control" id="countDetail" name="countDetail" placeholder="Количество" required> </td>';
         html += '<td><div class="col-sm-6"> <input type="datetime-local" class="form-control" id="dateStart" name="dateStart"> </div></td>';
         html += '</tr>';
         $('table').append(html);

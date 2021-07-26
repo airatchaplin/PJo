@@ -75,7 +75,7 @@
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/contragents/deletion/${contragent.getName()}">Удалить контрагента</a>
 </div>
 
-<h1>Контрагенты</h1>
+<h1>Контрагент</h1>
 
 <table class="table">
     <thead>

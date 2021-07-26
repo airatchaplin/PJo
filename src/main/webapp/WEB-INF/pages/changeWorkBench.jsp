@@ -84,7 +84,7 @@
         станок</a>
 </div>
 
-<h1>Станки</h1>
+<h1>Изменение станка</h1>
 <form:form method="post">
 <table class="table">
     <thead>
@@ -102,23 +102,19 @@
         <td>
             <div class="col-sm-6">
                 <input type="text" class="form-control" id="workBenchName" name="workBenchName"
-                       placeholder="Станок" value="${workbench.getName()}">
+                       placeholder="Станок" value="${workbench.getName()}" required>
             </div>
             <div class="error" style="color: red;">
                     ${workBenchRepeatError}
             </div>
-            <div class="error" style="color: red;">
-                    ${workBenchNameError}
-            </div>
+
         </td>
         <td>
             <div class="col-sm-6">
                 <input type="datetime-local" class="form-control" id="dateEndDetail" name="dateEndDetail"
-                       placeholder="Станок" value="${workbench.getDateEndDetail()}">
+                       placeholder="Станок" value="${workbench.getDateEndDetail()}" required>
             </div>
-            <div class="error" style="color: red;">
-                    ${workBenchDateError}
-            </div>
+
         </td>
         <td>
             <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">

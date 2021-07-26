@@ -3,6 +3,7 @@ package com.example.pozhiloyproject.controllers;
 import com.example.pozhiloyproject.models.Contragent;
 import com.example.pozhiloyproject.services.ContragentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

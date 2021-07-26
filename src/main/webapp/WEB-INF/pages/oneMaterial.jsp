@@ -63,6 +63,7 @@
             border-bottom-width: 0px;
         }
     </style>
+
 </head>
 <body>
 <header style="height: 50px;
@@ -77,48 +78,33 @@
 </header>
 
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addWorkBench">Добавить станок</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches/change/${workbench.getName()}">Изменить
-        станок</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches/deletion/${workbench.getName()}">Удалить
-        станок</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addMaterial">Добавить материал</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;"
+       href="/materials/change/${material.getName()}">Изменить
+        материал</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;"
+       href="/materials/deletion/${material.getName()}">Удалить
+        материал</a>
 </div>
 
-<h1>Удаление станка</h1>
+
+<h1>Материал</h1>
 
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">Станок</th>
-        <th scope="col">Время окончния</th>
-        <th scope="col">Удалить</th>
+        <th scope="col">Название материала</th>
     </tr>
     </thead>
     <tbody>
 
-
     <tr>
-
-        <td>
-            ${workbench.getName()}
-        </td>
-        <td>
-            ${workbench.getDateEndDetail()}
-        </td>
-        <td>
-            <form:form action="/workbenches/deletion/${workbench.getName()}"
-                       method="post">
-                <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">
-                    Удалить
-                </button>
-            </form:form>
-        </td>
+        <td>${material.getName()}</td>
     </tr>
 
 
     </tbody>
 </table>
-<label style="color: red">${workBenchError}</label>
 
 </body>
 </html>

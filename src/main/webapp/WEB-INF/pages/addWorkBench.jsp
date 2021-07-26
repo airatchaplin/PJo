@@ -71,7 +71,8 @@
 
 <div class="container1">
 
-    <h4 class="mb-3">Добавление станка</h4>
+<%--    <h4 class="mb-3">Добавление станка</h4>--%>
+    <h1>Добавление станка</h1>
     <div class="info">
         <form method="post">
 
@@ -88,22 +89,16 @@
                     <td>
                         <div class="col-sm-6">
                             <input type="text" class="form-control" id="nameWorkBench" name="nameWorkBench"
-                                   placeholder="Станок" value="${nameWorkBench}">
+                                   placeholder="Станок" value="${nameWorkBench}" required>
                         </div>
                         <div class="error" style="color: red;">
                             ${workBenchRepeatError}
-                        </div>
-                        <div class="error" style="color: red;">
-                            ${workBenchNameError}
                         </div>
                     </td>
                     <td>
                         <div class="col-sm-6">
                             <input type="datetime-local" class="form-control" id="dateEndDetail" name="dateEndDetail"
-                                   placeholder="Станок" value="${dateEndDetail}">
-                        </div>
-                        <div class="error" style="color: red;">
-                            ${workBenchDateError}
+                                   placeholder="Станок" value="${dateEndDetail}" required>
                         </div>
                     </td>
                 </tr>

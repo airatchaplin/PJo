@@ -71,7 +71,8 @@
 
 <div class="container1">
 
-    <h4 class="mb-3">Добавление менеджера</h4>
+<%--    <h4 class="mb-3">Добавление менеджера</h4>--%>
+    <h1>Добавление менеджера</h1>
     <div class="info">
         <form action="addManager" method="post">
 
@@ -89,21 +90,21 @@
                     <td>
                         <div class="col-sm-6">
                             <input type="text" class="form-control" id="fio" name="fio"
-                                   placeholder="Фамилия" value="">
+                                   placeholder="Фамилия" value="" required>
                         </div>
                     </td>
 
                     <td>
                         <div class="col-sm-6">
                             <input type="text" class="form-control" id="name" name="name"
-                                   placeholder="Имя" value="">
+                                   placeholder="Имя" value="" required>
                         </div>
                     </td>
 
                     <td>
                         <div class="col-sm-6">
                             <input type="text" class="form-control" id="lastName" name="lastName"
-                                   placeholder="Отчество" value="">
+                                   placeholder="Отчество" value="" required>
                         </div>
                     </td>
                 </tr>

@@ -22,7 +22,11 @@ public class MaterialService {
         materialsRepository.save(material);
     }
 
-    public Material findByName(String name) {
+    public Material getOneMaterial(String name) {
         return materialsRepository.findByName(name);
+    }
+
+    public void deleteMaterial(Material material){
+        materialsRepository.delete(material);
     }
 }

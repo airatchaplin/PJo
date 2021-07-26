@@ -93,7 +93,7 @@
        href="/orders/check1/${order.getNumberOrder()}">Расчитать
         время</a>
 </div>
-<h1 style="text-align: center">Расчитывание времени детали</h1>
+<h1>Расчитывание времени детали</h1>
 <h4>№ заказа ${order.getNumberOrder()}</h4>
 <h4>Объект ${order.getObjectName().getName()}</h4>
 <h4>Менеджер ${order.getManager().getFio_i_o()}</h4>

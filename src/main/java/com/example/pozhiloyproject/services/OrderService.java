@@ -59,8 +59,6 @@ public class OrderService {
         LocalDateTime dateTimeWorkbench = null;
         Boolean isCalc = null;
 
-
-
         for (int j = 0; j < detailInfos.get(i).getDetail().getWorkBenches().size(); j++) {
 
           isCalc= detailInfos.get(i).getIsCalculated().get(j);
@@ -68,9 +66,6 @@ public class OrderService {
           if (isCalc.equals(false)) {
 
               dateDetailInfoStart = detailInfos.get(i).getDetail().getWorkBenches().get(j).getDateEndDetail();
-
-
-
             workBench = detailInfos.get(i).getDetail().getWorkBenches().get(j);
 
             LocalDateTime dateStart = LocalDateTime.parse(workBench.getDateEndDetail().toLocalDate() + "T08:30");

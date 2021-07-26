@@ -72,7 +72,8 @@
 
 <div class="container1">
 
-    <h4 class="mb-3">Добавление детали</h4>
+<%--    <h4 class="mb-3">Добавление детали</h4>--%>
+    <h1>Добавление детали</h1>
     <div class="info">
         <form action="addDetail" method="post">
 
@@ -91,7 +92,7 @@
                     <td>
                         <div class="col-sm-6">
                             <input type="text" class="form-control" id="detailName" name="detailName"
-                                   placeholder="Деталь" value="">
+                                   placeholder="Деталь" value="" required>
                         </div>
                         <div class="error" style="color: red;">
                             ${detailError}

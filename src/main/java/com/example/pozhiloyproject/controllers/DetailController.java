@@ -78,7 +78,7 @@ public class DetailController {
 
         detail.setId(UUID.randomUUID());
         detail.setName(detailName);
-        detail.setMaterial(materialService.findByName(materialName));
+        detail.setMaterial(materialService.getOneMaterial(materialName));
         List<String> workBenchesNames = Stream.of(workBenchName, workBenchName1, workBenchName2)
                 .collect(Collectors.toList());
         List<WorkBench> workBenches = new ArrayList<>();
@@ -156,7 +156,7 @@ public class DetailController {
 
         Detail detail = detailService.findByName(nameDetail);
         detail.setName(detailName);
-        detail.setMaterial(materialService.findByName(materialName.replace("Выбранная: ", "")));
+        detail.setMaterial(materialService.getOneMaterial(materialName.replace("Выбранная: ", "")));
         List<WorkBench> workBenchList = new ArrayList<>();
         List<TimeWorkDetail> timeWorkDetailsList = new ArrayList<>();
         for (int i = 0; i < workBench.size(); i++) {
