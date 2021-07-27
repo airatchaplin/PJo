@@ -20,11 +20,13 @@
             color: #000000;
             text-decoration: none;
         }
+
         .table {
             width: 100%;
             border: none;
             margin-bottom: 20px;
         }
+
         .table thead th {
             font-weight: bold;
             text-align: left;
@@ -35,6 +37,7 @@
             border-left: 1px solid #ddd;
             border-right: 1px solid #ddd;
         }
+
         .table tbody td {
             text-align: left;
             border-left: 1px solid #ddd;
@@ -43,16 +46,20 @@
             font-size: 14px;
             vertical-align: top;
         }
+
         .table thead tr th:first-child, .table tbody tr td:first-child {
             border-left: none;
         }
+
         .table thead tr th:last-child, .table tbody tr td:last-child {
             border-right: none;
         }
-        .table tbody tr:nth-child(even){
+
+        .table tbody tr:nth-child(even) {
             background: #f3f3f3;
         }
-        .table>:not(caption)>*>* {
+
+        .table > :not(caption) > * > * {
             border-bottom-width: 0px;
         }
     </style>
@@ -95,6 +102,8 @@
         <th scope="col">Количество</th>
         <th scope="col">Дата запуска в производство</th>
         <th scope="col">Дата готовности заказа</th>
+        <th scope="col">Покраска</th>
+        <th scope="col">Упаковка</th>
         <th scope="col">Коментарий</th>
         <th scope="col">Инкремент</th>
 
@@ -118,6 +127,12 @@
                     ${ord.getDateEnd()}
             </td>
             <td>
+                    ${order.getPainting()}
+            </td>
+            <td>
+                    ${order.getPacking()}
+            </td>
+            <td>
                     ${order.getComment()}
             </td>
 
@@ -126,9 +141,7 @@
             </td>
 
 
-
         </tr>
-
 
 
     </c:forEach>
@@ -136,7 +149,8 @@
 </table>
 <form:form action="/orders/complete/${order.getNumberOrder()}"
            method="post">
-    <button class="w-100 btn btn-primary btn-lg" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">
+    <button class="w-100 btn btn-primary btn-lg" style="width: auto;background-color: #0d6efd;color: #fff;"
+            type="submit">
         Завершить
     </button>
 </form:form>

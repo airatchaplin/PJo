@@ -35,4 +35,8 @@ public class Order {
     private LocalDateTime dateEnd;
 
     private String comment;
+
+    private String packing;
+
+    private String painting;
 }

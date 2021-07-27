@@ -52,13 +52,13 @@ public class DetailController {
 
     @PostMapping("/addDetail")
     public String addDetailPost(@RequestParam(required = false) String detailName,
+                                @RequestParam(required = false) String length,
+                                @RequestParam(required = false) String width,
+                                @RequestParam(required = false) String thickness,
                                 @RequestParam(required = false) String materialName,
-                                @RequestParam(required = false) String workBenchName,
-                                @RequestParam(required = false) String workBenchName1,
-                                @RequestParam(required = false) String workBenchName2,
-                                @RequestParam(required = false) String timeWork,
-                                @RequestParam(required = false) String timeWork1,
-                                @RequestParam(required = false) String timeWork2, Model model
+                                @RequestParam(required = false) List<String> workBenchName,
+                                @RequestParam(required = false) List<String> timeWork,
+                                 Model model
     ) {
         Detail detail = new Detail();
         Detail findDetail = null;
@@ -78,21 +78,22 @@ public class DetailController {
 
         detail.setId(UUID.randomUUID());
         detail.setName(detailName);
+        detail.setLength(length);
+        detail.setWidth(width);
+        detail.setThickness(thickness);
+
         detail.setMaterial(materialService.getOneMaterial(materialName));
-        List<String> workBenchesNames = Stream.of(workBenchName, workBenchName1, workBenchName2)
-                .collect(Collectors.toList());
+
         List<WorkBench> workBenches = new ArrayList<>();
-        for (String name : workBenchesNames) {
+        for (String name : workBenchName) {
             if (!name.equals("Выбирите станок")) {
                 WorkBench workBench = workBenchService.getOneWorkBench(name);
                 workBenches.add(workBench);
             }
         }
-        List<String> timeWorkDetails = Stream.of(timeWork, timeWork1, timeWork2)
-                .collect(Collectors.toList());
-        List<TimeWorkDetail> timeWorkDetailsList = new ArrayList<>();
 
-        for (String time : timeWorkDetails) {
+        List<TimeWorkDetail> timeWorkDetailsList = new ArrayList<>();
+        for (String time : timeWork) {
             if (!time.equals("")) {
                 TimeWorkDetail timeWorkDetail = new TimeWorkDetail();
                 timeWorkDetail.setId(UUID.randomUUID());
@@ -150,12 +151,18 @@ public class DetailController {
     public String changeDetailPost(@PathVariable(value = "nameDetail") String nameDetail,
                                    @RequestParam(required = false) String detailName,
                                    @RequestParam(required = false) String materialName,
+                                   @RequestParam(required = false) String length,
+                                   @RequestParam(required = false) String width,
+                                   @RequestParam(required = false) String thickness,
                                    @RequestParam(required = false) List<String> workBench,
                                    @RequestParam(required = false) List<String> timeWork,
                                    Model model) {
 
         Detail detail = detailService.findByName(nameDetail);
         detail.setName(detailName);
+        detail.setLength(length);
+        detail.setWidth(width);
+        detail.setThickness(thickness);
         detail.setMaterial(materialService.getOneMaterial(materialName.replace("Выбранная: ", "")));
         List<WorkBench> workBenchList = new ArrayList<>();
         List<TimeWorkDetail> timeWorkDetailsList = new ArrayList<>();

@@ -77,9 +77,9 @@
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
 </header>
 
-<div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
+<div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 9px;">
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addDetail">Добавить деталь</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;"
+    <a style="padding: 10px;color: #000000;text-decoration: none;background: gray"
        href="/details/change/${detail.getName()}">Изменить
         деталь</a>
     <a style="padding: 10px;color: #000000;text-decoration: none;"
@@ -95,6 +95,9 @@
         <thead>
         <tr>
             <th scope="col">Деталь</th>
+            <th scope="col">Длина</th>
+            <th scope="col">Ширина</th>
+            <th scope="col">Толщина</th>
             <th scope="col">Материал</th>
             <th scope="col">Станки</th>
             <th scope="col">Время детали на этом станке</th>
@@ -107,13 +110,31 @@
         <tr>
 
             <td>
-                <div class="col-sm-6">
+                <div>
                     <input type="text" class="form-control" id="detailName" name="detailName"
                            placeholder="${detail.getName()}" value="${detail.getName()}" required>
                 </div>
             </td>
             <td>
-                <div class="col-sm-6">
+                <div>
+                    <input type="text" class="form-control" id="length" name="length"
+                           placeholder="${detail.getLength()}" value="${detail.getLength()}" required>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <input type="text" class="form-control" id="width" name="width"
+                           placeholder="${detail.getWidth()}" value="${detail.getWidth()}" required>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <input type="text" class="form-control" id="thickness" name="thickness"
+                           placeholder="${detail.getThickness()}" value="${detail.getThickness()}" required>
+                </div>
+            </td>
+            <td>
+                <div>
                     <select class="form-control" name="materialName">
                         <option>Выбранная: ${detail.getMaterial().getName()}</option>
                         <c:forEach items="${materials}" var="material">
@@ -126,7 +147,7 @@
 
             <td>
                 <c:forEach items="${detail.getWorkBenches()}" var="det">
-                    <div class="col-sm-6">
+                    <div>
                         <select class="form-control" name="workBench">
                             <option>Выбранная: ${det.getName()}</option>
                             <c:forEach items="${detail.getWorkBenches()}" var="workbench">
@@ -138,7 +159,7 @@
             </td>
             <td>
                 <c:forEach items="${detail.getTimeWorkDetails()}" var="timeWork">
-                    <div class="col-sm-6">
+                    <div>
                         <input type="text" class="form-control" id="timeWork" name="timeWork"
                                placeholder="${timeWork.getTimeWork()}" value="${timeWork.getTimeWork()}" required>
                     </div>

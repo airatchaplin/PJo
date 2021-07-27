@@ -22,11 +22,13 @@
             color: #000000;
             text-decoration: none;
         }
+
         .table {
             width: 100%;
             border: none;
             margin-bottom: 20px;
         }
+
         .table thead th {
             font-weight: bold;
             text-align: left;
@@ -37,6 +39,7 @@
             border-left: 1px solid #ddd;
             border-right: 1px solid #ddd;
         }
+
         .table tbody td {
             text-align: left;
             border-left: 1px solid #ddd;
@@ -45,16 +48,20 @@
             font-size: 14px;
             vertical-align: top;
         }
+
         .table thead tr th:first-child, .table tbody tr td:first-child {
             border-left: none;
         }
+
         .table thead tr th:last-child, .table tbody tr td:last-child {
             border-right: none;
         }
-        .table tbody tr:nth-child(even){
+
+        .table tbody tr:nth-child(even) {
             background: #f3f3f3;
         }
-        .table>:not(caption)>*>* {
+
+        .table > :not(caption) > * > * {
             border-bottom-width: 0px;
         }
     </style>
@@ -98,6 +105,8 @@
         <th scope="col">Количество</th>
         <th scope="col">Дата запуска в производство</th>
         <th scope="col">Дата готовности заказа</th>
+        <th scope="col">Покраска</th>
+        <th scope="col">Упаковка</th>
 
     </tr>
     </thead>
@@ -126,8 +135,7 @@
             <td>
                 <div class="col-sm-6">
                     <input type="datetime-local" class="form-control" id="dateStart"
-                           name="dateStart"
-                    >
+                           name="dateStart">
                 </div>
             </td>
             <td>
@@ -136,7 +144,16 @@
                     >
                 </div>
             </td>
-
+            <td>
+                <div>
+                    <input type="time" class="form-control" value="00:00" id="painting" name="painting">
+                </div>
+            </td>
+            <td>
+                <div>
+                    <input type="time" class="form-control" value="00:00" id="packing" name="packing">
+                </div>
+            </td>
 
         </tr>
 
@@ -150,7 +167,7 @@
 </div>
 
 
-    <button class="w-100 btn btn-primary btn-lg" type="submit">Сохранить заказ</button>
+<button class="w-100 btn btn-primary btn-lg" type="submit">Сохранить заказ</button>
 
 </form:form>
 </body>

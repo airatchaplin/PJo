@@ -69,7 +69,7 @@
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
 </header>
 
-<div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
+<div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 9px;">
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addDetail">Добавить деталь</a>
 </div>
 
@@ -79,6 +79,9 @@
     <thead>
     <tr>
         <th scope="col">Деталь</th>
+        <th scope="col">Длина</th>
+        <th scope="col">Ширина</th>
+        <th scope="col">Толщина</th>
         <th scope="col">Материал</th>
         <th scope="col">Станки</th>
         <th scope="col">Время детали на этом станке</th>
@@ -90,6 +93,9 @@
         <tr>
 
             <td><a style="display: block" href="details/${detail.getName()}">${detail.getName()}</a></td>
+            <td>${detail.getLength()}</td>
+            <td>${detail.getWidth()}</td>
+            <td>${detail.getThickness()}</td>
             <td>${detail.getMaterial().getName()}</td>
             <td>
                 <c:forEach items="${detail.getWorkBenches()}" var="workbench">

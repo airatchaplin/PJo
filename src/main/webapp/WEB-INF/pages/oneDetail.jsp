@@ -70,7 +70,7 @@
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
 </header>
 
-<div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
+<div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 9px;">
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addDetail">Добавить деталь</a>
     <a style="padding: 10px;color: #000000;text-decoration: none;"
        href="/details/change/${detail.getName()}">Изменить

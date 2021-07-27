@@ -71,7 +71,6 @@ public class OrderController {
                                @RequestParam(required = true) List<String> countDetail,
                                @RequestParam(required = true) List<String> dateStart,
                                @RequestParam(required = true) String comment,
-
                                Model model
     ) {
         Order order = new Order();
@@ -94,6 +93,8 @@ public class OrderController {
         order.setNumberOrder(Integer.parseInt(numberOrder));
         order.setObjectName(contragentService.getOneContragent(objectName));
         order.setManager(managerService.getOneManager(manager.substring(0, manager.length() - 5)));
+        order.setPainting("00:00");
+        order.setPacking("00:00");
         order.setComment(comment);
 
         List<Integer> countDetailList = new ArrayList<>();
@@ -163,10 +164,13 @@ public class OrderController {
     @PostMapping("/orders/change/{numberOrder}")
     public String changeOrderPost(@PathVariable(value = "numberOrder") String numberOrder,
                                   @RequestParam(required = true) String[] detailName,
-                                  @RequestParam(required = true) int[] countDetail
-    ) {
+                                  @RequestParam(required = true) int[] countDetail,
+                                  @RequestParam(required = true) String packing,
+                                  @RequestParam(required = true) String painting) {
 
         Order order = orderService.findOneOrder(Integer.parseInt(numberOrder));
+        order.setPacking(packing);
+        order.setPainting(painting);
         for (int i = 0; i < detailName.length; i++) {
             if (!detailName[i].contains("Выбранная: ")) {
                 order.getDetailInfos().get(i).setDetail(detailService.findByName((detailName[i].replace("Выбранная: ", ""))));

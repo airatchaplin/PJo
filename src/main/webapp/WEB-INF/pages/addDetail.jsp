@@ -15,6 +15,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
             integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
             crossorigin="anonymous"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 
     <style>
         a {
@@ -82,15 +84,21 @@
                 <thead>
                 <tr>
                     <th scope="col">Деталь</th>
+                    <th scope="col">Длина</th>
+                    <th scope="col">Ширина</th>
+                    <th scope="col">Толщина</th>
                     <th scope="col">Материал</th>
-                    <th scope="col">Станок</th>
+                    <th scope="col">Станок
+                        <input type="button" style="margin: 10px" value="+" id="add_more_fields"/>
+                        <input type="button" onclick="deleteRow()" value=" - ">
+                    </th>
                     <th scope="col">Время детали на этом станке</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <td>
-                        <div class="col-sm-6">
+                        <div >
                             <input type="text" class="form-control" id="detailName" name="detailName"
                                    placeholder="Деталь" value="" required>
                         </div>
@@ -99,7 +107,25 @@
                         </div>
                     </td>
                     <td>
-                        <div class="col-sm-6">
+                        <div >
+                            <input type="text" class="form-control" id="length" name="length"
+                                   placeholder="Длина" value="" required>
+                        </div>
+                    </td>
+                    <td>
+                        <div >
+                            <input type="text" class="form-control" id="width" name="width"
+                                   placeholder="Ширина" value="" required>
+                        </div>
+                    </td>
+                    <td>
+                        <div >
+                            <input type="text" class="form-control" id="thickness" name="thickness"
+                                   placeholder="Толщина" value="" required>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
                             <select class="form-control" name="materialName">
                                 <option selected value="Выбирите станок">Выбирите материал</option>
                                 <c:forEach items="${materials}" var="material">
@@ -108,8 +134,8 @@
                             </select>
                         </div>
                     </td>
-                    <td>
-                        <div class="col-sm-6">
+                    <td id="columnWorkBench">
+                        <div>
                             <select class="form-control" name="workBenchName">
                                 <option selected value="Выбирите станок">Выбирите станок</option>
                                 <c:forEach items="${workbenches}" var="workbench">
@@ -117,37 +143,9 @@
                                 </c:forEach>
                             </select>
                         </div>
-                        <div class="col-sm-6">
-                            <select class="form-control" name="workBenchName1">
-                                <option selected value="Выбирите станок">Выбирите станок</option>
-                                <c:forEach items="${workbenches}" var="workbench">
-                                    <option value="${workbench.getName()}">${workbench.getName()}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                        <div class="col-sm-6">
-                            <select class="form-control" name="workBenchName2">
-                                <option selected value="Выбирите станок">Выбирите станок</option>
-                                <c:forEach items="${workbenches}" var="workbench">
-                                    <option value="${workbench.getName()}">${workbench.getName()}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
                     </td>
-                    <td>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="timeWork"
-                                   name="timeWork"
-                                   placeholder="Введите время детали">
-
-                            <input  type="text" class="form-control" id="timeWork1"
-                                   name="timeWork1"
-                                   placeholder="Введите время детали">
-
-                            <input  type="text" class="form-control" id="timeWork2"
-                                   name="timeWork2"
-                                   placeholder="Введите время детали">
-                        </div>
+                    <td id="columnTimeWork">
+                            <input type="text" class="form-control" id="timeWork" name="timeWork" placeholder="Введите время детали">
                     </td>
                 </tr>
                 </tbody>
@@ -165,4 +163,29 @@
 
 
 </body>
+<script>
+    $('#add_more_fields').click(function () {
+        var component1 = '';
+        component1 += '<div id="forDeleteWorkBench">';
+        component1 += '<select class="form-control" name="workBenchName">';
+        component1 += '<option selected value="Выбирите станок">Выбирите станок</option>';
+        component1 += '<c:forEach items="${workbenches}" var="workbench">';
+        component1 += '<option value="${workbench.getName()}">${workbench.getName()}</option>';
+        component1 += '</c:forEach>';
+        component1 += '</select>';
+        component1 += '</div>';
+
+        var component2 = '';
+        component2 += '<input type="text" class="form-control" id="forDeleteTimeWork" name="timeWork" placeholder="Введите время детали">';
+
+        $('#columnWorkBench').append(component1);
+        $('#columnTimeWork').append(component2);
+    });
+
+    function deleteRow() {
+        $("#forDeleteWorkBench").remove();
+        $("#forDeleteTimeWork").remove();
+    }
+
+</script>
 </html>
