@@ -62,6 +62,9 @@
         .table > :not(caption) > * > * {
             border-bottom-width: 0px;
         }
+        a:hover{
+            background: gray;
+        }
     </style>
 
 </head>

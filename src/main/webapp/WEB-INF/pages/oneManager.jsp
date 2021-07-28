@@ -55,6 +55,9 @@
         .table>:not(caption)>*>* {
             border-bottom-width: 0px;
         }
+        a:hover{
+            background: gray;
+        }
     </style>
 </head>
 <body>
@@ -69,7 +72,7 @@
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
 </header>
 
-<div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
+<div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 9px;">
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addManager">Добавить менеджера</a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/managers/change/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">Изменить менеджера</a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/managers/deletion/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">Удалить менеджера</a>

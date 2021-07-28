@@ -57,6 +57,9 @@
         .table>:not(caption)>*>* {
             border-bottom-width: 0px;
         }
+        a:hover{
+            background: gray;
+        }
     </style>
 </head>
 <body>
@@ -71,16 +74,16 @@
        href="/contragents">Контрагенты </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
 </header>
-<div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;"
-       href="/orders/change/${order.getNumberOrder()}">Изменить
-        заказ</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;"
-       href="/orders/deletion/${order.getNumberOrder()}">Удалить
-        заказ</a>
+<div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 9px;">
     <a style="padding: 10px;color: #000000;text-decoration: none;"
        href="/orders/add/${order.getNumberOrder()}">Добавить
         элемент</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;"
+       href="/orders/change/${order.getNumberOrder()}">Изменить
+        заказ</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;background: gray"
+       href="/orders/deletion/${order.getNumberOrder()}">Удалить
+        заказ</a>
     <a style="padding: 10px;color: #000000;text-decoration: none;"
        href="/orders/check1/${order.getNumberOrder()}">Расчитать
         время</a>
