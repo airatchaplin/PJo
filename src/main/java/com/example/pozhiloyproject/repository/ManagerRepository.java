@@ -13,4 +13,6 @@ public interface ManagerRepository extends JpaRepository<Manager, UUID> {
 
     public Manager findByFio(String name);
 
+    Manager findByUsername(String username);
+
 }

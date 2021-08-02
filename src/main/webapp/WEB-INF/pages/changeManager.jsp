@@ -67,15 +67,17 @@
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/managers">Менеджеры </a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name ==("ROLE_USER")?"none":"contents"}" href="/admin/managers">Менеджеры </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/contragents">Контрагенты </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+
 </header>
 
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 9px;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addManager">Добавить менеджера</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;background: gray" href="/managers/change/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">Изменить менеджера</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/managers/deletion/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">Удалить менеджера</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/addManager">Добавить менеджера</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;background: gray" href="/admin/managers/change/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">Изменить менеджера</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/managers/deletion/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">Удалить менеджера</a>
 </div>
 
 <h1>Изменение менеджера</h1>
@@ -87,6 +89,7 @@
         <th scope="col">Фамилия</th>
         <th scope="col">Имя</th>
         <th scope="col">Отчество</th>
+        <th scope="col">Права</th>
         <th scope="col">Изменить</th>
 
     </tr>
@@ -112,6 +115,15 @@
                 <input type="text" class="form-control" id="lastNameManager" name="lastNameManager"
                        placeholder="${manager.getLastName()}" value="${manager.getLastName()}" required>
             </div>
+        </td>
+        <td>
+            <select class="form-control" name="role">
+                <option selected >Текущие права: ${manager.roles.get(0).name.equals("ROLE_USER")?"Пользователь":"Админ"}</option>
+                <c:forEach items="${roles}" var="role">
+                    <option>${role.name.equals("ROLE_USER")?"Пользователь":"Админ"}</option>
+                </c:forEach>
+            </select>
+
         </td>
         <td>
             <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">

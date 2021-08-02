@@ -76,10 +76,12 @@
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/managers">Менеджеры </a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name ==("ROLE_USER")?"none":"contents"}" href="/admin/managers">Менеджеры </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;"
        href="/contragents">Контрагенты </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+
 </header>
 
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 9px;">

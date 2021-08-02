@@ -3,10 +3,7 @@ package com.example.pozhiloyproject.controllers;
 import com.example.pozhiloyproject.models.Detail;
 import com.example.pozhiloyproject.models.TimeWorkDetail;
 import com.example.pozhiloyproject.models.WorkBench;
-import com.example.pozhiloyproject.services.DetailService;
-import com.example.pozhiloyproject.services.MaterialService;
-import com.example.pozhiloyproject.services.TimeWorkDetailService;
-import com.example.pozhiloyproject.services.WorkBenchService;
+import com.example.pozhiloyproject.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,9 +33,13 @@ public class DetailController {
     @Autowired
     TimeWorkDetailService timeWorkDetailService;
 
+    @Autowired
+    ManagerService managerService;
+
     @GetMapping("/details")
     public String getAllDetails(Model model) {
         model.addAttribute("details", detailService.getAllDetails());
+        model.addAttribute("manager",managerService.getUserWeb());
         return "details";
     }
 
@@ -47,6 +48,7 @@ public class DetailController {
         model.addAttribute("details", detailService.getAllDetails());
         model.addAttribute("workbenches", workBenchService.getAllWorkBench());
         model.addAttribute("materials", materialService.getAllMaterials());
+        model.addAttribute("manager",managerService.getUserWeb());
         return "addDetail";
     }
 
@@ -115,12 +117,14 @@ public class DetailController {
     public String getOneDetail(@PathVariable(value = "nameDetail") String nameDetail, Model model) {
         Detail detail = detailService.findByName(nameDetail);
         model.addAttribute("detail", detail);
+        model.addAttribute("manager",managerService.getUserWeb());
         return "oneDetail";
     }
 
     @GetMapping("details/deletion/{nameDetail}")
     public String deletionDetailGet(@PathVariable(value = "nameDetail") String nameDetail, Model model) {
         model.addAttribute("detail", detailService.findByName(nameDetail));
+        model.addAttribute("manager",managerService.getUserWeb());
         return "deletionDetail";
     }
 
@@ -144,6 +148,7 @@ public class DetailController {
         model.addAttribute("detail", detailService.findByName(nameDetail));
         model.addAttribute("materials", materialService.getAllMaterials());
         model.addAttribute("workbenches", workBenchService.getAllWorkBench());
+        model.addAttribute("manager",managerService.getUserWeb());
         return "changeDetail";
     }
 

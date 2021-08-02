@@ -62,11 +62,8 @@
         .table > :not(caption) > * > * {
             border-bottom-width: 0px;
         }
-        a:hover{
-            background: gray;
-        }
-    </style>
 
+    </style>
 </head>
 <body>
 <header style="height: 50px;
@@ -83,42 +80,51 @@
 </header>
 
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 9px;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addMaterial">Добавить материал</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;"
-       href="/materials/change/${material.getName()}">Изменить
-        материал</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;background: gray"
-       href="/materials/deletion/${material.getName()}">Удалить
-        материал</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addManager">Добавить менеджера</a>
 </div>
 
+<h1>Менеджеры</h1>
 
-<h1>Удаление материала</h1>
 
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">Название материала</th>
-        <th scope="col">Удалить</th>
+        <th scope="col">Логин</th>
+        <th scope="col">Фамилия</th>
+        <th scope="col">Имя</th>
+        <th scope="col">Отчество</th>
+        <th scope="col">Права</th>
     </tr>
     </thead>
     <tbody>
 
-    <tr>
-        <td>${material.getName()}</td>
-        <td>
-            <form:form action="/materials/deletion/${material.getName()}"
-                       method="post">
-                <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">
-                    Удалить
-                </button>
-            </form:form>
-        </td>
-    </tr>
+    <c:forEach items="${managers}" var="manager">
+        <tr>
+            <td><a style="display: block"
+                   href="managers/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">${manager.getUsername()}</a>
+            </td>
+            <td><a style="display: block"
+                   href="managers/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">${manager.getFio()}</a>
+            </td>
+            <td><a style="display: block"
+                   href="managers/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">${manager.getName()}</a>
+            </td>
+            <td><a style="display: block"
+                   href="managers/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">${manager.getLastName()}</a>
+            </td>
+            <td>
+                <c:forEach items="${manager.roles}" var="role">
+                    ${role.name.equals("ROLE_USER")?"Пользователь":"Админ"}
+                </c:forEach>
 
+            </td>
+
+        </tr>
+    </c:forEach>
 
     </tbody>
 </table>
-<label style="color: red">${materialError}</label>
+
+
 </body>
 </html>

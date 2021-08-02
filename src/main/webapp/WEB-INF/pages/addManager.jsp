@@ -64,9 +64,11 @@
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/managers">Менеджеры </a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name ==("ROLE_USER")?"none":"contents"}" href="/admin/managers">Менеджеры </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/contragents">Контрагенты </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+
 </header>
 
 <div class="container1">
@@ -74,7 +76,7 @@
 <%--    <h4 class="mb-3">Добавление менеджера</h4>--%>
     <h1>Добавление менеджера</h1>
     <div class="info">
-        <form action="addManager" method="post">
+        <form action="admin/addManager" method="post">
 
 
             <table class="table">

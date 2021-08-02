@@ -75,10 +75,12 @@
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/managers">Менеджеры </a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name ==("ROLE_USER")?"none":"contents"}" href="/admin/managers">Менеджеры </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;"
        href="/contragents">Контрагенты </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+
 </header>
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 5px;">
     <a style="padding: 10px;color: #000000;text-decoration: none;"
@@ -96,7 +98,7 @@
 </div>
 <div class="container1">
     <form:form method="post">
-    <h1 >Добавление детали к заказу</h1>
+    <h1>Добавление детали к заказу</h1>
     <h4>№ заказа ${order.getNumberOrder()}</h4>
     <h4>Объект ${order.getObjectName().getName()}</h4>
     <h4>Менеджер ${order.getManager().getFio_i_o()}</h4>

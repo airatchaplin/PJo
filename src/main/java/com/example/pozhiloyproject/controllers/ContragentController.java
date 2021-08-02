@@ -2,6 +2,7 @@ package com.example.pozhiloyproject.controllers;
 
 import com.example.pozhiloyproject.models.Contragent;
 import com.example.pozhiloyproject.services.ContragentService;
+import com.example.pozhiloyproject.services.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
@@ -19,14 +20,19 @@ public class ContragentController {
     @Autowired
     ContragentService contragentService;
 
+    @Autowired
+    ManagerService managerService;
+
     @GetMapping("/contragents")
     public String getAllContragents(Model model) {
         model.addAttribute("contragents", contragentService.getAllContragents());
+        model.addAttribute("manager",managerService.getUserWeb());
         return "contragents";
     }
 
     @GetMapping("/addContragent")
-    public String addContragentsGet() {
+    public String addContragentsGet(Model model) {
+        model.addAttribute("manager",managerService.getUserWeb());
         return "addContragent";
     }
 
@@ -54,12 +60,14 @@ public class ContragentController {
 
     @GetMapping("contragents/{nameContragent}")
     public String getOneContragent(@PathVariable(name = "nameContragent") String nameContragent, Model model) {
+        model.addAttribute("manager",managerService.getUserWeb());
         model.addAttribute("contragent", contragentService.getOneContragent(nameContragent));
         return "oneContragent";
     }
 
     @GetMapping("contragents/change/{nameContragent}")
     public String changeContragentGet(@PathVariable(name = "nameContragent") String nameContragent, Model model) {
+        model.addAttribute("manager",managerService.getUserWeb());
         model.addAttribute("contragent", contragentService.getOneContragent(nameContragent));
         return "changeContragent";
     }
@@ -80,6 +88,7 @@ public class ContragentController {
 
     @GetMapping("contragents/deletion/{nameContragent}")
     public String deleteContragentGet(@PathVariable(name = "nameContragent") String nameContragent, Model model) {
+        model.addAttribute("manager",managerService.getUserWeb());
         model.addAttribute("contragent", contragentService.getOneContragent(nameContragent));
         return "deletionContragent";
     }

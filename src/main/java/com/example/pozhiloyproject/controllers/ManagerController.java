@@ -2,21 +2,23 @@ package com.example.pozhiloyproject.controllers;
 
 import com.example.pozhiloyproject.models.Manager;
 import com.example.pozhiloyproject.services.ManagerService;
+import com.example.pozhiloyproject.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 @Controller
+@RequestMapping("/admin")
 public class ManagerController {
 
     @Autowired
     ManagerService managerService;
+
+    @Autowired
+    RoleService roleService;
 
     @GetMapping("/managers")
     public String getAllManagers(Model model) {
@@ -38,7 +40,7 @@ public class ManagerController {
         manager.setFio(fio);
         manager.setName(name);
         manager.setLastName(lastName);
-        manager.setFio_i_o(fio + " " + name.substring(0, 1) + "." + lastName.substring(0, 1) + ".");
+        manager.setFio_i_o(fio + " " + name.charAt(0) + "." + lastName.charAt(0) + ".");
         managerService.saveManager(manager);
         return "redirect:/managers";
     }
@@ -56,7 +58,7 @@ public class ManagerController {
                                    @PathVariable(name = "name") String name,
                                    @PathVariable(name = "lastName") String lastName,
                                    Model model) {
-
+        model.addAttribute("roles",roleService.getAllRoles());
         model.addAttribute("manager", managerService.getOneManager(fio, name, lastName));
         return "changeManager";
     }
@@ -82,6 +84,7 @@ public class ManagerController {
                                    @PathVariable(name = "name") String name,
                                    @PathVariable(name = "lastName") String lastName,
                                    Model model) {
+
 
         model.addAttribute("manager", managerService.getOneManager(fio, name, lastName));
         return "deletionManager";

@@ -43,22 +43,23 @@ public class OrderController {
     @GetMapping("/orders")
     public String getAllOrders(Model model) {
         model.addAttribute("orders", orderService.getAllOrders());
+        model.addAttribute("manager",managerService.getUserWeb());
         return "orders";
     }
 
     @GetMapping("/orders/{numberOrder}")
     public String getOneOrder(@PathVariable(value = "numberOrder") int numberOrder, Model model) {
         Order oneOrder = orderService.findOneOrder(numberOrder);
-
         model.addAttribute("order", orderService.findOneOrder(numberOrder));
+        model.addAttribute("manager",managerService.getUserWeb());
         return "oneOrder";
     }
 
     @GetMapping("/addOrder")
     public String addOrderGet(Model model) {
         model.addAttribute("contragents", contragentService.getAllContragents());
-        model.addAttribute("managers", managerService.getAllManagers());
         model.addAttribute("details", detailService.getAllDetails());
+        model.addAttribute("manager",managerService.getUserWeb());
         return "addOrder";
     }
 
@@ -158,6 +159,7 @@ public class OrderController {
         model.addAttribute("managers", managerService.getAllManagers());
         model.addAttribute("details", detailService.getAllDetails());
         model.addAttribute("order", orderService.findOneOrder(Integer.parseInt(numberOrder)));
+        model.addAttribute("manager",managerService.getUserWeb());
         return "changeOrder";
     }
 
@@ -187,6 +189,7 @@ public class OrderController {
         model.addAttribute("managers", managerService.getAllManagers());
         model.addAttribute("details", detailService.getAllDetails());
         model.addAttribute("order", orderService.findOneOrder(Integer.parseInt(numberOrder)));
+        model.addAttribute("manager",managerService.getUserWeb());
         return "addNewElementForOrder";
     }
 
@@ -269,12 +272,14 @@ public class OrderController {
     @GetMapping("orders/check1/{numberOrder}")
     public String check1(@PathVariable(value = "numberOrder") String numberOrder, Model model) {
         model.addAttribute("order", orderService.findOneOrder(Integer.parseInt(numberOrder)));
+        model.addAttribute("manager",managerService.getUserWeb());
         return "check1";
     }
 
     @GetMapping("orders/deletion/{numberOrder}")
     public String deletionElementOrOrder(@PathVariable(value = "numberOrder") String numberOrder, Model model) {
         model.addAttribute("order", orderService.findOneOrder(Integer.parseInt(numberOrder)));
+        model.addAttribute("manager",managerService.getUserWeb());
         return "deletionOrder";
     }
 
@@ -287,6 +292,7 @@ public class OrderController {
     @GetMapping("/completed_orders")
     public String getAllCompletedOrders(Model model) {
         model.addAttribute("completed_order", completedOrderService.getAllCompletedOrders());
+        model.addAttribute("manager",managerService.getUserWeb());
         return "completedOrders";
     }
 

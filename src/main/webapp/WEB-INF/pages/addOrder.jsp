@@ -11,6 +11,8 @@
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
@@ -23,6 +25,10 @@
             crossorigin="anonymous"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <%--    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">--%>
+    <%--    <link rel="stylesheet"--%>
+    <%--          href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.14/css/bootstrap-select.min.css"/>--%>
     <style>
         a {
             color: #000000;
@@ -70,8 +76,17 @@
         .table > :not(caption) > * > * {
             border-bottom-width: 0px;
         }
-        a:hover{
+
+        a:hover {
             background: gray;
+        }
+
+        .no-results active {
+            display: none;
+        }
+
+        .table > :not(:last-child) > :last-child > * {
+            border-bottom-color: #dee2e6;
         }
 
     </style>
@@ -84,19 +99,22 @@
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/managers">Менеджеры </a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name ==("ROLE_USER")?"none":"contents"}"
+       href="/admin/managers">Менеджеры </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;"
        href="/contragents">Контрагенты </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+
 </header>
 
 <div class="container1">
-<%--    <h4 class="mb-3">Добавление заказа</h4>--%>
+    <%--    <h4 class="mb-3">Добавление заказа</h4>--%>
     <h1>Добавление заказа</h1>
     <div class="info">
         <form:form method="post">
-            <div class="col-sm-6">
-                <label style="margin-left: 10px;" for="numberOrder" class="form-label">Номер
+            <div class="col-sm-6" style="display: flex">
+                <label style="margin-left: 10px;margin-top: 15px;width: 60%;" for="numberOrder" class="form-label">Номер
                     заказа</label>
                 <input style="margin: 10px;" type="text" class="form-control" id="numberOrder"
                        name="numberOrder"
@@ -105,8 +123,8 @@
                         ${numberOrderError}
                 </div>
             </div>
-            <div class="col-sm-6">
-                <label style="margin-left: 10px;" for="numberOrder" class="form-label">Выбирете
+            <div class="col-sm-6" style="display: flex">
+                <label style="margin-left: 10px;margin-top: 15px;width: 60%;" for="numberOrder" class="form-label">Выбирете
                     контрагента</label>
                 <select style="margin: 10px;" class="form-control" name="objectName">
                     <c:forEach items="${contragents}" var="contragent">
@@ -114,30 +132,35 @@
                     </c:forEach>
                 </select>
             </div>
-            <div class="col-sm-6">
-                <label style="margin-left: 10px;" for="numberOrder" class="form-label">Выберете
-                    менеджера</label>
+            <div class="col-sm-6" style="display: flex">
+                <label style="margin-left: 10px;margin-top: 15px;width: 60%;" for="numberOrder" class="form-label">Менеджер</label>
                 <select style="margin: 10px;" class="form-control" name="manager">
-                    <c:forEach items="${managers}" var="manager">
-                        <option value="${manager.getFio_i_o()}">${manager.getFio_i_o()}</option>
-                    </c:forEach>
+                    <option value="${manager.getFio_i_o()}">${manager.getFio_i_o()}</option>
                 </select>
             </div>
-
-
-            <input type="button" style="margin: 10px" value="Добавить" id="add_more_fields"/>
-            <input type="button" onclick="deleteRow()" value="Удалить">
+            <div class="col-sm-6" style="display: flex">
+                <label style="margin-left: 10px;margin-top: 15px;width: 60%;" for="numberOrder" class="form-label">Коментарий</label>
+                <input style="margin: 10px;" type="text" class="form-control" id="comment"
+                       name="comment"
+                       placeholder="Коментарий">
+            </div>
 
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">Деталь</th>
+                    <th scope="col">
+
+                        Деталь
+                        <input type="button" style="margin: 10px" value="+" id="add_more_fields"/>
+                        <input type="button" onclick="deleteRow()" value=" - ">
+                    </th>
                     <th scope="col">Количество</th>
                     <th scope="col">Дата запуска в производство</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
+
                     <td>
                         <select class="form-control" name="detailName">
                             <option value="Выбирите деталь">Выбирите деталь</option>
@@ -145,6 +168,13 @@
                                 <option value="${detail.getName()}">${detail.getName()}</option>
                             </c:forEach>
                         </select>
+                            <%--                        <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="detailName">--%>
+                            <%--                            <option value="Выбирите деталь">Выбирите деталь</option>--%>
+                            <%--                            <c:forEach items="${details}" var="detail">--%>
+                            <%--                                <option data-subtext="Длина:${detail.length} Ширина:${detail.width} Толщина:${detail.thickness}"--%>
+                            <%--                                        value="${detail.getName()}">${detail.getName()}</option>--%>
+                            <%--                            </c:forEach>--%>
+                            <%--                        </select>--%>
                     </td>
                     <td>
                         <input type="text" class="form-control" id="countDetail" name="countDetail"
@@ -162,11 +192,7 @@
                 </tbody>
             </table>
 
-            <div class="col-sm-6">
-                <input style="margin: 10px;" type="text" class="form-control" id="comment"
-                       name="comment"
-                       placeholder="Коментарий">
-            </div>
+
 
             <button class="w-100 btn btn-primary btn-lg" type="submit">Добавить заказ</button>
         </form:form>
@@ -174,6 +200,10 @@
     </div>
 </div>
 
+
+<%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>--%>
+<%--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>--%>
+<%--<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>--%>
 
 </body>
 <script>

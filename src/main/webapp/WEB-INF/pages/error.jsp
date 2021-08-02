@@ -15,58 +15,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
             integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
             crossorigin="anonymous"></script>
-    <style>
-        a {
-            color: #000000;
-            text-decoration: none;
-        }
-
-        .table {
-            width: 100%;
-            border: none;
-            margin-bottom: 20px;
-        }
-
-        .table thead th {
-            font-weight: bold;
-            text-align: left;
-            border: none;
-            padding: 10px 15px;
-            background: #d8d8d8;
-            font-size: 14px;
-            border-left: 1px solid #ddd;
-            border-right: 1px solid #ddd;
-        }
-
-        .table tbody td {
-            text-align: left;
-            border-left: 1px solid #ddd;
-            border-right: 1px solid #ddd;
-            padding: 10px 15px;
-            font-size: 14px;
-            vertical-align: top;
-        }
-
-        .table thead tr th:first-child, .table tbody tr td:first-child {
-            border-left: none;
-        }
-
-        .table thead tr th:last-child, .table tbody tr td:last-child {
-            border-right: none;
-        }
-
-        .table tbody tr:nth-child(even) {
-            background: #f3f3f3;
-        }
-
-        .table > :not(caption) > * > * {
-            border-bottom-width: 0px;
-        }
-        a:hover{
-            background: gray;
-        }
-    </style>
-
 </head>
 <body>
 <header style="height: 50px;
@@ -79,37 +27,12 @@
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/contragents">Контрагенты </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
-
 </header>
-
-<div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 9px;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addMaterial">Добавить материал</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;"
-       href="/materials/change/${material.getName()}">Изменить
-        материал</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;"
-       href="/materials/deletion/${material.getName()}">Удалить
-        материал</a>
-</div>
-
-
-<h1>Материал</h1>
-
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">Название материала</th>
-    </tr>
-    </thead>
-    <tbody>
-
-    <tr>
-        <td>${material.getName()}</td>
-    </tr>
-
-
-    </tbody>
-</table>
-
+<h1 style="height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;">Нет доступа</h1>
 </body>
 </html>
+
+

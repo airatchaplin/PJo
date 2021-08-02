@@ -1,6 +1,7 @@
 package com.example.pozhiloyproject.controllers;
 
 import com.example.pozhiloyproject.models.Material;
+import com.example.pozhiloyproject.services.ManagerService;
 import com.example.pozhiloyproject.services.MaterialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,14 +19,19 @@ public class MaterialController {
     @Autowired
     MaterialService materialService;
 
+    @Autowired
+    ManagerService managerService;
+
     @GetMapping("/materials")
     public String getAllMaterials(Model model) {
         model.addAttribute("materials", materialService.getAllMaterials());
+        model.addAttribute("manager",managerService.getUserWeb());
         return "materials";
     }
 
     @GetMapping("/addMaterial")
-    public String addMaterialGet() {
+    public String addMaterialGet(Model model) {
+        model.addAttribute("manager",managerService.getUserWeb());
         return "addMaterial";
     }
 
@@ -52,12 +58,14 @@ public class MaterialController {
     @GetMapping("materials/{nameMaterial}")
     public String getOneMaterial(@PathVariable(name = "nameMaterial") String nameMaterial, Model model) {
         model.addAttribute("material", materialService.getOneMaterial(nameMaterial));
+        model.addAttribute("manager",managerService.getUserWeb());
         return "oneMaterial";
     }
 
     @GetMapping("materials/change/{nameMaterial}")
     public String changeMaterialGet(@PathVariable(name = "nameMaterial") String nameMaterial, Model model) {
         model.addAttribute("material", materialService.getOneMaterial(nameMaterial));
+        model.addAttribute("manager",managerService.getUserWeb());
         return "changeMaterial";
     }
 
@@ -84,6 +92,7 @@ public class MaterialController {
     @GetMapping("materials/deletion/{nameMaterial}")
     public String deleteMaterialGet(@PathVariable(name = "nameMaterial") String nameMaterial, Model model) {
         model.addAttribute("material", materialService.getOneMaterial(nameMaterial));
+        model.addAttribute("manager",managerService.getUserWeb());
         return "deletionMaterial";
     }
 
