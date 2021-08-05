@@ -28,6 +28,7 @@
        href="/contragents">Контрагенты </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${manager.fio_i_o} </a>
 </header>
 
 </body>

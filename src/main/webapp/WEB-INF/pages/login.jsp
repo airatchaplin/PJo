@@ -35,7 +35,7 @@
 
 
         <h3 class="text-center mb-4">Вход</h3>
-        <form  method="post">
+        <form method="post">
             <div class="form-group">
                 <label for="exampleInputEmail1">Логин</label>
                 <input type="tel" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
@@ -53,14 +53,11 @@
             </div>
             <br>
 
-                <button type="submit" class="btn btn-primary w-100" style="margin-bottom: 5px;">Войти</button>
+            <button type="submit" class="btn btn-primary w-100" style="margin-bottom: 5px;">Войти</button>
+            <button class="btn btn-primary w-100" type="submit"><a style="color: white;" href="/registration">Зарегистрироваться</a></button>
             <br>
-                <button type="submit" class="btn btn-primary w-100"><a href="/registration" style="color: white">Зарегистрироваться</a>
-                </button>
-
         </form>
     </div>
-</div>
 </div>
 </body>
 </html>

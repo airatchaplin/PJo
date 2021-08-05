@@ -1,10 +1,8 @@
 package com.example.pozhiloyproject.controllers;
 
 import com.example.pozhiloyproject.models.Manager;
-import com.example.pozhiloyproject.models.Role;
 import com.example.pozhiloyproject.services.ManagerService;
 import com.example.pozhiloyproject.services.RoleService;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -60,7 +58,7 @@ public class MainController {
             model.addAttribute("name",name);
             model.addAttribute("lastName",lastName);
             model.addAttribute("passwordError","Пароли не совпадают!");
-            return "/login";
+            return "/";
         }
 
         Manager manager = new Manager();
@@ -73,7 +71,7 @@ public class MainController {
         manager.setRoles(Collections.singletonList(roleService.getRoleUser()));
         manager.setFio_i_o(fio + " " + name.charAt(0) + "." + lastName.charAt(0) + ".");
         managerService.saveManager(manager);
-        return "/";
+        return "redirect:/";
     }
 
     @GetMapping("/admin")
@@ -88,4 +86,10 @@ public class MainController {
         return "error";
     }
 
+
+    @GetMapping("/personalArea")
+    public String personalArea(Model model){
+        model.addAttribute("manager", managerService.getUserWeb());
+        return "personalArea";
+    }
 }
