@@ -75,12 +75,10 @@
 </header>
 
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 9px;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/addManager">Добавить менеджера</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/managers/change/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">Изменить менеджера</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/managers/deletion/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">Удалить менеджера</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/change/personalArea">Редактировать профиль</a>
 </div>
 
-<h1>Менеджер</h1>
+<h1>Личный кабинет</h1>
 
 
 <table class="table">

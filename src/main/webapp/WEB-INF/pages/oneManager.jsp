@@ -76,8 +76,8 @@
 
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 9px;">
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/addManager">Добавить менеджера</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/managers/change/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">Изменить менеджера</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/managers/deletion/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">Удалить менеджера</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/managers/change/${manager.getId()}">Изменить права</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/managers/deletion/${manager.getId()}">Удалить менеджера</a>
 </div>
 
 <h1>Менеджер</h1>
@@ -86,6 +86,7 @@
 <table class="table">
     <thead>
     <tr>
+        <th scope="col">Логин</th>
         <th scope="col">Фамилия</th>
         <th scope="col">Имя</th>
         <th scope="col">Отчество</th>
@@ -95,6 +96,7 @@
 
 
         <tr>
+            <td>${manager.getUsername()}</td>
             <td>${manager.getFio()}</td>
             <td>${manager.getName()}</td>
             <td>${manager.getLastName()}</td>

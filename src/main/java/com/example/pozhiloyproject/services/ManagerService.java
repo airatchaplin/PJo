@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ManagerService implements UserDetailsService {
@@ -33,6 +34,14 @@ public class ManagerService implements UserDetailsService {
     public Manager getOneManager(String name) {
         Manager manager = managerRepository.findByFio(name);
         return manager;
+    }
+
+    public Manager getManagerByUUID(String id){
+        return managerRepository.findById(UUID.fromString(id)).orElseThrow();
+    }
+
+    public Manager getManagerByUsername(String username){
+        return managerRepository.findByUsername(username);
     }
 
     public void deleteManager(Manager manager) {

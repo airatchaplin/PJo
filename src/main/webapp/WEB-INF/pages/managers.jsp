@@ -100,13 +100,13 @@
     <c:forEach items="${managers}" var="manager">
         <tr>
             <td><a style="display: block"
-                   href="managers/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">${manager.getFio()}</a>
+                   href="managers/${manager.getId()}">${manager.getFio()}</a>
             </td>
             <td><a style="display: block"
-                   href="managers/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">${manager.getName()}</a>
+                   href="managers/${manager.getId()}">${manager.getName()}</a>
             </td>
             <td><a style="display: block"
-                   href="managers/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">${manager.getLastName()}</a>
+                   href="managers/${manager.getId()}">${manager.getLastName()}</a>
             </td>
 
         </tr>

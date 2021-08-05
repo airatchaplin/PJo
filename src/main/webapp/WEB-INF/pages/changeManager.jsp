@@ -20,11 +20,13 @@
             color: #000000;
             text-decoration: none;
         }
+
         .table {
             width: 100%;
             border: none;
             margin-bottom: 20px;
         }
+
         .table thead th {
             font-weight: bold;
             text-align: left;
@@ -35,6 +37,7 @@
             border-left: 1px solid #ddd;
             border-right: 1px solid #ddd;
         }
+
         .table tbody td {
             text-align: left;
             border-left: 1px solid #ddd;
@@ -43,19 +46,24 @@
             font-size: 14px;
             vertical-align: top;
         }
+
         .table thead tr th:first-child, .table tbody tr td:first-child {
             border-left: none;
         }
+
         .table thead tr th:last-child, .table tbody tr td:last-child {
             border-right: none;
         }
-        .table tbody tr:nth-child(even){
+
+        .table tbody tr:nth-child(even) {
             background: #f3f3f3;
         }
-        .table>:not(caption)>*>* {
+
+        .table > :not(caption) > * > * {
             border-bottom-width: 0px;
         }
-        a:hover{
+
+        a:hover {
             background: gray;
         }
     </style>
@@ -67,7 +75,8 @@
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name ==("ROLE_USER")?"none":"contents"}" href="/admin/managers">Менеджеры </a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name ==("ROLE_USER")?"none":"contents"}"
+       href="/admin/managers">Менеджеры </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/contragents">Контрагенты </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
@@ -76,65 +85,60 @@
 
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 9px;">
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/addManager">Добавить менеджера</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;background: gray" href="/admin/managers/change/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">Изменить менеджера</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/managers/deletion/${manager.getFio()}/${manager.getName()}/${manager.getLastName()}">Удалить менеджера</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;background: gray"
+       href="/admin/managers/change/${manager.getId()}">Изменить права</a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/managers/deletion/${manager.getId()}">Удалить
+        менеджера</a>
 </div>
 
 <h1>Изменение менеджера</h1>
 
 <form:form method="post">
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">Фамилия</th>
-        <th scope="col">Имя</th>
-        <th scope="col">Отчество</th>
-        <th scope="col">Права</th>
-        <th scope="col">Изменить</th>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Логин</th>
+            <th scope="col">Фамилия</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Отчество</th>
+            <th scope="col">Права</th>
+            <th scope="col">Изменить</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                    ${manager.getUsername()}
+            </td>
+            <td>
+                    ${manager.getFio()}
+            </td>
+            <td>
+                    ${manager.getName()}
+            </td>
+            <td>
+                    ${manager.getLastName()}
+            </td>
 
-    </tr>
-    </thead>
-    <tbody>
-
-
-    <tr>
-        <td>
-            <div class="col-sm-6">
-                <input type="text" class="form-control" id="fioManager" name="fioManager"
-                       placeholder="${manager.getFio()}" value="${manager.getFio()}" required>
-            </div>
-        </td>
-        <td>
-            <div class="col-sm-6">
-                <input type="text" class="form-control" id="nameManager" name="nameManager"
-                       placeholder="${manager.getName()}" value="${manager.getName()}" required>
-            </div>
-        </td>
-        <td>
-            <div class="col-sm-6">
-                <input type="text" class="form-control" id="lastNameManager" name="lastNameManager"
-                       placeholder="${manager.getLastName()}" value="${manager.getLastName()}" required>
-            </div>
-        </td>
-        <td>
-            <select class="form-control" name="role">
-                <option selected >Текущие права: ${manager.roles.get(0).name.equals("ROLE_USER")?"Пользователь":"Админ"}</option>
-                <c:forEach items="${roles}" var="role">
-                    <option>${role.name.equals("ROLE_USER")?"Пользователь":"Админ"}</option>
-                </c:forEach>
-            </select>
-
-        </td>
-        <td>
-            <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">
-                Изменить
-            </button>
-        </td>
-    </tr>
+            <td>
+                <select class="form-control" name="role">
+                    <option selected>Текущие
+                        права: ${manager.roles.get(0).name.equals("ROLE_USER")?"Пользователь":"Админ"}</option>
+                    <c:forEach items="${roles}" var="role">
+                        <option>${role.name.equals("ROLE_USER")?"Пользователь":"Админ"}</option>
+                    </c:forEach>
+                </select>
+            </td>
+            <td>
+                <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">
+                    Изменить
+                </button>
+            </td>
+        </tr>
 
 
-    </tbody>
-</table>
+        </tbody>
+    </table>
 </form:form>
 
 

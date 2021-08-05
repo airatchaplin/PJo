@@ -20,11 +20,13 @@
             color: #000000;
             text-decoration: none;
         }
+
         .table {
             width: 100%;
             border: none;
             margin-bottom: 20px;
         }
+
         .table thead th {
             font-weight: bold;
             text-align: left;
@@ -35,6 +37,7 @@
             border-left: 1px solid #ddd;
             border-right: 1px solid #ddd;
         }
+
         .table tbody td {
             text-align: left;
             border-left: 1px solid #ddd;
@@ -43,16 +46,20 @@
             font-size: 14px;
             vertical-align: top;
         }
+
         .table thead tr th:first-child, .table tbody tr td:first-child {
             border-left: none;
         }
+
         .table thead tr th:last-child, .table tbody tr td:last-child {
             border-right: none;
         }
-        .table tbody tr:nth-child(even){
+
+        .table tbody tr:nth-child(even) {
             background: #f3f3f3;
         }
-        .table>:not(caption)>*>* {
+
+        .table > :not(caption) > * > * {
             border-bottom-width: 0px;
         }
     </style>
@@ -64,7 +71,8 @@
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name ==("ROLE_USER")?"none":"contents"}" href="/admin/managers">Менеджеры </a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name ==("ROLE_USER")?"none":"contents"}"
+       href="/admin/managers">Менеджеры </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/contragents">Контрагенты </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
@@ -73,10 +81,10 @@
 
 <div class="container1">
 
-<%--    <h4 class="mb-3">Добавление менеджера</h4>--%>
+    <%--    <h4 class="mb-3">Добавление менеджера</h4>--%>
     <h1>Добавление менеджера</h1>
     <div class="info">
-        <form action="admin/addManager" method="post">
+        <form  method="post">
 
 
             <table class="table">
@@ -85,29 +93,59 @@
                     <th scope="col">Фамилия</th>
                     <th scope="col">Имя</th>
                     <th scope="col">Отчество</th>
+                    <th scope="col">Логин</th>
+                    <th scope="col">Пароль</th>
+                    <th scope="col">Повторить пароль</th>
+                    <th scope="col">Права</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <td>
-                        <div class="col-sm-6">
+                        <div>
                             <input type="text" class="form-control" id="fio" name="fio"
-                                   placeholder="Фамилия" value="" required>
+                                   placeholder="Фамилия" value="${fio}" required>
                         </div>
                     </td>
-
                     <td>
-                        <div class="col-sm-6">
+                        <div>
                             <input type="text" class="form-control" id="name" name="name"
-                                   placeholder="Имя" value="" required>
+                                   placeholder="Имя" value="${name}" required>
                         </div>
                     </td>
-
                     <td>
-                        <div class="col-sm-6">
+                        <div>
                             <input type="text" class="form-control" id="lastName" name="lastName"
-                                   placeholder="Отчество" value="" required>
+                                   placeholder="Отчество" value="${lastName}" required>
                         </div>
+                    </td>
+                    <td>
+                        <div>
+                            <input type="text" class="form-control" id="username" name="username"
+                                   placeholder="Логин" value="${username}" required>
+                        </div>
+                        <label style="color: red;text-align: center">${usernameError}</label>
+                    </td>
+                    <td>
+                        <div>
+                            <input type="text" class="form-control" id="password" name="password"
+                                   placeholder="Пароль" value="" required>
+                            <label style="color: red;text-align: center">${passwordError}</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <input type="text" class="form-control" id="passwordConfirm" name="passwordConfirm"
+                                   placeholder="Повторить пароль" value="" required>
+                        </div>
+                        <label style="color: red;text-align: center">${passwordError}</label>
+                    </td>
+                    <td>
+                        <select class="form-control" name="role">
+                            <c:forEach items="${roles}" var="role">
+                                <option>${role.name.equals("ROLE_USER")?"Пользователь":"Админ"}</option>
+                            </c:forEach>
+                        </select>
                     </td>
                 </tr>
                 </tbody>
