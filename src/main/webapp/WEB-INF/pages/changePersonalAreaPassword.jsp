@@ -15,16 +15,19 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
             integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
             crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <style>
         a {
             color: #000000;
             text-decoration: none;
         }
+
         .table {
             width: 100%;
             border: none;
             margin-bottom: 20px;
         }
+
         .table thead th {
             font-weight: bold;
             text-align: left;
@@ -35,6 +38,7 @@
             border-left: 1px solid #ddd;
             border-right: 1px solid #ddd;
         }
+
         .table tbody td {
             text-align: left;
             border-left: 1px solid #ddd;
@@ -43,19 +47,24 @@
             font-size: 14px;
             vertical-align: top;
         }
+
         .table thead tr th:first-child, .table tbody tr td:first-child {
             border-left: none;
         }
+
         .table thead tr th:last-child, .table tbody tr td:last-child {
             border-right: none;
         }
-        .table tbody tr:nth-child(even){
+
+        .table tbody tr:nth-child(even) {
             background: #f3f3f3;
         }
-        .table>:not(caption)>*>* {
+
+        .table > :not(caption) > * > * {
             border-bottom-width: 0px;
         }
-        a:hover{
+
+        a:hover {
             background: gray;
         }
     </style>
@@ -67,43 +76,69 @@
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name ==("ROLE_USER")?"none":"contents"}" href="/admin/managers">Менеджеры </a>
+    <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name ==("ROLE_USER")?"none":"contents"}"
+       href="/admin/managers">Менеджеры </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/contragents">Контрагенты </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
-</header>
 
+</header>
 <div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 9px;">
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/change/personalArea">Редактировать профиль</a>
     <a style="padding: 10px;color: #000000;text-decoration: none;" href="/change/personalAreaPassword">Изменить пароль</a>
 </div>
 
-<h1>Личный кабинет</h1>
+<h1>Редактирование профиля</h1>
+
+<form:form method="post">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Пароль</th>
+            <th scope="col">Повторите пароль</th>
+            <th scope="col">Показать</th>
+            <th scope="col">Изменить</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <input type="password" class="form-control" id="password-input1" name="password"
+                       placeholder="Введите новый пароль" value="" required>
+                <label style="color: red;text-align: center">${passwordError}</label>
+            </td>
+            <td>
+                <input type="password" class="form-control" id="password-input2" name="passwordConfirm"
+                       placeholder="Повторите новый пароль" value="" required>
+                <label style="color: red;text-align: center">${passwordError}</label>
+            </td>
+            <td>
+
+                <input type="checkbox" class="form-check-input" style="font-size: x-large;">
+            </td>
+            <td>
+                <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">
+                    Изменить
+                </button>
+            </td>
+        </tr>
 
 
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">Логин</th>
-        <th scope="col">Фамилия</th>
-        <th scope="col">Имя</th>
-        <th scope="col">Отчество</th>
-    </tr>
-    </thead>
-    <tbody>
-
-
-    <tr>
-        <td>${manager.username}</td>
-        <td>${manager.getFio()}</td>
-        <td>${manager.getName()}</td>
-        <td>${manager.getLastName()}</td>
-    </tr>
-
-
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</form:form>
 
 
 </body>
+<script>
+    $('body').on('click', '.form-check-input', function(){
+        if ($(this).is(':checked')){
+            $('#password-input1').attr('type', 'text');
+            $('#password-input2').attr('type', 'text');
+        } else {
+            $('#password-input1').attr('type', 'password');
+            $('#password-input2').attr('type', 'password');
+        }
+    });
+</script>
 </html>

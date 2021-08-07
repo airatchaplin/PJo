@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+    <title>Изменение детали</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -62,127 +62,138 @@
         .table > :not(caption) > * > * {
             border-bottom-width: 0px;
         }
-        a:hover{
-            background: gray;
-        }
+
     </style>
 
 </head>
 <body>
-<header style="height: 50px;
-    text-align: center;background: #d1d1d1;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/">Главная страница</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name ==("ROLE_USER")?"none":"contents"}" href="/admin/managers">Менеджеры </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/contragents">Контрагенты </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+<nav style="position: fixed;
+    box-shadow: 0 0 5px;
+    display: flex;
+    justify-content: space-between;
+    right: 0;
+    left: 0;
+    padding: 15px;
+    background: #d1d1d1;
+    top: 0;">
+    <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/">Главная страница</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name.equals("ROLE_USER")?"none":"contents"}"
+           href="admin/managers">Менеджеры </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;"
+           href="/contragents">Контрагенты </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
+    </div>
+    <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${manager.fio_i_o} </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+    </div>
+</nav>
 
-</header>
+<nav style="position: fixed;
+    box-shadow: 0 5px 5px -5px;
+    display: flex;
+    justify-content: space-between;
+    right: 0;
+    left: 0;
+    background: #f2f2f2;
+    padding: 15px;
+    top: 0;
+    margin-top: 60px;">
+    <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addDetail">Добавить деталь</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;background: gray"
+           href="/details/change/${detail.getName()}">Изменить деталь</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details/deletion/${detail.getName()}">Удалить
+            деталь</a>
+    </div>
+</nav>
 
-<div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 9px;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addDetail">Добавить деталь</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;background: gray"
-       href="/details/change/${detail.getName()}">Изменить
-        деталь</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;"
-       href="/details/deletion/${detail.getName()}">Удалить
-        деталь</a>
-
-</div>
-
-
-<h1>Изменение детали</h1>
-<form:form method="post">
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Деталь</th>
-            <th scope="col">Длина</th>
-            <th scope="col">Ширина</th>
-            <th scope="col">Толщина</th>
-            <th scope="col">Материал</th>
-            <th scope="col">Станки</th>
-            <th scope="col">Время детали на этом станке</th>
-            <th scope="col">Изменить</th>
-        </tr>
-        </thead>
-        <tbody>
-
-
-        <tr>
-
-            <td>
-                <div>
-                    <input type="text" class="form-control" id="detailName" name="detailName"
-                           placeholder="${detail.getName()}" value="${detail.getName()}" required>
-                </div>
-            </td>
-            <td>
-                <div>
-                    <input type="text" class="form-control" id="length" name="length"
-                           placeholder="${detail.getLength()}" value="${detail.getLength()}" required>
-                </div>
-            </td>
-            <td>
-                <div>
-                    <input type="text" class="form-control" id="width" name="width"
-                           placeholder="${detail.getWidth()}" value="${detail.getWidth()}" required>
-                </div>
-            </td>
-            <td>
-                <div>
-                    <input type="text" class="form-control" id="thickness" name="thickness"
-                           placeholder="${detail.getThickness()}" value="${detail.getThickness()}" required>
-                </div>
-            </td>
-            <td>
-                <div>
-                    <select class="form-control" name="materialName">
-                        <option>Выбранная: ${detail.getMaterial().getName()}</option>
-                        <c:forEach items="${materials}" var="material">
-                            <option value="${material.getName()}">${material.getName()}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-
-            </td>
-
-            <td>
-                <c:forEach items="${detail.getWorkBenches()}" var="det">
+<div class="main" style="margin-top: 120px">
+    <form:form method="post">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Деталь</th>
+                <th scope="col">Длина</th>
+                <th scope="col">Ширина</th>
+                <th scope="col">Толщина</th>
+                <th scope="col">Материал</th>
+                <th scope="col">Станки</th>
+                <th scope="col">Время детали на этом станке</th>
+                <th scope="col">Изменить</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
                     <div>
-                        <select class="form-control" name="workBench">
-                            <option>Выбранная: ${det.getName()}</option>
-                            <c:forEach items="${detail.getWorkBenches()}" var="workbench">
-                                <option value="${workbench.getName()}">${workbench.getName()}</option>
+                        <input type="text" class="form-control" id="detailName" name="detailName"
+                               placeholder="${detail.getName()}" value="${detail.getName()}" required>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <input type="text" class="form-control" id="length" name="length"
+                               placeholder="${detail.getLength()}" value="${detail.getLength()}" required>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <input type="text" class="form-control" id="width" name="width"
+                               placeholder="${detail.getWidth()}" value="${detail.getWidth()}" required>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <input type="text" class="form-control" id="thickness" name="thickness"
+                               placeholder="${detail.getThickness()}" value="${detail.getThickness()}" required>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <select class="form-control" name="materialName">
+                            <option>Выбранная: ${detail.getMaterial().getName()}</option>
+                            <c:forEach items="${materials}" var="material">
+                                <option value="${material.getName()}">${material.getName()}</option>
                             </c:forEach>
                         </select>
                     </div>
-                </c:forEach>
-            </td>
-            <td>
-                <c:forEach items="${detail.getTimeWorkDetails()}" var="timeWork">
-                    <div>
-                        <input type="text" class="form-control" id="timeWork" name="timeWork"
-                               placeholder="${timeWork.getTimeWork()}" value="${timeWork.getTimeWork()}" required>
-                    </div>
-                </c:forEach>
-            </td>
-            <td>
-                <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">
-                    Изменить
-                </button>
-            </td>
-
-        </tr>
-
-
-        </tbody>
-    </table>
-</form:form>
-<label style="color: red">${detailError}</label>
+                </td>
+                <td>
+                    <c:forEach items="${detail.getWorkBenches()}" var="det">
+                        <div>
+                            <select class="form-control" name="workBench">
+                                <option>Выбранная: ${det.getName()}</option>
+                                <c:forEach items="${detail.getWorkBenches()}" var="workbench">
+                                    <option value="${workbench.getName()}">${workbench.getName()}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </c:forEach>
+                </td>
+                <td>
+                    <c:forEach items="${detail.getTimeWorkDetails()}" var="timeWork">
+                        <div>
+                            <input type="text" class="form-control" id="timeWork" name="timeWork"
+                                   placeholder="${timeWork.getTimeWork()}" value="${timeWork.getTimeWork()}" required>
+                        </div>
+                    </c:forEach>
+                </td>
+                <td>
+                    <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;"
+                            type="submit">Изменить
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form:form>
+    <label style="color: red">${detailError}</label>
+</div>
 </body>
 
 

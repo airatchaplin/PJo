@@ -82,7 +82,10 @@
   <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
 
 </header>
-
+<div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 9px;">
+  <a style="padding: 10px;color: #000000;text-decoration: none;" href="/change/personalArea">Редактировать профиль</a>
+  <a style="padding: 10px;color: #000000;text-decoration: none;" href="/change/personalAreaPassword">Изменить пароль</a>
+</div>
 
 <h1>Редактирование профиля</h1>
 
@@ -90,32 +93,14 @@
   <table class="table">
     <thead>
     <tr>
-      <th scope="col">Логин</th>
-      <th scope="col">Пароль</th>
-      <th scope="col">Повторите пароль</th>
       <th scope="col">Фамилия</th>
       <th scope="col">Имя</th>
       <th scope="col">Отчество</th>
       <th scope="col">Изменить</th>
-
     </tr>
     </thead>
     <tbody>
     <tr>
-      <td>
-        <input type="text" class="form-control" id="username" name="username"
-               placeholder="Введите логин" value="${manager.getUsername()}" required>
-      </td>
-      <td>
-        <input type="text" class="form-control" id="password" name="password"
-               placeholder="Введите новый пароль" value="" required>
-        <label style="color: red;text-align: center">${passwordError}</label>
-      </td>
-      <td>
-        <input type="text" class="form-control" id="passwordConfirm" name="passwordConfirm"
-               placeholder="Повторите новый пароль" value="" required>
-        <label style="color: red;text-align: center">${passwordError}</label>
-      </td>
       <td>
         <input type="text" class="form-control" id="fio" name="fio"
                placeholder="Введите фамилию" value=" ${manager.getFio()}" required>
@@ -125,10 +110,9 @@
                placeholder="Введите имя" value="${manager.getName()}" required>
       </td>
       <td>
-        <input type="text" class="form-control" id="LastName" name="LastName"
+        <input type="text" class="form-control" id="LastName" name="lastName"
                placeholder="Введите отчество" value="${manager.getLastName()}" required>
       </td>
-
       <td>
         <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">
           Изменить

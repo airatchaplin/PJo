@@ -83,7 +83,6 @@ public class MainController {
         return "error";
     }
 
-
     @GetMapping("/personalArea")
     public String personalArea(Model model){
         model.addAttribute("manager", managerService.getUserWeb());
@@ -94,6 +93,38 @@ public class MainController {
     public String changePersonalAreaGet( Model model){
         model.addAttribute("manager", managerService.getUserWeb());
         return "changePersonalArea";
+    }
+
+    @PostMapping("change/personalArea")
+    public String changePersonalAreaPost(@RequestParam(required = false) String fio,
+                                         @RequestParam(required = false) String name,
+                                         @RequestParam(required = false) String lastName,Model model){
+        Manager manager = managerService.getUserWeb();
+        manager.setFio(fio);
+        manager.setName(name);
+        manager.setLastName(lastName);
+        manager.setFio_i_o(fio + " " + name.charAt(0) + "." + lastName.charAt(0) + ".");
+        managerService.saveManager(manager);
+        return "redirect:/personalArea";
+    }
+
+    @GetMapping("change/personalAreaPassword")
+    public String changePersonalAreaPasswordGet( Model model){
+        model.addAttribute("manager", managerService.getUserWeb());
+        return "changePersonalAreaPassword";
+    }
+
+    @PostMapping("change/personalAreaPassword")
+    public String changePersonalAreaPasswordPost(@RequestParam(required = false) String password,
+                                                 @RequestParam(required = false) String passwordConfirm,Model model){
+        if (!password.equals(passwordConfirm)){
+            model.addAttribute("passwordError","Пароли не совпадают!");
+            return "changePersonalAreaPassword";
+        }
+        Manager manager = managerService.getUserWeb();
+        manager.setPassword(passwordEncoder.encode(password));
+        model.addAttribute("manager", managerService.getUserWeb());
+        return "redirect:/personalArea";
     }
 
 

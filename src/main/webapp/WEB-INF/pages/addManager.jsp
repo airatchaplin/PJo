@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>Добавление менеджера</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -65,28 +65,35 @@
     </style>
 </head>
 <body>
-<header style="height: 50px;
-    text-align: center;background: #d1d1d1;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/">Главная страница</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name ==("ROLE_USER")?"none":"contents"}"
-       href="/admin/managers">Менеджеры </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/contragents">Контрагенты </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+<nav style="position: fixed;
+    box-shadow: 0 0 5px;
+    display: flex;
+    justify-content: space-between;
+    right: 0;
+    left: 0;
+    padding: 15px;
+    background: #d1d1d1;
+    top: 0;">
+    <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/">Главная страница</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name.equals("ROLE_USER")?"none":"contents"}"
+           href="admin/managers">Менеджеры </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;"
+           href="/contragents">Контрагенты </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
+    </div>
+    <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${manager.fio_i_o} </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+    </div>
+</nav>
 
-</header>
-
-<div class="container1">
-
-    <%--    <h4 class="mb-3">Добавление менеджера</h4>--%>
-    <h1>Добавление менеджера</h1>
+<div class="main" style="margin-top: 60px">
     <div class="info">
         <form  method="post">
-
-
             <table class="table">
                 <thead>
                 <tr>
@@ -97,6 +104,7 @@
                     <th scope="col">Пароль</th>
                     <th scope="col">Повторить пароль</th>
                     <th scope="col">Права</th>
+                    <th scope="col">Добавить</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -104,32 +112,32 @@
                     <td>
                         <div>
                             <input type="text" class="form-control" id="fio" name="fio"
-                                   placeholder="Фамилия" value="${fio}" required>
+                                   placeholder="Введите фамилию" value="${fio}" required>
                         </div>
                     </td>
                     <td>
                         <div>
                             <input type="text" class="form-control" id="name" name="name"
-                                   placeholder="Имя" value="${name}" required>
+                                   placeholder="Введите имя" value="${name}" required>
                         </div>
                     </td>
                     <td>
                         <div>
                             <input type="text" class="form-control" id="lastName" name="lastName"
-                                   placeholder="Отчество" value="${lastName}" required>
+                                   placeholder="Введите отчество" value="${lastName}" required>
                         </div>
                     </td>
                     <td>
                         <div>
                             <input type="text" class="form-control" id="username" name="username"
-                                   placeholder="Логин" value="${username}" required>
+                                   placeholder="Введите логин" value="${username}" required>
                         </div>
                         <label style="color: red;text-align: center">${usernameError}</label>
                     </td>
                     <td>
                         <div>
                             <input type="text" class="form-control" id="password" name="password"
-                                   placeholder="Пароль" value="" required>
+                                   placeholder="Введите пароль" value="" required>
                             <label style="color: red;text-align: center">${passwordError}</label>
                         </div>
                     </td>
@@ -147,15 +155,13 @@
                             </c:forEach>
                         </select>
                     </td>
+                    <td>
+                        <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">Добавить менеджера</button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
 
-
-            <!--   пока не работает         -->
-            <!--            <a href="javascript://" onclick="addRow('myTable');return false;">Добавить элемент'</a>-->
-
-            <button class="w-100 btn btn-primary btn-lg" type="submit">Добавить менеджера</button>
         </form>
     </div>
 

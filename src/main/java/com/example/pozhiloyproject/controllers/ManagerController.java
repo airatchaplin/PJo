@@ -74,8 +74,7 @@ public class ManagerController {
         manager.setLastName(lastName);
         manager.setFio_i_o(fio + " " + name.charAt(0) + "." + lastName.charAt(0) + ".");
         manager.setUsername(username);
-//        manager.setPassword(passwordEncoder.encode(password));
-        manager.setPassword(password);
+        manager.setPassword(passwordEncoder.encode(password));
         manager.setRoles(Collections.singletonList(role.equals("Админ") ? roleService.getRoleAdmin() : roleService.getRoleUser()));
         managerService.saveManager(manager);
         return "redirect:/admin/managers";
@@ -83,7 +82,8 @@ public class ManagerController {
 
     @GetMapping("managers/{uuid}")
     public String getOneManager(@PathVariable(name = "uuid") String uuid, Model model) {
-        model.addAttribute("manager", managerService.getManagerByUUID(uuid));
+        model.addAttribute("managerById", managerService.getManagerByUUID(uuid));
+        model.addAttribute("manager",managerService.getUserWeb());
         return "oneManager";
     }
 
@@ -92,7 +92,8 @@ public class ManagerController {
 
                                    Model model) {
         model.addAttribute("roles", roleService.getAllRoles());
-        model.addAttribute("manager", managerService.getManagerByUUID(uuid));
+        model.addAttribute("managerById", managerService.getManagerByUUID(uuid));
+        model.addAttribute("manager",managerService.getUserWeb());
         return "changeManager";
     }
 
@@ -107,7 +108,8 @@ public class ManagerController {
 
     @GetMapping("managers/deletion/{uuid}")
     public String deleteManagerGet(@PathVariable(name = "uuid") String uuid, Model model) {
-        model.addAttribute("manager", managerService.getManagerByUUID(uuid));
+        model.addAttribute("managerById", managerService.getManagerByUUID(uuid));
+        model.addAttribute("manager",managerService.getUserWeb());
         return "deletionManager";
     }
 
@@ -116,7 +118,8 @@ public class ManagerController {
         try {
             managerService.deleteManager(managerService.getManagerByUUID(uuid));
         } catch (Exception e) {
-            model.addAttribute("manager", managerService.getManagerByUUID(uuid));
+            model.addAttribute("managerById", managerService.getManagerByUUID(uuid));
+            model.addAttribute("manager",managerService.getUserWeb());
             model.addAttribute("managerError", "Менеджера нельзя удалить, потому что она используется в заказах!");
             return "deletionManager";
         }

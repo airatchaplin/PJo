@@ -20,11 +20,13 @@
             color: #000000;
             text-decoration: none;
         }
+
         .table {
             width: 100%;
             border: none;
             margin-bottom: 20px;
         }
+
         .table thead th {
             font-weight: bold;
             text-align: left;
@@ -35,6 +37,7 @@
             border-left: 1px solid #ddd;
             border-right: 1px solid #ddd;
         }
+
         .table tbody td {
             text-align: left;
             border-left: 1px solid #ddd;
@@ -43,62 +46,82 @@
             font-size: 14px;
             vertical-align: top;
         }
+
         .table thead tr th:first-child, .table tbody tr td:first-child {
             border-left: none;
         }
+
         .table thead tr th:last-child, .table tbody tr td:last-child {
             border-right: none;
         }
-        .table tbody tr:nth-child(even){
+
+        .table tbody tr:nth-child(even) {
             background: #f3f3f3;
         }
-        .table>:not(caption)>*>* {
+
+        .table > :not(caption) > * > * {
             border-bottom-width: 0px;
         }
 
     </style>
 </head>
 <body>
-<header style="height: 50px;
-    text-align: center;background: #d1d1d1;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/">Главная страница</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name ==("ROLE_USER")?"none":"contents"}" href="/admin/managers">Менеджеры </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/contragents">Контрагенты </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+<nav style="position: fixed;
+    box-shadow: 0 0 5px;
+    display: flex;
+    justify-content: space-between;
+    right: 0;
+    left: 0;
+    padding: 15px;
+    background: #d1d1d1;
+    top: 0;">
+    <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/">Главная страница</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name.equals("ROLE_USER")?"none":"contents"}"
+           href="admin/managers">Менеджеры </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;"
+           href="/contragents">Контрагенты </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
+    </div>
+    <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${manager.fio_i_o} </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+    </div>
+</nav>
+<nav style="position: fixed;
+    box-shadow: 0 5px 5px -5px;
+    display: flex;
+    justify-content: space-between;
+    right: 0;
+    left: 0;
+    background: #f2f2f2;
+    padding: 15px;
+    top: 0;
+    margin-top: 60px;">
+    <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addMaterial">Добавить материал</a>
+    </div>
+</nav>
 
-</header>
-
-<div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 9px;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addMaterial">Добавить материал</a>
-</div>
-
-<h1>Материалы</h1>
-
-
-
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">Название материала</th>
-    </tr>
-    </thead>
-    <tbody>
-
-    <c:forEach items="${materials}" var="material">
+<div class="main" style="margin-top: 120px">
+    <table class="table">
+        <thead>
         <tr>
-
-            <td><a style="display: block" href="materials/${material.getName()}">${material.getName()}</a></td>
+            <th scope="col">Название материала</th>
         </tr>
-    </c:forEach>
-
-
-    </tbody>
-</table>
-
+        </thead>
+        <tbody>
+        <c:forEach items="${materials}" var="material">
+            <tr>
+                <td><a style="display: block" href="materials/${material.getName()}">${material.getName()}</a></td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+</div>
 
 </body>
 </html>

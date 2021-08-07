@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>Заказ</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -62,103 +62,122 @@
         .table > :not(caption) > * > * {
             border-bottom-width: 0px;
         }
-        a:hover{
-            background: gray;
-        }
+
     </style>
 </head>
 <body>
-<header style="height: 50px;
-    text-align: center;background: #d1d1d1;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/">Главная страница</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name ==("ROLE_USER")?"none":"contents"}" href="/admin/managers">Менеджеры </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/contragents">Контрагенты </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+<nav style="position: fixed;
+    box-shadow: 0 0 5px;
+    display: flex;
+    justify-content: space-between;
+    right: 0;
+    left: 0;
+    padding: 15px;
+    background: #d1d1d1;
+    top: 0;">
+    <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/">Главная страница</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name.equals("ROLE_USER")?"none":"contents"}"
+           href="admin/managers">Менеджеры </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;"
+           href="/contragents">Контрагенты </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
+    </div>
+    <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${manager.fio_i_o} </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+    </div>
+</nav>
 
-</header>
+<nav style="position: fixed;
+    box-shadow: 0 5px 5px -5px;
+    display: flex;
+    justify-content: space-between;
+    right: 0;
+    left: 0;
+    background: #f2f2f2;
+    padding: 15px;
+    top: 0;
+    margin-top: 60px;">
+    <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;"
+           href="/orders/add/${order.getNumberOrder()}">Добавить
+            элемент</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;"
+           href="/orders/change/${order.getNumberOrder()}">Изменить
+            заказ</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;"
+           href="/orders/deletion/${order.getNumberOrder()}">Удалить
+            заказ</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;"
+           href="/orders/check1/${order.getNumberOrder()}">Расчитать
+            время</a>
+    </div>
+</nav>
 
-<div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 9px;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;"
-       href="/orders/change/${order.getNumberOrder()}">Изменить
-        заказ</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;"
-       href="/orders/deletion/${order.getNumberOrder()}">Удалить
-        заказ</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;"
-       href="/orders/add/${order.getNumberOrder()}">Добавить
-        элемент</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;"
-       href="/orders/check1/${order.getNumberOrder()}">Расчитать
-        время</a>
-</div>
-<h1>Заказ</h1>
-<h4>№ заказа ${order.getNumberOrder()}</h4>
-<h4>Объект ${order.getObjectName().getName()}</h4>
-<h4>Менеджер ${order.getManager().getFio_i_o()}</h4>
+<div class="main" style="margin-top: 120px">
+    <h4>№ заказа ${order.getNumberOrder()}</h4>
+    <h4>Объект ${order.getObjectName().getName()}</h4>
+    <h4>Менеджер ${order.getManager().getFio_i_o()}</h4>
 
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">Деталь</th>
-        <th scope="col">Количество</th>
-        <th scope="col">Дата запуска в производство</th>
-        <th scope="col">Дата готовности заказа</th>
-        <th scope="col">Покраска</th>
-        <th scope="col">Упаковка</th>
-        <th scope="col">Коментарий</th>
-        <th scope="col">Инкремент</th>
-
-
-    </tr>
-    </thead>
-    <tbody>
-
-    <c:forEach items="${order.getDetailInfos()}" var="ord">
+    <table class="table">
+        <thead>
         <tr>
-            <td>
-                    ${ord.getDetail().getName()}
-            </td>
-            <td>
-                    ${ord.getCount()}
-            </td>
-            <td>
-                    ${ord.getDateStart()}
-            </td>
-            <td>
-                    ${ord.getDateEnd()}
-            </td>
-            <td>
-                    ${order.getPainting()}
-            </td>
-            <td>
-                    ${order.getPacking()}
-            </td>
-            <td>
-                    ${order.getComment()}
-            </td>
-
-            <td>
-                    ${ord.getIncrement()}
-            </td>
-
-
+            <th scope="col">Деталь</th>
+            <th scope="col">Количество</th>
+            <th scope="col">Дата запуска в производство</th>
+            <th scope="col">Дата готовности заказа</th>
+            <th scope="col">Покраска</th>
+            <th scope="col">Упаковка</th>
+            <th scope="col">Коментарий</th>
+            <th scope="col">Инкремент</th>
+            <th scope="col">Завершить заказ</th>
         </tr>
-
-
-    </c:forEach>
-    </tbody>
-</table>
-<form:form action="/orders/complete/${order.getNumberOrder()}"
-           method="post">
-    <button class="w-100 btn btn-primary btn-lg" style="width: auto;background-color: #0d6efd;color: #fff;"
-            type="submit">
-        Завершить
-    </button>
-</form:form>
+        </thead>
+        <tbody>
+        <c:forEach items="${order.getDetailInfos()}" var="ord">
+            <tr>
+                <td>
+                        ${ord.getDetail().getName()}
+                </td>
+                <td>
+                        ${ord.getCount()}
+                </td>
+                <td>
+                        ${ord.getDateStart()}
+                </td>
+                <td>
+                        ${ord.getDateEnd()}
+                </td>
+                <td>
+                        ${order.getPainting()}
+                </td>
+                <td>
+                        ${order.getPacking()}
+                </td>
+                <td>
+                        ${order.getComment()}
+                </td>
+                <td>
+                        ${ord.getIncrement()}
+                </td>
+                <td>
+                    <form:form action="/orders/complete/${order.getNumberOrder()}"
+                               method="post">
+                        <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;display: ${ord.getIncrement()== 0 ?"block":"none"}"
+                                type="submit">
+                            Завершить
+                        </button>
+                    </form:form>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+</div>
 
 </body>
 </html>

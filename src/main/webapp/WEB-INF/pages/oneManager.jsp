@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>Менеджер</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -20,11 +20,13 @@
             color: #000000;
             text-decoration: none;
         }
+
         .table {
             width: 100%;
             border: none;
             margin-bottom: 20px;
         }
+
         .table thead th {
             font-weight: bold;
             text-align: left;
@@ -35,6 +37,7 @@
             border-left: 1px solid #ddd;
             border-right: 1px solid #ddd;
         }
+
         .table tbody td {
             text-align: left;
             border-left: 1px solid #ddd;
@@ -43,69 +46,91 @@
             font-size: 14px;
             vertical-align: top;
         }
+
         .table thead tr th:first-child, .table tbody tr td:first-child {
             border-left: none;
         }
+
         .table thead tr th:last-child, .table tbody tr td:last-child {
             border-right: none;
         }
-        .table tbody tr:nth-child(even){
+
+        .table tbody tr:nth-child(even) {
             background: #f3f3f3;
         }
-        .table>:not(caption)>*>* {
+
+        .table > :not(caption) > * > * {
             border-bottom-width: 0px;
-        }
-        a:hover{
-            background: gray;
         }
     </style>
 </head>
 <body>
-<header style="height: 50px;
-    text-align: center;background: #d1d1d1;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/">Главная страница</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name ==("ROLE_USER")?"none":"contents"}" href="/admin/managers">Менеджеры </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/contragents">Контрагенты </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+<nav style="position: fixed;
+    box-shadow: 0 0 5px;
+    display: flex;
+    justify-content: space-between;
+    right: 0;
+    left: 0;
+    padding: 15px;
+    background: #d1d1d1;
+    top: 0;">
 
-</header>
+    <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/">Главная страница</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name.equals("ROLE_USER")?"none":"contents"}"
+           href="/admin/managers">Менеджеры </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;"
+           href="/contragents">Контрагенты </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
+    </div>
+    <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${manager.fio_i_o} </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+    </div>
+</nav>
 
-<div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 9px;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/addManager">Добавить менеджера</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/managers/change/${manager.getId()}">Изменить права</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/managers/deletion/${manager.getId()}">Удалить менеджера</a>
-</div>
+<nav style="position: fixed;
+    box-shadow: 0 5px 5px -5px;
+    display: flex;
+    justify-content: space-between;
+    right: 0;
+    left: 0;
+    background: #f2f2f2;
+    padding: 15px;
+    top: 0;
+    margin-top: 60px;">
+    <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/addManager">Добавить менеджера</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/managers/change/${managerById.getId()}">Изменить
+            права</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;"
+           href="/admin/managers/deletion/${managerById.getId()}">Удалить менеджера</a>
+    </div>
+</nav>
 
-<h1>Менеджер</h1>
-
-
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">Логин</th>
-        <th scope="col">Фамилия</th>
-        <th scope="col">Имя</th>
-        <th scope="col">Отчество</th>
-    </tr>
-    </thead>
-    <tbody>
-
-
+<div class="main" style="margin-top: 120px">
+    <table class="table">
+        <thead>
         <tr>
-            <td>${manager.getUsername()}</td>
-            <td>${manager.getFio()}</td>
-            <td>${manager.getName()}</td>
-            <td>${manager.getLastName()}</td>
+            <th scope="col">Логин</th>
+            <th scope="col">Фамилия</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Отчество</th>
         </tr>
-
-
-    </tbody>
-</table>
-
+        </thead>
+        <tbody>
+        <tr>
+            <td>${managerById.getUsername()}</td>
+            <td>${managerById.getFio()}</td>
+            <td>${managerById.getName()}</td>
+            <td>${managerById.getLastName()}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 </body>
 </html>

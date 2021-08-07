@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>Менеджеры</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -66,55 +66,75 @@
     </style>
 </head>
 <body>
-<header style="height: 50px;
-    text-align: center;background: #d1d1d1;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/">Главная страница</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name ==("ROLE_USER")?"none":"contents"}" href="/admin/managers">Менеджеры </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/contragents">Контрагенты </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+<nav style="position: fixed;
+    box-shadow: 0 0 5px;
+    display: flex;
+    justify-content: space-between;
+    right: 0;
+    left: 0;
+    padding: 15px;
+    background: #d1d1d1;
+    top: 0;">
 
-</header>
+    <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/">Главная страница</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name.equals("ROLE_USER")?"none":"contents"}"
+           href="/admin/managers">Менеджеры </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;"
+           href="/contragents">Контрагенты </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
+    </div>
+    <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${manager.fio_i_o} </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+    </div>
+</nav>
 
-<div class="postHeader" style="background: #f2f2f2;text-align: center;padding: 9px;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name ==("ROLE_USER")?"none":"block"}"
-       href="/admin/addManager">Добавить менеджера</a>
-</div>
+<nav style="position: fixed;
+    box-shadow: 0 5px 5px -5px;
+    display: flex;
+    justify-content: space-between;
+    right: 0;
+    left: 0;
+    background: #f2f2f2;
+    padding: 15px;
+    top: 0;
+    margin-top: 60px;">
+    <div>
+        <a style="color: #000000;text-decoration: none;display: ${manager.roles.get(0).name ==("ROLE_USER")?"none":"block"}"
+           href="/admin/addManager">Добавить менеджера</a>
+    </div>
+</nav>
 
-<h1>Менеджеры</h1>
-
-
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">Фамилия</th>
-        <th scope="col">Имя</th>
-        <th scope="col">Отчество</th>
-    </tr>
-    </thead>
-    <tbody>
-
-    <c:forEach items="${managers}" var="manager">
+<div class="main" style="margin-top: 120px">
+    <table class="table">
+        <thead>
         <tr>
-            <td><a style="display: block"
-                   href="managers/${manager.getId()}">${manager.getFio()}</a>
-            </td>
-            <td><a style="display: block"
-                   href="managers/${manager.getId()}">${manager.getName()}</a>
-            </td>
-            <td><a style="display: block"
-                   href="managers/${manager.getId()}">${manager.getLastName()}</a>
-            </td>
-
+            <th scope="col">Фамилия</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Отчество</th>
         </tr>
-    </c:forEach>
-
-    </tbody>
-</table>
-
+        </thead>
+        <tbody>
+        <c:forEach items="${managers}" var="manager">
+            <tr>
+                <td><a style="display: block"
+                       href="managers/${manager.getId()}">${manager.getFio()}</a>
+                </td>
+                <td><a style="display: block"
+                       href="managers/${manager.getId()}">${manager.getName()}</a>
+                </td>
+                <td><a style="display: block"
+                       href="managers/${manager.getId()}">${manager.getLastName()}</a>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+</div>
 
 </body>
 </html>

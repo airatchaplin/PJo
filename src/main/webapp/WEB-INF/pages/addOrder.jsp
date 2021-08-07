@@ -9,10 +9,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>Добавление заказа</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-
-
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
@@ -77,10 +75,6 @@
             border-bottom-width: 0px;
         }
 
-        a:hover {
-            background: gray;
-        }
-
         .no-results active {
             display: none;
         }
@@ -93,24 +87,34 @@
 
 </head>
 <body>
-<header style="height: 50px;
-    text-align: center;background: #d1d1d1;">
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/">Главная страница</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name ==("ROLE_USER")?"none":"contents"}"
-       href="/admin/managers">Менеджеры </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;"
-       href="/contragents">Контрагенты </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
-    <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+<nav style="position: fixed;
+    box-shadow: 0 0 5px;
+    display: flex;
+    justify-content: space-between;
+    right: 0;
+    left: 0;
+    padding: 15px;
+    background: #d1d1d1;
+    top: 0;">
 
-</header>
+    <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/">Главная страница</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name.equals("ROLE_USER")?"none":"contents"}"
+           href="admin/managers">Менеджеры </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;"
+           href="/contragents">Контрагенты </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
+    </div>
+    <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${manager.fio_i_o} </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+    </div>
+</nav>
 
-<div class="container1">
-    <%--    <h4 class="mb-3">Добавление заказа</h4>--%>
-    <h1>Добавление заказа</h1>
+<div class="main" style="margin-top: 60px">
     <div class="info">
         <form:form method="post">
             <div class="col-sm-6" style="display: flex">
@@ -118,7 +122,7 @@
                     заказа</label>
                 <input style="margin: 10px;" type="text" class="form-control" id="numberOrder"
                        name="numberOrder"
-                       placeholder="Введите Номер детали" value="" required>
+                       placeholder="Введите номер детали" value="" required>
                 <div class="error" style="color: red;">
                         ${numberOrderError}
                 </div>
@@ -142,25 +146,23 @@
                 <label style="margin-left: 10px;margin-top: 15px;width: 60%;" for="numberOrder" class="form-label">Коментарий</label>
                 <input style="margin: 10px;" type="text" class="form-control" id="comment"
                        name="comment"
-                       placeholder="Коментарий">
+                       placeholder="Введите коментарий">
             </div>
-
             <table class="table">
                 <thead>
                 <tr>
                     <th scope="col">
-
                         Деталь
                         <input type="button" style="margin: 10px" value="+" id="add_more_fields"/>
                         <input type="button" onclick="deleteRow()" value=" - ">
                     </th>
                     <th scope="col">Количество</th>
                     <th scope="col">Дата запуска в производство</th>
+                    <th scope="col">Добавить</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-
                     <td>
                         <select class="form-control" name="detailName">
                             <option value="Выбирите деталь">Выбирите деталь</option>
@@ -181,29 +183,23 @@
                                placeholder="Количество" required>
                     </td>
                     <td>
-                        <div class="col-sm-6">
+                        <div>
                             <input type="datetime-local" class="form-control" id="dateStart"
                                    name="dateStart">
                         </div>
                     </td>
+                    <td>
+                        <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;"
+                                type="submit">Добавить заказ
+                        </button>
+                    </td>
                 </tr>
-
-                    <%--Добавляется с помощью Js--%>
                 </tbody>
             </table>
-
-
-
-            <button class="w-100 btn btn-primary btn-lg" type="submit">Добавить заказ</button>
         </form:form>
 
     </div>
 </div>
-
-
-<%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>--%>
-<%--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>--%>
-<%--<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>--%>
 
 </body>
 <script>
@@ -212,7 +208,7 @@
         html += '<tr id="row1">';
         html += '<td><select class="form-control" name="detailName"> <option value="Выбирите деталь">Выбирите деталь</option><c:forEach items="${details}" var="detail"> <option value="${detail.getName()}">${detail.getName()}</option></c:forEach> </select> </td>';
         html += '<td><input type="text" class="form-control" id="countDetail" name="countDetail" placeholder="Количество" required> </td>';
-        html += '<td><div class="col-sm-6"> <input type="datetime-local" class="form-control" id="dateStart" name="dateStart"> </div></td>';
+        html += '<td><div> <input type="datetime-local" class="form-control" id="dateStart" name="dateStart"> </div></td>';
         html += '</tr>';
         $('table').append(html);
     });
