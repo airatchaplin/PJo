@@ -88,6 +88,7 @@ public class OrderController {
             model.addAttribute("managers", managerService.getAllManagers());
             model.addAttribute("details", detailService.getAllDetails());
             model.addAttribute("numberOrderError", "Заказ с таким номером уже существует!");
+            model.addAttribute("manager",managerService.getUserWeb());
             return "addOrder";
         }
         order.setId(UUID.randomUUID());
