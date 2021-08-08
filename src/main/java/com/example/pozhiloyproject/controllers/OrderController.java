@@ -39,11 +39,14 @@ public class OrderController {
     @Autowired
     CompletedOrderService completedOrderService;
 
+    @Autowired
+    UserService userService;
+
 
     @GetMapping("/orders")
     public String getAllOrders(Model model) {
         model.addAttribute("orders", orderService.getAllOrders());
-        model.addAttribute("manager",managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
         return "orders";
     }
 
@@ -51,7 +54,7 @@ public class OrderController {
     public String getOneOrder(@PathVariable(value = "numberOrder") int numberOrder, Model model) {
         Order oneOrder = orderService.findOneOrder(numberOrder);
         model.addAttribute("order", orderService.findOneOrder(numberOrder));
-        model.addAttribute("manager",managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
         return "oneOrder";
     }
 
@@ -59,7 +62,8 @@ public class OrderController {
     public String addOrderGet(Model model) {
         model.addAttribute("contragents", contragentService.getAllContragents());
         model.addAttribute("details", detailService.getAllDetails());
-        model.addAttribute("manager",managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
+        model.addAttribute("managers",managerService.getAllManagers());
         return "addOrder";
     }
 
@@ -88,13 +92,14 @@ public class OrderController {
             model.addAttribute("managers", managerService.getAllManagers());
             model.addAttribute("details", detailService.getAllDetails());
             model.addAttribute("numberOrderError", "Заказ с таким номером уже существует!");
-            model.addAttribute("manager",managerService.getUserWeb());
+            model.addAttribute("user",userService.getUserWeb());
             return "addOrder";
         }
         order.setId(UUID.randomUUID());
         order.setNumberOrder(Integer.parseInt(numberOrder));
         order.setObjectName(contragentService.getOneContragent(objectName));
         order.setManager(managerService.getOneManager(manager.substring(0, manager.length() - 5)));
+        order.setUser(userService.getUserWeb());
         order.setPainting("00:00");
         order.setPacking("00:00");
         order.setComment(comment);
@@ -160,7 +165,7 @@ public class OrderController {
         model.addAttribute("managers", managerService.getAllManagers());
         model.addAttribute("details", detailService.getAllDetails());
         model.addAttribute("order", orderService.findOneOrder(Integer.parseInt(numberOrder)));
-        model.addAttribute("manager",managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
         return "changeOrder";
     }
 
@@ -190,7 +195,7 @@ public class OrderController {
         model.addAttribute("managers", managerService.getAllManagers());
         model.addAttribute("details", detailService.getAllDetails());
         model.addAttribute("order", orderService.findOneOrder(Integer.parseInt(numberOrder)));
-        model.addAttribute("manager",managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
         return "addNewElementForOrder";
     }
 
@@ -273,14 +278,14 @@ public class OrderController {
     @GetMapping("orders/check1/{numberOrder}")
     public String check1(@PathVariable(value = "numberOrder") String numberOrder, Model model) {
         model.addAttribute("order", orderService.findOneOrder(Integer.parseInt(numberOrder)));
-        model.addAttribute("manager",managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
         return "check1";
     }
 
     @GetMapping("orders/deletion/{numberOrder}")
     public String deletionElementOrOrder(@PathVariable(value = "numberOrder") String numberOrder, Model model) {
         model.addAttribute("order", orderService.findOneOrder(Integer.parseInt(numberOrder)));
-        model.addAttribute("manager",managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
         return "deletionOrder";
     }
 
@@ -293,7 +298,7 @@ public class OrderController {
     @GetMapping("/completed_orders")
     public String getAllCompletedOrders(Model model) {
         model.addAttribute("completed_order", completedOrderService.getAllCompletedOrders());
-        model.addAttribute("manager",managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
         return "completedOrders";
     }
 

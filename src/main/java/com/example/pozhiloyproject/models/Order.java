@@ -27,6 +27,9 @@ public class Order {
     @ManyToOne
     private Manager manager;
 
+    @ManyToOne
+    private User user;
+
     @ManyToMany(cascade = CascadeType.ALL)
     private List<DetailInfo> detailInfos;
 

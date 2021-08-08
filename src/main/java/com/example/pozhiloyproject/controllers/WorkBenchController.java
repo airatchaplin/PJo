@@ -2,6 +2,7 @@ package com.example.pozhiloyproject.controllers;
 
 import com.example.pozhiloyproject.models.WorkBench;
 import com.example.pozhiloyproject.services.ManagerService;
+import com.example.pozhiloyproject.services.UserService;
 import com.example.pozhiloyproject.services.WorkBenchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,16 +24,19 @@ public class WorkBenchController {
     @Autowired
     ManagerService managerService;
 
+    @Autowired
+    UserService userService;
+
     @GetMapping("/workbenches")
     public String getAllWorkBenches(Model model) {
         model.addAttribute("workbenches", workBenchService.getAllWorkBench());
-        model.addAttribute("manager",managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
         return "workbenches";
     }
 
     @GetMapping("/addWorkBench")
     public String addWorkBenchGet(Model model) {
-        model.addAttribute("manager",managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
         return "addWorkBench";
     }
 
@@ -65,14 +69,14 @@ public class WorkBenchController {
     @GetMapping("workbenches/{nameWorkBench}")
     public String getOneWorkBench(@PathVariable(name = "nameWorkBench") String nameWorkBench, Model model) {
         model.addAttribute("workbench", workBenchService.getOneWorkBench(nameWorkBench));
-        model.addAttribute("manager",managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
         return "oneWorkBench";
     }
 
     @GetMapping("workbenches/change/{nameWorkBench}")
     public String changeWorkBenchGet(@PathVariable(name = "nameWorkBench") String nameWorkBench, Model model) {
         model.addAttribute("workbench", workBenchService.getOneWorkBench(nameWorkBench));
-        model.addAttribute("manager",managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
         return "changeWorkBench";
     }
 
@@ -103,7 +107,7 @@ public class WorkBenchController {
     @GetMapping("workbenches/deletion/{nameWorkBench}")
     public String deletionWorkBenchGet(@PathVariable(name = "nameWorkBench") String nameWorkBench, Model model) {
         model.addAttribute("workbench", workBenchService.getOneWorkBench(nameWorkBench));
-        model.addAttribute("manager",managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
         return "deletionWorkBench";
     }
 

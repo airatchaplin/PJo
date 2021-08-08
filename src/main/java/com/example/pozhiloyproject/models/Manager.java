@@ -15,7 +15,7 @@ import java.util.UUID;
 @Table(name = "managers")
 @Getter
 @Setter
-public class Manager implements UserDetails {
+public class Manager {
 
     @Id
     private UUID id;
@@ -28,46 +28,6 @@ public class Manager implements UserDetails {
 
     private String fio_i_o;
 
-    String username;
-
-    String password;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Role> roles;
 
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

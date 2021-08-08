@@ -80,13 +80,13 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name.equals("ROLE_USER")?"none":"contents"}"
-           href="/admin/managers">Менеджеры </a>
+           href="/managers">Менеджеры </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
            href="/contragents">Контрагенты </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     </div>
     <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${manager.fio_i_o} </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
     </div>
 </nav>
@@ -100,10 +100,6 @@
                     <th scope="col">Фамилия</th>
                     <th scope="col">Имя</th>
                     <th scope="col">Отчество</th>
-                    <th scope="col">Логин</th>
-                    <th scope="col">Пароль</th>
-                    <th scope="col">Повторить пароль</th>
-                    <th scope="col">Права</th>
                     <th scope="col">Добавить</th>
                 </tr>
                 </thead>
@@ -126,34 +122,6 @@
                             <input type="text" class="form-control" id="lastName" name="lastName"
                                    placeholder="Введите отчество" value="${lastName}" required>
                         </div>
-                    </td>
-                    <td>
-                        <div>
-                            <input type="text" class="form-control" id="username" name="username"
-                                   placeholder="Введите логин" value="${username}" required>
-                        </div>
-                        <label style="color: red;text-align: center">${usernameError}</label>
-                    </td>
-                    <td>
-                        <div>
-                            <input type="text" class="form-control" id="password" name="password"
-                                   placeholder="Введите пароль" value="" required>
-                            <label style="color: red;text-align: center">${passwordError}</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <input type="text" class="form-control" id="passwordConfirm" name="passwordConfirm"
-                                   placeholder="Повторить пароль" value="" required>
-                        </div>
-                        <label style="color: red;text-align: center">${passwordError}</label>
-                    </td>
-                    <td>
-                        <select class="form-control" name="role">
-                            <c:forEach items="${roles}" var="role">
-                                <option>${role.name.equals("ROLE_USER")?"Пользователь":"Админ"}</option>
-                            </c:forEach>
-                        </select>
                     </td>
                     <td>
                         <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">Добавить менеджера</button>

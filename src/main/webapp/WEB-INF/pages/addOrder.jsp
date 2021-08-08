@@ -103,13 +103,13 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name.equals("ROLE_USER")?"none":"contents"}"
-           href="/admin/managers">Менеджеры </a>
+           href="/managers">Менеджеры </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
            href="/contragents">Контрагенты </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     </div>
     <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${manager.fio_i_o} </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
     </div>
 </nav>
@@ -139,7 +139,9 @@
             <div class="col-sm-6" style="display: flex">
                 <label style="margin-left: 10px;margin-top: 15px;width: 60%;" for="numberOrder" class="form-label">Менеджер</label>
                 <select style="margin: 10px;" class="form-control" name="manager">
+                    <c:forEach items="${managers}" var="manager">
                     <option value="${manager.getFio_i_o()}">${manager.getFio_i_o()}</option>
+                    </c:forEach>
                 </select>
             </div>
             <div class="col-sm-6" style="display: flex">

@@ -80,13 +80,13 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name.equals("ROLE_USER")?"none":"contents"}"
-           href="/admin/managers">Менеджеры </a>
+           href="/managers">Менеджеры </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
            href="/contragents">Контрагенты </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     </div>
     <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${manager.fio_i_o} </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
     </div>
 </nav>
@@ -116,8 +116,9 @@
             <th scope="col">№ заказа</th>
             <th scope="col">Объект</th>
             <th scope="col">Менеджер</th>
+            <th scope="col">Составитель</th>
             <th scope="col">Деталь</th>
-            <th scope="col">Количество</th>
+            <th scope="col">Кол-во</th>
             <th scope="col">Дата запуска в производство</th>
             <th scope="col">Дата готовности заказа</th>
             <th scope="col">Коментарий</th>
@@ -129,6 +130,7 @@
                 <td><a style="display: block" href="orders/${order.getNumberOrder()}">${order.getNumberOrder()}</a></td>
                 <td><a href="orders/${order.getNumberOrder()}">${order.getObjectName().getName()}</a></td>
                 <td>${order.getManager().getFio_i_o()}</td>
+                <td>${order.getUser().getFio_i_o()}</td>
                 <td>
                     <c:forEach items="${order.getDetailInfos()}" var="detail">
                         <pre> ${detail.getDetail().getName()} </pre>

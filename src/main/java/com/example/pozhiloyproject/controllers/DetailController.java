@@ -34,12 +34,12 @@ public class DetailController {
     TimeWorkDetailService timeWorkDetailService;
 
     @Autowired
-    ManagerService managerService;
+    UserService userService;
 
     @GetMapping("/details")
     public String getAllDetails(Model model) {
         model.addAttribute("details", detailService.getAllDetails());
-        model.addAttribute("manager",managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
         return "details";
     }
 
@@ -48,7 +48,7 @@ public class DetailController {
         model.addAttribute("details", detailService.getAllDetails());
         model.addAttribute("workbenches", workBenchService.getAllWorkBench());
         model.addAttribute("materials", materialService.getAllMaterials());
-        model.addAttribute("manager",managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
         return "addDetail";
     }
 
@@ -117,14 +117,14 @@ public class DetailController {
     public String getOneDetail(@PathVariable(value = "nameDetail") String nameDetail, Model model) {
         Detail detail = detailService.findByName(nameDetail);
         model.addAttribute("detail", detail);
-        model.addAttribute("manager",managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
         return "oneDetail";
     }
 
     @GetMapping("details/deletion/{nameDetail}")
     public String deletionDetailGet(@PathVariable(value = "nameDetail") String nameDetail, Model model) {
         model.addAttribute("detail", detailService.findByName(nameDetail));
-        model.addAttribute("manager",managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
         return "deletionDetail";
     }
 
@@ -148,7 +148,7 @@ public class DetailController {
         model.addAttribute("detail", detailService.findByName(nameDetail));
         model.addAttribute("materials", materialService.getAllMaterials());
         model.addAttribute("workbenches", workBenchService.getAllWorkBench());
-        model.addAttribute("manager",managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
         return "changeDetail";
     }
 

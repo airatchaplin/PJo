@@ -2,6 +2,7 @@ package com.example.pozhiloyproject.config;
 
 import com.example.pozhiloyproject.dto.OrderDto;
 import com.example.pozhiloyproject.services.ManagerService;
+import com.example.pozhiloyproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private ManagerService managerService;
+    UserService userService;
 
     /**
      * configure методы определяют настройку Spring Security.
@@ -55,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(managerService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
 
 

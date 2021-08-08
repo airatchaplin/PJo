@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class ManagerService implements UserDetailsService {
+public class ManagerService {
 
     @Autowired
     ManagerRepository managerRepository;
@@ -40,24 +40,10 @@ public class ManagerService implements UserDetailsService {
         return managerRepository.findById(UUID.fromString(id)).orElseThrow();
     }
 
-    public Manager getManagerByUsername(String username){
-        return managerRepository.findByUsername(username);
-    }
 
     public void deleteManager(Manager manager) {
         managerRepository.delete(manager);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Manager manager = managerRepository.findByUsername(username);
-        if (manager == null) {
-            throw new UsernameNotFoundException("Пользователь не найден");
-        }
-        return manager;
-    }
 
-    public Manager getUserWeb() {
-        return (Manager) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    }
 }

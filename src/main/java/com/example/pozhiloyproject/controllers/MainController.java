@@ -1,8 +1,10 @@
 package com.example.pozhiloyproject.controllers;
 
 import com.example.pozhiloyproject.models.Manager;
+import com.example.pozhiloyproject.models.User;
 import com.example.pozhiloyproject.services.ManagerService;
 import com.example.pozhiloyproject.services.RoleService;
+import com.example.pozhiloyproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -16,7 +18,7 @@ import java.util.UUID;
 public class MainController {
 
     @Autowired
-    ManagerService managerService;
+    UserService userService;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -26,7 +28,7 @@ public class MainController {
 
     @GetMapping("/")
     public String main(Model model){
-        model.addAttribute("manager",managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
         return "index";
     }
 
@@ -57,41 +59,40 @@ public class MainController {
             model.addAttribute("passwordError","Пароли не совпадают!");
             return "/";
         }
-
-        Manager manager = new Manager();
-        manager.setId(UUID.randomUUID());
-        manager.setUsername(username);
-        manager.setFio(fio);
-        manager.setName(name);
-        manager.setLastName(lastName);
-        manager.setPassword(passwordEncoder.encode(password));
-        manager.setRoles(Collections.singletonList(roleService.getRoleUser()));
-        manager.setFio_i_o(fio + " " + name.charAt(0) + "." + lastName.charAt(0) + ".");
-        managerService.saveManager(manager);
+        User user = new User();
+        user.setId(UUID.randomUUID());
+        user.setUsername(username);
+        user.setFio(fio);
+        user.setName(name);
+        user.setLastName(lastName);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setRoles(Collections.singletonList(roleService.getRoleUser()));
+        user.setFio_i_o(fio + " " + name.charAt(0) + "." + lastName.charAt(0) + ".");
+        userService.saveUser(user);
         return "redirect:/";
     }
 
-    @GetMapping("/admin")
-    public String admin(Model model){
-        model.addAttribute("managers",managerService.getAllManagers());
-        return "admin";
-    }
+//    @GetMapping("/admin")
+//    public String admin(Model model){
+//        model.addAttribute("managers",managerService.getAllManagers());
+//        return "admin";
+//    }
 
     @RequestMapping("/403")
     public String error403(Model model) {
-        model.addAttribute("manager",managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
         return "error";
     }
 
     @GetMapping("/personalArea")
     public String personalArea(Model model){
-        model.addAttribute("manager", managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
         return "personalArea";
     }
 
     @GetMapping("change/personalArea")
     public String changePersonalAreaGet( Model model){
-        model.addAttribute("manager", managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
         return "changePersonalArea";
     }
 
@@ -99,18 +100,18 @@ public class MainController {
     public String changePersonalAreaPost(@RequestParam(required = false) String fio,
                                          @RequestParam(required = false) String name,
                                          @RequestParam(required = false) String lastName,Model model){
-        Manager manager = managerService.getUserWeb();
-        manager.setFio(fio);
-        manager.setName(name);
-        manager.setLastName(lastName);
-        manager.setFio_i_o(fio + " " + name.charAt(0) + "." + lastName.charAt(0) + ".");
-        managerService.saveManager(manager);
+        User user = userService.getUserWeb();
+        user.setFio(fio);
+        user.setName(name);
+        user.setLastName(lastName);
+        user.setFio_i_o(fio + " " + name.charAt(0) + "." + lastName.charAt(0) + ".");
+        userService.saveUser(user);
         return "redirect:/personalArea";
     }
 
     @GetMapping("change/personalAreaPassword")
     public String changePersonalAreaPasswordGet( Model model){
-        model.addAttribute("manager", managerService.getUserWeb());
+        model.addAttribute("user",userService.getUserWeb());
         return "changePersonalAreaPassword";
     }
 
@@ -121,9 +122,9 @@ public class MainController {
             model.addAttribute("passwordError","Пароли не совпадают!");
             return "changePersonalAreaPassword";
         }
-        Manager manager = managerService.getUserWeb();
-        manager.setPassword(passwordEncoder.encode(password));
-        model.addAttribute("manager", managerService.getUserWeb());
+        User user = userService.getUserWeb();
+        user.setPassword(passwordEncoder.encode(password));
+        model.addAttribute("user",userService.getUserWeb());
         return "redirect:/personalArea";
     }
 

@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Изменение прав</title>
+    <title>Изменение менеджера</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -82,13 +82,13 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name.equals("ROLE_USER")?"none":"contents"}"
-           href="/admin/managers">Менеджеры </a>
+           href="/managers">Менеджеры </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
            href="/contragents">Контрагенты </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     </div>
     <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${manager.fio_i_o} </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
     </div>
 </nav>
@@ -104,11 +104,11 @@
     top: 0;
     margin-top: 60px;">
     <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/addManager">Добавить менеджера</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/managers/change/${managerById.getId()}">Изменить
-            права</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addManager">Добавить менеджера</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/managers/change/${managerById.getId()}">Изменить
+            менеджера</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/admin/managers/deletion/${managerById.getId()}">Удалить менеджера</a>
+           href="/managers/deletion/${managerById.getId()}">Удалить менеджера</a>
     </div>
 </nav>
 
@@ -117,37 +117,42 @@
         <table class="table">
             <thead>
             <tr>
-                <th scope="col">Логин</th>
                 <th scope="col">Фамилия</th>
                 <th scope="col">Имя</th>
                 <th scope="col">Отчество</th>
-                <th scope="col">Права</th>
                 <th scope="col">Изменить</th>
             </tr>
             </thead>
             <tbody>
             <tr>
+
                 <td>
-                        ${managerById.getUsername()}
+                    <div>
+                        <input type="text" class="form-control" id="fio" name="fio"
+                               placeholder="${managerById.getFio()}" value="${managerById.getFio()}" required>
+                    </div>
                 </td>
                 <td>
-                        ${managerById.getFio()}
+                    <div>
+                        <input type="text" class="form-control" id="name" name="name"
+                               placeholder="${managerById.getName()}" value="${managerById.getName()}" required>
+                    </div>
                 </td>
                 <td>
-                        ${managerById.getName()}
+                    <div>
+                        <input type="text" class="form-control" id="lastName" name="lastName"
+                               placeholder="${managerById.getLastName()}" value="${managerById.getLastName()}" required>
+                    </div>
                 </td>
-                <td>
-                        ${managerById.getLastName()}
-                </td>
-                <td>
-                    <select class="form-control" name="role">
-                        <option selected>Текущие
-                            права: ${managerById.roles.get(0).name.equals("ROLE_USER")?"Пользователь":"Админ"}</option>
-                        <c:forEach items="${roles}" var="role">
-                            <option>${role.name.equals("ROLE_USER")?"Пользователь":"Админ"}</option>
-                        </c:forEach>
-                    </select>
-                </td>
+<%--                <td>--%>
+<%--                    <select class="form-control" name="role">--%>
+<%--                        <option selected>Текущие--%>
+<%--                            права: ${managerById.roles.get(0).name.equals("ROLE_USER")?"Пользователь":"Админ"}</option>--%>
+<%--                        <c:forEach items="${roles}" var="role">--%>
+<%--                            <option>${role.name.equals("ROLE_USER")?"Пользователь":"Админ"}</option>--%>
+<%--                        </c:forEach>--%>
+<%--                    </select>--%>
+<%--                </td>--%>
                 <td>
                     <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;"
                             type="submit">
