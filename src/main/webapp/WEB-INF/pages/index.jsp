@@ -41,6 +41,8 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;"
            href="/contragents">Контрагенты </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/work">work </a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/test">test</a>
 
     </div>
     <div>
