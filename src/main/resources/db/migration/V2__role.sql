@@ -1,0 +1,1 @@
+-- INSERT INTO public.roles (id, "name") VALUES('4307dd6b-1c2d-4bd7-9506-786be6d96435'::uuid, 'ROLE_USER');
