@@ -117,11 +117,13 @@
         <thead>
         <tr>
             <th scope="col">Название материала</th>
+            <th scope="col">Толщина</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td>${material.getName()}</td>
+            <td>${material.name}</td>
+            <td>${material.thickness}</td>
         </tr>
         </tbody>
     </table>

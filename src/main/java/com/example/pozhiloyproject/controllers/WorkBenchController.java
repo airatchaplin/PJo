@@ -1,7 +1,10 @@
 package com.example.pozhiloyproject.controllers;
 
+import com.example.pozhiloyproject.helper.TypeOperation;
 import com.example.pozhiloyproject.models.WorkBench;
+import com.example.pozhiloyproject.repository.TypeOperationRepository;
 import com.example.pozhiloyproject.services.ManagerService;
+import com.example.pozhiloyproject.services.TypeOperationService;
 import com.example.pozhiloyproject.services.UserService;
 import com.example.pozhiloyproject.services.WorkBenchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -27,6 +31,9 @@ public class WorkBenchController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    TypeOperationService typeOperationService;
+
     @GetMapping("/workbenches")
     public String getAllWorkBenches(Model model) {
         model.addAttribute("workbenches", workBenchService.getAllWorkBench());
@@ -37,12 +44,14 @@ public class WorkBenchController {
     @GetMapping("/addWorkBench")
     public String addWorkBenchGet(Model model) {
         model.addAttribute("user",userService.getUserWeb());
+        model.addAttribute("operations", typeOperationService.getAllTypeOperations());
         return "addWorkBench";
     }
 
     @PostMapping("/addWorkBench")
     public String addWorkBenchPost(@RequestParam(required = false) String nameWorkBench,
-                                   @RequestParam(required = false) String dateEndDetail, Model model) {
+                                   @RequestParam(required = false) String dateEndDetail,
+                                   @RequestParam(required = false) String id,Model model) {
 
         WorkBench findWorkBench = null;
         try {
@@ -60,6 +69,7 @@ public class WorkBenchController {
         WorkBench workBench = new WorkBench();
         workBench.setId(UUID.randomUUID());
         workBench.setName(nameWorkBench);
+        workBench.setTypeOperation(typeOperationService.getOneTypeOperation(UUID.fromString(id)));
 
         workBench.setDateEndDetail(LocalDateTime.parse(dateEndDetail));
         workBenchService.save(workBench);
@@ -76,6 +86,7 @@ public class WorkBenchController {
     @GetMapping("workbenches/change/{nameWorkBench}")
     public String changeWorkBenchGet(@PathVariable(name = "nameWorkBench") String nameWorkBench, Model model) {
         model.addAttribute("workbench", workBenchService.getOneWorkBench(nameWorkBench));
+        model.addAttribute("operations", typeOperationService.getAllTypeOperations());
         model.addAttribute("user",userService.getUserWeb());
         return "changeWorkBench";
     }
@@ -83,6 +94,7 @@ public class WorkBenchController {
     @PostMapping("workbenches/change/{nameWorkBench}")
     public String changeWorkBenchPost(@PathVariable(name = "nameWorkBench") String nameWorkBench,
                                       @RequestParam(required = false) String workBenchName,
+                                      @RequestParam(required = false) String id,
                                       @RequestParam(required = false) String dateEndDetail, Model model) {
         WorkBench findWorkBench = null;
         try {
@@ -99,7 +111,10 @@ public class WorkBenchController {
 
         WorkBench workBench = workBenchService.getOneWorkBench(nameWorkBench);
         workBench.setName(workBenchName);
+        workBench.setTypeOperation(typeOperationService.getOneTypeOperation(UUID.fromString(id)));
+
         workBench.setDateEndDetail(LocalDateTime.parse(dateEndDetail));
+
         workBenchService.save(workBench);
         return "redirect:/workbenches";
     }

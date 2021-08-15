@@ -127,8 +127,21 @@
             <td>${detail.getName()}</td>
             <td>${detail.getMaterial().getName()}</td>
             <td>
-                <c:forEach items="${detail.getWorkBenches()}" var="workbench">
-                    <pre>${workbench.getName()}</pre>
+                <c:set var="count" value="0" scope="page"/>
+                <% int count = 0; %>
+                <c:forEach items="${detail.workBenches}" var="workbench">
+                    <c:if test="${workbench.typeOperation.name.equals('ГИБКА')}">
+                        <c:if test="${count>0}">
+                            <pre style="font-size: 14px; color: red">Альтернатива: ${workbench.name}</pre>
+                        </c:if>
+                        <c:if test="${count==0}">
+                            <pre style="font-size: 14px">${workbench.name}</pre>
+                            <c:set var="count" value="${count + 1}" scope="page"/>
+                        </c:if>
+                    </c:if>
+                    <c:if test="${!workbench.typeOperation.name.equals('ГИБКА')}">
+                        <pre style="font-size: 14px">${workbench.name}</pre>
+                    </c:if>
                 </c:forEach>
             </td>
             <td>

@@ -117,12 +117,14 @@
         <thead>
         <tr>
             <th scope="col">Название материала</th>
+            <th scope="col">Толщина</th>
             <th scope="col">Удалить</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td>${material.getName()}</td>
+            <td>${material.name}</td>
+            <td>${material.thickness}</td>
             <td>
                 <form:form action="/materials/deletion/${material.getName()}"
                            method="post">

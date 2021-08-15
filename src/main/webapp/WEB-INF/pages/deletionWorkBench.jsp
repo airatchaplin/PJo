@@ -115,34 +115,35 @@
 </nav>
 
 <div class="main" style="margin-top: 120px">
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">Станок</th>
-        <th scope="col">Время окончния</th>
-        <th scope="col">Удалить</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>
-            ${workbench.getName()}
-        </td>
-        <td>
-            ${workbench.getDateEndDetail()}
-        </td>
-        <td>
-            <form:form action="/workbenches/deletion/${workbench.getName()}"
-                       method="post">
-                <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">
-                    Удалить
-                </button>
-            </form:form>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<label style="color: red">${workBenchError}</label>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Станок</th>
+            <th scope="col">Операция</th>
+            <th scope="col">Время окончния</th>
+            <th scope="col">Удалить</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>${workbench.name}</td>
+            <td>${workbench.typeOperation.name}</td>
+            <td>
+                ${workbench.dateEndDetail}
+            </td>
+            <td>
+                <form:form action="/workbenches/deletion/${workbench.name}"
+                           method="post">
+                    <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;"
+                            type="submit">
+                        Удалить
+                    </button>
+                </form:form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <label style="color: red">${workBenchError}</label>
 </div>
 </body>
 </html>

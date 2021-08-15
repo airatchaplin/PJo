@@ -105,6 +105,8 @@
     margin-top: 60px;">
     <div>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addWorkBench">Добавить станок</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches/typeOperations">Операции станков</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches/typeOperations/subsequenceTypeOperation"> Последовательность операциий станков</a>
     </div>
 </nav>
 
@@ -113,14 +115,18 @@
         <thead>
         <tr>
             <th scope="col">Станок</th>
+            <th scope="col">Операция</th>
+
             <th scope="col">Время окончния</th>
         </tr>
         </thead>
         <tbody>
         <c:forEach items="${workbenches}" var="workbench">
             <tr>
-                <td><a style="display: block" href="workbenches/${workbench.getName()}">${workbench.getName()}</a></td>
-                <td>${workbench.getDateEndDetail()}</td>
+                <td><a style="display: block" href="workbenches/${workbench.name}">${workbench.name}</a></td>
+                <td>${workbench.typeOperation.name}</td>
+
+                <td>${workbench.dateEndDetail}</td>
             </tr>
         </c:forEach>
         </tbody>

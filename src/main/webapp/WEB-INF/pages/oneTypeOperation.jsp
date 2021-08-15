@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Добавление материала</title>
+    <title>Операция</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -20,11 +20,13 @@
             color: #000000;
             text-decoration: none;
         }
+
         .table {
             width: 100%;
             border: none;
             margin-bottom: 20px;
         }
+
         .table thead th {
             font-weight: bold;
             text-align: left;
@@ -35,6 +37,7 @@
             border-left: 1px solid #ddd;
             border-right: 1px solid #ddd;
         }
+
         .table tbody td {
             text-align: left;
             border-left: 1px solid #ddd;
@@ -43,16 +46,20 @@
             font-size: 14px;
             vertical-align: top;
         }
+
         .table thead tr th:first-child, .table tbody tr td:first-child {
             border-left: none;
         }
+
         .table thead tr th:last-child, .table tbody tr td:last-child {
             border-right: none;
         }
-        .table tbody tr:nth-child(even){
+
+        .table tbody tr:nth-child(even) {
             background: #f3f3f3;
         }
-        .table>:not(caption)>*>* {
+
+        .table > :not(caption) > * > * {
             border-bottom-width: 0px;
         }
     </style>
@@ -67,7 +74,6 @@
     padding: 15px;
     background: #d1d1d1;
     top: 0;">
-
     <div>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/">Главная страница</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
@@ -85,42 +91,47 @@
     </div>
 </nav>
 
-<div class="main" style="margin-top: 60px">
-    <div class="info" >
-        <form action="addMaterial" method="post">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">Материал</th>
-                    <th scope="col">Толщина</th>
-                    <th scope="col">Добавить</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>
-                        <div>
-                            <input type="text" class="form-control" id="materialName" name="materialName"
-                                   placeholder="Введите название материала" value="" required>
-                        </div>
-                        <div class="error" style="color: red;">
-                            ${materialNameRepeatError}
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <input type="text" class="form-control" id="thickness" name="thickness"
-                                   placeholder="Введите толщину" value="" required>
-                        </div>
-                    </td>
-                    <td>
-                        <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">Добавить материал</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </form>
+<nav style="position: fixed;
+    box-shadow: 0 5px 5px -5px;
+    display: flex;
+    justify-content: space-between;
+    right: 0;
+    left: 0;
+    background: #f2f2f2;
+    padding: 15px;
+    top: 0;
+    margin-top: 60px;">
+    <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches/typeOperations/addTypeOperation">Добавить операцию</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;"
+           href="/workbenches/typeOperations/change/${operation.id}">Изменить
+            операцию</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;"
+           href="/workbenches/typeOperations/deletion/${operation.id}">Удалить
+            операцию</a>
     </div>
+
+</nav>
+
+<div class="main" style="margin-top: 120px">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Операция</th>
+            <th scope="col">Станки операции</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>${operation.name}</td>
+            <td>
+                <c:forEach items="${workbenches}" var="workbench">
+                    <pre>${workbench.name}</pre>
+                </c:forEach>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 </body>

@@ -118,7 +118,6 @@
             <th scope="col">Деталь</th>
             <th scope="col">Длина</th>
             <th scope="col">Ширина</th>
-            <th scope="col">Толщина</th>
             <th scope="col">Материал</th>
             <th scope="col">Станки</th>
             <th scope="col">Время детали на этом станке</th>
@@ -130,7 +129,6 @@
             <td>${detail.getName()}</td>
             <td>${detail.getLength()}</td>
             <td>${detail.getWidth()}</td>
-            <td>${detail.getThickness()}</td>
             <td>${detail.getMaterial().getName()}</td>
             <td>
                 <c:forEach items="${detail.getWorkBenches()}" var="workbench">

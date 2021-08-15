@@ -111,13 +111,16 @@
         <thead>
         <tr>
             <th scope="col">Название материала</th>
+            <th scope="col">Толщина</th>
         </tr>
         </thead>
         <tbody>
         <c:forEach items="${materials}" var="material">
             <tr>
                 <td><a style="display: block" href="materials/${material.getName()}">${material.getName()}</a></td>
+                <td>${material.thickness}</td>
             </tr>
+
         </c:forEach>
         </tbody>
     </table>

@@ -104,12 +104,9 @@
                     <th scope="col">Деталь</th>
                     <th scope="col">Длина</th>
                     <th scope="col">Ширина</th>
-                    <th scope="col">Толщина</th>
                     <th scope="col">Материал</th>
-                    <th scope="col">Станок
-                        <input type="button" style="margin: 10px" value="+" id="add_more_fields"/>
-                        <input type="button" onclick="deleteRow()" value=" - ">
-                    </th>
+                    <th scope="col">Операции</th>
+                    <th>Станки</th>
                     <th scope="col">Время детали на этом станке</th>
                     <th scope="col">Добавить</th>
                 </tr>
@@ -137,12 +134,7 @@
                                    placeholder="Введите ширину" value="" required>
                         </div>
                     </td>
-                    <td>
-                        <div>
-                            <input type="text" class="form-control" id="thickness" name="thickness"
-                                   placeholder="Введите толщину" value="" required>
-                        </div>
-                    </td>
+
                     <td>
                         <div>
                             <select class="form-control" name="materialName">
@@ -153,22 +145,27 @@
                             </select>
                         </div>
                     </td>
-                    <td id="columnWorkBench">
+                    <td id="columnOperation">
                         <div>
-                            <select class="form-control" name="workBenchName">
-                                <option selected value="Выбирите станок">Выбирите станок</option>
-                                <c:forEach items="${workbenches}" var="workbench">
-                                    <option value="${workbench.getName()}">${workbench.getName()}</option>
+                            <select onchange="test1(this)" class="form-control" name="workBenchName">
+                                <option selected value="Выбирите операции">Выбирите операции</option>
+                                <c:forEach items="${operations}" var="operation">
+                                    <option value="${operation.description}">${operation.description}</option>
                                 </c:forEach>
                             </select>
                         </div>
                     </td>
+                    <td id="columnWorkBench">
+
+                    </td>
                     <td id="columnTimeWork">
-                        <input type="text" class="form-control" id="timeWork" name="timeWork"
-                               placeholder="Введите время детали">
+                        <%--                        <input type="text" class="form-control" id="timeWork" name="timeWork"--%>
+                        <%--                               placeholder="Введите время детали">--%>
                     </td>
                     <td>
-                        <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">Добавить деталь</button>
+                        <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;"
+                                type="submit">Добавить деталь
+                        </button>
                     </td>
                 </tr>
                 </tbody>
@@ -181,28 +178,167 @@
 
 </body>
 <script>
-    $('#add_more_fields').click(function () {
+
+    var countWorkBench = 0;
+    var countTimeWork = 0;
+
+    function test1(select) {
+        var selectedOption = select.options[select.selectedIndex];
+        var string = selectedOption.value;
+        var arr = string.split(' -> ');
+
+        for (let i = countWorkBench; i >= 0; i--) {
+
+            $("#forDeleteWorkBench" + i).remove();
+        }
+
+        for (let i = countTimeWork; i >= 0; i--) {
+
+            $("#forDeleteTimeWork" + i).remove();
+        }
+        countTimeWork = 0;
+        countWorkBench = 0;
+
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] === "РЕЗКА") {
+                rezka();
+            }
+            if (arr[i] === "ПРОБИВКА") {
+                probivka();
+            }
+            if (arr[i] === "ПРОКАТКА") {
+                prokatka();
+            }
+            if (arr[i] === "ГИБКА") {
+                gibka();
+            }
+
+        }
+
+    }
+
+    function rezka() {
         var component1 = '';
-        component1 += '<div id="forDeleteWorkBench">';
+        component1 += '<div id="forDeleteWorkBench' + countWorkBench + '">';
         component1 += '<select class="form-control" name="workBenchName">';
         component1 += '<option selected value="Выбирите станок">Выбирите станок</option>';
-        component1 += '<c:forEach items="${workbenches}" var="workbench">';
+        component1 += '<c:forEach items="${РЕЗКА}" var="workbench">';
         component1 += '<option value="${workbench.getName()}">${workbench.getName()}</option>';
         component1 += '</c:forEach>';
         component1 += '</select>';
+        component1 += '<br>';
         component1 += '</div>';
 
         var component2 = '';
-        component2 += '<input type="text" class="form-control" id="forDeleteTimeWork" name="timeWork" placeholder="Введите время детали">';
+        component2 += '<div id="forDeleteTimeWork' + countTimeWork + '">';
+        component2 += '<input type="text" class="form-control"  name="timeWork" placeholder="Введите время детали">';
+        component2 += '<br>';
+        component2 += '</div>';
 
         $('#columnWorkBench').append(component1);
         $('#columnTimeWork').append(component2);
-    });
-
-    function deleteRow() {
-        $("#forDeleteWorkBench").remove();
-        $("#forDeleteTimeWork").remove();
+        countWorkBench++;
+        countTimeWork++;
     }
+
+    function probivka() {
+        var component1 = '';
+        component1 += '<div id="forDeleteWorkBench' + countWorkBench + '">';
+        component1 += '<select class="form-control" name="workBenchName">';
+        component1 += '<option selected value="Выбирите станок">Выбирите станок</option>';
+        component1 += '<c:forEach items="${ПРОБИВКА}" var="workbench">';
+        component1 += '<option value="${workbench.getName()}">${workbench.getName()}</option>';
+        component1 += '</c:forEach>';
+        component1 += '</select>';
+        component1 += '<br>';
+        component1 += '</div>';
+
+        var component2 = '';
+        component2 += '<div id="forDeleteTimeWork' + countTimeWork + '">';
+        component2 += '<input type="text" class="form-control"  name="timeWork" placeholder="Введите время детали">';
+        component2 += '<br>';
+        component2 += '</div>';
+
+        $('#columnWorkBench').append(component1);
+        $('#columnTimeWork').append(component2);
+        countWorkBench++;
+        countTimeWork++;
+    }
+
+    function prokatka() {
+        var component1 = '';
+        component1 += '<div id="forDeleteWorkBench' + countWorkBench + '">';
+        component1 += '<select class="form-control" name="workBenchName">';
+        component1 += '<option selected value="Выбирите станок">Выбирите станок</option>';
+        component1 += '<c:forEach items="${ПРОКАТКА}" var="workbench">';
+        component1 += '<option value="${workbench.getName()}">${workbench.getName()}</option>';
+        component1 += '</c:forEach>';
+        component1 += '</select>';
+        component1 += '<br>';
+        component1 += '</div>';
+
+        var component2 = '';
+        component2 += '<div id="forDeleteTimeWork' + countTimeWork + '">';
+        component2 += '<input type="text" class="form-control"  name="timeWork" placeholder="Введите время детали">';
+        component2 += '<br>';
+        component2 += '</div>';
+
+        $('#columnWorkBench').append(component1);
+        $('#columnTimeWork').append(component2);
+        countWorkBench++;
+        countTimeWork++;
+    }
+
+    function gibka() {
+        var component1 = '';
+        component1 += '<div id="forDeleteWorkBench' + countWorkBench + '">';
+        component1 += '<select class="form-control" name="workBenchName">';
+        component1 += '<option selected value="Выбирите станок">Выбирите станок</option>';
+        component1 += '<c:forEach items="${ГИБКА}" var="workbench">';
+        component1 += '<option value="${workbench.getName()}">${workbench.getName()}</option>';
+        component1 += '</c:forEach>';
+        component1 += '</select>';
+        countWorkBench++;
+        component1 += '<div id="forDeleteWorkBench' + countWorkBench + '">';
+        component1 += '<select class="form-control" name="workBenchName">';
+        component1 += '<option selected value="Выбирите станок">Выбирите станок</option>';
+        component1 += '<c:forEach items="${ГИБКА}" var="workbench">';
+        component1 += '<option value="${workbench.getName()}">${workbench.getName()}</option>';
+        component1 += '</c:forEach>';
+        component1 += '</select>';
+        countWorkBench++;
+        component1 += '<div id="forDeleteWorkBench' + countWorkBench + '">';
+        component1 += '<select class="form-control" name="workBenchName">';
+        component1 += '<option selected value="Выбирите станок">Выбирите станок</option>';
+        component1 += '<c:forEach items="${ГИБКА}" var="workbench">';
+        component1 += '<option value="${workbench.getName()}">${workbench.getName()}</option>';
+        component1 += '</c:forEach>';
+        component1 += '</select>';
+        component1 += '<br>';
+        component1 += '</div>';
+        countWorkBench++;
+        var component2 = '';
+        component2 += '<div id="forDeleteTimeWork' + countTimeWork + '">';
+        component2 += '<input type="text" class="form-control"  name="timeWork" placeholder="Введите время детали">';
+        component2 += '</div>';
+        countTimeWork++;
+        component2 += '<div id="forDeleteTimeWork' + countTimeWork + '">';
+        component2 += '<input type="text" class="form-control"  name="timeWork" placeholder="Введите время детали">';
+        component2 += '</div>';
+        countTimeWork++;
+        component2 += '<div id="forDeleteTimeWork' + countTimeWork + '">';
+        component2 += '<input type="text" class="form-control"  name="timeWork" placeholder="Введите время детали">';
+        component2 += '<br>';
+        component2 += '</div>';
+
+        countTimeWork++;
+
+        $('#columnWorkBench').append(component1);
+        $('#columnTimeWork').append(component2);
+
+
+    }
+
 
 </script>
 </html>

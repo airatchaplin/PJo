@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Добавление материала</title>
+    <title>Добавление операции</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -20,11 +20,13 @@
             color: #000000;
             text-decoration: none;
         }
+
         .table {
             width: 100%;
             border: none;
             margin-bottom: 20px;
         }
+
         .table thead th {
             font-weight: bold;
             text-align: left;
@@ -35,6 +37,7 @@
             border-left: 1px solid #ddd;
             border-right: 1px solid #ddd;
         }
+
         .table tbody td {
             text-align: left;
             border-left: 1px solid #ddd;
@@ -43,16 +46,20 @@
             font-size: 14px;
             vertical-align: top;
         }
+
         .table thead tr th:first-child, .table tbody tr td:first-child {
             border-left: none;
         }
+
         .table thead tr th:last-child, .table tbody tr td:last-child {
             border-right: none;
         }
-        .table tbody tr:nth-child(even){
+
+        .table tbody tr:nth-child(even) {
             background: #f3f3f3;
         }
-        .table>:not(caption)>*>* {
+
+        .table > :not(caption) > * > * {
             border-bottom-width: 0px;
         }
     </style>
@@ -78,6 +85,7 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;"
            href="/contragents">Контрагенты </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
+
     </div>
     <div>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
@@ -86,13 +94,12 @@
 </nav>
 
 <div class="main" style="margin-top: 60px">
-    <div class="info" >
-        <form action="addMaterial" method="post">
+    <div class="info">
+        <form method="post">
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">Материал</th>
-                    <th scope="col">Толщина</th>
+                    <th scope="col">Операция</th>
                     <th scope="col">Добавить</th>
                 </tr>
                 </thead>
@@ -100,28 +107,25 @@
                 <tr>
                     <td>
                         <div>
-                            <input type="text" class="form-control" id="materialName" name="materialName"
-                                   placeholder="Введите название материала" value="" required>
+                            <input type="text" class="form-control" id="nameTypeOperation" name="nameTypeOperation"
+                                   placeholder="Введите название операции"  required>
                         </div>
                         <div class="error" style="color: red;">
-                            ${materialNameRepeatError}
+                            ${workBenchRepeatError}
                         </div>
                     </td>
                     <td>
-                        <div>
-                            <input type="text" class="form-control" id="thickness" name="thickness"
-                                   placeholder="Введите толщину" value="" required>
-                        </div>
-                    </td>
-                    <td>
-                        <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">Добавить материал</button>
+                        <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">Добавить операцию</button>
                     </td>
                 </tr>
                 </tbody>
             </table>
+
         </form>
     </div>
+
 </div>
+
 
 </body>
 </html>

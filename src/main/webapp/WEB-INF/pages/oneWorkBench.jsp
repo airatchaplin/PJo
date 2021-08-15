@@ -118,12 +118,14 @@
         <thead>
         <tr>
             <th scope="col">Станок</th>
+            <th scope="col">Операция</th>
             <th scope="col">Время окончния</th>
         </tr>
         </thead>
         <tbody>
         <tr>
             <td>${workbench.getName()}</td>
+            <td>${workbench.typeOperation.name}</td>
             <td>${workbench.getDateEndDetail()}</td>
         </tr>
         </tbody>

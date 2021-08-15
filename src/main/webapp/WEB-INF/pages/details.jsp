@@ -113,7 +113,6 @@
             <th scope="col">Деталь</th>
             <th scope="col">Длина</th>
             <th scope="col">Ширина</th>
-            <th scope="col">Толщина</th>
             <th scope="col">Материал</th>
             <th scope="col">Станки</th>
             <th scope="col">Время детали на этом станке</th>
@@ -125,16 +124,28 @@
                 <td><a style="display: block" href="details/${detail.getName()}">${detail.getName()}</a></td>
                 <td>${detail.getLength()}</td>
                 <td>${detail.getWidth()}</td>
-                <td>${detail.getThickness()}</td>
                 <td>${detail.getMaterial().getName()}</td>
                 <td>
-                    <c:forEach items="${detail.getWorkBenches()}" var="workbench">
-                        <pre>${workbench.getName()}</pre>
+                    <c:set var="count" value="0" scope="page"/>
+                    <% int count = 0; %>
+                    <c:forEach items="${detail.workBenches}" var="workbench">
+                        <c:if test="${workbench.typeOperation.name.equals('ГИБКА')}">
+                            <c:if test="${count>0}">
+                                <pre style="font-size: 14px; color: red">Альтернатива: ${workbench.name}</pre>
+                            </c:if>
+                            <c:if test="${count==0}">
+                                <pre style="font-size: 14px">${workbench.name}</pre>
+                                <c:set var="count" value="${count + 1}" scope="page"/>
+                            </c:if>
+                        </c:if>
+                        <c:if test="${!workbench.typeOperation.name.equals('ГИБКА')}">
+                            <pre style="font-size: 14px">${workbench.name}</pre>
+                        </c:if>
                     </c:forEach>
                 </td>
                 <td>
                     <c:forEach items="${detail.getTimeWorkDetails()}" var="timeWork">
-                        <pre>${timeWork.getTimeWork()}</pre>
+                        <pre style="font-size: 14px">${timeWork.getTimeWork()}</pre>
                     </c:forEach>
                 </td>
             </tr>

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class WorkBenchService {
@@ -13,19 +14,23 @@ public class WorkBenchService {
     @Autowired
     WorkBenchRepository workBenchRepository;
 
-    public void save(WorkBench workBench){
+    public void save(WorkBench workBench) {
         workBenchRepository.save(workBench);
     }
 
-    public List<WorkBench> getAllWorkBench(){
+    public List<WorkBench> getAllWorkBench() {
         return workBenchRepository.findAll();
     }
 
-    public WorkBench getOneWorkBench(String name){
+    public WorkBench getOneWorkBench(String name) {
         return workBenchRepository.findByName(name);
     }
 
-    public void deleteWorkBench(WorkBench workBench){
+    public void deleteWorkBench(WorkBench workBench) {
         workBenchRepository.delete(workBench);
+    }
+
+    public List<WorkBench> getWorkBenchesFilterOperationName(UUID id) {
+       return workBenchRepository.findByWorkBenchesFilterOperationName(id);
     }
 }

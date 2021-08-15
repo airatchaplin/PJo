@@ -19,4 +19,9 @@ public class Material {
 
     private String name;
 
+    /**
+     * Толщина материала
+     */
+    private String thickness;
+
 }

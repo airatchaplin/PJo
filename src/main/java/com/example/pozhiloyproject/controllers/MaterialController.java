@@ -40,7 +40,7 @@ public class MaterialController {
     }
 
     @PostMapping("/addMaterial")
-    public String addMaterialPost(@RequestParam(required = false) String materialName,Model model) {
+    public String addMaterialPost(@RequestParam(required = false) String materialName,@RequestParam(required = false) String thickness,Model model) {
         Material findMaterial = null;
         try {
             findMaterial = materialService.getOneMaterial(materialName);
@@ -55,6 +55,7 @@ public class MaterialController {
         Material material = new Material();
         material.setId(UUID.randomUUID());
         material.setName(materialName);
+        material.setThickness(thickness);
         materialService.saveMaterial(material);
         return "redirect:/materials";
     }
@@ -75,7 +76,7 @@ public class MaterialController {
 
     @PostMapping("materials/change/{nameMaterial}")
     public String changeMaterialPost(@PathVariable(name = "nameMaterial") String nameMaterial,
-                                     @RequestParam(required = false) String materialName, Model model) {
+                                     @RequestParam(required = false) String materialName,@RequestParam(required = false) String thickness, Model model) {
         Material findMaterial = null;
         try {
             findMaterial = materialService.getOneMaterial(materialName);
@@ -89,6 +90,7 @@ public class MaterialController {
         }
         Material material = materialService.getOneMaterial(nameMaterial);
         material.setName(materialName);
+        material.setThickness(thickness);
         materialService.saveMaterial(material);
         return "redirect:/materials";
     }

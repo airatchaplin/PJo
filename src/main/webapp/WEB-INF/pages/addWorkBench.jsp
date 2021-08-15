@@ -100,6 +100,7 @@
                 <thead>
                 <tr>
                     <th scope="col">Станок</th>
+                    <th scope="col">Операция</th>
                     <th scope="col">Время окончания</th>
                     <th scope="col">Добавить</th>
                 </tr>
@@ -113,6 +114,16 @@
                         </div>
                         <div class="error" style="color: red;">
                             ${workBenchRepeatError}
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <select class="form-control" name="id">
+                                <option selected value="Выбирите операцию">Выбирите операцию</option>
+                                <c:forEach items="${operations}" var="operation">
+                                    <option value="${operation.id}">${operation.name}</option>
+                                </c:forEach>
+                            </select>
                         </div>
                     </td>
                     <td>

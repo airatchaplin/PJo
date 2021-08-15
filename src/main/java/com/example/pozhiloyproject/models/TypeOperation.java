@@ -4,24 +4,21 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "workbench")
+@Table(name = "type_operation")
 @Getter
 @Setter
-public class WorkBench {
+public class TypeOperation {
 
     @Id
     private UUID id;
 
     private String name;
 
-    private LocalDateTime dateEndDetail;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    private TypeOperation typeOperation;
-
+    @OneToMany(cascade = CascadeType.ALL)
+    List<WorkBench> workBenches;
 
 }

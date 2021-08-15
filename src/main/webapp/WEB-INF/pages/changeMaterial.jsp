@@ -118,6 +118,7 @@
             <thead>
             <tr>
                 <th scope="col">Название материала</th>
+                <th scope="col">Толщина</th>
                 <th scope="col">Изменить</th>
             </tr>
             </thead>
@@ -130,6 +131,12 @@
                     </div>
                     <div class="error" style="color: red;">
                             ${materialNameRepeatError}
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <input type="text" class="form-control" id="thickness" name="thickness"
+                               placeholder="${material.thickness}" value="${material.thickness}" required>
                     </div>
                 </td>
                 <td>

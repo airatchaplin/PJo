@@ -2,6 +2,7 @@ package com.example.pozhiloyproject.controllers;
 
 import com.example.pozhiloyproject.models.Detail;
 import com.example.pozhiloyproject.models.TimeWorkDetail;
+import com.example.pozhiloyproject.models.TypeOperation;
 import com.example.pozhiloyproject.models.WorkBench;
 import com.example.pozhiloyproject.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,8 @@ public class DetailController {
     @Autowired
     UserService userService;
 
+    @Autowired TypeOperationService typeOperationService;
+
     @GetMapping("/details")
     public String getAllDetails(Model model) {
         model.addAttribute("details", detailService.getAllDetails());
@@ -43,12 +46,19 @@ public class DetailController {
         return "details";
     }
 
+    @Autowired SubsequenceTypeOperationService subsequenceTypeOperationService;
+
     @GetMapping("/addDetail")
     public String addDetailGet(Model model) {
         model.addAttribute("details", detailService.getAllDetails());
         model.addAttribute("workbenches", workBenchService.getAllWorkBench());
         model.addAttribute("materials", materialService.getAllMaterials());
         model.addAttribute("user",userService.getUserWeb());
+        model.addAttribute("operations", subsequenceTypeOperationService.getAllSubsequenceTypeOperation());
+        for (TypeOperation typeOperation : typeOperationService.getAllTypeOperations()) {
+            List<WorkBench> collect = workBenchService.getWorkBenchesFilterOperationName(typeOperation.getId());
+            model.addAttribute(typeOperation.getName() ,collect);
+        }
         return "addDetail";
     }
 
@@ -56,7 +66,6 @@ public class DetailController {
     public String addDetailPost(@RequestParam(required = false) String detailName,
                                 @RequestParam(required = false) String length,
                                 @RequestParam(required = false) String width,
-                                @RequestParam(required = false) String thickness,
                                 @RequestParam(required = false) String materialName,
                                 @RequestParam(required = false) List<String> workBenchName,
                                 @RequestParam(required = false) List<String> timeWork,
@@ -82,7 +91,7 @@ public class DetailController {
         detail.setName(detailName);
         detail.setLength(length);
         detail.setWidth(width);
-        detail.setThickness(thickness);
+
 
         detail.setMaterial(materialService.getOneMaterial(materialName));
 
@@ -167,7 +176,6 @@ public class DetailController {
         detail.setName(detailName);
         detail.setLength(length);
         detail.setWidth(width);
-        detail.setThickness(thickness);
         detail.setMaterial(materialService.getOneMaterial(materialName.replace("Выбранная: ", "")));
         List<WorkBench> workBenchList = new ArrayList<>();
         List<TimeWorkDetail> timeWorkDetailsList = new ArrayList<>();

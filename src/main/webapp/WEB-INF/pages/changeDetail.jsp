@@ -120,7 +120,6 @@
                 <th scope="col">Деталь</th>
                 <th scope="col">Длина</th>
                 <th scope="col">Ширина</th>
-                <th scope="col">Толщина</th>
                 <th scope="col">Материал</th>
                 <th scope="col">Станки</th>
                 <th scope="col">Время детали на этом станке</th>
@@ -145,12 +144,6 @@
                     <div>
                         <input type="text" class="form-control" id="width" name="width"
                                placeholder="${detail.getWidth()}" value="${detail.getWidth()}" required>
-                    </div>
-                </td>
-                <td>
-                    <div>
-                        <input type="text" class="form-control" id="thickness" name="thickness"
-                               placeholder="${detail.getThickness()}" value="${detail.getThickness()}" required>
                     </div>
                 </td>
                 <td>

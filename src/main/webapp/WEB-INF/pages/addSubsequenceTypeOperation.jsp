@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Добавление материала</title>
+    <title>Добавление последовательности операций</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -15,16 +15,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
             integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
             crossorigin="anonymous"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <style>
         a {
             color: #000000;
             text-decoration: none;
         }
+
         .table {
             width: 100%;
             border: none;
             margin-bottom: 20px;
         }
+
         .table thead th {
             font-weight: bold;
             text-align: left;
@@ -35,6 +39,7 @@
             border-left: 1px solid #ddd;
             border-right: 1px solid #ddd;
         }
+
         .table tbody td {
             text-align: left;
             border-left: 1px solid #ddd;
@@ -43,16 +48,20 @@
             font-size: 14px;
             vertical-align: top;
         }
+
         .table thead tr th:first-child, .table tbody tr td:first-child {
             border-left: none;
         }
+
         .table thead tr th:last-child, .table tbody tr td:last-child {
             border-right: none;
         }
-        .table tbody tr:nth-child(even){
+
+        .table tbody tr:nth-child(even) {
             background: #f3f3f3;
         }
-        .table>:not(caption)>*>* {
+
+        .table > :not(caption) > * > * {
             border-bottom-width: 0px;
         }
     </style>
@@ -78,6 +87,7 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;"
            href="/contragents">Контрагенты </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
+
     </div>
     <div>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
@@ -86,42 +96,65 @@
 </nav>
 
 <div class="main" style="margin-top: 60px">
-    <div class="info" >
-        <form action="addMaterial" method="post">
+    <div class="info">
+        <form method="post">
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">Материал</th>
-                    <th scope="col">Толщина</th>
+                    <th scope="col">Последовательность операций
+                        <input type="button" style="margin: 10px" value="+" id="add_more_fields"/>
+                        <input type="button" onclick="deleteRow()" value=" - ">
+                    </th>
                     <th scope="col">Добавить</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <td>
+                    <td id="columnTypeOperations">
                         <div>
-                            <input type="text" class="form-control" id="materialName" name="materialName"
-                                   placeholder="Введите название материала" value="" required>
-                        </div>
-                        <div class="error" style="color: red;">
-                            ${materialNameRepeatError}
+                            <select class="form-control" name="typeOperationsList">
+                                <option selected value="Выбирите операцию">Выбирите операцию</option>
+                                <c:forEach items="${operations}" var="operation">
+                                    <option value="${operation.id}">${operation.name}</option>
+                                </c:forEach>
+                            </select>
                         </div>
                     </td>
                     <td>
-                        <div>
-                            <input type="text" class="form-control" id="thickness" name="thickness"
-                                   placeholder="Введите толщину" value="" required>
-                        </div>
-                    </td>
-                    <td>
-                        <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">Добавить материал</button>
+                        <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">Добавить операцию</button>
                     </td>
                 </tr>
                 </tbody>
             </table>
+
         </form>
     </div>
+
 </div>
 
+
 </body>
+<script>
+    $('#add_more_fields').click(function () {
+        var component1 = '';
+        component1 += '<div id="forDeleteTypeOperations">';
+        component1 += '<select class="form-control" name="typeOperationsList">';
+        component1 += '<option selected value="Выбирите операцию">Выбирите операцию</option>';
+        component1 += '<c:forEach items="${operations}" var="operation">';
+        component1 += '<option value="${operation.id}">${operation.name}</option>';
+        component1 += '</c:forEach>';
+        component1 += '</select>';
+        component1 += '</div>';
+
+
+        $('#columnTypeOperations').append(component1);
+
+    });
+
+    function deleteRow() {
+        $("#forDeleteTypeOperations").remove();
+
+    }
+
+</script>
 </html>

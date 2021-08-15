@@ -122,6 +122,7 @@
             <thead>
             <tr>
                 <th scope="col">Станок</th>
+                <th scope="col">Операция</th>
                 <th scope="col">Время окончния</th>
                 <th scope="col">Изменить</th>
             </tr>
@@ -131,7 +132,7 @@
                 <td>
                     <div>
                         <input type="text" class="form-control" id="workBenchName" name="workBenchName"
-                               placeholder="Введите название станка" value="${workbench.getName()}" required>
+                               placeholder="Введите название станка" value="${workbench.name}" required>
                     </div>
                     <div class="error" style="color: red;">
                             ${workBenchRepeatError}
@@ -139,8 +140,18 @@
                 </td>
                 <td>
                     <div>
+                        <select class="form-control" name="id">
+                            <option selected value="${workbench.typeOperation.id}">Выбранная операция ${workbench.typeOperation.name}</option>
+                            <c:forEach items="${operations}" var="operation">
+                                <option value="${operation.id}">${operation.name}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div>
                         <input type="datetime-local" class="form-control" id="dateEndDetail" name="dateEndDetail"
-                               value="${workbench.getDateEndDetail()}" required>
+                               value="${workbench.dateEndDetail}" required>
                     </div>
                 </td>
                 <td>
