@@ -40,14 +40,6 @@ public class MainController {
     @GetMapping("/")
     public String main(Model model) {
         model.addAttribute("user", userService.getUserWeb());
-        model.addAttribute("operations", subsequenceTypeOperationService.getAllSubsequenceTypeOperation());
-
-
-        for (TypeOperation typeOperation : typeOperationService.getAllTypeOperations()) {
-            List<WorkBench> collect = workBenchService.getWorkBenchesFilterOperationName(typeOperation.getId());
-            model.addAttribute(typeOperation.getName() ,collect);
-        }
-
         return "index";
     }
 
