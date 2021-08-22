@@ -9,5 +9,5 @@ import java.util.UUID;
 @Repository
 public interface ContragentRepository extends JpaRepository<Contragent, UUID> {
 
-    public Contragent findByName(String name);
+    Contragent findByName(String name);
 }

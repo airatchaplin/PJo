@@ -88,6 +88,9 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     </div>
     <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}" href="/admin/allUsers">Все
+            пользователи
+        </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
     </div>
@@ -106,8 +109,8 @@
     <div>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addDetail">Добавить деталь</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/details/change/${detail.getName()}">Изменить деталь</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details/deletion/${detail.getName()}">Удалить
+           href="/details/change/${detail.id}">Изменить деталь</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details/deletion/${detail.id}">Удалить
             деталь</a>
     </div>
 </nav>
@@ -131,48 +134,48 @@
                 <td>
                     <div>
                         <input type="text" class="form-control" id="detailName" name="detailName"
-                               placeholder="${detail.getName()}" value="${detail.getName()}" required>
+                               placeholder="${detail.name}" value="${detail.name}" required>
                     </div>
                 </td>
                 <td>
                     <div>
                         <input type="text" class="form-control" id="length" name="length"
-                               placeholder="${detail.getLength()}" value="${detail.getLength()}" required>
+                               placeholder="${detail.length}" value="${detail.length}" required>
                     </div>
                 </td>
                 <td>
                     <div>
                         <input type="text" class="form-control" id="width" name="width"
-                               placeholder="${detail.getWidth()}" value="${detail.getWidth()}" required>
+                               placeholder="${detail.width}" value="${detail.width}" required>
                     </div>
                 </td>
                 <td>
                     <div>
                         <select class="form-control" name="materialName">
-                            <option>Выбранная: ${detail.getMaterial().getName()}</option>
+                            <option>Выбранная: ${detail.material.name}</option>
                             <c:forEach items="${materials}" var="material">
-                                <option value="${material.getName()}">${material.getName()}</option>
+                                <option value="${material.name}">${material.name} ${material.thickness}мм</option>
                             </c:forEach>
                         </select>
                     </div>
                 </td>
                 <td>
-                    <c:forEach items="${detail.getWorkBenches()}" var="det">
+                    <c:forEach items="${detail.workBenchDtos}" var="det">
                         <div>
-                            <select class="form-control" name="workBench">
-                                <option>Выбранная: ${det.getName()}</option>
-                                <c:forEach items="${detail.getWorkBenches()}" var="workbench">
-                                    <option value="${workbench.getName()}">${workbench.getName()}</option>
+                            <select class="form-control" name="workBenchId">
+                                <option>Выбранная: ${det.name}</option>
+                                <c:forEach items="${detail.workBenchDtos}" var="workbench">
+                                    <option value="${workbench.name}">${workbench.name}</option>
                                 </c:forEach>
                             </select>
                         </div>
                     </c:forEach>
                 </td>
                 <td>
-                    <c:forEach items="${detail.getTimeWorkDetails()}" var="timeWork">
+                    <c:forEach items="${detail.timeWorkDetailsDtos}" var="timeWork">
                         <div>
                             <input type="text" class="form-control" id="timeWork" name="timeWork"
-                                   placeholder="${timeWork.getTimeWork()}" value="${timeWork.getTimeWork()}" required>
+                                   placeholder="${timeWork.timeWork}" value="${timeWork.timeWork}" required>
                         </div>
                     </c:forEach>
                 </td>
@@ -185,7 +188,7 @@
             </tbody>
         </table>
     </form:form>
-    <label style="color: red">${detailError}</label>
+<%--    <label style="color: red">${detailError}</label>--%>
 </div>
 </body>
 

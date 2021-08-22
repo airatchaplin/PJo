@@ -8,29 +8,57 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Завершенные заказы
+ */
 @Entity
 @Table(name = "completed_orders")
 @Getter
 @Setter
 public class CompletedOrder {
 
+    /**
+     * ID
+     */
     @Id
     private UUID id;
 
+    /**
+     * Номер заказа
+     */
     private int numberOrder;
 
+    /**
+     * Контрагент
+     */
     @ManyToOne
     private Contragent objectName;
 
+    /**
+     * Менеджер
+     */
     @ManyToOne
-    private Manager manager;
+    private User manager;
 
+    /**
+     * Детали в заказе
+     */
     @ManyToMany(cascade = CascadeType.ALL)
     private List<DetailInfo> detailInfos;
 
+    /**
+     * Дата запуска в производство
+     */
     private LocalDateTime dateStart;
 
+    /**
+     * Дата завершения заказа
+     */
     private LocalDateTime dateEnd;
 
+    /**
+     * Комментарий
+     */
     private String comment;
+
 }

@@ -8,21 +8,39 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Сервис прав
+ */
 @Service
 public class RoleService {
 
     @Autowired
     RoleRepository roleRepository;
 
-    public Role getRoleUser(){
+    /**
+     * Получение права ROLE_USER
+     *
+     * @return Права
+     */
+    public Role getRoleUser() {
         return roleRepository.findByName("ROLE_USER");
     }
 
-    public Role getRoleAdmin(){
+    /**
+     * Получение права ROLE_ADMIN
+     *
+     * @return Права
+     */
+    public Role getRoleAdmin() {
         return roleRepository.findByName("ROLE_ADMIN");
     }
 
-    public List<Role> getAllRoles(){
+    /**
+     * Получение всех прав
+     *
+     * @return Список прав
+     */
+    public List<Role> getAllRoles() {
         return roleRepository.findAll();
     }
 }

@@ -1,6 +1,8 @@
 package com.example.pozhiloyproject.services;
 
+import com.example.pozhiloyproject.models.Role;
 import com.example.pozhiloyproject.models.User;
+import com.example.pozhiloyproject.repository.RoleRepository;
 import com.example.pozhiloyproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,11 +12,24 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+/**
+ * Сервис пользователей
+ */
 @Service
 public class UserService implements UserDetailsService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    RoleRepository roleRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -25,11 +40,89 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    public User getUserWeb(){
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    /**
+     * Получение аунтифицированного пользователя
+     *
+     * @return Ползователь
+     */
+    public User getUserWeb() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userRepository.findById(user.getId()).orElseThrow();
     }
 
-    public void saveUser(User user){
+    /**
+     * Сохранение пользователя
+     *
+     * @param user Ползователь
+     */
+    public void saveUser(User user) {
         userRepository.save(user);
+    }
+
+    /**
+     * Получение пользователя по логину
+     *
+     * @param username Логин
+     * @return Ползователь
+     */
+    public User getByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    /**
+     * Получение всех пользователей
+     *
+     * @return Список всех пользователей
+     */
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    /**
+     * Получение всех менеджеров
+     *
+     * @return Список всех менеджеров
+     */
+    public List<User> getManagers() {
+        List<User> users = userRepository.findAll();
+        users.removeIf(x -> x.getRoles().get(0).getName().equals("ROLE_ADMIN"));
+        return users;
+    }
+
+    /**
+     * Получение всех экономистов
+     *
+     * @return Список всех экономистов
+     */
+    public List<User> getAdmins() {
+        List<User> users = userRepository.findAll();
+        users.removeIf(x -> x.getRoles().get(0).getName().equals("ROLE_USER"));
+        return users;
+    }
+
+    /**
+     * Обновление права у пользователей
+     *
+     * @param id   Список идентификаторов пользователей
+     * @param role Список обновленных прав
+     */
+    public void updateRolesAllUsers(List<String> id, List<String> role) {
+        User user = null;
+        for (int i = 0; i < id.size(); i++) {
+            user = userRepository.findById(UUID.fromString(id.get(i))).orElseThrow();
+            List<Role> roles = new ArrayList<>();
+            roles.add(roleRepository.findByName(role.get(i)));
+            user.setRoles(roles);
+            userRepository.save(user);
+        }
+
+    }
+
+    public User getUserById(UUID id) {
+        return userRepository.findById(id).orElseThrow();
+    }
+
+    public void deleteUser(User user) {
+        userRepository.delete(user);
     }
 }

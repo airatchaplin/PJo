@@ -2,10 +2,8 @@ package com.example.pozhiloyproject.controllers;
 
 import com.example.pozhiloyproject.models.Contragent;
 import com.example.pozhiloyproject.services.ContragentService;
-import com.example.pozhiloyproject.services.ManagerService;
 import com.example.pozhiloyproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.UUID;
 
+/**
+ * Контроллер контрагентов
+ */
 @Controller
 public class ContragentController {
 
@@ -22,11 +23,14 @@ public class ContragentController {
     ContragentService contragentService;
 
     @Autowired
-    ManagerService managerService;
-
-    @Autowired
     UserService userService;
 
+    /**
+     * Страница всех контрагентов метод GET
+     *
+     * @param model Модель
+     * @return Страница всех контрагентов
+     */
     @GetMapping("/contragents")
     public String getAllContragents(Model model) {
         model.addAttribute("contragents", contragentService.getAllContragents());
@@ -34,25 +38,43 @@ public class ContragentController {
         return "contragents";
     }
 
+    /**
+     * Страница контрагента метод GET
+     *
+     * @param id    Идентификатор контрагента
+     * @param model Модель
+     * @return Страница контрагента
+     */
+    @GetMapping("contragents/{id}")
+    public String getOneContragent(@PathVariable(name = "id") String id, Model model) {
+        model.addAttribute("user", userService.getUserWeb());
+        model.addAttribute("contragent", contragentService.getOneContragentById(UUID.fromString(id)));
+        return "oneContragent";
+    }
+
+    /**
+     * Страница добавления контрагента метод GET
+     *
+     * @param model Модель
+     * @return Страница добавления контрагента
+     */
     @GetMapping("/addContragent")
     public String addContragentsGet(Model model) {
         model.addAttribute("user", userService.getUserWeb());
         return "addContragent";
     }
 
+    /**
+     * Страница добавления контрагента метод POST
+     *
+     * @param contragentName Наименование контрагента
+     * @param model          Модель
+     * @return Страница всех контрагентов
+     */
     @PostMapping("/addContragent")
     public String addContragentsPost(@RequestParam(required = false) String contragentName, Model model) {
-
-        Contragent findContragent = null;
-        try {
-            findContragent = contragentService.getOneContragent(contragentName);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (findContragent != null) {
-
-            model.addAttribute("contragentNameError", "Контрагент с таким названием уже существует! \nПридумайте другое название!");
+        if (contragentService.checkContragent(contragentName)) {
+            model.addAttribute("contragentNameError", "Контрагент с таким наименованием уже есть. Придумайте другое наименование!");
             return "addContragent";
         }
         Contragent contragent = new Contragent();
@@ -62,47 +84,70 @@ public class ContragentController {
         return "redirect:/contragents";
     }
 
-    @GetMapping("contragents/{nameContragent}")
-    public String getOneContragent(@PathVariable(name = "nameContragent") String nameContragent, Model model) {
+    /**
+     * Страница изменения контрагента метод GET
+     *
+     * @param id    Идентификатор контрагента
+     * @param model Модель
+     * @return Страница изменения контрагента
+     */
+    @GetMapping("contragents/change/{id}")
+    public String changeContragentGet(@PathVariable(name = "id") String id, Model model) {
         model.addAttribute("user", userService.getUserWeb());
-        model.addAttribute("contragent", contragentService.getOneContragent(nameContragent));
-        return "oneContragent";
-    }
-
-    @GetMapping("contragents/change/{nameContragent}")
-    public String changeContragentGet(@PathVariable(name = "nameContragent") String nameContragent, Model model) {
-        model.addAttribute("user", userService.getUserWeb());
-        model.addAttribute("contragent", contragentService.getOneContragent(nameContragent));
+        model.addAttribute("contragent", contragentService.getOneContragentById(UUID.fromString(id)));
         return "changeContragent";
     }
 
-    @PostMapping("contragents/change/{nameContragent}")
-    public String changeContragentPost(@PathVariable(name = "nameContragent") String nameContragent,
+    /**
+     * Страница изменения контрагента метод POST
+     *
+     * @param id             Идентификатор контрагента
+     * @param contragentName Измененное наименование контрагента
+     * @param model          Модель
+     * @return Страница всех контрагентов
+     */
+    @PostMapping("contragents/change/{id}")
+    public String changeContragentPost(@PathVariable(name = "id") String id,
                                        @RequestParam(required = false) String contragentName, Model model) {
-        if (contragentName.equals("")) {
-            model.addAttribute("contragent", contragentService.getOneContragent(nameContragent));
-            model.addAttribute("contragentNameError", "Не заполнено название контрагента!");
+
+        if (contragentService.checkContragent(UUID.fromString(id), contragentName)) {
+            model.addAttribute("contragent", contragentService.getOneContragentById(UUID.fromString(id)));
+            model.addAttribute("contragentNameError", "Контрагент с таким наименованием уже есть. Придумайте другое наименование!");
             return "changeContragent";
         }
-        Contragent contragent = contragentService.getOneContragent(nameContragent);
+        Contragent contragent = contragentService.getOneContragentById(UUID.fromString(id));
         contragent.setName(contragentName);
         contragentService.saveContragent(contragent);
         return "redirect:/contragents";
     }
 
-    @GetMapping("contragents/deletion/{nameContragent}")
-    public String deleteContragentGet(@PathVariable(name = "nameContragent") String nameContragent, Model model) {
+    /**
+     * Страница удаления контрагента метод GET
+     *
+     * @param id    Идентификатор контрагента
+     * @param model Модель
+     * @return Страница удаления контрагента
+     */
+    @GetMapping("contragents/deletion/{id}")
+    public String deleteContragentGet(@PathVariable(name = "id") String id, Model model) {
         model.addAttribute("user", userService.getUserWeb());
-        model.addAttribute("contragent", contragentService.getOneContragent(nameContragent));
+        model.addAttribute("contragent", contragentService.getOneContragentById(UUID.fromString(id)));
         return "deletionContragent";
     }
 
-    @PostMapping("contragents/deletion/{nameContragent}")
-    public String deleteContragentPost(@PathVariable(name = "nameContragent") String nameContragent, Model model) {
+    /**
+     * Страница удаления контрагента метод POST
+     *
+     * @param id    Идентификатор контрагента
+     * @param model Модель
+     * @return Страница всех контрагентов
+     */
+    @PostMapping("contragents/deletion/{id}")
+    public String deleteContragentPost(@PathVariable(name = "id") String id, Model model) {
         try {
-            contragentService.deleteContragent(contragentService.getOneContragent(nameContragent));
+            contragentService.deleteContragent(contragentService.getOneContragentById(UUID.fromString(id)));
         } catch (Exception e) {
-            model.addAttribute("contragent", contragentService.getOneContragent(nameContragent));
+            model.addAttribute("contragent", contragentService.getOneContragentById(UUID.fromString(id)));
             model.addAttribute("contragentError", "Контрагента нельзя удалить, потому что он используется в заказах!");
             return "deletionContragent";
         }

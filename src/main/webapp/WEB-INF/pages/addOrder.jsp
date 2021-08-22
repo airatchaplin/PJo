@@ -109,6 +109,9 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     </div>
     <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}" href="/admin/allUsers">Все
+            пользователи
+        </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
     </div>
@@ -130,17 +133,17 @@
             <div class="col-sm-6" style="display: flex">
                 <label style="margin-left: 10px;margin-top: 15px;width: 60%;" for="numberOrder" class="form-label">Выбирете
                     контрагента</label>
-                <select style="margin: 10px;" class="form-control" name="objectName">
+                <select style="margin: 10px;" class="form-control" name="contragentId">
                     <c:forEach items="${contragents}" var="contragent">
-                        <option value="${contragent.getName()}">${contragent.getName()}</option>
+                        <option value="${contragent.id}">${contragent.name}</option>
                     </c:forEach>
                 </select>
             </div>
             <div class="col-sm-6" style="display: flex">
                 <label style="margin-left: 10px;margin-top: 15px;width: 60%;" for="numberOrder" class="form-label">Менеджер</label>
-                <select style="margin: 10px;" class="form-control" name="manager">
+                <select style="margin: 10px;" class="form-control" name="managerId">
                     <c:forEach items="${managers}" var="manager">
-                    <option value="${manager.getFio_i_o()}">${manager.getFio_i_o()}</option>
+                    <option value="${manager.id}">${manager.fio_i_o}</option>
                     </c:forEach>
                 </select>
             </div>
@@ -166,10 +169,10 @@
                 <tbody>
                 <tr>
                     <td>
-                        <select class="form-control" name="detailName">
+                        <select class="form-control" name="detailId">
                             <option value="Выбирите деталь">Выбирите деталь</option>
                             <c:forEach items="${details}" var="detail">
-                                <option value="${detail.getName()}">${detail.getName()}</option>
+                                <option value="${detail.id}">${detail.name}</option>
                             </c:forEach>
                         </select>
                             <%--                        <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="detailName">--%>

@@ -7,26 +7,62 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+/**
+ * Сервис материалов
+ */
 @Service
 public class MaterialService {
 
     @Autowired
     MaterialRepository materialsRepository;
 
+    /**
+     * Получить список всех материалов
+     *
+     * @return Список всех материалов
+     */
     public List<Material> getAllMaterials() {
         return materialsRepository.findAll();
     }
 
+    /**
+     * Сохранение материала
+     *
+     * @param material Материал
+     */
     public void saveMaterial(Material material) {
         materialsRepository.save(material);
     }
 
-    public Material getOneMaterial(String name) {
-        return materialsRepository.findByName(name);
+    /**
+     * Получение материала по id
+     *
+     * @param id Идентификатор материала
+     * @return Материал
+     */
+    public Material getOneMaterial(UUID id) {
+        return materialsRepository.findById(id).orElseThrow();
     }
 
-    public void deleteMaterial(Material material){
+    /**
+     * Удаление матерериала
+     *
+     * @param material Материал
+     */
+    public void deleteMaterial(Material material) {
         materialsRepository.delete(material);
     }
+
+    public boolean checkMaterial(String name, String thickness) {
+        List<Material> materials = materialsRepository.findAllByName(name);
+        if (thickness.charAt(1) == '.') {
+            thickness = thickness.replace(".", ",");
+        }
+        String finalThickness = thickness;
+        return materials.stream().anyMatch(material -> material.getThickness().equals(finalThickness));
+    }
+
+
 }

@@ -89,6 +89,9 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     </div>
     <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}" href="/admin/allUsers">Все
+            пользователи
+        </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
     </div>
@@ -140,7 +143,7 @@
                 </td>
                 <td>
                     <div>
-                        <select class="form-control" name="id">
+                        <select class="form-control" name="typeOperationId">
                             <option selected value="${workbench.typeOperation.id}">Выбранная операция ${workbench.typeOperation.name}</option>
                             <c:forEach items="${operations}" var="operation">
                                 <option value="${operation.id}">${operation.name}</option>

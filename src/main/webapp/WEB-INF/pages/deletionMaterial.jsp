@@ -88,6 +88,9 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     </div>
     <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}" href="/admin/allUsers">Все
+            пользователи
+        </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
     </div>
@@ -106,9 +109,9 @@
     <div>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addMaterial">Добавить материал</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/materials/change/${material.getName()}">Изменить материал</a>
+           href="/materials/change/${material.id}">Изменить материал</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/materials/deletion/${material.getName()}">Удалить материал</a>
+           href="/materials/deletion/${material.id}">Удалить материал</a>
     </div>
 </nav>
 
@@ -126,7 +129,7 @@
             <td>${material.name}</td>
             <td>${material.thickness}</td>
             <td>
-                <form:form action="/materials/deletion/${material.getName()}"
+                <form:form action="/materials/deletion/${material.id}"
                            method="post">
                     <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;"
                             type="submit">

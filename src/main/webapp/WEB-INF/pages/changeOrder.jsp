@@ -89,6 +89,9 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     </div>
     <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}" href="/admin/allUsers">Все
+            пользователи
+        </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
     </div>
@@ -105,21 +108,21 @@
     top: 0;
     margin-top: 60px;">
     <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders/add/${order.getNumberOrder()}">Добавить
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders/add/${order.id}">Добавить
             элемент</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/orders/change/${order.getNumberOrder()}">Изменить заказ</a>
+           href="/orders/change/${order.id}">Изменить заказ</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/orders/deletion/${order.getNumberOrder()}">Удалить заказ</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders/check1/${order.getNumberOrder()}">Расчитать
+           href="/orders/deletion/${order.id}">Удалить заказ</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders/check1/${order.id}">Расчитать
             время</a>
     </div>
 </nav>
 
 <div class="main" style="margin-top: 120px">
-    <h4>№ заказа ${order.getNumberOrder()}</h4>
-    <h4>Объект ${order.getObjectName().getName()}</h4>
-    <h4>Менеджер ${order.getManager().getFio_i_o()}</h4><br>
+    <h4>№ заказа ${order.numberOrder}</h4>
+    <h4>Объект ${order.objectName.name}</h4>
+    <h4>Менеджер ${order.manager.fio_i_o}</h4><br>
 
     <table class="table">
         <thead>
@@ -135,13 +138,13 @@
         </thead>
         <tbody>
         <form:form method="post">
-        <c:forEach items="${order.getDetailInfos()}" var="ord">
+        <c:forEach items="${order.detailInfos}" var="ord">
             <tr>
                 <td>
-                    <select class="form-control" name="detailName">
-                        <option>Выбранная: ${ord.getDetail().getName()}</option>
+                    <select class="form-control" name="detailId">
+                        <option>Выбранная: ${ord.detail.name}</option>
                         <c:forEach items="${details}" var="detail">
-                            <option value="${detail.getName()}">${detail.getName()}</option>
+                            <option value="${detail.id}">${detail.name}</option>
                         </c:forEach>
                     </select>
                 </td>

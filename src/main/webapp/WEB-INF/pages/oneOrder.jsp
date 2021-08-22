@@ -87,6 +87,9 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     </div>
     <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}" href="/admin/allUsers">Все
+            пользователи
+        </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
     </div>
@@ -104,16 +107,16 @@
     margin-top: 60px;">
     <div>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/orders/add/${order.getNumberOrder()}">Добавить
+           href="/orders/add/${order.id}">Добавить
             элемент</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/orders/change/${order.getNumberOrder()}">Изменить
+           href="/orders/change/${order.id}">Изменить
             заказ</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/orders/deletion/${order.getNumberOrder()}">Удалить
+           href="/orders/deletion/${order.id}">Удалить
             заказ</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/orders/check1/${order.getNumberOrder()}">Расчитать
+           href="/orders/check1/${order.id}">Расчитать
             время</a>
     </div>
 </nav>

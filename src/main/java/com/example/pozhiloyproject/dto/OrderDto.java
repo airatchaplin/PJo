@@ -1,17 +1,9 @@
 package com.example.pozhiloyproject.dto;
 
-import com.example.pozhiloyproject.models.Contragent;
-import com.example.pozhiloyproject.models.Detail;
-import com.example.pozhiloyproject.models.Manager;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 
 public class OrderDto {

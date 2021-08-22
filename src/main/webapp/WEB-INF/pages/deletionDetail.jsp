@@ -87,6 +87,9 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     </div>
     <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}" href="/admin/allUsers">Все
+            пользователи
+        </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
     </div>
@@ -105,8 +108,8 @@
     <div>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addDetail">Добавить деталь</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/details/change/${detail.getName()}">Изменить деталь</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details/deletion/${detail.getName()}">Удалить
+           href="/details/change/${detail.id}">Изменить деталь</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details/deletion/${detail.id}">Удалить
             деталь</a>
     </div>
 </nav>
@@ -126,22 +129,35 @@
         </thead>
         <tbody>
         <tr>
-            <td>${detail.getName()}</td>
-            <td>${detail.getLength()}</td>
-            <td>${detail.getWidth()}</td>
-            <td>${detail.getMaterial().getName()}</td>
+            <td>${detail.name}</td>
+            <td>${detail.length}</td>
+            <td>${detail.width}</td>
+            <td>${detail.material.name}</td>
             <td>
-                <c:forEach items="${detail.getWorkBenches()}" var="workbench">
-                    <pre>${workbench.getName()}</pre>
+                <c:set var="count" value="0" scope="page"/>
+                <% int count = 0; %>
+                <c:forEach items="${detail.workBenchDtos}" var="workbench">
+                    <c:if test="${workbench.typeOperation.name.equals('ГИБКА')}">
+                        <c:if test="${count>0}">
+                            <pre style="font-size: 14px; color: red">Альтернатива: ${workbench.name}</pre>
+                        </c:if>
+                        <c:if test="${count==0}">
+                            <pre style="font-size: 14px">${workbench.name}</pre>
+                            <c:set var="count" value="${count + 1}" scope="page"/>
+                        </c:if>
+                    </c:if>
+                    <c:if test="${!workbench.typeOperation.name.equals('ГИБКА')}">
+                        <pre style="font-size: 14px">${workbench.name}</pre>
+                    </c:if>
                 </c:forEach>
             </td>
             <td>
-                <c:forEach items="${detail.getTimeWorkDetails()}" var="timeWork">
-                    <pre>${timeWork.getTimeWork()}</pre>
+                <c:forEach items="${detail.timeWorkDetailsDtos}" var="timeWork">
+                    <pre style="font-size: 14px">${timeWork.timeWork}</pre>
                 </c:forEach>
             </td>
             <td>
-                <form:form action="/details/deletion/${detail.getName()}"
+                <form:form action="/details/deletion/${detail.id}"
                            method="post">
                     <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;"
                             type="submit">Удалить

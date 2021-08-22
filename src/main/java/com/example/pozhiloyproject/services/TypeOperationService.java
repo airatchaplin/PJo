@@ -8,24 +8,43 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Сервис типов операций
+ */
 @Service
 public class TypeOperationService {
 
     @Autowired
     TypeOperationRepository typeOperationRepository;
 
-    public List<TypeOperation> getAllTypeOperations(){
+    public List<TypeOperation> getAllTypeOperations() {
         return typeOperationRepository.findAll();
     }
 
+    /**
+     * Сохранение типа операции
+     *
+     * @param typeOperation Тип операции
+     */
     public void save(TypeOperation typeOperation) {
         typeOperationRepository.save(typeOperation);
     }
 
-    public TypeOperation getOneTypeOperation(UUID id){
+    /**
+     * Получение типа операции по id
+     *
+     * @param id Идентификатор типа операции
+     * @return Тип операции
+     */
+    public TypeOperation getOneTypeOperation(UUID id) {
         return typeOperationRepository.findById(id).orElseThrow();
     }
 
+    /**
+     * Удаление типа операции
+     *
+     * @param typeOperation Тип операции
+     */
     public void deleteTypeOperation(TypeOperation typeOperation) {
         typeOperationRepository.delete(typeOperation);
     }

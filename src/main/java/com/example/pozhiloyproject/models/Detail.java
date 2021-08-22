@@ -1,13 +1,14 @@
 package com.example.pozhiloyproject.models;
 
-import java.util.ArrayList;
 import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
-
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Деталь
+ */
 @Entity
 @Table(name = "details")
 @Getter
@@ -52,9 +53,5 @@ public class Detail {
      * Ширина детали
      */
     private String width;
-
-
-
-
 
 }

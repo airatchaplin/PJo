@@ -86,6 +86,9 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     </div>
     <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}" href="/admin/allUsers">Все
+            пользователи
+        </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
     </div>
@@ -97,6 +100,8 @@
             <table class="table">
                 <thead>
                 <tr>
+                    <th scope="col">Логин</th>
+                    <th scope="col">Пароль</th>
                     <th scope="col">Фамилия</th>
                     <th scope="col">Имя</th>
                     <th scope="col">Отчество</th>
@@ -105,6 +110,18 @@
                 </thead>
                 <tbody>
                 <tr>
+                    <td>
+                        <div>
+                            <input type="text" class="form-control" id="username" name="username"
+                                   placeholder="Введите фамилию" value="${username}" required>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <input type="text" class="form-control" id="password" name="password"
+                                   placeholder="Введите фамилию" value="${password}" required>
+                        </div>
+                    </td>
                     <td>
                         <div>
                             <input type="text" class="form-control" id="fio" name="fio"

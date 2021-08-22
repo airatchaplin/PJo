@@ -1,7 +1,5 @@
 package com.example.pozhiloyproject.config;
 
-import com.example.pozhiloyproject.dto.OrderDto;
-import com.example.pozhiloyproject.services.ManagerService;
 import com.example.pozhiloyproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
     UserService userService;
 
@@ -64,5 +63,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 
 }

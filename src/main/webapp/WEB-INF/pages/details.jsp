@@ -86,6 +86,9 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     </div>
     <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}" href="/admin/allUsers">Все
+            пользователи
+        </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
     </div>
@@ -121,14 +124,14 @@
         <tbody>
         <c:forEach items="${details}" var="detail">
             <tr>
-                <td><a style="display: block" href="details/${detail.getName()}">${detail.getName()}</a></td>
-                <td>${detail.getLength()}</td>
-                <td>${detail.getWidth()}</td>
-                <td>${detail.getMaterial().getName()}</td>
+                <td><a style="display: block" href="details/${detail.id}">${detail.name}</a></td>
+                <td>${detail.length}</td>
+                <td>${detail.width}</td>
+                <td>${detail.material.name}</td>
                 <td>
                     <c:set var="count" value="0" scope="page"/>
                     <% int count = 0; %>
-                    <c:forEach items="${detail.workBenches}" var="workbench">
+                    <c:forEach items="${detail.workBenchDtos}" var="workbench">
                         <c:if test="${workbench.typeOperation.name.equals('ГИБКА')}">
                             <c:if test="${count>0}">
                                 <pre style="font-size: 14px; color: red">Альтернатива: ${workbench.name}</pre>
@@ -144,8 +147,8 @@
                     </c:forEach>
                 </td>
                 <td>
-                    <c:forEach items="${detail.getTimeWorkDetails()}" var="timeWork">
-                        <pre style="font-size: 14px">${timeWork.getTimeWork()}</pre>
+                    <c:forEach items="${detail.timeWorkDetailsDtos}" var="timeWork">
+                        <pre style="font-size: 14px">${timeWork.timeWork}</pre>
                     </c:forEach>
                 </td>
             </tr>

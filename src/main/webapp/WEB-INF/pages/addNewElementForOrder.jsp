@@ -91,6 +91,9 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     </div>
     <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}" href="/admin/allUsers">Все
+            пользователи
+        </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
     </div>
@@ -108,29 +111,29 @@
     margin-top: 60px;">
     <div>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/orders/add/${order.getNumberOrder()}">Добавить
+           href="/orders/add/${order.id}">Добавить
             элемент</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/orders/change/${order.getNumberOrder()}">Изменить
+           href="/orders/change/${order.id}">Изменить
             заказ</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/orders/deletion/${order.getNumberOrder()}">Удалить
+           href="/orders/deletion/${order.id}">Удалить
             заказ</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/orders/check1/${order.getNumberOrder()}">Расчитать
+           href="/orders/check1/${order.id}">Расчитать
             время</a>
     </div>
 </nav>
 
 <div class="main" style="margin-top: 120px">
     <form:form method="post">
-    <h4>№ заказа ${order.getNumberOrder()}</h4>
-    <h4>Объект ${order.getObjectName().getName()}</h4>
-    <h4>Менеджер ${order.getManager().getFio_i_o()}</h4>
+    <h4>№ заказа ${order.numberOrder}</h4>
+    <h4>Объект ${order.objectName.name}</h4>
+    <h4>Менеджер ${order.manager.fio_i_o}</h4>
 
     <div class="info">
         <input style="display: none" type="text" name="numberOrder"
-               value="${order.getNumberOrder()}">
+               value="${order.numberOrder}">
         <table class="table">
             <thead>
             <tr>
@@ -147,10 +150,10 @@
             <tbody>
             <tr>
                 <td>
-                    <select class="form-control" name="detailName">
+                    <select class="form-control" name="detailId">
                         <option value="Выбирите деталь">Выбирите деталь</option>
                         <c:forEach items="${details}" var="detail">
-                            <option value="${detail.getName()}">${detail.getName()}</option>
+                            <option value="${detail.id}">${detail.name}</option>
                         </c:forEach>
                     </select>
                     <div class="error" style="color: red;text-align: center">

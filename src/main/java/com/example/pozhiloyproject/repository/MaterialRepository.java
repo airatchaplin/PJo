@@ -11,4 +11,6 @@ import java.util.UUID;
 public interface MaterialRepository extends JpaRepository<Material, UUID> {
 
     Material findByName(String name);
+
+    List<Material> findAllByName(String name);
 }

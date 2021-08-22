@@ -9,25 +9,49 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Пользователь
+ */
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
 public class User implements UserDetails {
 
+    /**
+     * Id
+     */
     @Id
     private UUID id;
 
+    /**
+     * Имя
+     */
     private String name;
 
+    /**
+     * Фамилия
+     */
     private String fio;
 
+    /**
+     * Отчество
+     */
     private String lastName;
 
+    /**
+     * Фамилия И.О.
+     */
     private String fio_i_o;
 
+    /**
+     * Логин
+     */
     String username;
 
+    /**
+     * Пароль
+     */
     String password;
 
     @ManyToMany(fetch = FetchType.EAGER)

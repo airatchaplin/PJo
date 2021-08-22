@@ -1,7 +1,6 @@
 package com.example.pozhiloyproject.controllers;
 
 import com.example.pozhiloyproject.models.Material;
-import com.example.pozhiloyproject.services.ManagerService;
 import com.example.pozhiloyproject.services.MaterialService;
 import com.example.pozhiloyproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.UUID;
 
+/**
+ * Контроллер материалов
+ */
 @Controller
 public class MaterialController {
 
@@ -21,36 +23,50 @@ public class MaterialController {
     MaterialService materialService;
 
     @Autowired
-    ManagerService managerService;
-
-    @Autowired
     UserService userService;
 
+    /**
+     * Страница всех материалов метод GET
+     *
+     * @param model Модель
+     * @return Страница всех матриалов
+     */
     @GetMapping("/materials")
     public String getAllMaterials(Model model) {
-        model.addAttribute("materials", materialService.getAllMaterials());
-        model.addAttribute("user",userService.getUserWeb());
+        model.addAttribute("materials", Material.compare(materialService.getAllMaterials()));
+        model.addAttribute("user", userService.getUserWeb());
         return "materials";
     }
 
+    /**
+     * Страница добавления материала метод GET
+     *
+     * @param model Модель
+     * @return Страница добавления материала
+     */
     @GetMapping("/addMaterial")
     public String addMaterialGet(Model model) {
-        model.addAttribute("user",userService.getUserWeb());
+        model.addAttribute("user", userService.getUserWeb());
         return "addMaterial";
     }
 
+    /**
+     * Страница добавления материала метод POST
+     *
+     * @param materialName Наименование материала
+     * @param thickness    Толщина материала
+     * @param model        Модель
+     * @return Страница всех матриалов
+     */
     @PostMapping("/addMaterial")
-    public String addMaterialPost(@RequestParam(required = false) String materialName,@RequestParam(required = false) String thickness,Model model) {
-        Material findMaterial = null;
-        try {
-            findMaterial = materialService.getOneMaterial(materialName);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public String addMaterialPost(@RequestParam(required = false) String materialName, @RequestParam(required = false) String thickness, Model model) {
+        if (materialService.checkMaterial(materialName, thickness)) {
+            model.addAttribute("materials", materialService.getAllMaterials());
+            model.addAttribute("materialNameRepeatError", "Материал с таким наименованием и толщиной уже существует. Придумайте другое название и толщину!");
+            return "addMaterial";
         }
-        if (findMaterial!=null){
-            model.addAttribute("material",materialService.getOneMaterial(materialName));
-            model.addAttribute("materialNameRepeatError","Материал с таким названием уже существует! \nПридумайте другое название!");
-        return "addMaterial";
+        if (thickness.charAt(1) == '.') {
+            thickness = thickness.replace(".", ",");
         }
         Material material = new Material();
         material.setId(UUID.randomUUID());
@@ -60,54 +76,86 @@ public class MaterialController {
         return "redirect:/materials";
     }
 
-    @GetMapping("materials/{nameMaterial}")
-    public String getOneMaterial(@PathVariable(name = "nameMaterial") String nameMaterial, Model model) {
-        model.addAttribute("material", materialService.getOneMaterial(nameMaterial));
-        model.addAttribute("user",userService.getUserWeb());
+    /**
+     * Страница материала метод GET
+     *
+     * @param id    Идентификатор материала
+     * @param model Модель
+     * @return Страница материала
+     */
+    @GetMapping("materials/{id}")
+    public String getOneMaterial(@PathVariable(name = "id") String id, Model model) {
+        model.addAttribute("material", materialService.getOneMaterial(UUID.fromString(id)));
+        model.addAttribute("user", userService.getUserWeb());
         return "oneMaterial";
     }
 
-    @GetMapping("materials/change/{nameMaterial}")
-    public String changeMaterialGet(@PathVariable(name = "nameMaterial") String nameMaterial, Model model) {
-        model.addAttribute("material", materialService.getOneMaterial(nameMaterial));
-        model.addAttribute("user",userService.getUserWeb());
+    /**
+     * Страница изменения материала метод GET
+     *
+     * @param id    Идентификатор материала
+     * @param model Модель
+     * @return Страница изменения материала
+     */
+    @GetMapping("materials/change/{id}")
+    public String changeMaterialGet(@PathVariable(name = "id") String id, Model model) {
+        model.addAttribute("material", materialService.getOneMaterial(UUID.fromString(id)));
+        model.addAttribute("user", userService.getUserWeb());
         return "changeMaterial";
     }
 
-    @PostMapping("materials/change/{nameMaterial}")
-    public String changeMaterialPost(@PathVariable(name = "nameMaterial") String nameMaterial,
-                                     @RequestParam(required = false) String materialName,@RequestParam(required = false) String thickness, Model model) {
-        Material findMaterial = null;
-        try {
-            findMaterial = materialService.getOneMaterial(materialName);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (findMaterial!=null){
-            model.addAttribute("material",materialService.getOneMaterial(nameMaterial));
-            model.addAttribute("materialNameRepeatError","Материал с таким названием уже существует! \nПридумайте другое название!");
+    /**
+     * Страница измененеия материала метод POST
+     *
+     * @param id           Идентификатор материала
+     * @param materialName Наименование матераила
+     * @param thickness    Толщина материала
+     * @param model        Модель
+     * @return Страница всех материалов
+     */
+    @PostMapping("materials/change/{id}")
+    public String changeMaterialPost(@PathVariable(name = "id") String id,
+                                     @RequestParam(required = false) String materialName, @RequestParam(required = false) String thickness, Model model) {
+
+        if (materialService.checkMaterial(materialName, thickness)) {
+            model.addAttribute("material", materialService.getOneMaterial(UUID.fromString(id)));
+            model.addAttribute("materialNameRepeatError", "Материал с таким названием уже существует! \nПридумайте другое название!");
             return "changeMaterial";
         }
-        Material material = materialService.getOneMaterial(nameMaterial);
+        Material material = materialService.getOneMaterial(UUID.fromString(id));
         material.setName(materialName);
         material.setThickness(thickness);
         materialService.saveMaterial(material);
         return "redirect:/materials";
     }
 
-    @GetMapping("materials/deletion/{nameMaterial}")
-    public String deleteMaterialGet(@PathVariable(name = "nameMaterial") String nameMaterial, Model model) {
-        model.addAttribute("material", materialService.getOneMaterial(nameMaterial));
-        model.addAttribute("user",userService.getUserWeb());
+    /**
+     * Страница удаления метод GET
+     *
+     * @param id    Идентификатор материала
+     * @param model Модель
+     * @return Страница удаления
+     */
+    @GetMapping("materials/deletion/{id}")
+    public String deleteMaterialGet(@PathVariable(name = "id") String id, Model model) {
+        model.addAttribute("material", materialService.getOneMaterial(UUID.fromString(id)));
+        model.addAttribute("user", userService.getUserWeb());
         return "deletionMaterial";
     }
 
-    @PostMapping("materials/deletion/{nameMaterial}")
-    public String deleteMaterialPost(@PathVariable(name = "nameMaterial") String nameMaterial, Model model) {
+    /**
+     * Страница удаления метод POST
+     *
+     * @param id    Идентификатор материала
+     * @param model Модель
+     * @return Страница всех материалов
+     */
+    @PostMapping("materials/deletion/{id}")
+    public String deleteMaterialPost(@PathVariable(name = "id") String id, Model model) {
         try {
-            materialService.deleteMaterial(materialService.getOneMaterial(nameMaterial));
+            materialService.deleteMaterial(materialService.getOneMaterial(UUID.fromString(id)));
         } catch (Exception e) {
-            model.addAttribute("material", materialService.getOneMaterial(nameMaterial));
+            model.addAttribute("material", materialService.getOneMaterial(UUID.fromString(id)));
             model.addAttribute("materialError", "Материал нельзя удалить, потому что он используется в заказах!");
             return "deletionMaterial";
         }

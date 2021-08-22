@@ -7,17 +7,29 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Последовательность операций
+ */
 @Entity
 @Table(name = "subsequence_type_operation")
 @Getter
 @Setter
 public class SubsequenceTypeOperation {
 
+    /**
+     * Id
+     */
     @Id
-    UUID id;
+    private UUID id;
 
+    /**
+     * Список операций
+     */
     @ManyToMany
-    List<TypeOperation> typeOperations;
+    private List<TypeOperation> typeOperations;
 
+    /**
+     * Описание
+     */
     private String description;
 }

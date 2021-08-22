@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Контрагент</title>
+    <title>Все пользователи</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -62,6 +62,7 @@
         .table > :not(caption) > * > * {
             border-bottom-width: 0px;
         }
+
     </style>
 </head>
 <body>
@@ -74,6 +75,7 @@
     padding: 15px;
     background: #d1d1d1;
     top: 0;">
+
     <div>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/">Главная страница</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
@@ -93,6 +95,7 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
     </div>
 </nav>
+
 <nav style="position: fixed;
     box-shadow: 0 5px 5px -5px;
     display: flex;
@@ -104,25 +107,74 @@
     top: 0;
     margin-top: 60px;">
     <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addContragent">Добавить контрагента</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/contragents/change/${contragent.id}">Изменить контрагента</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/contragents/deletion/${contragent.id}">Удалить контрагента</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/allUsers/change">Изменить права
+            </a>
+        </a>
     </div>
 </nav>
 
 <div class="main" style="margin-top: 120px">
+    <div style="margin: 10px ; font-size: 15px" >
+    Экономисты
+    </div>
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">Контрагент</th>
+            <th scope="col">Фамилия</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Отчество</th>
+            <th scope="col">Права</th>
         </tr>
         </thead>
         <tbody>
+        <c:forEach items="${allAdmins}" var="user">
+            <tr>
+                <td><a style="display: block"
+                       href="/admin/allUsers/user/${user.id}">${user.fio}</a>
+                </td>
+                <td><a style="display: block"
+                       href="/personalArea/admin/allUsers/user/${user.id}">${user.name}</a>
+                </td>
+                <td><a style="display: block"
+                       href="/personalArea/admin/allUsers/user/${user.id}">${user.lastName}</a>
+                </td>
+                <td><a style="display: block"
+                       href="/personalArea/admin/allUsers/user/${user.id}">${user.roles.get(0).name.equals("ROLE_USER")?"Менеджер":"Экономист"}</a>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+
+    <div style="margin: 10px ; font-size: 15px" >
+        Менеджеры
+    </div>
+    <table class="table">
+        <thead>
         <tr>
-            <td>${contragent.name}</td>
+            <th scope="col">Фамилия</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Отчество</th>
+            <th scope="col">Права</th>
         </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${allManagers}" var="user">
+            <tr>
+                <td><a style="display: block"
+                       href="/personalArea/admin/allUsers/user/${user.id}">${user.fio}</a>
+                </td>
+                <td><a style="display: block"
+                       href="/personalArea/admin/allUsers/user/${user.id}">${user.name}</a>
+                </td>
+                <td><a style="display: block"
+                       href="/personalArea/admin/allUsers/user/${user.id}">${user.lastName}</a>
+                </td>
+                <td><a style="display: block"
+                       href="/personalArea/admin/allUsers/user/${user.id}">${user.roles.get(0).name.equals("ROLE_USER")?"Менеджер":"Экономист"}</a>
+                </td>
+            </tr>
+        </c:forEach>
         </tbody>
     </table>
 </div>

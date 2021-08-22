@@ -11,5 +11,5 @@ import java.util.UUID;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, UUID> {
 
-    public Order findByNumberOrder(int numberOrder);
+    Order findByNumberOrder(int numberOrder);
 }

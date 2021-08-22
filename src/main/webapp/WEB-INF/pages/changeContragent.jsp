@@ -86,6 +86,9 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     </div>
     <div>
+        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}" href="/admin/allUsers">Все
+            пользователи
+        </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
     </div>
@@ -104,9 +107,9 @@
     <div>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addContragent">Добавить контрагента</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/contragents/change/${contragent.getName()}">Изменить контрагента</a>
+           href="/contragents/change/${contragent.id}">Изменить контрагента</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/contragents/deletion/${contragent.getName()}">Удалить контрагента</a>
+           href="/contragents/deletion/${contragent.id}">Удалить контрагента</a>
     </div>
 </nav>
 
@@ -124,7 +127,7 @@
                 <td>
                     <div>
                         <input type="text" class="form-control" id="contragentName" name="contragentName"
-                               placeholder="Введите название контрагента" value="${contragent.getName()}">
+                               placeholder="Введите название контрагента" value="${contragent.name}" required>
                     </div>
                     <div class="error" style="color: red;">
                             ${contragentNameError}

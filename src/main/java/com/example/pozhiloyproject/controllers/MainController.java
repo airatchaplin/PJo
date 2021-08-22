@@ -1,9 +1,6 @@
 package com.example.pozhiloyproject.controllers;
 
-import com.example.pozhiloyproject.models.Manager;
-import com.example.pozhiloyproject.models.TypeOperation;
 import com.example.pozhiloyproject.models.User;
-import com.example.pozhiloyproject.models.WorkBench;
 import com.example.pozhiloyproject.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,8 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
+/**
+ * Main контроллер
+ */
 @Controller
 public class MainController {
 
@@ -37,22 +36,50 @@ public class MainController {
     @Autowired
     TypeOperationService typeOperationService;
 
+    /**
+     * Главная страница
+     *
+     * @param model
+     * @return
+     */
     @GetMapping("/")
     public String main(Model model) {
         model.addAttribute("user", userService.getUserWeb());
         return "index";
     }
 
+    /**
+     * Страница входа метод GET
+     *
+     * @return Страница входа
+     */
     @GetMapping("/login")
     public String login() {
-        return "/login";
+        return "login";
     }
 
+    /**
+     * Страница регистрации метод GET
+     *
+     * @return Страница регистрации
+     */
     @GetMapping("/registration")
     public String registrationGet() {
         return "registration";
     }
 
+    /**
+     * Страница регистрации метод POST
+     *
+     * @param username        Логин
+     * @param fio             Фамилия
+     * @param name            Имя
+     * @param lastName        Отчество
+     * @param password        Пароль
+     * @param passwordConfirm Подтверджения пароля
+     * @param model           Модель
+     * @return Страница входа
+     */
     @PostMapping("/registration")
     public String registrationPost(@RequestParam(required = false) String username,
                                    @RequestParam(required = false) String fio,
@@ -70,7 +97,6 @@ public class MainController {
             model.addAttribute("passwordError", "Пароли не совпадают!");
             return "/";
         }
-
         User user = new User();
         user.setId(UUID.randomUUID());
         user.setUsername(username);
@@ -84,35 +110,65 @@ public class MainController {
         return "redirect:/";
     }
 
-//    @GetMapping("/admin")
-//    public String admin(Model model){
-//        model.addAttribute("managers",managerService.getAllManagers());
-//        return "admin";
-//    }
-
+    /**
+     * Страница ошибки
+     *
+     * @param model Модель
+     * @return Страница ошибка
+     */
     @RequestMapping("/403")
     public String error403(Model model) {
         model.addAttribute("user", userService.getUserWeb());
         return "error";
     }
 
+    /**
+     * Страница личного кабинета метод GET
+     *
+     * @param model Модель
+     * @return Страница личного кабинета
+     */
     @GetMapping("/personalArea")
     public String personalArea(Model model) {
         model.addAttribute("user", userService.getUserWeb());
         return "personalArea";
     }
 
+    /**
+     * Страница изменения данных в личном кабинете метод GET
+     *
+     * @param model Модель
+     * @return Страница изменения в личном кабинете
+     */
     @GetMapping("change/personalArea")
     public String changePersonalAreaGet(Model model) {
         model.addAttribute("user", userService.getUserWeb());
         return "changePersonalArea";
     }
 
+    /**
+     * Страница изменения данных в личном кабинете метод POST
+     *
+     * @param username Логин
+     * @param fio      Фамилия
+     * @param name     Имя
+     * @param lastName Отчество
+     * @param model    Модель
+     * @return Страница личного кабинета
+     */
     @PostMapping("change/personalArea")
-    public String changePersonalAreaPost(@RequestParam(required = false) String fio,
+    public String changePersonalAreaPost(@RequestParam(required = false) String username,
+                                         @RequestParam(required = false) String fio,
                                          @RequestParam(required = false) String name,
                                          @RequestParam(required = false) String lastName, Model model) {
+        User userFind = userService.getByUsername(username);
+        if (userFind == null) {
+            model.addAttribute("user", userService.getUserWeb());
+            return "redirect:/change/personalArea";
+        }
+
         User user = userService.getUserWeb();
+        user.setUsername(username);
         user.setFio(fio);
         user.setName(name);
         user.setLastName(lastName);
@@ -121,12 +177,26 @@ public class MainController {
         return "redirect:/personalArea";
     }
 
+    /**
+     * Страница изменения пароля в личном кабинете метод GET
+     *
+     * @param model Модель
+     * @return Страница изменения пароля в личном кабинете
+     */
     @GetMapping("change/personalAreaPassword")
     public String changePersonalAreaPasswordGet(Model model) {
         model.addAttribute("user", userService.getUserWeb());
         return "changePersonalAreaPassword";
     }
 
+    /**
+     * Страница изменения пароля в личном кабинете метод POST
+     *
+     * @param password        Пароль
+     * @param passwordConfirm Подвтерждение пароля
+     * @param model           Модель
+     * @return Страница личного кабинета
+     */
     @PostMapping("change/personalAreaPassword")
     public String changePersonalAreaPasswordPost(@RequestParam(required = false) String password,
                                                  @RequestParam(required = false) String passwordConfirm, Model model) {
@@ -139,6 +209,7 @@ public class MainController {
         model.addAttribute("user", userService.getUserWeb());
         return "redirect:/personalArea";
     }
+
 
 
 }

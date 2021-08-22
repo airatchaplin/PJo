@@ -8,24 +8,48 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Сервис последовательноси операций
+ */
 @Service
 public class SubsequenceTypeOperationService {
 
     @Autowired
     SubsequenceTypeOperationRepository subsequenceTypeOperationRepository;
 
-    public void saveSubsequenceTypeOperation(SubsequenceTypeOperation subsequenceTypeOperation){
+    /**
+     * Сохранение последовательности операции
+     *
+     * @param subsequenceTypeOperation Последовательность операции
+     */
+    public void saveSubsequenceTypeOperation(SubsequenceTypeOperation subsequenceTypeOperation) {
         subsequenceTypeOperationRepository.save(subsequenceTypeOperation);
     }
 
-    public List<SubsequenceTypeOperation> getAllSubsequenceTypeOperation(){
+    /**
+     * Получение всех последовательностей операции
+     *
+     * @return Список последовательностей операции
+     */
+    public List<SubsequenceTypeOperation> getAllSubsequenceTypeOperation() {
         return subsequenceTypeOperationRepository.findAll();
     }
 
-    public SubsequenceTypeOperation getOneSubsequenceTypeOperation(UUID id){
+    /**
+     * Получение последовательности операции по id
+     *
+     * @param id Идентификатор последовательности операции
+     * @return Последовательность операции
+     */
+    public SubsequenceTypeOperation getOneSubsequenceTypeOperation(UUID id) {
         return subsequenceTypeOperationRepository.findById(id).orElseThrow();
     }
 
+    /**
+     * Удаление последовательности операции
+     *
+     * @param subsequenceTypeOperation Последовательность операции
+     */
     public void deleteSubsequenceTypeOperation(SubsequenceTypeOperation subsequenceTypeOperation) {
         subsequenceTypeOperationRepository.delete(subsequenceTypeOperation);
     }

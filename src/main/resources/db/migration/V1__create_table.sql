@@ -47,12 +47,14 @@ create table details
 create table details_time_work_details
 (
     detail_id            uuid not null,
-    time_work_details_id uuid not null
+    time_work_details_id uuid not null,
+    priority             integer
 );
 create table details_work_benches
 (
     detail_id       uuid not null,
-    work_benches_id uuid not null
+    work_benches_id uuid not null,
+    priority        integer
 );
 create table managers
 (

@@ -18,6 +18,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Контроллер заказов
+ */
 @Controller
 public class OrderController {
 
@@ -31,9 +34,6 @@ public class OrderController {
     ContragentService contragentService;
 
     @Autowired
-    ManagerService managerService;
-
-    @Autowired
     DetailInfoService detailInfoService;
 
     @Autowired
@@ -42,37 +42,66 @@ public class OrderController {
     @Autowired
     UserService userService;
 
-
+    /**
+     * Страница всех заказов метод GET
+     *
+     * @param model Модель
+     * @return Страница всех заказов
+     */
     @GetMapping("/orders")
     public String getAllOrders(Model model) {
         model.addAttribute("orders", orderService.getAllOrders());
-        model.addAttribute("user",userService.getUserWeb());
+        model.addAttribute("user", userService.getUserWeb());
         return "orders";
     }
 
-    @GetMapping("/orders/{numberOrder}")
-    public String getOneOrder(@PathVariable(value = "numberOrder") int numberOrder, Model model) {
-        Order oneOrder = orderService.findOneOrder(numberOrder);
-        model.addAttribute("order", orderService.findOneOrder(numberOrder));
-        model.addAttribute("user",userService.getUserWeb());
+    /**
+     * Страница заказа метод GET
+     *
+     * @param id    Идентификатор заказа
+     * @param model Модель
+     * @return Страница заказа
+     */
+    @GetMapping("/orders/{id}")
+    public String getOneOrder(@PathVariable(value = "id") String id, Model model) {
+        model.addAttribute("order", orderService.getOrderById(UUID.fromString(id)));
+        model.addAttribute("user", userService.getUserWeb());
         return "oneOrder";
     }
 
+    /**
+     * Страница добавления заказа метод GET
+     *
+     * @param model Модель
+     * @return Страница добавления заказа
+     */
     @GetMapping("/addOrder")
     public String addOrderGet(Model model) {
         model.addAttribute("contragents", contragentService.getAllContragents());
         model.addAttribute("details", detailService.getAllDetails());
-        model.addAttribute("user",userService.getUserWeb());
-        model.addAttribute("managers",managerService.getAllManagers());
+        model.addAttribute("user", userService.getUserWeb());
+        model.addAttribute("managers", userService.getManagers());
         return "addOrder";
     }
 
-
+    /**
+     * Страница добавления заказа метод POST
+     *
+     * @param numberOrder  Номер заказа
+     * @param contragentId Идентификатор контрагента
+     * @param managerId    Идентификатор  менеджера
+     * @param detailId     Идентификатор детали
+     * @param countDetail  Количество деталей
+     * @param dateStart    Дата запуска в производство
+     * @param comment      Комментарий
+     * @param model        Модель
+     * @return Страница всех заказов
+     */
     @PostMapping("/addOrder")
     public String addOrderPost(@RequestParam(required = false) String numberOrder,
-                               @RequestParam(required = true) String objectName,
-                               @RequestParam(required = true) String manager,
-                               @RequestParam(required = true) List<String> detailName,
+                               @RequestParam(required = true) String contragentId,
+                               @RequestParam(required = true) String managerId,
+                               @RequestParam(required = true) List<String> detailId,
                                @RequestParam(required = true) List<String> countDetail,
                                @RequestParam(required = true) List<String> dateStart,
                                @RequestParam(required = true) String comment,
@@ -82,24 +111,24 @@ public class OrderController {
         Order findOrder = null;
         CompletedOrder findCompletedOrder = null;
         try {
-            findOrder = orderService.findOneOrder(Integer.parseInt(numberOrder));
-            findCompletedOrder = completedOrderService.findOneCompletedOrder(Integer.parseInt(numberOrder));
+            findOrder = orderService.getOrderByNumber(Integer.parseInt(numberOrder));
+            findCompletedOrder = completedOrderService.getOneCompletedOrderByNumber(Integer.parseInt(numberOrder));
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
         if (findOrder != null || findCompletedOrder != null) {
             model.addAttribute("contragents", contragentService.getAllContragents());
-            model.addAttribute("managers", managerService.getAllManagers());
+            model.addAttribute("managers", userService.getManagers());
             model.addAttribute("details", detailService.getAllDetails());
             model.addAttribute("numberOrderError", "Заказ с таким номером уже существует!");
-            model.addAttribute("user",userService.getUserWeb());
+            model.addAttribute("user", userService.getUserWeb());
             return "addOrder";
         }
         order.setId(UUID.randomUUID());
         order.setNumberOrder(Integer.parseInt(numberOrder));
-        order.setObjectName(contragentService.getOneContragent(objectName));
-        order.setManager(managerService.getOneManager(manager.substring(0, manager.length() - 5)));
-        order.setUser(userService.getUserWeb());
+        order.setObjectName(contragentService.getOneContragentById(UUID.fromString(contragentId)));
+        order.setManager(userService.getUserById(UUID.fromString(managerId)));
+        order.setManager(userService.getUserWeb());
         order.setPainting("00:00");
         order.setPacking("00:00");
         order.setComment(comment);
@@ -138,17 +167,17 @@ public class OrderController {
             detailInfo.setId(UUID.randomUUID());
             detailInfo.setIncrement(i);
             detailInfo.setDateStart(timesList.get(i));
-            if (detailName.get(i).equals("Выбирите деталь") && countDetailList.get(i) == 0) {
+            if (detailId.get(i).equals("Выбирите деталь") && countDetailList.get(i) == 0) {
                 continue;
             } else {
-                detailInfo.setDetail(detailService.findByName(detailName.get(i)));
+                detailInfo.setDetail(detailService.getDetailById(UUID.fromString(detailId.get(i))));
                 isCalculated = new ArrayList<>();
-                for (WorkBench workBench : detailService.findByName(detailName.get(i)).getWorkBenches()) {
+                for (WorkBench workBench : detailService.getDetailById(UUID.fromString(detailId.get(i))).getWorkBenches()) {
                     isCalculated.add(false);
                 }
                 detailInfo.setIsCalculated(isCalculated);
                 detailInfo.setCount(countDetailList.get(i));
-                detailInfoService.save(detailInfo);
+                detailInfoService.saveDetailInfo(detailInfo);
             }
             list.add(detailInfo);
         }
@@ -158,70 +187,101 @@ public class OrderController {
         return "redirect:/orders";
     }
 
-
-    @GetMapping("/orders/change/{numberOrder}")
-    public String changeOrderGet(@PathVariable(value = "numberOrder") String numberOrder, Model model) {
+    /**
+     * Страница изменения заказа метод GET
+     *
+     * @param id    Идентификатор заказа
+     * @param model Модель
+     * @return Страница изменения заказа
+     */
+    @GetMapping("/orders/change/{id}")
+    public String changeOrderGet(@PathVariable(value = "id") String id, Model model) {
         model.addAttribute("contragents", contragentService.getAllContragents());
-        model.addAttribute("managers", managerService.getAllManagers());
+        model.addAttribute("managers", userService.getManagers());
         model.addAttribute("details", detailService.getAllDetails());
-        model.addAttribute("order", orderService.findOneOrder(Integer.parseInt(numberOrder)));
-        model.addAttribute("user",userService.getUserWeb());
+        model.addAttribute("order", orderService.getOrderById(UUID.fromString(id)));
+        model.addAttribute("user", userService.getUserWeb());
         return "changeOrder";
     }
 
-    @PostMapping("/orders/change/{numberOrder}")
-    public String changeOrderPost(@PathVariable(value = "numberOrder") String numberOrder,
-                                  @RequestParam(required = true) String[] detailName,
-                                  @RequestParam(required = true) int[] countDetail,
+    /**
+     * Страница изменения заказа метод POST
+     *
+     * @param id          Идентификатор заказа
+     * @param detailId    Идентификатор детали
+     * @param countDetail Количество деталей
+     * @param packing     Упаковка
+     * @param painting    Покраска
+     * @return Страница всех заказов
+     */
+    @PostMapping("/orders/change/{id}")
+    public String changeOrderPost(@PathVariable(value = "id") String id,
+                                  @RequestParam(required = true) List<String> detailId,
+                                  @RequestParam(required = true) List<Integer> countDetail,
                                   @RequestParam(required = true) String packing,
                                   @RequestParam(required = true) String painting) {
 
-        Order order = orderService.findOneOrder(Integer.parseInt(numberOrder));
+        Order order = orderService.getOrderById(UUID.fromString(id));
         order.setPacking(packing);
         order.setPainting(painting);
-        for (int i = 0; i < detailName.length; i++) {
-            if (!detailName[i].contains("Выбранная: ")) {
-                order.getDetailInfos().get(i).setDetail(detailService.findByName((detailName[i].replace("Выбранная: ", ""))));
+        for (int i = 0; i < detailId.size(); i++) {
+            if (!detailId.get(i).contains("Выбранная: ")) {
+                order.getDetailInfos().get(i).setDetail(detailService.getDetailById(UUID.fromString((detailId.get(i).replace("Выбранная: ", "")))));
             }
-            order.getDetailInfos().get(i).setCount(countDetail[i]);
+            order.getDetailInfos().get(i).setCount(countDetail.get(i));
         }
         orderService.saveOrder(order);
-        return "redirect:/orders/" + numberOrder;
+        return "redirect:/orders/" + id;
     }
 
-    @GetMapping("/orders/add/{numberOrder}")
-    public String addNewElementForOrderGet(@PathVariable(value = "numberOrder") String numberOrder, Model model) {
+    /**
+     * Страница добавления детали к заказу метод GET
+     *
+     * @param id    Идентификатор заказа
+     * @param model Модель
+     * @return Страница добавления детали к заказу
+     */
+    @GetMapping("/orders/add/{id}")
+    public String addNewElementForOrderGet(@PathVariable(value = "id") String id, Model model) {
         model.addAttribute("contragents", contragentService.getAllContragents());
-        model.addAttribute("managers", managerService.getAllManagers());
+        model.addAttribute("managers", userService.getManagers());
         model.addAttribute("details", detailService.getAllDetails());
-        model.addAttribute("order", orderService.findOneOrder(Integer.parseInt(numberOrder)));
-        model.addAttribute("user",userService.getUserWeb());
+        model.addAttribute("order", orderService.getOrderById(UUID.fromString(id)));
+        model.addAttribute("user", userService.getUserWeb());
         return "addNewElementForOrder";
     }
 
-
-    @PostMapping("/orders/add/{numberOrder}")
+    /**
+     * Страница добавления детали к заказу метод POST
+     *
+     * @param numberOrder Номер заказа
+     * @param detailId    Идентификатор детали
+     * @param countDetail Количество детаелй
+     * @param dateStart   Дата запуска в производство
+     * @param comment     Комментарий
+     * @param model       Модель
+     * @return Страница всех заказов
+     */
+    @PostMapping("/orders/add/{id}")
     public String addNewElementForOrderPost(@RequestParam(required = true) String numberOrder,
-                                            @RequestParam(required = true) List<String> detailName,
+                                            @RequestParam(required = true) List<String> detailId,
                                             @RequestParam(required = true) List<String> countDetail,
                                             @RequestParam(required = true) List<String> dateStart,
                                             @RequestParam(required = true) String comment, Model model
     ) {
-        Order order = orderService.findOneOrder(Integer.parseInt(numberOrder));
+        Order order = orderService.getOrderByNumber(Integer.parseInt(numberOrder));
         List<DetailInfo> detailInfos = order.getDetailInfos();
         int increment = detailInfos.size();
-        for (int i = 0; i < detailName.size(); i++) {
-
-
-            if (detailName.get(i).equals("Выбирите деталь")) {
+        for (int i = 0; i < detailId.size(); i++) {
+            if (detailId.get(i).equals("Выбирите деталь")) {
                 allModel(model);
-                model.addAttribute("order", orderService.findOneOrder(Integer.parseInt(numberOrder)));
+                model.addAttribute("order", orderService.getOrderByNumber(Integer.parseInt(numberOrder)));
                 model.addAttribute("detailError", "Не выбрана деталь!");
                 return "addNewElementForOrder";
             }
             if (countDetail.get(i).equals("")) {
                 allModel(model);
-                model.addAttribute("order", orderService.findOneOrder(Integer.parseInt(numberOrder)));
+                model.addAttribute("order", orderService.getOrderByNumber(Integer.parseInt(numberOrder)));
                 model.addAttribute("countDetailError", "Не может быть пустым!");
                 return "addNewElementForOrder";
             }
@@ -229,7 +289,7 @@ public class OrderController {
             DetailInfo detailInfo = new DetailInfo();
             detailInfo.setIncrement(increment);
             detailInfo.setId(UUID.randomUUID());
-            detailInfo.setDetail(detailService.findByName(detailName.get(i)));
+            detailInfo.setDetail(detailService.getDetailById(UUID.fromString(detailId.get(i))));
             detailInfo.setCount(Integer.parseInt(countDetail.get(i)));
             detailInfo.setDateStart(dateStart.get(i).equals("") ? null : LocalDateTime.parse(dateStart.get(i)));
 
@@ -247,16 +307,43 @@ public class OrderController {
         return "redirect:/orders";
     }
 
-    @PostMapping("/orders/{numberOrder}")
-    public String deleteOrderPost(@PathVariable(value = "numberOrder") String numberOrder) {
-        orderService.deleteOrderByNumberOrder(orderService.findOneOrder(Integer.parseInt(numberOrder)));
+    /**
+     * Страница удаления заказа или деталей заказа метод GET
+     *
+     * @param id    Идентификатор заказа
+     * @param model Модель
+     * @return Cтраница удаления заказа или деталей заказа
+     */
+    @GetMapping("orders/deletion/{id}")
+    public String deletionElementOrOrder(@PathVariable(value = "id") String id, Model model) {
+        model.addAttribute("order", orderService.getOrderById(UUID.fromString(id)));
+        model.addAttribute("user", userService.getUserWeb());
+        return "deletionOrder";
+    }
+
+    /**
+     * Страница удаления заказа метод POST
+     *
+     * @param id Идентификатор заказа
+     * @return Страница всех заказов
+     */
+    @PostMapping("/orders/{id}")
+    public String deleteOrderPost(@PathVariable(value = "id") String id) {
+        orderService.deleteOrder(orderService.getOrderById(UUID.fromString(id)));
         return "redirect:/orders";
     }
 
-    @PostMapping("/orders/{numberOrder}/{increment}")
-    public String deleteElementFromOrderPost(@PathVariable(value = "numberOrder") String numberOrder,
+    /**
+     * Страница удаления деталей из заказа метод POST
+     *
+     * @param id        Идентификатор заказа
+     * @param increment Номер детали
+     * @return Страница всех заказов
+     */
+    @PostMapping("/orders/{id}/{increment}")
+    public String deleteElementFromOrderPost(@PathVariable(value = "id") String id,
                                              @PathVariable(value = "increment") int increment) {
-        Order order = orderService.findOneOrder(Integer.parseInt(numberOrder));
+        Order order = orderService.getOrderById(UUID.fromString(id));
         List<DetailInfo> detailInfos = order.getDetailInfos();
         detailInfos.remove(increment);
         for (int i = 0; i < detailInfos.size(); i++) {
@@ -267,45 +354,63 @@ public class OrderController {
         return "redirect:/orders";
     }
 
-
-    @PostMapping("orders/check1/{numberOrder}")
-    public String check1(@PathVariable(value = "numberOrder") int numberOrder) {
-        System.out.println("");
-        orderService.raschet(numberOrder);
-        return "redirect:/orders/check1/" + numberOrder;
-    }
-
-    @GetMapping("orders/check1/{numberOrder}")
-    public String check1(@PathVariable(value = "numberOrder") String numberOrder, Model model) {
-        model.addAttribute("order", orderService.findOneOrder(Integer.parseInt(numberOrder)));
-        model.addAttribute("user",userService.getUserWeb());
+    /**
+     * Страница расчета заказа метод GET
+     *
+     * @param id    Идентификатор заказа
+     * @param model Модель
+     * @return Страница расчета
+     */
+    @GetMapping("orders/check1/{id}")
+    public String check1(@PathVariable(value = "id") String id, Model model) {
+        model.addAttribute("order", orderService.getOrderById(UUID.fromString(id)));
+        model.addAttribute("user", userService.getUserWeb());
         return "check1";
     }
 
-    @GetMapping("orders/deletion/{numberOrder}")
-    public String deletionElementOrOrder(@PathVariable(value = "numberOrder") String numberOrder, Model model) {
-        model.addAttribute("order", orderService.findOneOrder(Integer.parseInt(numberOrder)));
-        model.addAttribute("user",userService.getUserWeb());
-        return "deletionOrder";
+    /**
+     * Страница расчета заказа метод POST
+     *
+     * @param id Идентификатор заказа
+     * @return Страница заказа
+     */
+    @PostMapping("orders/check1/{id}")
+    public String check1(@PathVariable(value = "id") String id) {
+        orderService.raschet(Integer.parseInt(id));
+        return "redirect:/orders/check1/" + id;
     }
+
+
 
     public void allModel(Model model) {
         model.addAttribute("contragents", contragentService.getAllContragents());
-        model.addAttribute("managers", managerService.getAllManagers());
+        model.addAttribute("managers", userService.getManagers());
         model.addAttribute("details", detailService.getAllDetails());
     }
 
+    /**
+     * Страница всех завершенных заказов
+     *
+     * @param model Модель
+     * @return Страница всех завершенных заказов
+     */
     @GetMapping("/completed_orders")
     public String getAllCompletedOrders(Model model) {
         model.addAttribute("completed_order", completedOrderService.getAllCompletedOrders());
-        model.addAttribute("user",userService.getUserWeb());
+        model.addAttribute("user", userService.getUserWeb());
         return "completedOrders";
     }
 
-    @PostMapping("orders/complete/{numberOrder}")
-    public String completeOrder(@PathVariable(value = "numberOrder") String numberOrder, Model model) {
-        completedOrderService.saveCompletedOrder(orderService.findOneOrder(Integer.parseInt(numberOrder)));
-        orderService.deleteOrderByNumberOrder(orderService.findOneOrder(Integer.parseInt(numberOrder)));
+    /**
+     * Перенос заказа в завершенные заказы
+     *
+     * @param id    Идентификатор заказа
+     * @param model Модель
+     * @return Страница всех заказов
+     */
+    @PostMapping("orders/complete/{id}")
+    public String completeOrder(@PathVariable(value = "id") String id, Model model) {
+        completedOrderService.saveCompletedOrder(orderService.getOrderById(UUID.fromString(id)));
         return "redirect:/orders";
     }
 }
