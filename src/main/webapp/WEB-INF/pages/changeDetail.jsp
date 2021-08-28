@@ -152,7 +152,7 @@
                 <td>
                     <div>
                         <select class="form-control" name="materialName">
-                            <option>Выбранная: ${detail.material.name}</option>
+                            <option>Выбранная: ${detail.materialName} ${detail.materialThickness}мм</option>
                             <c:forEach items="${materials}" var="material">
                                 <option value="${material.name}">${material.name} ${material.thickness}мм</option>
                             </c:forEach>

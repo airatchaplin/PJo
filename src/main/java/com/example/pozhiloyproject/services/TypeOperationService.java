@@ -48,4 +48,35 @@ public class TypeOperationService {
     public void deleteTypeOperation(TypeOperation typeOperation) {
         typeOperationRepository.delete(typeOperation);
     }
+
+    /**
+     * Проверка при добавлении типа операции
+     *
+     * @param name Наименование операции
+     * @return Результат
+     */
+    public boolean checkAddTypeOperation(String name) {
+        TypeOperation findTypeOperation = typeOperationRepository.findByName(name);
+        return findTypeOperation != null;
+    }
+
+    /**
+     * Проверка при добавлении типа операции
+     *
+     * @param id   Идентификатор операции
+     * @param name Наименование операции
+     * @return Результат
+     */
+    public boolean checkAddTypeOperation(UUID id, String name) {
+        TypeOperation currentTypeOperation = typeOperationRepository.findById(id).orElseThrow();
+        TypeOperation findTypeOperation = typeOperationRepository.findByName(name);
+        if (currentTypeOperation.equals(findTypeOperation)) {
+            return false;
+        } else if (findTypeOperation != null && !findTypeOperation.equals(currentTypeOperation)) {
+            return true;
+        } else if (findTypeOperation == null) {
+            return false;
+        }
+        return false;
+    }
 }

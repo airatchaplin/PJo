@@ -34,7 +34,7 @@ public class WorkBench {
     /**
      * Тип операции
      */
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private TypeOperation typeOperation;
 
 //    public static List<WorkBench> compare(List<WorkBench> workBenches){

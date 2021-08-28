@@ -24,14 +24,33 @@ public class WorkBenchDto {
     private LocalDateTime dateEndDetail;
 
 
-    private TypeOperation typeOperation;
+    private String typeOperation;
 
     int priority;
 
-    public static List<WorkBenchDto> compare(List<WorkBenchDto> workBenches) {
+    public static List<WorkBenchDto> compareWorkBenchesPriority(List<WorkBenchDto> workBenches) {
         Comparator<WorkBenchDto> comparator = Comparator.comparing(WorkBenchDto::getPriority);
         workBenches.sort(comparator);
         return workBenches;
     }
+
+    public static List<WorkBenchDto> compareWorkBenchesName(List<WorkBenchDto> workBenches) {
+        Comparator<WorkBenchDto> comparator = Comparator.comparing(WorkBenchDto::getName);
+        workBenches.sort(comparator);
+        return workBenches;
+    }
+    public static List<WorkBenchDto> compareWorkBenchesTypeOperation(List<WorkBenchDto> workBenches) {
+        Comparator<WorkBenchDto> comparator = Comparator.comparing(WorkBenchDto::getTypeOperation);
+        workBenches.sort(comparator);
+        return workBenches;
+    }
+
+    public static List<WorkBenchDto> compareWorkBenchesDateEnd(List<WorkBenchDto> workBenches) {
+        Comparator<WorkBenchDto> comparator = Comparator.comparing(WorkBenchDto::getDateEndDetail);
+        workBenches.sort(comparator);
+        return workBenches;
+    }
+
+
 
 }

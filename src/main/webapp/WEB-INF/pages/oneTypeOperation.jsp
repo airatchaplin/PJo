@@ -86,7 +86,8 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     </div>
     <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}" href="/admin/allUsers">Все
+        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}"
+           href="/admin/allUsers">Все
             пользователи
         </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
@@ -105,7 +106,8 @@
     top: 0;
     margin-top: 60px;">
     <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches/typeOperations/addTypeOperation">Добавить операцию</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;"
+           href="/workbenches/typeOperations/addTypeOperation">Добавить операцию</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
            href="/workbenches/typeOperations/change/${operation.id}">Изменить
             операцию</a>
@@ -129,7 +131,7 @@
             <td>${operation.name}</td>
             <td>
                 <c:forEach items="${workbenches}" var="workbench">
-                    <pre>${workbench.name}</pre>
+                    <pre style="font-size: 14px">${workbench.name}</pre>
                 </c:forEach>
             </td>
         </tr>

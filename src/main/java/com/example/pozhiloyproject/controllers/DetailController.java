@@ -57,9 +57,36 @@ public class DetailController {
      */
     @GetMapping("/details")
     public String getAllDetails(Model model) {
-        model.addAttribute("details", detailService.getAllDetails());
+        User user = userService.getUserWeb();
+        if (user.getFilter_details() != null) {
+            switch (user.getFilter_details()) {
+                case "thickness" -> model.addAttribute("details", DetailDto.compareMaterialThickness(detailService.getAllDetails()));
+                case "details" -> model.addAttribute("details", DetailDto.compareDetailName(detailService.getAllDetails()));
+                case "materials" -> model.addAttribute("details", DetailDto.compareMaterialName(detailService.getAllDetails()));
+            }
+        } else {
+            model.addAttribute("details", detailService.getAllDetails());
+        }
         model.addAttribute("user", userService.getUserWeb());
         return "details";
+    }
+
+    /**
+     * Страница всех деталей метод POST
+     *
+     * @param filter Фильтр
+     * @return Страница всех деталей
+     */
+    @PostMapping("/details")
+    public String getAllDetails(@RequestParam(required = false) String filter) {
+        User user = userService.getUserWeb();
+        switch (filter) {
+            case "thickness" -> user.setFilter_details("thickness");
+            case "details" -> user.setFilter_details("details");
+            case "materials" -> user.setFilter_details("materials");
+        }
+        userService.saveUser(user);
+        return "redirect:/details";
     }
 
     /**
@@ -84,7 +111,7 @@ public class DetailController {
      */
     @GetMapping("/addDetail")
     public String addDetailGet(Model model) {
-        model.addAttribute("details", DetailDto.compare(detailService.getAllDetails()));
+        model.addAttribute("details", DetailDto.compareMaterialName(detailService.getAllDetails()));
         model.addAttribute("workbenches", workBenchService.getAllWorkBench());
         model.addAttribute("materials", Material.compare(materialService.getAllMaterials()));
         model.addAttribute("user", userService.getUserWeb());
@@ -121,6 +148,7 @@ public class DetailController {
             model.addAttribute("details", detailService.getAllDetails());
             model.addAttribute("workbenches", workBenchService.getAllWorkBench());
             model.addAttribute("materials", materialService.getAllMaterials());
+            model.addAttribute("operations", subsequenceTypeOperationService.getAllSubsequenceTypeOperation());
             model.addAttribute("detailError", "Деталь с таким наименованием уже существует. Придумайте другое название!");
             return "addDetail";
         }
@@ -211,7 +239,7 @@ public class DetailController {
     @GetMapping("details/change/{id}")
     public String changeDetailGet(@PathVariable(value = "id") String id, Model model) {
         model.addAttribute("detail", detailService.getDetailDtoById(UUID.fromString(id)));
-        model.addAttribute("materials", materialService.getAllMaterials());
+        model.addAttribute("materials", Material.compare(materialService.getAllMaterials()));
         model.addAttribute("workbenches", workBenchService.getAllWorkBench());
         model.addAttribute("user", userService.getUserWeb());
         return "changeDetail";
@@ -256,4 +284,6 @@ public class DetailController {
         detailService.saveDetail(detail);
         return "redirect:/details";
     }
+
+
 }

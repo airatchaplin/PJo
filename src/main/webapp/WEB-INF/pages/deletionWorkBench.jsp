@@ -108,10 +108,10 @@
     <div>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addWorkBench">Добавить станок</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/workbenches/change/${workbench.getName()}">Изменить
+           href="/workbenches/change/${workbench.id}">Изменить
             станок</a>
         <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/workbenches/deletion/${workbench.getName()}">Удалить
+           href="/workbenches/deletion/${workbench.id}">Удалить
             станок</a>
     </div>
 
@@ -135,7 +135,7 @@
                 ${workbench.dateEndDetail}
             </td>
             <td>
-                <form:form action="/workbenches/deletion/${workbench.name}"
+                <form:form action="/workbenches/deletion/${workbench.id}"
                            method="post">
                     <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;"
                             type="submit">

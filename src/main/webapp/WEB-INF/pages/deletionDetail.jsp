@@ -132,7 +132,7 @@
             <td>${detail.name}</td>
             <td>${detail.length}</td>
             <td>${detail.width}</td>
-            <td>${detail.material.name}</td>
+            <td>${detail.materialName} ${detail.materialThickness}мм</td>
             <td>
                 <c:set var="count" value="0" scope="page"/>
                 <% int count = 0; %>

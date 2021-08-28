@@ -4,13 +4,11 @@ import com.example.pozhiloyproject.dto.DetailDto;
 import com.example.pozhiloyproject.dto.TimeWorkDetailDto;
 import com.example.pozhiloyproject.dto.WorkBenchDto;
 import com.example.pozhiloyproject.helper.Db;
-import com.example.pozhiloyproject.models.Contragent;
-import com.example.pozhiloyproject.models.Detail;
-import com.example.pozhiloyproject.models.TimeWorkDetail;
-import com.example.pozhiloyproject.models.TypeOperation;
+import com.example.pozhiloyproject.models.*;
 import com.example.pozhiloyproject.repository.DetailRepository;
 import com.example.pozhiloyproject.repository.TypeOperationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Clock;
@@ -48,17 +46,26 @@ public class DetailService {
     @Autowired
     TimeWorkDetailService timeWorkDetailService;
 
-    /**
-     * Получить список всех деталей
-     *
-     * @return Список всех деталей
-     */
     public List<DetailDto> getAllDetails() {
-        List<Detail> details = detailRepository.findAll();
+        List<Map<String, Object>> rows = db.call("select details.id   as detailId,\n" +
+                "       details.name as detailName,\n" +
+                "       details.length,\n" +
+                "       details.width,\n" +
+                "       m.id         as matetialId,\n" +
+                "       m.name       as materialName,\n" +
+                "       m.thickness\n" +
+                "from details\n" +
+                "         left join materials m on details.material_id = m.id");
         List<DetailDto> detailDtos = new ArrayList<>();
-        DetailDto detailDto = null;
-        for (Detail detail : details) {
-            detailDto = setAttributesDetailDto(detail);
+        DetailDto detailDto;
+        for (Map<String, Object> row : rows) {
+            detailDto = new DetailDto();
+            detailDto.setId((UUID) row.get("detailId"));
+            detailDto.setName((String) row.get("detailName"));
+            detailDto.setWidth((String) row.get("width"));
+            detailDto.setLength((String) row.get("length"));
+            detailDto.setMaterialName(String.valueOf(row.get("materialName")));
+            detailDto.setMaterialThickness((Double) row.get("thickness"));
             detailDtos.add(detailDto);
         }
         return detailDtos;
@@ -123,11 +130,12 @@ public class DetailService {
         DetailDto detailDto = new DetailDto();
         detailDto.setId(detail.getId());
         detailDto.setName(detail.getName());
-        detailDto.setMaterial(detail.getMaterial());
+        detailDto.setMaterialName(detail.getMaterial().getName());
+        detailDto.setMaterialThickness(detail.getMaterial().getThickness());
         detailDto.setLength(detail.getLength());
         detailDto.setWidth(detail.getWidth());
 
-        List<Map<String, Object>> mapList = db.call("select w.id, w.name, w.date_end_detail, t.id as type_operation_id, dwb.priority from details left join details_work_benches dwb on details.id = dwb.detail_id left join workbench w on dwb.work_benches_id = w.id left join type_operation t on w.type_operation_id = t.id where detail_id = '" + detail.getId() + "'");
+        List<Map<String, Object>> mapList = db.call("select w.id, w.name, w.date_end_detail, t.name as type_operation_name, dwb.priority from details left join details_work_benches dwb on details.id = dwb.detail_id left join workbench w on dwb.work_benches_id = w.id left join type_operation t on w.type_operation_id = t.id where detail_id = '" + detail.getId() + "'");
         List<Map<String, Object>> mapList2 = db.call("select detail_id,time_work_details_id,priority,time_work from details_time_work_details left join timeworkdetail t on t.id = details_time_work_details.time_work_details_id where detail_id = '" + detail.getId() + "'");
 
         List<WorkBenchDto> workBenchDtos = new ArrayList<>();
@@ -142,7 +150,7 @@ public class DetailService {
             workBenchDto.setName(String.valueOf(mapList.get(i).get("name")));
             workBenchDto.setDateEndDetail(localDateTime);
             workBenchDto.setPriority((Integer) mapList.get(i).get("priority"));
-            workBenchDto.setTypeOperation(typeOperationService.getOneTypeOperation((UUID) mapList.get(i).get("type_operation_id")));
+            workBenchDto.setTypeOperation(String.valueOf(mapList.get(i).get("type_operation_name")));
             workBenchDtos.add(workBenchDto);
             timeWorkDetailDto = new TimeWorkDetailDto();
             timeWorkDetailDto.setId((UUID) mapList2.get(i).get("time_work_details_id"));
@@ -150,7 +158,7 @@ public class DetailService {
             timeWorkDetailDto.setPriority((Integer) mapList2.get(i).get("priority"));
             timeWorkDetailsDtos.add(timeWorkDetailDto);
         }
-        detailDto.setWorkBenchDtos(WorkBenchDto.compare(workBenchDtos));
+        detailDto.setWorkBenchDtos(WorkBenchDto.compareWorkBenchesPriority(workBenchDtos));
         detailDto.setTimeWorkDetailsDtos(TimeWorkDetailDto.compare(timeWorkDetailsDtos));
         return detailDto;
     }

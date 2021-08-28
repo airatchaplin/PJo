@@ -136,7 +136,7 @@
                                placeholder="Введите название операции" value="${operation.name}" required>
                     </div>
                     <div class="error" style="color: red;">
-                            ${workBenchRepeatError}
+                            ${errorNameTypeOperation}
                     </div>
                 </td>
                 <td>

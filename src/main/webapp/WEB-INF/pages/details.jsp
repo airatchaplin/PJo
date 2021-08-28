@@ -86,7 +86,8 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     </div>
     <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}" href="/admin/allUsers">Все
+        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}"
+           href="/admin/allUsers">Все
             пользователи
         </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
@@ -112,46 +113,76 @@
 <div class="main" style="margin-top: 120px">
     <table class="table">
         <thead>
-        <tr>
-            <th scope="col">Деталь</th>
-            <th scope="col">Длина</th>
-            <th scope="col">Ширина</th>
-            <th scope="col">Материал</th>
-            <th scope="col">Станки</th>
-            <th scope="col">Время детали на этом станке</th>
-        </tr>
+        <form method="post">
+            <tr>
+                <th scope="col">№</th>
+                <th scope="col">Деталь
+                    <button name="filter" value="details" style="background: #d8d8d8;border: none;" type="submit">
+                        ${user.filter_details.equals("details")?"&#11167;":"&#11165;"}
+                    </button>
+                </th>
+                <th scope="col">Длина</th>
+                <th scope="col">Ширина</th>
+                <th scope="col">Материал
+                    <button name="filter" value="materials" style="background: #d8d8d8;border: none;" type="submit">
+                        ${user.filter_details.equals("materials")?"&#11167;":"&#11165;"}
+                    </button>
+                </th>
+                <th scope="col">Толщина
+                    <button name="filter" value="thickness" style="background: #d8d8d8;border: none;" type="submit">
+                        ${user.filter_details.equals("thickness")?"&#11167;":"&#11165;"}
+                    </button>
+                </th>
+                <%--            <th scope="col">Станки</th>--%>
+                <%--            <th scope="col">Время детали на этом станке</th>--%>
+            </tr>
+        </form>
         </thead>
         <tbody>
+
         <c:forEach items="${details}" var="detail">
             <tr>
+                <td>${count + 1}</td>
                 <td><a style="display: block" href="details/${detail.id}">${detail.name}</a></td>
                 <td>${detail.length}</td>
                 <td>${detail.width}</td>
-                <td>${detail.material.name}</td>
-                <td>
-                    <c:set var="count" value="0" scope="page"/>
-                    <% int count = 0; %>
-                    <c:forEach items="${detail.workBenchDtos}" var="workbench">
-                        <c:if test="${workbench.typeOperation.name.equals('ГИБКА')}">
-                            <c:if test="${count>0}">
-                                <pre style="font-size: 14px; color: red">Альтернатива: ${workbench.name}</pre>
-                            </c:if>
-                            <c:if test="${count==0}">
-                                <pre style="font-size: 14px">${workbench.name}</pre>
-                                <c:set var="count" value="${count + 1}" scope="page"/>
-                            </c:if>
-                        </c:if>
-                        <c:if test="${!workbench.typeOperation.name.equals('ГИБКА')}">
-                            <pre style="font-size: 14px">${workbench.name}</pre>
-                        </c:if>
-                    </c:forEach>
-                </td>
-                <td>
-                    <c:forEach items="${detail.timeWorkDetailsDtos}" var="timeWork">
-                        <pre style="font-size: 14px">${timeWork.timeWork}</pre>
-                    </c:forEach>
-                </td>
+                <td>${detail.materialName}</td>
+                <td>${detail.materialThickness}мм</td>
+                    <%--                <td>--%>
+                    <%--                    <c:set var="count" value="0" scope="page"/>--%>
+                    <%--                    <% int countGibka = 0;--%>
+                    <%--                        int countRezka = 0; %>--%>
+                    <%--                    <c:forEach items="${detail.workBenchDtos}" var="workbench">--%>
+                    <%--                        <c:if test="${workbench.typeOperation.name.equals('ГИБКА')}">--%>
+                    <%--                            <c:if test="${countGibka>0}">--%>
+                    <%--                                <pre style="font-size: 14px; color: red">Альтернатива: ${workbench.name}</pre>--%>
+                    <%--                            </c:if>--%>
+                    <%--                            <c:if test="${countGibka==0}">--%>
+                    <%--                                <pre style="font-size: 14px">${workbench.name}</pre>--%>
+                    <%--                                <c:set var="countGibka" value="${countGibka + 1}" scope="page"/>--%>
+                    <%--                            </c:if>--%>
+                    <%--                        </c:if>--%>
+                    <%--                        <c:if test="${workbench.typeOperation.name.equals('РЕЗКА')}">--%>
+                    <%--                            <c:if test="${countRezka>0}">--%>
+                    <%--                                <pre style="font-size: 14px; color: red">Альтернатива: ${workbench.name}</pre>--%>
+                    <%--                            </c:if>--%>
+                    <%--                            <c:if test="${countRezka==0}">--%>
+                    <%--                                <pre style="font-size: 14px">${workbench.name}</pre>--%>
+                    <%--                                <c:set var="countRezka" value="${countRezka + 1}" scope="page"/>--%>
+                    <%--                            </c:if>--%>
+                    <%--                        </c:if>--%>
+                    <%--                        <c:if test="${!workbench.typeOperation.name.equals('ГИБКА') || !workbench.typeOperation.name.equals('РЕЗКА')  }">--%>
+                    <%--                            <pre style="font-size: 14px">${workbench.name}</pre>--%>
+                    <%--                        </c:if>--%>
+                    <%--                    </c:forEach>--%>
+                    <%--                </td>--%>
+                    <%--                <td>--%>
+                    <%--                    <c:forEach items="${detail.timeWorkDetailsDtos}" var="timeWork">--%>
+                    <%--                        <pre style="font-size: 14px">${timeWork.timeWork}</pre>--%>
+                    <%--                    </c:forEach>--%>
+                    <%--                </td>--%>
             </tr>
+            <c:set var="count" value="${count + 1}" scope="page"/>
         </c:forEach>
         </tbody>
     </table>

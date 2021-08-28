@@ -1,5 +1,6 @@
 package com.example.pozhiloyproject.controllers;
 
+import com.example.pozhiloyproject.dto.DetailDto;
 import com.example.pozhiloyproject.models.*;
 import com.example.pozhiloyproject.services.*;
 
@@ -78,7 +79,7 @@ public class OrderController {
     @GetMapping("/addOrder")
     public String addOrderGet(Model model) {
         model.addAttribute("contragents", contragentService.getAllContragents());
-        model.addAttribute("details", detailService.getAllDetails());
+        model.addAttribute("details",DetailDto.compareMaterialName( detailService.getAllDetails()));
         model.addAttribute("user", userService.getUserWeb());
         model.addAttribute("managers", userService.getManagers());
         return "addOrder";
@@ -119,7 +120,7 @@ public class OrderController {
         if (findOrder != null || findCompletedOrder != null) {
             model.addAttribute("contragents", contragentService.getAllContragents());
             model.addAttribute("managers", userService.getManagers());
-            model.addAttribute("details", detailService.getAllDetails());
+            model.addAttribute("details", DetailDto.compareMaterialName(detailService.getAllDetails()));
             model.addAttribute("numberOrderError", "Заказ с таким номером уже существует!");
             model.addAttribute("user", userService.getUserWeb());
             return "addOrder";
@@ -327,7 +328,7 @@ public class OrderController {
      * @param id Идентификатор заказа
      * @return Страница всех заказов
      */
-    @PostMapping("/orders/{id}")
+    @PostMapping("/orders/deletion/{id}")
     public String deleteOrderPost(@PathVariable(value = "id") String id) {
         orderService.deleteOrder(orderService.getOrderById(UUID.fromString(id)));
         return "redirect:/orders";
@@ -340,7 +341,7 @@ public class OrderController {
      * @param increment Номер детали
      * @return Страница всех заказов
      */
-    @PostMapping("/orders/{id}/{increment}")
+    @PostMapping("/orders/deletion/{id}/{increment}")
     public String deleteElementFromOrderPost(@PathVariable(value = "id") String id,
                                              @PathVariable(value = "increment") int increment) {
         Order order = orderService.getOrderById(UUID.fromString(id));

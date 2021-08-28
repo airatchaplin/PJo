@@ -119,7 +119,7 @@
             <th scope="col">№ заказа</th>
             <th scope="col">Объект</th>
             <th scope="col">Менеджер</th>
-            <th scope="col">Составитель</th>
+            <th scope="col">Экономист</th>
             <th scope="col">Деталь</th>
             <th scope="col">Кол-во</th>
             <th scope="col">Дата запуска в производство</th>
@@ -130,26 +130,26 @@
         <tbody>
         <c:forEach items="${orders}" var="order">
             <tr>
-                <td><a style="display: block" href="orders/${order.getNumberOrder()}">${order.getNumberOrder()}</a></td>
-                <td><a href="orders/${order.getNumberOrder()}">${order.getObjectName().getName()}</a></td>
-                <td>${order.getManager().getFio_i_o()}</td>
-                <td>${order.getUser().getFio_i_o()}</td>
+                <td><a style="display: block" href="orders/${order.id}">${order.numberOrder}</a></td>
+                <td><a style="display: block" href="orders/${order.id}">${order.objectName.name}</a></td>
+                <td>${order.manager.fio_i_o}</td>
+                <td>${user.fio_i_o}</td>
                 <td>
-                    <c:forEach items="${order.getDetailInfos()}" var="detail">
-                        <pre> ${detail.getDetail().getName()} </pre>
+                    <c:forEach items="${order.detailInfos}" var="detail">
+                        <pre> ${detail.detail.name} </pre>
                     </c:forEach>
                 </td>
                 <td>
-                    <c:forEach items="${order.getDetailInfos()}" var="detail">
-                        <pre> ${detail.getCount()} </pre>
+                    <c:forEach items="${order.detailInfos}" var="detail">
+                        <pre> ${detail.count} </pre>
                     </c:forEach>
                 </td>
                 <td>
-                        ${order.getDateStart()}
+                        ${order.dateStart}
                 <td>
-                        ${order.getDateEnd()}
+                        ${order.dateEnd}
                 <td>
-                        ${order.getComment()}
+                        ${order.comment}
                 </td>
             </tr>
         </c:forEach>

@@ -44,6 +44,7 @@ create table details
     material_id uuid,
     primary key (id)
 );
+
 create table details_time_work_details
 (
     detail_id            uuid not null,
@@ -56,20 +57,11 @@ create table details_work_benches
     work_benches_id uuid not null,
     priority        integer
 );
-create table managers
-(
-    id        uuid not null,
-    fio       varchar(255),
-    fio_i_o   varchar(255),
-    last_name varchar(255),
-    name      varchar(255),
-    primary key (id)
-);
 create table materials
 (
     id        uuid not null,
     name      varchar(255),
-    thickness varchar(255),
+    thickness float,
     primary key (id)
 );
 create table orders
@@ -83,7 +75,6 @@ create table orders
     painting       varchar(255),
     manager_id     uuid,
     object_name_id uuid,
-    user_id        uuid,
     primary key (id)
 );
 create table orders_detail_infos
@@ -127,13 +118,15 @@ create table type_operation_work_benches
 );
 create table users
 (
-    id        uuid not null,
-    fio       varchar(255),
-    fio_i_o   varchar(255),
-    last_name varchar(255),
-    name      varchar(255),
-    password  varchar(255),
-    username  varchar(255),
+    id             uuid not null,
+    fio            varchar(255),
+    fio_i_o        varchar(255),
+    last_name      varchar(255),
+    name           varchar(255),
+    password       varchar(255),
+    username       varchar(255),
+    filter_details varchar,
+    filter_workbenches varchar,
     primary key (id)
 );
 create table users_roles
@@ -143,10 +136,10 @@ create table users_roles
 );
 create table workbench
 (
-    id                uuid not null,
-    date_end_detail   timestamp,
-    name              varchar(255),
-    type_operation_id uuid,
+    id                 uuid not null,
+    date_end_detail    timestamp,
+    name               varchar(255),
+    type_operation_id  uuid,
     primary key (id)
 );
 alter table if exists details_time_work_details
@@ -154,7 +147,7 @@ alter table if exists details_time_work_details
 alter table if exists type_operation_work_benches
     add constraint UK_oov9sv06v8kb7gywqqmcsbk3p unique (work_benches_id);
 alter table if exists completed_orders
-    add constraint FKk7v87ic1bdy15w6uixoijmp1s foreign key (manager_id) references managers;
+    add constraint FKlyeyp88hw379vbml5077gxae3 foreign key (manager_id) references users;
 alter table if exists completed_orders
     add constraint FK66pn2bog0lt454xfy3md1h5wg foreign key (object_name_id) references contragents;
 alter table if exists completed_orders_detail_infos
@@ -176,11 +169,9 @@ alter table if exists details_work_benches
 alter table if exists details_work_benches
     add constraint FKsvmr0fc0rikjftfoww7hdhu38 foreign key (detail_id) references details;
 alter table if exists orders
-    add constraint FK3kb98kmk1xemhxbjomoaec280 foreign key (manager_id) references managers;
+    add constraint FK9qn4jar6kvccow7iyuo2mfuef foreign key (manager_id) references users;
 alter table if exists orders
     add constraint FKk6on0fnwea31l3wrd9b79xp8d foreign key (object_name_id) references contragents;
-alter table if exists orders
-    add constraint FK32ql8ubntj5uh44ph9659tiih foreign key (user_id) references users;
 alter table if exists orders_detail_infos
     add constraint FKl6237nwuhhkvy4hks3g1tjqpw foreign key (detail_infos_id) references detail_info;
 alter table if exists orders_detail_infos
@@ -199,3 +190,4 @@ alter table if exists users_roles
     add constraint FK2o0jvgh89lemvvo17cbqvdxaa foreign key (user_id) references users;
 alter table if exists workbench
     add constraint FKwm0qawryp7tsjj64o66udkgo foreign key (type_operation_id) references type_operation;
+

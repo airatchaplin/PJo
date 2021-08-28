@@ -57,10 +57,10 @@ public class MaterialService {
 
     public boolean checkMaterial(String name, String thickness) {
         List<Material> materials = materialsRepository.findAllByName(name);
-        if (thickness.charAt(1) == '.') {
-            thickness = thickness.replace(".", ",");
+        if (thickness.contains(",")) {
+            thickness = thickness.replace(",", ".");
         }
-        String finalThickness = thickness;
+        double finalThickness = Double.parseDouble(thickness);
         return materials.stream().anyMatch(material -> material.getThickness().equals(finalThickness));
     }
 

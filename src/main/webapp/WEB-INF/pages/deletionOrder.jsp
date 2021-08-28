@@ -149,7 +149,7 @@
                         ${ord.getDateEnd()}
                 </td>
                 <td>
-                    <form:form action="/orders/${order.getNumberOrder()}/${ord.getIncrement()}"
+                    <form:form action="/orders/deletion/${order.id}/${ord.increment}"
                                method="post">
                         <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;"
                                 type="submit">Удалить
@@ -157,7 +157,7 @@
                     </form:form>
                 </td>
                 <td>
-                    <form:form action="/orders/${order.getNumberOrder()}" method="post">
+                    <form:form action="/orders/deletion/${order.id}" method="post">
                         <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;display: ${ord.getIncrement()== 0 ?"block":"none"}" type="submit">Удалить заказ</button>
                     </form:form>
                 </td>

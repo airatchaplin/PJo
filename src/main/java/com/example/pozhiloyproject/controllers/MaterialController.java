@@ -65,13 +65,15 @@ public class MaterialController {
             model.addAttribute("materialNameRepeatError", "Материал с таким наименованием и толщиной уже существует. Придумайте другое название и толщину!");
             return "addMaterial";
         }
-        if (thickness.charAt(1) == '.') {
-            thickness = thickness.replace(".", ",");
+
+        if (thickness.contains(",")) {
+            thickness = thickness.replace(",", ".");
         }
+
         Material material = new Material();
         material.setId(UUID.randomUUID());
         material.setName(materialName);
-        material.setThickness(thickness);
+        material.setThickness(Double.valueOf(thickness));
         materialService.saveMaterial(material);
         return "redirect:/materials";
     }
@@ -116,15 +118,15 @@ public class MaterialController {
     @PostMapping("materials/change/{id}")
     public String changeMaterialPost(@PathVariable(name = "id") String id,
                                      @RequestParam(required = false) String materialName, @RequestParam(required = false) String thickness, Model model) {
-
         if (materialService.checkMaterial(materialName, thickness)) {
             model.addAttribute("material", materialService.getOneMaterial(UUID.fromString(id)));
-            model.addAttribute("materialNameRepeatError", "Материал с таким названием уже существует! \nПридумайте другое название!");
+            model.addAttribute("materialNameRepeatError", "Материал с таким наименованием и толщиной уже существует!");
             return "changeMaterial";
         }
+
         Material material = materialService.getOneMaterial(UUID.fromString(id));
         material.setName(materialName);
-        material.setThickness(thickness);
+        material.setThickness(Double.valueOf(thickness));
         materialService.saveMaterial(material);
         return "redirect:/materials";
     }

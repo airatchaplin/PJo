@@ -43,6 +43,12 @@ public class Order {
     private User manager;
 
     /**
+     * Менеджер
+     */
+//    @ManyToOne
+//    private User admin;
+
+    /**
      * Список деталей в заказе
      */
     @ManyToMany(cascade = CascadeType.ALL)

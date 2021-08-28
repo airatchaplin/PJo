@@ -74,7 +74,7 @@ public class ContragentController {
     @PostMapping("/addContragent")
     public String addContragentsPost(@RequestParam(required = false) String contragentName, Model model) {
         if (contragentService.checkContragent(contragentName)) {
-            model.addAttribute("contragentNameError", "Контрагент с таким наименованием уже есть. Придумайте другое наименование!");
+            model.addAttribute("contragentNameError", "Контрагент с таким наименованием уже существует!");
             return "addContragent";
         }
         Contragent contragent = new Contragent();
@@ -112,7 +112,7 @@ public class ContragentController {
 
         if (contragentService.checkContragent(UUID.fromString(id), contragentName)) {
             model.addAttribute("contragent", contragentService.getOneContragentById(UUID.fromString(id)));
-            model.addAttribute("contragentNameError", "Контрагент с таким наименованием уже есть. Придумайте другое наименование!");
+            model.addAttribute("contragentNameError", "Контрагент с таким наименованием уже существует!");
             return "changeContragent";
         }
         Contragent contragent = contragentService.getOneContragentById(UUID.fromString(id));

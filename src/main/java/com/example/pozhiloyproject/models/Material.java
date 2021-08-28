@@ -34,7 +34,7 @@ public class Material {
     /**
      * Толщина материала
      */
-    private String thickness;
+    private Double thickness;
 
     /**
      * Сортировка списка материала по наименованию

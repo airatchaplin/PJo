@@ -1,11 +1,16 @@
 package com.example.pozhiloyproject.services;
 
+import com.example.pozhiloyproject.dto.WorkBenchDto;
+import com.example.pozhiloyproject.helper.Db;
 import com.example.pozhiloyproject.models.WorkBench;
 import com.example.pozhiloyproject.repository.WorkBenchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -16,6 +21,9 @@ public class WorkBenchService {
 
     @Autowired
     WorkBenchRepository workBenchRepository;
+
+    @Autowired
+    Db db;
 
     /**
      * Сохранение станка
@@ -31,8 +39,25 @@ public class WorkBenchService {
      *
      * @return Список всех станков
      */
-    public List<WorkBench> getAllWorkBench() {
-        return workBenchRepository.findAll();
+    public List<WorkBenchDto> getAllWorkBench() {
+        List<Map<String, Object>> rows = db.call("select workbench.id   as workbenchId,\n" +
+                "       workbench.name as workbenchName,\n" +
+                "       date_end_detail,\n" +
+                "       towb.name      as typeOperationId\n" +
+                "from workbench\n" +
+                "         left join type_operation towb on workbench.type_operation_id = towb.id");
+        List<WorkBenchDto> workBenchDtos = new ArrayList<>();
+
+        WorkBenchDto workBenchDto;
+        for (Map<String,Object> row : rows){
+            workBenchDto = new WorkBenchDto();
+            workBenchDto.setId((UUID) row.get("workbenchId"));
+            workBenchDto.setName(String.valueOf(row.get("workbenchName")));
+            workBenchDto.setDateEndDetail(LocalDateTime.parse(row.get("date_end_detail").toString().replace(" ","T")));
+            workBenchDto.setTypeOperation(String.valueOf(row.get("typeOperationId")));
+            workBenchDtos.add(workBenchDto);
+        }
+        return workBenchDtos;
     }
 
     /**
@@ -72,5 +97,35 @@ public class WorkBenchService {
      */
     public List<WorkBench> getWorkBenchesFilterOperationName(UUID id) {
         return workBenchRepository.findByWorkBenchesFilterOperationName(id);
+    }
+
+    /**
+     * Проверка при добавлении станка
+     *
+     * @param name Наименование станка
+     * @return Результат
+     */
+    public boolean checkAddWorkBench(String name) {
+        WorkBench findWorkBench = getOneWorkBenchByName(name);
+        return findWorkBench != null;
+    }
+
+    /**
+     * Проверка при добавлении станка
+     *
+     * @param name Наименование станка
+     * @return Результат
+     */
+    public boolean checkAddWorkBench(UUID id, String name) {
+        WorkBench currentWorkBench = workBenchRepository.findById(id).orElseThrow();
+        WorkBench findWorkBench = getOneWorkBenchByName(name);
+        if (currentWorkBench.equals(findWorkBench)) {
+            return false;
+        } else if (findWorkBench != null && !findWorkBench.equals(currentWorkBench)) {
+            return true;
+        } else if (findWorkBench == null) {
+            return false;
+        }
+        return false;
     }
 }

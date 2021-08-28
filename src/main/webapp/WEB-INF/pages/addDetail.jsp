@@ -143,7 +143,7 @@
                             <select class="form-control" name="materialId">
                                 <option selected value="Выберите материал">Выбирите материал</option>
                                 <c:forEach items="${materials}" var="material">
-                                    <option value="${material.name}">${material.name} ${material.thickness}мм</option>
+                                    <option value="${material.id}">${material.name} ${material.thickness}мм</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -230,14 +230,30 @@
         component1 += '<option value="${workbench.id}">${workbench.name}</option>';
         component1 += '</c:forEach>';
         component1 += '</select>';
+        component1 += '</div>';
+        countWorkBench++;
+        component1 += '<div id="forDeleteWorkBench' + countWorkBench + '">';
+        component1 += '<select style="color: red" class="form-control" name="workBenchId">';
+        component1 += '<option selected value="Выберите станок">Выберите альтернативный станок</option>';
+        component1 += '<c:forEach items="${РЕЗКА}" var="workbench">';
+        component1 += '<option value="${workbench.id}">${workbench.name}</option>';
+        component1 += '</c:forEach>';
+        component1 += '</select>';
         component1 += '<br>';
         component1 += '</div>';
+        countWorkBench++;
 
         var component2 = '';
         component2 += '<div id="forDeleteTimeWork' + countTimeWork + '">';
         component2 += '<input type="text" class="form-control"  name="timeWork" placeholder="Введите время детали">';
+        component2 += '</div>';
+        countTimeWork++;
+        component2 += '<div id="forDeleteTimeWork' + countTimeWork + '">';
+        component2 += '<input style="color: red" type="text" class="form-control"  name="timeWork" placeholder="Введите время детали">';
         component2 += '<br>';
         component2 += '</div>';
+
+        countTimeWork++;
 
         $('#columnWorkBench').append(component1);
         $('#columnTimeWork').append(component2);

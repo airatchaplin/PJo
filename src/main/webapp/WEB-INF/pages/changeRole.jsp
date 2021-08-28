@@ -110,7 +110,7 @@
     top: 0;
     margin-top: 60px;">
         <div>
-            <a style="padding: 10px;color: #000000;text-decoration: none;" href="/change/personalArea">Изменить права
+            <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/allUsers/change">Изменить права
             </a>
         </div>
 
@@ -127,6 +127,8 @@
         <table class="table">
             <thead>
             <tr>
+                <th scope="col">№</th>
+                <th scope="col">Логин</th>
                 <th scope="col">Фамилия</th>
                 <th scope="col">Имя</th>
                 <th scope="col">Отчество</th>
@@ -136,28 +138,15 @@
             <tbody>
             <c:forEach items="${allAdmins}" var="user">
                 <tr>
+                    <td>${count1 + 1}</td>
+                    <td>${user.username}</td>
                     <td>
                         <input type="text" class="form-control" name="id"
                                placeholder="Введите новый пароль" style="display: none" value="${user.id}">
-
-                        <input type="text" class="form-control" name="fio"
-                               placeholder="Введите новый пароль" style="display: none" value="${user.fio}">
-                        <a style="display: block"
-                           href="/personalArea/admin/allUsers/user/${user.id}">${user.fio}</a>
+                            ${user.fio}
                     </td>
-                    <td>
-                        <input type="text" class="form-control" name="name"
-                               placeholder="Введите новый пароль" style="display: none" value="${user.name}">
-                        <a style="display: block"
-                           href="/personalArea/admin/allUsers/user/${user.id}">${user.name}</a>
-                    </td>
-                    <td>
-                        <input type="text" class="form-control" name="lastName"
-                               placeholder="Введите новый пароль" style="display: none" value="${user.lastName}">
-                        <a style="display: block"
-                           href="/personalArea/admin/allUsers/user/${user.id}">${user.lastName}</a>
-                    </td>
-
+                    <td>${user.name}</td>
+                    <td>${user.lastName}</td>
                     <td>
                         <div>
                             <select class="form-control" name="role">
@@ -170,6 +159,7 @@
                         </div>
                     </td>
                 </tr>
+                <c:set var="count1" value="${count1 + 1}" scope="page"/>
             </c:forEach>
             </tbody>
         </table>
@@ -180,6 +170,8 @@
         <table class="table">
             <thead>
             <tr>
+                <th scope="col">№</th>
+                <th scope="col">Логин</th>
                 <th scope="col">Фамилия</th>
                 <th scope="col">Имя</th>
                 <th scope="col">Отчество</th>
@@ -189,27 +181,15 @@
             <tbody>
             <c:forEach items="${allManagers}" var="user">
                 <tr>
+                    <td>${count2 + 1}</td>
+                    <td>${user.username}</td>
                     <td>
                         <input type="text" class="form-control" name="id"
                                placeholder="Введите новый пароль" style="display: none" value="${user.id}">
-
-                        <input type="text" class="form-control" name="fio"
-                               placeholder="Введите новый пароль" style="display: none" value="${user.fio}">
-                        <a style="display: block"
-                           href="/personalArea/admin/allUsers/user/${user.id}">${user.fio}</a>
+                            ${user.fio}
                     </td>
-                    <td>
-                        <input type="text" class="form-control" name="name"
-                               placeholder="Введите новый пароль" style="display: none" value="${user.name}">
-                        <a style="display: block"
-                           href="/personalArea/admin/allUsers/user/${user.id}">${user.name}</a>
-                    </td>
-                    <td>
-                        <input type="text" class="form-control" name="lastName"
-                               placeholder="Введите новый пароль" style="display: none" value="${user.lastName}">
-                        <a style="display: block"
-                           href="/personalArea/admin/allUsers/user/${user.id}">${user.lastName}</a>
-                    </td>
+                    <td>${user.name}</td>
+                    <td>${user.lastName}</td>
                     <td>
                         <div>
                             <select class="form-control" name="role">
@@ -222,6 +202,7 @@
                         </div>
                     </td>
                 </tr>
+                <c:set var="count2" value="${count2 + 1}" scope="page"/>
             </c:forEach>
             </tbody>
         </table>

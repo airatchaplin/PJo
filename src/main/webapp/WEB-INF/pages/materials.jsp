@@ -113,6 +113,7 @@
     <table class="table">
         <thead>
         <tr>
+            <th scope="col">№</th>
             <th scope="col">Название материала</th>
             <th scope="col">Толщина</th>
         </tr>
@@ -120,10 +121,11 @@
         <tbody>
         <c:forEach items="${materials}" var="material">
             <tr>
+                <td>${count + 1}</td>
                 <td><a style="display: block" href="materials/${material.id}">${material.name}</a></td>
                 <td>${material.thickness}</td>
             </tr>
-
+            <c:set var="count" value="${count + 1}" scope="page"/>
         </c:forEach>
         </tbody>
     </table>

@@ -122,6 +122,9 @@
                                 </c:forEach>
                             </select>
                         </div>
+                        <div class="error" style="color: red;">
+                            ${errorSubsequenceTypeOperation}
+                        </div>
                     </td>
                     <td>
                         <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">Добавить операцию</button>

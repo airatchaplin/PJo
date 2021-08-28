@@ -107,7 +107,7 @@ public class UserService implements UserDetailsService {
      * @param role Список обновленных прав
      */
     public void updateRolesAllUsers(List<String> id, List<String> role) {
-        User user = null;
+        User user;
         for (int i = 0; i < id.size(); i++) {
             user = userRepository.findById(UUID.fromString(id.get(i))).orElseThrow();
             List<Role> roles = new ArrayList<>();
@@ -115,14 +115,35 @@ public class UserService implements UserDetailsService {
             user.setRoles(roles);
             userRepository.save(user);
         }
-
     }
 
+    /**
+     * Получение пользователя по id
+     *
+     * @param id Идентификатор пользователя
+     * @return Пользователь
+     */
     public User getUserById(UUID id) {
         return userRepository.findById(id).orElseThrow();
     }
 
+    /**
+     * Удаление пользователя
+     *
+     * @param user Пользователь
+     */
     public void deleteUser(User user) {
         userRepository.delete(user);
+    }
+
+    /**
+     * Проверка логина при добавлении поьзователя
+     *
+     * @param username Логин
+     * @return Результат
+     */
+    public boolean checkUsername(String username) {
+        User user = userRepository.findByUsername(username);
+        return user != null;
     }
 }

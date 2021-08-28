@@ -113,13 +113,16 @@
                     <td>
                         <div>
                             <input type="text" class="form-control" id="username" name="username"
-                                   placeholder="Введите фамилию" value="${username}" required>
+                                   placeholder="Введите логин" value="${username}" required>
+                        </div>
+                        <div class="error" style="color: red;">
+                            ${errorUsername}
                         </div>
                     </td>
                     <td>
                         <div>
                             <input type="text" class="form-control" id="password" name="password"
-                                   placeholder="Введите фамилию" value="${password}" required>
+                                   placeholder="Введите пароль" value="${password}" required>
                         </div>
                     </td>
                     <td>

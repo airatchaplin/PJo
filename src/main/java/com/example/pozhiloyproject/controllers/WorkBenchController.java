@@ -1,5 +1,8 @@
 package com.example.pozhiloyproject.controllers;
 
+import com.example.pozhiloyproject.dto.DetailDto;
+import com.example.pozhiloyproject.dto.WorkBenchDto;
+import com.example.pozhiloyproject.models.User;
 import com.example.pozhiloyproject.models.WorkBench;
 import com.example.pozhiloyproject.services.TypeOperationService;
 import com.example.pozhiloyproject.services.UserService;
@@ -38,9 +41,36 @@ public class WorkBenchController {
      */
     @GetMapping("/workbenches")
     public String getAllWorkBenches(Model model) {
-        model.addAttribute("workbenches", workBenchService.getAllWorkBench());
+        User user = userService.getUserWeb();
+        if (user.getFilter_workbenches() != null) {
+            switch (user.getFilter_workbenches()) {
+                case "workBenches" -> model.addAttribute("workbenches", WorkBenchDto.compareWorkBenchesName(workBenchService.getAllWorkBench()));
+                case "typeOperation" -> model.addAttribute("workbenches", WorkBenchDto.compareWorkBenchesTypeOperation(workBenchService.getAllWorkBench()));
+                case "dateEnd" -> model.addAttribute("workbenches", WorkBenchDto.compareWorkBenchesDateEnd(workBenchService.getAllWorkBench()));
+            }
+        } else {
+            model.addAttribute("workbenches", workBenchService.getAllWorkBench());
+        }
         model.addAttribute("user", userService.getUserWeb());
         return "workbenches";
+    }
+
+    /**
+     * Страница всех станков метод POST
+     *
+     * @param filter Фильтр
+     * @return Страница всех деталей
+     */
+    @PostMapping("/workbenches")
+    public String getAllWorkBenches(@RequestParam(required = false) String filter) {
+        User user = userService.getUserWeb();
+        switch (filter) {
+            case "workBenches" -> user.setFilter_workbenches("workBenches");
+            case "typeOperation" -> user.setFilter_workbenches("typeOperation");
+            case "dateEnd" -> user.setFilter_workbenches("dateEnd");
+        }
+        userService.saveUser(user);
+        return "redirect:/workbenches";
     }
 
     /**
@@ -69,15 +99,7 @@ public class WorkBenchController {
     public String addWorkBenchPost(@RequestParam(required = false) String nameWorkBench,
                                    @RequestParam(required = false) String dateEndDetail,
                                    @RequestParam(required = false) String typeOperationId, Model model) {
-
-        WorkBench findWorkBench = null;
-        try {
-            findWorkBench = workBenchService.getOneWorkBenchByName(nameWorkBench);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (findWorkBench != null) {
+        if (workBenchService.checkAddWorkBench(nameWorkBench)) {
             model.addAttribute("dateEndDetail", dateEndDetail);
             model.addAttribute("workBenchRepeatError", "Станок с таким названием уже существует!");
             return "addWorkBench";
@@ -87,7 +109,6 @@ public class WorkBenchController {
         workBench.setId(UUID.randomUUID());
         workBench.setName(nameWorkBench);
         workBench.setTypeOperation(typeOperationService.getOneTypeOperation(UUID.fromString(typeOperationId)));
-
         workBench.setDateEndDetail(LocalDateTime.parse(dateEndDetail));
         workBenchService.save(workBench);
         return "redirect:/workbenches";
@@ -137,18 +158,13 @@ public class WorkBenchController {
                                       @RequestParam(required = false) String workBenchName,
                                       @RequestParam(required = false) String typeOperationId,
                                       @RequestParam(required = false) String dateEndDetail, Model model) {
-        WorkBench findWorkBench = null;
-//        try {
-//            findWorkBench = workBenchService.getOneWorkBench(workBenchName);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        if (findWorkBench != null && !findWorkBench.getName().equals(nameWorkBench)) {
-//            model.addAttribute("workbench", workBenchService.getOneWorkBench(nameWorkBench));
-//            model.addAttribute("workBenchRepeatError", "Станок с таким названием уже существует!");
-//            return "changeWorkBench";
-//        }
+
+        if (workBenchService.checkAddWorkBench(UUID.fromString(id), workBenchName)) {
+            model.addAttribute("workbench", workBenchService.getOneWorkBenchById(UUID.fromString(id)));
+            model.addAttribute("operations", typeOperationService.getAllTypeOperations());
+            model.addAttribute("workBenchRepeatError", "Станок с таким названием уже существует!");
+            return "changeWorkBench";
+        }
 
         WorkBench workBench = workBenchService.getOneWorkBenchById(UUID.fromString(id));
         workBench.setName(workBenchName);

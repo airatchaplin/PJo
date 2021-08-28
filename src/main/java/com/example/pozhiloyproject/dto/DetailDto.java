@@ -31,15 +31,19 @@ public class DetailDto {
     private String name;
 
     /**
-     * Материал детали
+     * Название материала детали
      */
+    private String materialName;
 
-    private Material material;
+    /**
+     * Название материала детали
+     */
+    private double materialThickness;
+
 
     /**
      * Список времяни изготовления детали
      */
-
     private List<TimeWorkDetailDto> timeWorkDetailsDtos;
 
     /**
@@ -59,8 +63,20 @@ public class DetailDto {
     private String width;
 
 
-    public static List<DetailDto> compare(List<DetailDto> detailDtos) {
+    public static List<DetailDto> compareDetailName(List<DetailDto> detailDtos) {
         Comparator<DetailDto> comparator = Comparator.comparing(DetailDto::getName);
+        detailDtos.sort(comparator);
+        return detailDtos;
+    }
+
+    public static List<DetailDto> compareMaterialName(List<DetailDto> detailDtos) {
+        Comparator<DetailDto> comparator = Comparator.comparing(DetailDto::getMaterialName);
+        detailDtos.sort(comparator);
+        return detailDtos;
+    }
+
+    public static List<DetailDto> compareMaterialThickness(List<DetailDto> detailDtos) {
+        Comparator<DetailDto> comparator = Comparator.comparing(DetailDto::getMaterialThickness);
         detailDtos.sort(comparator);
         return detailDtos;
     }

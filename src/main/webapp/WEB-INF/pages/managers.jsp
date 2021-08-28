@@ -116,6 +116,7 @@
     <table class="table">
         <thead>
         <tr>
+            <th scope="col">№</th>
             <th scope="col">Фамилия</th>
             <th scope="col">Имя</th>
             <th scope="col">Отчество</th>
@@ -124,6 +125,7 @@
         <tbody>
         <c:forEach items="${managers}" var="manager">
             <tr>
+                <td>${count + 1}</td>
                 <td><a style="display: block"
                        href="managers/${manager.getId()}">${manager.getFio()}</a>
                 </td>
@@ -134,6 +136,7 @@
                        href="managers/${manager.getId()}">${manager.getLastName()}</a>
                 </td>
             </tr>
+            <c:set var="count" value="${count + 1}" scope="page"/>
         </c:forEach>
         </tbody>
     </table>

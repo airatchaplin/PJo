@@ -113,15 +113,18 @@
     <table class="table">
         <thead>
         <tr>
+            <th scope="col">№</th>
             <th scope="col">Контрагент</th>
         </tr>
         </thead>
         <tbody>
         <c:forEach items="${contragents}" var="contragent">
             <tr>
+                <td>${count + 1}</td>
                 <td><a style="display: block" href="contragents/${contragent.id}">${contragent.name}</a>
                 </td>
             </tr>
+            <c:set var="count" value="${count + 1}" scope="page"/>
         </c:forEach>
         </tbody>
     </table>

@@ -88,7 +88,8 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     </div>
     <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}" href="/admin/allUsers">Все
+        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}"
+           href="/admin/allUsers">Все
             пользователи
         </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
@@ -108,18 +109,20 @@
     margin-top: 60px;">
     <div>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/allUsers/change">Изменить права
-            </a>
+        </a>
         </a>
     </div>
 </nav>
 
 <div class="main" style="margin-top: 120px">
-    <div style="margin: 10px ; font-size: 15px" >
-    Экономисты
+    <div style="margin: 10px ; font-size: 15px">
+        Экономисты
     </div>
     <table class="table">
         <thead>
         <tr>
+            <th scope="col">№</th>
+            <th scope="col">Логин</th>
             <th scope="col">Фамилия</th>
             <th scope="col">Имя</th>
             <th scope="col">Отчество</th>
@@ -129,29 +132,26 @@
         <tbody>
         <c:forEach items="${allAdmins}" var="user">
             <tr>
-                <td><a style="display: block"
-                       href="/admin/allUsers/user/${user.id}">${user.fio}</a>
-                </td>
-                <td><a style="display: block"
-                       href="/personalArea/admin/allUsers/user/${user.id}">${user.name}</a>
-                </td>
-                <td><a style="display: block"
-                       href="/personalArea/admin/allUsers/user/${user.id}">${user.lastName}</a>
-                </td>
-                <td><a style="display: block"
-                       href="/personalArea/admin/allUsers/user/${user.id}">${user.roles.get(0).name.equals("ROLE_USER")?"Менеджер":"Экономист"}</a>
-                </td>
+                <td>${count1 + 1}</td>
+                <td>${user.username}</td>
+                <td>${user.fio}</td>
+                <td>${user.name} </td>
+                <td>${user.lastName} </td>
+                <td>${user.roles.get(0).name.equals("ROLE_USER")?"Менеджер":"Экономист"}</td>
             </tr>
+            <c:set var="count1" value="${count1 + 1}" scope="page"/>
         </c:forEach>
         </tbody>
     </table>
 
-    <div style="margin: 10px ; font-size: 15px" >
+    <div style="margin: 10px ; font-size: 15px">
         Менеджеры
     </div>
     <table class="table">
         <thead>
         <tr>
+            <th scope="col">№</th>
+            <th scope="col">Логин</th>
             <th scope="col">Фамилия</th>
             <th scope="col">Имя</th>
             <th scope="col">Отчество</th>
@@ -161,19 +161,14 @@
         <tbody>
         <c:forEach items="${allManagers}" var="user">
             <tr>
-                <td><a style="display: block"
-                       href="/personalArea/admin/allUsers/user/${user.id}">${user.fio}</a>
-                </td>
-                <td><a style="display: block"
-                       href="/personalArea/admin/allUsers/user/${user.id}">${user.name}</a>
-                </td>
-                <td><a style="display: block"
-                       href="/personalArea/admin/allUsers/user/${user.id}">${user.lastName}</a>
-                </td>
-                <td><a style="display: block"
-                       href="/personalArea/admin/allUsers/user/${user.id}">${user.roles.get(0).name.equals("ROLE_USER")?"Менеджер":"Экономист"}</a>
-                </td>
+                <td>${count2 + 1}</td>
+                <td>${user.username} </td>
+                <td>${user.fio} </td>
+                <td>${user.name} </td>
+                <td>${user.lastName} </td>
+                <td>${user.roles.get(0).name.equals("ROLE_USER")?"Менеджер":"Экономист"} </td>
             </tr>
+            <c:set var="count2" value="${count2 + 1}" scope="page"/>
         </c:forEach>
         </tbody>
     </table>

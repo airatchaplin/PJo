@@ -116,14 +116,17 @@
     <table class="table">
         <thead>
         <tr>
+            <th scope="col">№</th>
             <th scope="col">Операция</th>
         </tr>
         </thead>
         <tbody>
         <c:forEach items="${operations}" var="operation">
             <tr>
+                <td>${count + 1}</td>
                 <td><a style="display: block" href="/workbenches/typeOperations/${operation.id}">${operation.name}</a></td>
             </tr>
+            <c:set var="count" value="${count + 1}" scope="page"/>
         </c:forEach>
         </tbody>
     </table>

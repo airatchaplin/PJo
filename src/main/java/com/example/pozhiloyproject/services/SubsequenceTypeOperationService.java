@@ -53,4 +53,19 @@ public class SubsequenceTypeOperationService {
     public void deleteSubsequenceTypeOperation(SubsequenceTypeOperation subsequenceTypeOperation) {
         subsequenceTypeOperationRepository.delete(subsequenceTypeOperation);
     }
+
+    /**
+     * Проверка при добавлении последовательности операций
+     * @param description Описание операций
+     * @return Результат
+     */
+    public boolean checkSubsequenceTypeOperation(String description) {
+        List<SubsequenceTypeOperation> all = subsequenceTypeOperationRepository.findAll();
+        for (SubsequenceTypeOperation subsequenceTypeOperation : all) {
+            if (subsequenceTypeOperation.getDescription().equals(description)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

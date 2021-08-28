@@ -13,4 +13,5 @@ import java.util.UUID;
 @Repository
 public interface TypeOperationRepository extends JpaRepository<TypeOperation, UUID> {
 
+    TypeOperation findByName(String name);
 }

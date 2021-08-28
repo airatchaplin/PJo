@@ -57,7 +57,6 @@ public class TypeOperationController {
      */
     @GetMapping("/workbenches/typeOperations/addTypeOperation")
     public String addTypeOperationGet(Model model) {
-        model.addAttribute("operations", typeOperationService.getAllTypeOperations());
         model.addAttribute("user", userService.getUserWeb());
         return "addTypeOperation";
     }
@@ -71,6 +70,11 @@ public class TypeOperationController {
      */
     @PostMapping("/workbenches/typeOperations/addTypeOperation")
     public String addTypeOperationPost(@RequestParam(required = false) String nameTypeOperation, Model model) {
+        if (typeOperationService.checkAddTypeOperation(nameTypeOperation)) {
+            model.addAttribute("errorTypeOperation", "Операция с таким наименованием уже существует!");
+            model.addAttribute("user", userService.getUserWeb());
+            return "addTypeOperation";
+        }
         TypeOperation typeOperation = new TypeOperation();
         typeOperation.setId(UUID.randomUUID());
         typeOperation.setName(nameTypeOperation);
@@ -118,6 +122,12 @@ public class TypeOperationController {
      */
     @PostMapping("/workbenches/typeOperations/change/{id}")
     public String changeTypeOperationPost(@PathVariable(name = "id") String id, @RequestParam(required = false) String nameTypeOperation, Model model) {
+        if (typeOperationService.checkAddTypeOperation(UUID.fromString(id), nameTypeOperation)) {
+            model.addAttribute("errorTypeOperation", "Операция с таким наименованием уже существует!");
+            model.addAttribute("operation", typeOperationService.getOneTypeOperation(UUID.fromString(id)));
+            model.addAttribute("user", userService.getUserWeb());
+            return "changeTypeOperation";
+        }
         TypeOperation typeOperation = typeOperationService.getOneTypeOperation(UUID.fromString(id));
         typeOperation.setName(nameTypeOperation);
         typeOperationService.save(typeOperation);
@@ -183,6 +193,7 @@ public class TypeOperationController {
     @PostMapping("/workbenches/typeOperations/addSubsequenceTypeOperation")
     public String addSubsequenceTypeOperationPost(@RequestParam(required = false) List<String> typeOperationsList, Model model) {
         model.addAttribute("operations", typeOperationService.getAllTypeOperations());
+
         List<TypeOperation> typeOperations = new ArrayList<>();
         String description = "";
         for (String s : typeOperationsList) {
@@ -191,6 +202,13 @@ public class TypeOperationController {
             typeOperations.add(oneTypeOperation);
         }
         description = description.substring(0, description.length() - 4);
+
+        if (subsequenceTypeOperationService.checkSubsequenceTypeOperation(description)){
+            model.addAttribute("errorSubsequenceTypeOperation", "Последовательность операции с такими параметрами уже существует!");
+            model.addAttribute("operations", typeOperationService.getAllTypeOperations());
+            model.addAttribute("user", userService.getUserWeb());
+            return "addSubsequenceTypeOperation";
+        }
         SubsequenceTypeOperation subsequenceTypeOperation = new SubsequenceTypeOperation();
         subsequenceTypeOperation.setId(UUID.randomUUID());
         subsequenceTypeOperation.setTypeOperations(typeOperations);

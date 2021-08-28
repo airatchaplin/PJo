@@ -20,7 +20,7 @@ public class ManagerController {
     @Autowired
     RoleService roleService;
 
-    @Autowired
+
     PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -48,6 +48,15 @@ public class ManagerController {
                                  @RequestParam(required = false) String lastName,
                                  Model model) {
 
+        if(userService.checkUsername(username)){
+            model.addAttribute("errorUsername","Пользователь с таким логином уже существует!");
+            model.addAttribute("password",password);
+            model.addAttribute("fio",fio);
+            model.addAttribute("name",name);
+            model.addAttribute("lastName",lastName);
+            model.addAttribute("user", userService.getUserWeb());
+            return "addManager";
+        }
         username = username.trim();
         fio = fio.trim();
         name = name.trim();

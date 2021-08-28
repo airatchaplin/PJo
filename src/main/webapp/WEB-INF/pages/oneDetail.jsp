@@ -132,30 +132,67 @@
             <td>${detail.name}</td>
             <td>${detail.length}</td>
             <td>${detail.width}</td>
-            <td>${detail.material.name}</td>
-            <td>
-                <c:set var="count" value="0" scope="page"/>
-                <% int count = 0; %>
-                <c:forEach items="${detail.workBenchDtos}" var="workbench">
-                    <c:if test="${workbench.typeOperation.name.equals('ГИБКА')}">
-                        <c:if test="${count>0}">
-                            <pre style="font-size: 14px; color: red">Альтернатива: ${workbench.name}</pre>
-                        </c:if>
-                        <c:if test="${count==0}">
-                            <pre style="font-size: 14px">${workbench.name}</pre>
-                            <c:set var="count" value="${count + 1}" scope="page"/>
-                        </c:if>
-                    </c:if>
-                    <c:if test="${!workbench.typeOperation.name.equals('ГИБКА')}">
-                        <pre style="font-size: 14px">${workbench.name}</pre>
-                    </c:if>
-                </c:forEach>
-            </td>
-            <td>
-                <c:forEach items="${detail.timeWorkDetailsDtos}" var="timeWork">
-                    <pre style="font-size: 14px">${timeWork.timeWork}</pre>
-                </c:forEach>
-            </td>
+            <td>${detail.materialName}</td>
+<%--            <td>--%>
+<%--                <c:set var="count" value="0" scope="page"/>--%>
+<%--                <% int count = 0; %>--%>
+<%--                <c:forEach items="${detail.workBenchDtos}" var="workbench">--%>
+<%--                    <c:if test="${workbench.typeOperation.equals('ГИБКА')}">--%>
+<%--                        <c:if test="${count>0}">--%>
+<%--                            <pre style="font-size: 14px; color: red">Альтернатива: ${workbench.name}</pre>--%>
+<%--                        </c:if>--%>
+<%--                        <c:if test="${count==0}">--%>
+<%--                            <pre style="font-size: 14px">${workbench.name}</pre>--%>
+<%--                            <c:set var="count" value="${count + 1}" scope="page"/>--%>
+<%--                        </c:if>--%>
+<%--                    </c:if>--%>
+<%--                    <c:if test="${!workbench.typeOperation.equals('ГИБКА')}">--%>
+<%--                        <pre style="font-size: 14px">${workbench.name}</pre>--%>
+<%--                    </c:if>--%>
+<%--                </c:forEach>--%>
+    <%--            </td>--%>
+
+
+                    <td>
+                        <c:set var="countGibka" value="0" scope="page"/>
+                        <c:set var="countRezka" value="0" scope="page"/>
+                        <% int countGibka = 0;
+                            int countRezka = 0; %>
+                        <c:forEach items="${detail.workBenchDtos}" var="workbench">
+                            <c:if test="${workbench.typeOperation.equals('ГИБКА')}">
+                                <c:if test="${countGibka>0}">
+                                    <pre style="font-size: 14px; color: red">Альтернатива: ${workbench.name}</pre>
+                                </c:if>
+                                <c:if test="${countGibka==0}">
+                                    <pre style="font-size: 14px">${workbench.name}</pre>
+                                    <c:set var="countGibka" value="${countGibka + 1}" scope="page"/>
+                                </c:if>
+                            </c:if>
+                            <c:if test="${workbench.typeOperation.equals('РЕЗКА')}">
+                                <c:if test="${countRezka>0}">
+                                    <pre style="font-size: 14px; color: red">Альтернатива: ${workbench.name}</pre>
+                                </c:if>
+                                <c:if test="${countRezka==0}">
+                                    <pre style="font-size: 14px">${workbench.name}</pre>
+                                    <c:set var="countRezka" value="${countRezka + 1}" scope="page"/>
+                                </c:if>
+                            </c:if>
+                            <c:if test="${!workbench.typeOperation.equals('ГИБКА') || !workbench.typeOperation.equals('РЕЗКА')  }">
+                                <pre style="font-size: 14px">${workbench.name}</pre>
+                            </c:if>
+                        </c:forEach>
+                    </td>
+                    <td>
+                        <c:forEach items="${detail.timeWorkDetailsDtos}" var="timeWork">
+                            <pre style="font-size: 14px">${timeWork.timeWork}</pre>
+                        </c:forEach>
+                    </td>
+
+<%--            <td>--%>
+<%--                <c:forEach items="${detail.timeWorkDetailsDtos}" var="timeWork">--%>
+<%--                    <pre style="font-size: 14px">${timeWork.timeWork}</pre>--%>
+<%--                </c:forEach>--%>
+<%--            </td>--%>
         </tr>
         </tbody>
     </table>

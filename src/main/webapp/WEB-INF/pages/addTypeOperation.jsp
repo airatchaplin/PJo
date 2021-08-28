@@ -114,7 +114,7 @@
                                    placeholder="Введите название операции"  required>
                         </div>
                         <div class="error" style="color: red;">
-                            ${workBenchRepeatError}
+                            ${errorTypeOperation}
                         </div>
                     </td>
                     <td>

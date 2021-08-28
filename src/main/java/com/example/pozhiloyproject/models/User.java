@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
@@ -53,6 +54,16 @@ public class User implements UserDetails {
      * Пароль
      */
     String password;
+
+    /**
+     * Фильтр страницы деталей
+     */
+    String filter_details;
+
+    /**
+     * Фильтр страницы станков
+     */
+    String filter_workbenches;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;

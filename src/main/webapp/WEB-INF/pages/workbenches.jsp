@@ -88,7 +88,8 @@
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
     </div>
     <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}" href="/admin/allUsers">Все
+        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}"
+           href="/admin/allUsers">Все
             пользователи
         </a>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
@@ -108,29 +109,49 @@
     margin-top: 60px;">
     <div>
         <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addWorkBench">Добавить станок</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches/typeOperations">Операции станков</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches/typeOperations/subsequenceTypeOperation"> Последовательность операциий станков</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches/typeOperations">Операции
+            станков</a>
+        <a style="padding: 10px;color: #000000;text-decoration: none;"
+           href="/workbenches/typeOperations/subsequenceTypeOperation"> Последовательность операциий станков</a>
     </div>
 </nav>
 
 <div class="main" style="margin-top: 120px">
     <table class="table">
         <thead>
-        <tr>
-            <th scope="col">Станок</th>
-            <th scope="col">Операция</th>
-
-            <th scope="col">Время окончния</th>
-        </tr>
+        <form method="post">
+            <tr>
+                <th scope="col">№</th>
+                <th scope="col">Станок
+                    <button name="filter" value="workBenches"
+                            style="background: #d8d8d8;border: none;" type="submit">
+                        ${user.filter_workbenches.equals("workBenches")?"&#11167;":"&#11165;"}
+                    </button>
+                </th>
+                <th scope="col">Операция
+                    <button name="filter" value="typeOperation"
+                            style="background: #d8d8d8;border: none;" type="submit">
+                        ${user.filter_workbenches.equals("typeOperation")?"&#11167;":"&#11165;"}
+                    </button>
+                </th>
+                <th scope="col">Время окончния
+                    <button name="filter" value="dateEnd"
+                            style="background: #d8d8d8;border: none;" type="submit">
+                        ${user.filter_workbenches.equals("dateEnd")?"&#11167;":"&#11165;"}
+                    </button>
+                </th>
+            </tr>
+        </form>
         </thead>
         <tbody>
         <c:forEach items="${workbenches}" var="workbench">
             <tr>
-                <td><a style="display: block" href="workbenches/${workbench.name}">${workbench.name}</a></td>
-                <td>${workbench.typeOperation.name}</td>
-
+                <td>${count + 1}</td>
+                <td><a style="display: block" href="workbenches/${workbench.id}">${workbench.name}</a></td>
+                <td>${workbench.typeOperation}</td>
                 <td>${workbench.dateEndDetail}</td>
             </tr>
+            <c:set var="count" value="${count + 1}" scope="page"/>
         </c:forEach>
         </tbody>
     </table>
