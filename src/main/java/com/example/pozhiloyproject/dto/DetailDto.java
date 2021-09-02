@@ -30,6 +30,8 @@ public class DetailDto {
      */
     private String name;
 
+    private UUID materialId;
+
     /**
      * Название материала детали
      */
@@ -52,15 +54,7 @@ public class DetailDto {
 
     private List<WorkBenchDto> workBenchDtos;
 
-    /**
-     * Длина детали
-     */
-    private String length;
-
-    /**
-     * Ширина детали
-     */
-    private String width;
+    String subsequenceTypeOperation;
 
 
     public static List<DetailDto> compareDetailName(List<DetailDto> detailDtos) {

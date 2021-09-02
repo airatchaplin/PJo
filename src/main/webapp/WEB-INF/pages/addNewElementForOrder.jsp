@@ -7,144 +7,93 @@
 <head>
     <title>Добавление деталей к заказу</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-          crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
-            integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
-            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../../resources/css/table.css">
+    <link rel="stylesheet" href="../../resources/css/main.css">
+    <link rel="stylesheet" href="../../resources/css/table_add.css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <style>
-        a {
-            color: #000000;
-            text-decoration: none;
-        }
 
-        .table {
-            width: 100%;
-            border: none;
-            margin-bottom: 20px;
-        }
-
-        .table thead th {
-            font-weight: bold;
-            text-align: left;
-            border: none;
-            padding: 10px 15px;
-            background: #d8d8d8;
-            font-size: 14px;
-            border-left: 1px solid #ddd;
-            border-right: 1px solid #ddd;
-        }
-
-        .table tbody td {
-            text-align: left;
-            border-left: 1px solid #ddd;
-            border-right: 1px solid #ddd;
-            padding: 10px 15px;
-            font-size: 14px;
-            vertical-align: top;
-        }
-
-        .table thead tr th:first-child, .table tbody tr td:first-child {
-            border-left: none;
-        }
-
-        .table thead tr th:last-child, .table tbody tr td:last-child {
-            border-right: none;
-        }
-
-        .table tbody tr:nth-child(even) {
-            background: #f3f3f3;
-        }
-
-        .table > :not(caption) > * > * {
-            border-bottom-width: 0px;
-        }
-    </style>
 </head>
 <body>
-<nav style="position: fixed;
-    box-shadow: 0 0 5px;
-    display: flex;
-    justify-content: space-between;
-    right: 0;
-    left: 0;
-    padding: 15px;
-    background: #d1d1d1;
-    top: 0;">
-
+<nav class="nav-first">
     <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/">Главная страница</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name.equals("ROLE_USER")?"none":"contents"}"
-           href="/managers">Менеджеры </a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/contragents">Контрагенты </a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
+        <a href="/">Главная страница</a>
+        <a href="/orders">Заказы </a>
+        <a href="/details">Детали</a>
+        <a href="/materials">Материалы </a>
+        <a href="/managers">Менеджеры </a>
+        <a href="/contragents">Контрагенты </a>
+        <a href="/workbenches">Станки </a>
     </div>
     <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}" href="/admin/allUsers">Все
-            пользователи
-        </a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+        <a style="display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}"
+           href="/admin/allUsers">Все пользователи</a>
+        <a href="/personalArea">${user.fio_i_o} </a>
+        <a href="/logout">Выход</a>
     </div>
 </nav>
+<form:form method="post">
+    <nav class="nav-second">
+        <div>
+            <a href="/orders/add/${order.id}">Добавить элемент</a>
+            <a href="/orders/change/${order.id}">Изменить заказ</a>
+            <a href="/orders/deletion/${order.id}">Удалить заказ</a>
+            <a href="/orders/check1/${order.id}">Расчитать время</a>
+        </div>
+        <div>
+            <input style="background: #f2f2f2; border: 0;cursor: pointer" type="submit" value="Сохранить">
+        </div>
+    </nav>
 
-<nav style="position: fixed;
-    box-shadow: 0 5px 5px -5px;
-    display: flex;
-    justify-content: space-between;
-    right: 0;
-    left: 0;
-    background: #f2f2f2;
-    padding: 15px;
-    top: 0;
-    margin-top: 60px;">
-    <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/orders/add/${order.id}">Добавить
-            элемент</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/orders/change/${order.id}">Изменить
-            заказ</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/orders/deletion/${order.id}">Удалить
-            заказ</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/orders/check1/${order.id}">Расчитать
-            время</a>
-    </div>
-</nav>
-
-<div class="main" style="margin-top: 120px">
-    <form:form method="post">
-    <h4>№ заказа ${order.numberOrder}</h4>
-    <h4>Объект ${order.objectName.name}</h4>
-    <h4>Менеджер ${order.manager.fio_i_o}</h4>
-
-    <div class="info">
-        <input style="display: none" type="text" name="numberOrder"
-               value="${order.numberOrder}">
-        <table class="table">
+    <div class="main">
+        <table class="simple-little-table" cellspacing='0'>
             <thead>
             <tr>
-                <th scope="col">
-                    Деталь
-                    <input type="button" style="margin: 10px" value="+" id="add_more_fields"/>
-                    <input type="button" onclick="deleteRow()" value=" - ">
+                <th>№ заказа</th>
+                <th>Контрагент</th>
+                <th>Экономист</th>
+                <th>Менеджер</th>
+                <th>Дата запуска в производство</th>
+                <th>Дата готовности заказа</th>
+                <th>Покраска</th>
+                <th>Упаковка</th>
+                <th>Коментарий</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td> ${order.numberOrder} </td>
+                <td> ${order.objectName.name} </td>
+                <td>${order.manager.fio_i_o} </td>
+                <td>${order.manager.fio_i_o} </td>
+                <td>
+                        ${order.dateStart}
+                </td>
+                <td>
+                        ${order.dateEnd}
+                </td>
+                <td>
+                        ${order.painting}
+                </td>
+                <td>
+                        ${order.packing}
+                </td>
+                <td>
+                        ${order.comment}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table id="tablAdd" style="margin-top: 8px" class="simple-little-table" cellspacing='0'>
+            <thead>
+            <tr>
+                <th>Деталь
+                    <input class="input_js" type="button" style="margin: 10px;cursor: pointer" value="+" id="add_more_fields"/>
+                    <input class="input_js" type="button" style="cursor: pointer" onclick="deleteRow()" value=" - ">
                 </th>
-                <th scope="col">Количество</th>
-                <th scope="col">Дата запуска в производство</th>
-                <th scope="col">Добавить</th>
+                <th>Количество</th>
+                <th>Дата запуска в производство</th>
             </tr>
             </thead>
             <tbody>
@@ -173,16 +122,13 @@
                                name="dateStart">
                     </div>
                 </td>
-                <td>
-                    <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;" type="submit">Добавить</button>
-                </td>
+
             </tr>
             </tbody>
         </table>
-        </form:form>
-    </div>
-</div>
 
+    </div>
+</form:form>
 </body>
 <script>
     $('#add_more_fields').click(function () {
@@ -192,7 +138,8 @@
         html += '<td><input type="text" class="form-control" id="countDetail" name="countDetail" placeholder="Количество"> </td>';
         html += '<td><div class="col-sm-6"> <input type="datetime-local" class="form-control" id="dateStart" name="dateStart"> </div></td>';
         html += '</tr>';
-        $('table').append(html);
+        var tabl = document.getElementById('tablAdd')
+        $(tabl).append(html);
     });
 
     function deleteRow() {

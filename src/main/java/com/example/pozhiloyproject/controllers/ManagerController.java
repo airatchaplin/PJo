@@ -15,12 +15,10 @@ import java.util.UUID;
 @Controller
 public class ManagerController {
 
-
-
     @Autowired
     RoleService roleService;
 
-
+    @Autowired
     PasswordEncoder passwordEncoder;
 
     @Autowired

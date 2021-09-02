@@ -43,10 +43,10 @@ public class Order {
     private User manager;
 
     /**
-     * Менеджер
+     * Экономист
      */
-//    @ManyToOne
-//    private User admin;
+    @ManyToOne
+    private User economist;
 
     /**
      * Список деталей в заказе

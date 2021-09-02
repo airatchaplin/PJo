@@ -38,9 +38,7 @@ create table detail_info_is_calculated
 create table details
 (
     id          uuid not null,
-    length      varchar(255),
     name        varchar(255),
-    width       varchar(255),
     material_id uuid,
     primary key (id)
 );
@@ -74,6 +72,7 @@ create table orders
     packing        varchar(255),
     painting       varchar(255),
     manager_id     uuid,
+    economist_id uuid,
     object_name_id uuid,
     primary key (id)
 );
@@ -118,14 +117,14 @@ create table type_operation_work_benches
 );
 create table users
 (
-    id             uuid not null,
-    fio            varchar(255),
-    fio_i_o        varchar(255),
-    last_name      varchar(255),
-    name           varchar(255),
-    password       varchar(255),
-    username       varchar(255),
-    filter_details varchar,
+    id                 uuid not null,
+    fio                varchar(255),
+    fio_i_o            varchar(255),
+    last_name          varchar(255),
+    name               varchar(255),
+    password           varchar(255),
+    username           varchar(255),
+    filter_details     varchar,
     filter_workbenches varchar,
     primary key (id)
 );
@@ -136,10 +135,10 @@ create table users_roles
 );
 create table workbench
 (
-    id                 uuid not null,
-    date_end_detail    timestamp,
-    name               varchar(255),
-    type_operation_id  uuid,
+    id                uuid not null,
+    date_end_detail   timestamp,
+    name              varchar(255),
+    type_operation_id uuid,
     primary key (id)
 );
 alter table if exists details_time_work_details

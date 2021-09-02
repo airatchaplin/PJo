@@ -14,7 +14,6 @@ public class SubsequenceTypeOperationDto {
     /**
      * Список операций
      */
-
     private List<TypeOperation> typeOperations;
 
     /**

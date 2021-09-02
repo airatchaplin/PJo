@@ -7,150 +7,74 @@
 <head>
     <title>Действующие заказы</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
-            integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
-            crossorigin="anonymous"></script>
-    <style>
-        a {
-            color: #000000;
-            text-decoration: none;
-        }
-
-        .table {
-            width: 100%;
-            border: none;
-            margin-bottom: 20px;
-        }
-
-        .table thead th {
-            font-weight: bold;
-            text-align: left;
-            border: none;
-            padding: 10px 15px;
-            background: #d8d8d8;
-            font-size: 14px;
-            border-left: 1px solid #ddd;
-            border-right: 1px solid #ddd;
-        }
-
-        .table tbody td {
-            text-align: left;
-            border-left: 1px solid #ddd;
-            border-right: 1px solid #ddd;
-            padding: 10px 15px;
-            font-size: 14px;
-            vertical-align: top;
-        }
-
-        .table thead tr th:first-child, .table tbody tr td:first-child {
-            border-left: none;
-        }
-
-        .table thead tr th:last-child, .table tbody tr td:last-child {
-            border-right: none;
-        }
-
-        .table tbody tr:nth-child(even) {
-            background: #f3f3f3;
-        }
-
-        .table > :not(caption) > * > * {
-            border-bottom-width: 0px;
-        }
-    </style>
+    <link rel="stylesheet" href="../../resources/css/table.css">
+    <link rel="stylesheet" href="../../resources/css/main.css">
+    <link rel="stylesheet" href="../../resources/css/table_hover.css">
 </head>
 <body>
-<nav style="position: fixed;
-    box-shadow: 0 0 5px;
-    display: flex;
-    justify-content: space-between;
-    right: 0;
-    left: 0;
-    padding: 15px;
-    background: #d1d1d1;
-    top: 0;">
+<nav class="nav-first">
     <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/">Главная страница</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name.equals("ROLE_USER")?"none":"contents"}"
-           href="/managers">Менеджеры </a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/contragents">Контрагенты </a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
+        <a href="/">Главная страница</a>
+        <a href="/orders">Заказы </a>
+        <a href="/details">Детали</a>
+        <a href="/materials">Материалы </a>
+        <a href="/managers">Менеджеры </a>
+        <a href="/contragents">Контрагенты </a>
+        <a href="/workbenches">Станки </a>
     </div>
     <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}" href="/admin/allUsers">Все
-            пользователи
-        </a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+        <a style="display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}"
+           href="/admin/allUsers">Все пользователи</a>
+        <a href="/personalArea">${user.fio_i_o} </a>
+        <a href="/logout">Выход</a>
     </div>
 </nav>
 
-<nav style="position: fixed;
-    box-shadow: 0 5px 5px -5px;
-    display: flex;
-    justify-content: space-between;
-    right: 0;
-    left: 0;
-    background: #f2f2f2;
-    padding: 15px;
-    top: 0;
-    margin-top: 60px;">
+<nav class="nav-second">
     <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Действующие заказы</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/completed_orders">Завершенные заказы</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addOrder">Добавить заказ</a>
+        <a href="/orders">Действующие заказы</a>
+        <a href="/completed_orders">Завершенные заказы</a>
+        <a href="/addOrder">Добавить заказ</a>
     </div>
 </nav>
 
-<div class="main" style="margin-top: 120px">
-    <table class="table">
+<div class="main">
+    <table class="simple-little-table" cellspacing='0'>
         <thead>
         <tr>
-
-            <th scope="col">№ заказа</th>
-            <th scope="col">Объект</th>
-            <th scope="col">Менеджер</th>
-            <th scope="col">Экономист</th>
-            <th scope="col">Деталь</th>
-            <th scope="col">Кол-во</th>
-            <th scope="col">Дата запуска в производство</th>
-            <th scope="col">Дата готовности заказа</th>
-            <th scope="col">Коментарий</th>
+            <th class="number_orders" style="text-align: center">№</th>
+            <th>Объект</th>
+            <th>Менеджер</th>
+            <th>Экономист</th>
+            <th>Деталь</th>
+            <th>Кол-во</th>
+            <th>Дата запуска в производство</th>
+            <th>Дата готовности заказа</th>
+            <th>Коментарий</th>
         </tr>
         </thead>
         <tbody>
         <c:forEach items="${orders}" var="order">
             <tr>
-                <td><a style="display: block" href="orders/${order.id}">${order.numberOrder}</a></td>
+                <td class="number_orders" style="text-align: center"><a style="display: block"
+                                                                 href="orders/${order.id}">${order.numberOrder}</a></td>
                 <td><a style="display: block" href="orders/${order.id}">${order.objectName.name}</a></td>
-                <td>${order.manager.fio_i_o}</td>
-                <td>${user.fio_i_o}</td>
+                <td><a style="display: block" href="orders/${order.id}">${order.manager.fio_i_o}</a></td>
+                <td><a style="display: block" href="orders/${order.id}">${user.fio_i_o}</a></td>
+
                 <td>
                     <c:forEach items="${order.detailInfos}" var="detail">
-                        <pre> ${detail.detail.name} </pre>
+                        <pre><a style="display: block" href="orders/${order.id}">${detail.detail.name}</a></pre>
                     </c:forEach>
                 </td>
                 <td>
                     <c:forEach items="${order.detailInfos}" var="detail">
-                        <pre> ${detail.count} </pre>
+                        <pre><a style="display: block" href="orders/${order.id}">${detail.count}</a></pre>
                     </c:forEach>
                 </td>
-                <td>
-                        ${order.dateStart}
-                <td>
-                        ${order.dateEnd}
-                <td>
-                        ${order.comment}
-                </td>
+                <td><a style="display: block" href="orders/${order.id}">${order.dateStart}</a></td>
+                <td><a style="display: block" href="orders/${order.id}">${order.dateEnd}</a></td>
+                <td><a style="display: block" href="orders/${order.id}">${order.comment}</a></td>
             </tr>
         </c:forEach>
         </tbody>

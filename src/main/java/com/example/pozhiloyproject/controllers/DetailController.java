@@ -127,8 +127,6 @@ public class DetailController {
      * Страница добавления детали метод POST
      *
      * @param detailName  Наименование детали
-     * @param length      Длина детали
-     * @param width       Ширина детали
      * @param materialId  Идентификатор материала
      * @param workBenchId Список идентификаторов станков
      * @param timeWork    Список времяни
@@ -137,8 +135,6 @@ public class DetailController {
      */
     @PostMapping("/addDetail")
     public String addDetailPost(@RequestParam(required = false) String detailName,
-                                @RequestParam(required = false) String length,
-                                @RequestParam(required = false) String width,
                                 @RequestParam(required = false) String materialId,
                                 @RequestParam(required = false) List<String> workBenchId,
                                 @RequestParam(required = false) List<String> timeWork,
@@ -155,8 +151,6 @@ public class DetailController {
         Detail detail = new Detail();
         detail.setId(UUID.randomUUID());
         detail.setName(detailName);
-        detail.setLength(length);
-        detail.setWidth(width);
         detail.setMaterial(materialId.equals("Выберите материал") ? null : materialService.getOneMaterial(UUID.fromString(materialId)));
 
         List<UUID> idWorkBenches = new ArrayList<>();
@@ -192,7 +186,7 @@ public class DetailController {
                     + " where detail_id = '" + detail.getId()
                     + "' and time_work_details_id ='" + idTimeWorks.get(i) + "'");
         }
-        return "redirect:/details";
+        return "redirect:/details/" + detail.getId();
     }
 
     /**
@@ -242,47 +236,38 @@ public class DetailController {
         model.addAttribute("materials", Material.compare(materialService.getAllMaterials()));
         model.addAttribute("workbenches", workBenchService.getAllWorkBench());
         model.addAttribute("user", userService.getUserWeb());
+        for (TypeOperation typeOperation : typeOperationService.getAllTypeOperations()) {
+            List<WorkBench> workBenches = workBenchService.getWorkBenchesFilterOperationName(typeOperation.getId());
+            model.addAttribute(typeOperation.getName(), workBenches);
+        }
         return "changeDetail";
     }
 
     /**
      * Страница изменения детали метод POST
      *
-     * @param id          Идентификатор детали
-     * @param detailName  Наименование детали
-     * @param materialId  Идентификатор материала
-     * @param length      Длина детали
-     * @param width       Ширина детали
-     * @param workBenchId Список идентификторов станков детали
-     * @param timeWork    Список времени на станках детали
-     * @param model       Модель
+     * @param id         Идентификатор детали
+     * @param detailName Наименование детали
+     * @param materialId Идентификатор материала
+     * @param timeWork   Список времени на станках детали
+     * @param model      Модель
      * @return Страница всех деталей
      */
     @PostMapping("details/change/{id}")
     public String changeDetailPost(@PathVariable(value = "id") String id,
                                    @RequestParam(required = false) String detailName,
                                    @RequestParam(required = false) String materialId,
-                                   @RequestParam(required = false) String length,
-                                   @RequestParam(required = false) String width,
-                                   @RequestParam(required = false) List<String> workBenchId,
                                    @RequestParam(required = false) List<String> timeWork,
                                    Model model) {
 
         Detail detail = detailService.getDetailById(UUID.fromString(id));
         detail.setName(detailName);
-        detail.setLength(length);
-        detail.setWidth(width);
         detail.setMaterial(materialService.getOneMaterial(UUID.fromString(materialId)));
-        List<WorkBench> workBenchList = new ArrayList<>();
-        List<TimeWorkDetail> timeWorkDetailsList = new ArrayList<>();
-        for (int i = 0; i < workBenchId.size(); i++) {
+        for (int i = 0; i < timeWork.size(); i++) {
             detail.getTimeWorkDetails().get(i).setTimeWork(timeWork.get(i));
-            workBenchList.add(workBenchService.getOneWorkBenchById(UUID.fromString(workBenchId.get(i).replace("Выбранная: ", ""))));
         }
-        detail.setWorkBenches(workBenchList);
-
         detailService.saveDetail(detail);
-        return "redirect:/details";
+        return "redirect:/details/" + id;
     }
 
 

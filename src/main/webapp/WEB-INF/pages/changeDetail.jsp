@@ -7,166 +7,136 @@
 <head>
     <title>Изменение детали</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
-            integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
-            crossorigin="anonymous"></script>
-    <style>
-        a {
-            color: #000000;
-            text-decoration: none;
-        }
-
-        .table {
-            width: 100%;
-            border: none;
-            margin-bottom: 20px;
-        }
-
-        .table thead th {
-            font-weight: bold;
-            text-align: left;
-            border: none;
-            padding: 10px 15px;
-            background: #d8d8d8;
-            font-size: 14px;
-            border-left: 1px solid #ddd;
-            border-right: 1px solid #ddd;
-        }
-
-        .table tbody td {
-            text-align: left;
-            border-left: 1px solid #ddd;
-            border-right: 1px solid #ddd;
-            padding: 10px 15px;
-            font-size: 14px;
-            vertical-align: top;
-        }
-
-        .table thead tr th:first-child, .table tbody tr td:first-child {
-            border-left: none;
-        }
-
-        .table thead tr th:last-child, .table tbody tr td:last-child {
-            border-right: none;
-        }
-
-        .table tbody tr:nth-child(even) {
-            background: #f3f3f3;
-        }
-
-        .table > :not(caption) > * > * {
-            border-bottom-width: 0px;
-        }
-
-    </style>
-
+    <link rel="stylesheet" href="../../resources/css/table.css">
+    <link rel="stylesheet" href="../../resources/css/main.css">
+    <link rel="stylesheet" href="../../resources/css/table_add.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 </head>
 <body>
-<nav style="position: fixed;
-    box-shadow: 0 0 5px;
-    display: flex;
-    justify-content: space-between;
-    right: 0;
-    left: 0;
-    padding: 15px;
-    background: #d1d1d1;
-    top: 0;">
+<nav class="nav-first">
     <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/">Главная страница</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Заказы </a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details">Детали</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/materials">Материалы </a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${manager.roles.get(0).name.equals("ROLE_USER")?"none":"contents"}"
-           href="/managers">Менеджеры </a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/contragents">Контрагенты </a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/workbenches">Станки </a>
+        <a href="/">Главная страница</a>
+        <a href="/orders">Заказы </a>
+        <a href="/details">Детали</a>
+        <a href="/materials">Материалы </a>
+        <a href="/managers">Менеджеры </a>
+        <a href="/contragents">Контрагенты </a>
+        <a href="/workbenches">Станки </a>
     </div>
     <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}" href="/admin/allUsers">Все
-            пользователи
-        </a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/personalArea">${user.fio_i_o} </a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/logout">Выход </a>
+        <a style="display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}"
+           href="/admin/allUsers">Все пользователи</a>
+        <a href="/personalArea">${user.fio_i_o} </a>
+        <a href="/logout">Выход</a>
     </div>
 </nav>
 
-<nav style="position: fixed;
-    box-shadow: 0 5px 5px -5px;
-    display: flex;
-    justify-content: space-between;
-    right: 0;
-    left: 0;
-    background: #f2f2f2;
-    padding: 15px;
-    top: 0;
-    margin-top: 60px;">
-    <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addDetail">Добавить деталь</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;"
-           href="/details/change/${detail.id}">Изменить деталь</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/details/deletion/${detail.id}">Удалить
-            деталь</a>
-    </div>
-</nav>
+<form method="post">
+    <nav class="nav-second">
+        <div>
+            <a href="/addDetail">Добавить деталь</a>
+            <a href="/details/change/${detail.id}">Изменить деталь</a>
+            <a href="/details/deletion/${detail.id}">Удалить деталь</a>
+        </div>
+        <div>
+            <input style="background: #f2f2f2; border: 0;" type="submit" value="Сохрнаить">
+        </div>
+    </nav>
 
-<div class="main" style="margin-top: 120px">
-    <form:form method="post">
-        <table class="table">
+    <div class="main">
+        <table class="simple-little-table" cellspacing='0'>
             <thead>
             <tr>
-                <th scope="col">Деталь</th>
-                <th scope="col">Длина</th>
-                <th scope="col">Ширина</th>
-                <th scope="col">Материал</th>
-                <th scope="col">Станки</th>
-                <th scope="col">Время детали на этом станке</th>
-                <th scope="col">Изменить</th>
+                <th>Деталь</th>
+                <th>Материал</th>
+                <th>Станки</th>
+                <th>Время детали на этом станке</th>
             </tr>
             </thead>
             <tbody>
             <tr>
                 <td>
-                    <div>
-                        <input type="text" class="form-control" id="detailName" name="detailName"
-                               placeholder="${detail.name}" value="${detail.name}" required>
-                    </div>
+                    <input type="text" class="form-control" id="detailName" name="detailName"
+                           placeholder="${detail.name}" value="${detail.name}" required>
                 </td>
                 <td>
-                    <div>
-                        <input type="text" class="form-control" id="length" name="length"
-                               placeholder="${detail.length}" value="${detail.length}" required>
-                    </div>
+                    <select class="form-control" name="materialId">
+                        <option value="${detail.materialId}">
+                            Выбранная: ${detail.materialName} ${detail.materialThickness}мм
+                        </option>
+                        <c:forEach items="${materials}" var="material">
+                            <option value="${material.id}">${material.name} ${material.thickness}мм</option>
+                        </c:forEach>
+                    </select>
                 </td>
                 <td>
-                    <div>
-                        <input type="text" class="form-control" id="width" name="width"
-                               placeholder="${detail.width}" value="${detail.width}" required>
-                    </div>
-                </td>
-                <td>
-                    <div>
-                        <select class="form-control" name="materialName">
-                            <option>Выбранная: ${detail.materialName} ${detail.materialThickness}мм</option>
-                            <c:forEach items="${materials}" var="material">
-                                <option value="${material.name}">${material.name} ${material.thickness}мм</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </td>
-                <td>
+                    <c:set var="countGibka" value="0" scope="page"/>
+                    <c:set var="countRezka" value="0" scope="page"/>
+                    <c:set var="countProbivka" value="0" scope="page"/>
+                    <c:set var="countProkatka" value="0" scope="page"/>
+                    <c:set var="countFrezirovka" value="0" scope="page"/>
                     <c:forEach items="${detail.workBenchDtos}" var="det">
                         <div>
                             <select class="form-control" name="workBenchId">
-                                <option>Выбранная: ${det.name}</option>
-                                <c:forEach items="${detail.workBenchDtos}" var="workbench">
-                                    <option value="${workbench.name}">${workbench.name}</option>
-                                </c:forEach>
+                                <c:if test="${det.typeOperation.equals('ГИБКА')}">
+                                    <c:if test="${countGibka==3}">
+                                        <option style="color: red;margin-top: 10px" value="${det.id}">Выбранная
+                                            Альтернатива: ${det.name}</option>
+                                    </c:if>
+                                    <c:if test="${countGibka==2}">
+                                        <option style="color: red;margin-top: 10px" value="${det.id}">Выбранная
+                                            Альтернатива: ${det.name}</option>
+                                        <c:set var="countGibka" value="${countGibka +1}" scope="page"/>
+                                    </c:if>
+                                    <c:if test="${countGibka==1}">
+                                        <option style="color: red;margin-top: 10px" value="${det.id}">Выбранная
+                                            Альтернатива: ${det.name}</option>
+                                        <c:set var="countGibka" value="${countGibka +1}" scope="page"/>
+                                    </c:if>
+                                    <c:if test="${countGibka==0}">
+                                        <option value="${det.id}">Выбранная: ${det.name}</option>
+                                        ${countGibka+1}
+                                        <c:set var="countGibka" value="${countGibka +1}" scope="page"/>
+                                    </c:if>
+                                </c:if>
+                                <c:if test="${det.typeOperation.equals('РЕЗКА')}">
+                                    <c:if test="${countRezka==2}">
+                                        <option style="color: red;margin-top: 10px" value="${det.id}">Выбранная
+                                            Альтернатива: ${det.name}</option>
+                                        <c:set var="countRezka" value="${countRezka + 1}" scope="page"/>
+                                    </c:if>
+                                    <c:if test="${countRezka==1}">
+                                        <option style="color: red;margin-top: 10px" value="${det.id}">Выбранная
+                                            Альтернатива: ${det.name}</option>
+                                        <c:set var="countRezka" value="${countRezka + 1}" scope="page"/>
+                                    </c:if>
+                                    <c:if test="${countRezka==0}">
+                                        <option value="${det.id}">Выбранная: ${det.name}</option>
+                                        <c:set var="countRezka" value="${countRezka + 1}" scope="page"/>
+                                    </c:if>
+                                </c:if>
+                                <c:if test="${det.typeOperation.equals('ПРОБИВКА')}">
+                                    <c:if test="${countProbivka==0}">
+                                        <option value="${det.id}">Выбранная: ${det.name}</option>
+                                        <c:set var="countProbivka" value="${countProbivka + 1}" scope="page"/>
+                                    </c:if>
+                                </c:if>
+                                <c:if test="${det.typeOperation.equals('ПРОКАТКА')}">
+                                    <c:if test="${countProkatka==0}">
+                                        <option value="${det.id}">Выбранная: ${det.name}</option>
+                                        <c:set var="countProkatka" value="${countProkatka + 1}" scope="page"/>
+                                    </c:if>
+                                </c:if>
+                                <c:if test="${det.typeOperation.equals('ФРЕЗЕРОВКА')}">
+                                    <c:if test="${countFrezirovka==0}">
+                                        <option value="${det.id}">Выбранная: ${det.name}</option>
+                                        <c:set var="countFrezirovka" value="${countFrezirovka + 1}" scope="page"/>
+                                    </c:if>
+                                </c:if>
+                                <c:if test="${!det.typeOperation.equals('ГИБКА') && !det.typeOperation.equals('РЕЗКА')  }">
+                                    <option value="${det.id}">Выбранная: ${det.name}</option>
+                                </c:if>
                             </select>
                         </div>
                     </c:forEach>
@@ -179,18 +149,10 @@
                         </div>
                     </c:forEach>
                 </td>
-                <td>
-                    <button class="form-control" style="width: auto;background-color: #0d6efd;color: #fff;"
-                            type="submit">Изменить
-                    </button>
-                </td>
             </tr>
             </tbody>
         </table>
-    </form:form>
-<%--    <label style="color: red">${detailError}</label>--%>
-</div>
+    </div>
+</form>
 </body>
-
-
 </html>

@@ -202,6 +202,8 @@ public class MainController {
                                                  @RequestParam(required = false) String passwordConfirm, Model model) {
         if (!password.equals(passwordConfirm)) {
             model.addAttribute("passwordError", "Пароли не совпадают!");
+            model.addAttribute("user", userService.getUserWeb());
+
             return "changePersonalAreaPassword";
         }
         User user = userService.getUserWeb();

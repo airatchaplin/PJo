@@ -18,7 +18,7 @@ public class TimeWorkDetailDto {
 
     int priority;
 
-    public static List<TimeWorkDetailDto> compare(List<TimeWorkDetailDto> timeWorkDetailDtos) {
+    public static List<TimeWorkDetailDto> compareTimeWorkPriority(List<TimeWorkDetailDto> timeWorkDetailDtos) {
         Comparator<TimeWorkDetailDto> comparator = Comparator.comparing(TimeWorkDetailDto::getPriority);
         timeWorkDetailDtos.sort(comparator);
         return timeWorkDetailDtos;

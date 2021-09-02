@@ -42,7 +42,7 @@ public class TypeOperationController {
      * @param model Модель
      * @return Страница всех типов операций метод GET
      */
-    @GetMapping("/workbenches/typeOperations")
+    @GetMapping("/typeOperations")
     public String getAllTypeOperations(Model model) {
         model.addAttribute("operations", TypeOperation.compare(typeOperationService.getAllTypeOperations()));
         model.addAttribute("user", userService.getUserWeb());
@@ -55,7 +55,7 @@ public class TypeOperationController {
      * @param model Модель
      * @return Страница добавления типа операции
      */
-    @GetMapping("/workbenches/typeOperations/addTypeOperation")
+    @GetMapping("/typeOperations/addTypeOperation")
     public String addTypeOperationGet(Model model) {
         model.addAttribute("user", userService.getUserWeb());
         return "addTypeOperation";
@@ -68,7 +68,7 @@ public class TypeOperationController {
      * @param model             Модель
      * @return Страница всех типов операций
      */
-    @PostMapping("/workbenches/typeOperations/addTypeOperation")
+    @PostMapping("/typeOperations/addTypeOperation")
     public String addTypeOperationPost(@RequestParam(required = false) String nameTypeOperation, Model model) {
         if (typeOperationService.checkAddTypeOperation(nameTypeOperation)) {
             model.addAttribute("errorTypeOperation", "Операция с таким наименованием уже существует!");
@@ -90,7 +90,7 @@ public class TypeOperationController {
      * @param model Модель
      * @return Страница типа операции
      */
-    @GetMapping("/workbenches/typeOperations/{id}")
+    @GetMapping("/typeOperations/{id}")
     public String oneTypeOperation(@PathVariable(name = "id") String id, Model model) {
         model.addAttribute("operation", typeOperationService.getOneTypeOperation(UUID.fromString(id)));
         model.addAttribute("workbenches", workBenchService.getWorkBenchesFilterOperationName(UUID.fromString(id)));
@@ -105,7 +105,7 @@ public class TypeOperationController {
      * @param model Модель
      * @return Страница изменения типа операции
      */
-    @GetMapping("/workbenches/typeOperations/change/{id}")
+    @GetMapping("/typeOperations/change/{id}")
     public String changeTypeOperationGet(@PathVariable(name = "id") String id, Model model) {
         model.addAttribute("operation", typeOperationService.getOneTypeOperation(UUID.fromString(id)));
         model.addAttribute("user", userService.getUserWeb());
@@ -120,7 +120,7 @@ public class TypeOperationController {
      * @param model             Модель
      * @return Страница всех типов операций
      */
-    @PostMapping("/workbenches/typeOperations/change/{id}")
+    @PostMapping("/typeOperations/change/{id}")
     public String changeTypeOperationPost(@PathVariable(name = "id") String id, @RequestParam(required = false) String nameTypeOperation, Model model) {
         if (typeOperationService.checkAddTypeOperation(UUID.fromString(id), nameTypeOperation)) {
             model.addAttribute("errorTypeOperation", "Операция с таким наименованием уже существует!");
@@ -143,7 +143,7 @@ public class TypeOperationController {
      * @param model Модель
      * @return Страница удаления типа операции
      */
-    @GetMapping("/workbenches/typeOperations/deletion/{id}")
+    @GetMapping("/typeOperations/deletion/{id}")
     public String deletionTypeOperationGet(@PathVariable(name = "id") String id, Model model) {
         model.addAttribute("operation", typeOperationService.getOneTypeOperation(UUID.fromString(id)));
         model.addAttribute("user", userService.getUserWeb());
@@ -157,7 +157,7 @@ public class TypeOperationController {
      * @param model Модель
      * @return Страница всех типов операций
      */
-    @PostMapping("/workbenches/typeOperations/deletion/{id}")
+    @PostMapping("/typeOperations/deletion/{id}")
     public String deletionTypeOperationPost(@PathVariable(name = "id") String id, Model model) {
         try {
             typeOperationService.deleteTypeOperation(typeOperationService.getOneTypeOperation(UUID.fromString(id)));
@@ -176,7 +176,7 @@ public class TypeOperationController {
      * @param model Модель
      * @return Страница добавления последовательности операции
      */
-    @GetMapping("/workbenches/typeOperations/addSubsequenceTypeOperation")
+    @GetMapping("/typeOperations/addSubsequenceTypeOperation")
     public String addSubsequenceTypeOperationGet(Model model) {
         model.addAttribute("operations", typeOperationService.getAllTypeOperations());
         model.addAttribute("user", userService.getUserWeb());
@@ -190,7 +190,7 @@ public class TypeOperationController {
      * @param model              Модель
      * @return Страница всех последовательностей операции
      */
-    @PostMapping("/workbenches/typeOperations/addSubsequenceTypeOperation")
+    @PostMapping("/typeOperations/addSubsequenceTypeOperation")
     public String addSubsequenceTypeOperationPost(@RequestParam(required = false) List<String> typeOperationsList, Model model) {
         model.addAttribute("operations", typeOperationService.getAllTypeOperations());
 
@@ -214,7 +214,7 @@ public class TypeOperationController {
         subsequenceTypeOperation.setTypeOperations(typeOperations);
         subsequenceTypeOperation.setDescription(description);
         subsequenceTypeOperationService.saveSubsequenceTypeOperation(subsequenceTypeOperation);
-        return "redirect:/workbenches/typeOperations/subsequenceTypeOperation";
+        return "redirect:/typeOperations/subsequenceTypeOperation";
     }
 
     /**
@@ -223,7 +223,7 @@ public class TypeOperationController {
      * @param model Модель
      * @return Страница всех последовательностей операции
      */
-    @GetMapping("/workbenches/typeOperations/subsequenceTypeOperation")
+    @GetMapping("/typeOperations/subsequenceTypeOperation")
     public String allSubsequenceTypeOperationGet(Model model) {
         model.addAttribute("operations", subsequenceTypeOperationService.getAllSubsequenceTypeOperation());
         model.addAttribute("user", userService.getUserWeb());
@@ -237,7 +237,7 @@ public class TypeOperationController {
      * @param model Модель
      * @return Страница последовательности операции
      */
-    @GetMapping("/workbenches/typeOperations/subsequenceTypeOperation/{id}")
+    @GetMapping("/typeOperations/subsequenceTypeOperation/{id}")
     public String oneSubsequenceTypeOperationGet(@PathVariable(name = "id") String id, Model model) {
         model.addAttribute("operation", subsequenceTypeOperationService.getOneSubsequenceTypeOperation(UUID.fromString(id)));
         model.addAttribute("user", userService.getUserWeb());
@@ -252,7 +252,7 @@ public class TypeOperationController {
      * @param model Модель
      * @return Страница удаления последовательности операции
      */
-    @GetMapping("/workbenches/typeOperations/deletion/subsequenceTypeOperation/{id}")
+    @GetMapping("/deletion/subsequenceTypeOperation/{id}")
     public String deletionSubsequenceTypeOperationGet(@PathVariable(name = "id") String id, Model model) {
         model.addAttribute("operation", subsequenceTypeOperationService.getOneSubsequenceTypeOperation(UUID.fromString(id)));
         model.addAttribute("user", userService.getUserWeb());
@@ -266,9 +266,9 @@ public class TypeOperationController {
      * @param model Модель
      * @return Страница всех последовательностей операций
      */
-    @PostMapping("/workbenches/typeOperations/deletion/subsequenceTypeOperation/{id}")
+    @PostMapping("/deletion/subsequenceTypeOperation/{id}")
     public String deletionSubsequenceTypeOperationPost(@PathVariable(name = "id") String id, Model model) {
         subsequenceTypeOperationService.deleteSubsequenceTypeOperation(subsequenceTypeOperationService.getOneSubsequenceTypeOperation(UUID.fromString(id)));
-        return "redirect:/workbenches/typeOperations/subsequenceTypeOperation";
+        return "redirect:/typeOperations/subsequenceTypeOperation";
     }
 }

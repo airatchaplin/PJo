@@ -15,6 +15,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Сервис деталей
@@ -49,8 +50,6 @@ public class DetailService {
     public List<DetailDto> getAllDetails() {
         List<Map<String, Object>> rows = db.call("select details.id   as detailId,\n" +
                 "       details.name as detailName,\n" +
-                "       details.length,\n" +
-                "       details.width,\n" +
                 "       m.id         as matetialId,\n" +
                 "       m.name       as materialName,\n" +
                 "       m.thickness\n" +
@@ -62,8 +61,6 @@ public class DetailService {
             detailDto = new DetailDto();
             detailDto.setId((UUID) row.get("detailId"));
             detailDto.setName((String) row.get("detailName"));
-            detailDto.setWidth((String) row.get("width"));
-            detailDto.setLength((String) row.get("length"));
             detailDto.setMaterialName(String.valueOf(row.get("materialName")));
             detailDto.setMaterialThickness((Double) row.get("thickness"));
             detailDtos.add(detailDto);
@@ -130,10 +127,9 @@ public class DetailService {
         DetailDto detailDto = new DetailDto();
         detailDto.setId(detail.getId());
         detailDto.setName(detail.getName());
+        detailDto.setMaterialId(detail.getMaterial().getId());
         detailDto.setMaterialName(detail.getMaterial().getName());
         detailDto.setMaterialThickness(detail.getMaterial().getThickness());
-        detailDto.setLength(detail.getLength());
-        detailDto.setWidth(detail.getWidth());
 
         List<Map<String, Object>> mapList = db.call("select w.id, w.name, w.date_end_detail, t.name as type_operation_name, dwb.priority from details left join details_work_benches dwb on details.id = dwb.detail_id left join workbench w on dwb.work_benches_id = w.id left join type_operation t on w.type_operation_id = t.id where detail_id = '" + detail.getId() + "'");
         List<Map<String, Object>> mapList2 = db.call("select detail_id,time_work_details_id,priority,time_work from details_time_work_details left join timeworkdetail t on t.id = details_time_work_details.time_work_details_id where detail_id = '" + detail.getId() + "'");
@@ -158,8 +154,15 @@ public class DetailService {
             timeWorkDetailDto.setPriority((Integer) mapList2.get(i).get("priority"));
             timeWorkDetailsDtos.add(timeWorkDetailDto);
         }
-        detailDto.setWorkBenchDtos(WorkBenchDto.compareWorkBenchesPriority(workBenchDtos));
-        detailDto.setTimeWorkDetailsDtos(TimeWorkDetailDto.compare(timeWorkDetailsDtos));
+        List<WorkBenchDto> workBenchDtosSort = WorkBenchDto.compareWorkBenchesPriority(workBenchDtos);
+        List<String> subsequenceTypeOperations = new ArrayList<>();
+        for (WorkBenchDto w : workBenchDtosSort) {
+            subsequenceTypeOperations.add(w.getTypeOperation());
+        }
+        detailDto.setWorkBenchDtos(workBenchDtosSort);
+        detailDto.setSubsequenceTypeOperation(String.join(" -> ", subsequenceTypeOperations));
+        detailDto.setTimeWorkDetailsDtos(TimeWorkDetailDto.compareTimeWorkPriority(timeWorkDetailsDtos));
+
         return detailDto;
     }
 

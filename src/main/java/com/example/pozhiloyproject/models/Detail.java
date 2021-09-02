@@ -44,14 +44,4 @@ public class Detail {
     @ManyToMany
     private List<WorkBench> workBenches;
 
-    /**
-     * Длина детали
-     */
-    private String length;
-
-    /**
-     * Ширина детали
-     */
-    private String width;
-
 }

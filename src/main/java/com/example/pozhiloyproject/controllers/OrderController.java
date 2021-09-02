@@ -129,7 +129,7 @@ public class OrderController {
         order.setNumberOrder(Integer.parseInt(numberOrder));
         order.setObjectName(contragentService.getOneContragentById(UUID.fromString(contragentId)));
         order.setManager(userService.getUserById(UUID.fromString(managerId)));
-        order.setManager(userService.getUserWeb());
+        order.setEconomist(userService.getUserWeb());
         order.setPainting("00:00");
         order.setPacking("00:00");
         order.setComment(comment);
@@ -197,11 +197,22 @@ public class OrderController {
      */
     @GetMapping("/orders/change/{id}")
     public String changeOrderGet(@PathVariable(value = "id") String id, Model model) {
+        List<Integer> weeks = Stream.of(1,2,3,4,5,6,7).collect(Collectors.toList());
+        List<Integer> days = Stream.of(1,2,3,4,5,6,7).collect(Collectors.toList());
+        List<Integer> hours = Stream.of(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23).collect(Collectors.toList());
+        List<Integer> minutes = new ArrayList<>();
+        for (int i = 1; i <=59 ; i++) {
+            minutes.add(i);
+        }
         model.addAttribute("contragents", contragentService.getAllContragents());
         model.addAttribute("managers", userService.getManagers());
         model.addAttribute("details", detailService.getAllDetails());
         model.addAttribute("order", orderService.getOrderById(UUID.fromString(id)));
         model.addAttribute("user", userService.getUserWeb());
+        model.addAttribute("weeks",weeks);
+        model.addAttribute("days",days);
+        model.addAttribute("hours",hours);
+        model.addAttribute("minutes",minutes);
         return "changeOrder";
     }
 
@@ -409,7 +420,7 @@ public class OrderController {
      * @param model Модель
      * @return Страница всех заказов
      */
-    @PostMapping("orders/complete/{id}")
+    @PostMapping("orders/{id}")
     public String completeOrder(@PathVariable(value = "id") String id, Model model) {
         completedOrderService.saveCompletedOrder(orderService.getOrderById(UUID.fromString(id)));
         return "redirect:/orders";
