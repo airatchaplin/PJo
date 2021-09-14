@@ -98,6 +98,7 @@ public class WorkBenchController {
     @PostMapping("/addWorkBench")
     public String addWorkBenchPost(@RequestParam(required = false) String nameWorkBench,
                                    @RequestParam(required = false) String dateEndDetail,
+                                   @RequestParam(required = false) String currentThickness,
                                    @RequestParam(required = false) String typeOperationId, Model model) {
         if (workBenchService.checkAddWorkBench(nameWorkBench)) {
             model.addAttribute("dateEndDetail", dateEndDetail);
@@ -109,6 +110,7 @@ public class WorkBenchController {
         workBench.setId(UUID.randomUUID());
         workBench.setName(nameWorkBench);
         workBench.setTypeOperation(typeOperationService.getOneTypeOperation(UUID.fromString(typeOperationId)));
+        workBench.setCurrentThickness(Double.valueOf(currentThickness.replace(",",".")));
         workBench.setDateEndDetail(LocalDateTime.parse(dateEndDetail));
         workBenchService.save(workBench);
         return "redirect:/workbenches";
@@ -157,6 +159,7 @@ public class WorkBenchController {
     public String changeWorkBenchPost(@PathVariable(name = "id") String id,
                                       @RequestParam(required = false) String workBenchName,
                                       @RequestParam(required = false) String typeOperationId,
+                                      @RequestParam(required = false) String currentThickness,
                                       @RequestParam(required = false) String dateEndDetail, Model model) {
 
         if (workBenchService.checkAddWorkBench(UUID.fromString(id), workBenchName)) {
@@ -168,6 +171,7 @@ public class WorkBenchController {
 
         WorkBench workBench = workBenchService.getOneWorkBenchById(UUID.fromString(id));
         workBench.setName(workBenchName);
+        workBench.setCurrentThickness(Double.valueOf(currentThickness.replace(",",".")));
         workBench.setTypeOperation(typeOperationService.getOneTypeOperation(UUID.fromString(typeOperationId)));
 
         workBench.setDateEndDetail(LocalDateTime.parse(dateEndDetail));

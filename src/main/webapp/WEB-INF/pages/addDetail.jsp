@@ -39,7 +39,7 @@
             <a href="/addDetail">Добавить деталь</a>
         </div>
         <div>
-            <input style="background: #f2f2f2; border: 0;" type="submit" value="Сохрнаить">
+            <input style="background: #f2f2f2; border: 0;cursor: pointer" type="submit" value="Сохрнаить">
         </div>
     </nav>
     <div class="main">
@@ -50,7 +50,7 @@
                 <th>Материал</th>
                 <th>Операции</th>
                 <th>Станки</th>
-                <th>Время детали на этом станке</th>
+                <th>Время</th>
             </tr>
             </thead>
             <tbody>

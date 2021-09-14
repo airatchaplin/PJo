@@ -43,7 +43,7 @@
     </nav>
 
     <div class="main">
-        <table  class="simple-little-table" cellspacing='0'>
+        <table class="simple-little-table" cellspacing='0'>
             <thead>
             <tr>
                 <th>№ заказа</th>
@@ -52,36 +52,36 @@
                 <th>Менеджер</th>
                 <th>Дата запуска в производство</th>
                 <th>Дата готовности заказа</th>
-                <th>Покраска</th>
-                <th>Упаковка</th>
+                <th>Покраска Н/Д/Ч/М</th>
+                <th>Упаковка Н/Д/Ч/М</th>
                 <th>Коментарий</th>
             </tr>
             </thead>
             <tbody>
 
-                <tr>
+            <tr>
 
-                    <td> ${order.numberOrder} </td>
-                    <td> ${order.objectName.name} </td>
-                    <td>${order.manager.fio_i_o} </td>
-                    <td>${order.manager.fio_i_o} </td>
-                    <td>
-                            ${order.dateStart}
-                    </td>
-                    <td>
-                            ${order.dateEnd}
-                    </td>
+                <td> ${order.numberOrder} </td>
+                <td> ${order.objectName.name} </td>
+                <td>${order.manager.fio_i_o} </td>
+                <td>${order.manager.fio_i_o} </td>
+                <td>
+                        ${order.dateStart}
+                </td>
+                <td>
+                        ${order.dateEnd}
+                </td>
 
-                    <td>
-                            ${order.painting}
-                    </td>
-                    <td>
-                            ${order.packing}
-                    </td>
-                    <td>
-                            ${order.comment}
-                    </td>
-                </tr>
+                <td>
+                        ${order.painting}
+                </td>
+                <td>
+                        ${order.packing}
+                </td>
+                <td>
+                        ${order.comment}
+                </td>
+            </tr>
             </tbody>
         </table>
 

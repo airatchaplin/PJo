@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
     <link rel="stylesheet" href="../../resources/css/table_hover.css">
+    <link rel="stylesheet" href="../../resources/css/table_details.css">
 </head>
 <body>
 <nav class="nav-first">

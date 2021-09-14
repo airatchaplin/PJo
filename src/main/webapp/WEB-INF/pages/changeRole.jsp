@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
     <link rel="stylesheet" href="../../resources/css/table_add.css">
+    <link rel="stylesheet" href="../../resources/css/table_allUsers.css">
 </head>
 <body>
 <nav class="nav-first">
@@ -51,26 +52,26 @@
             <thead>
             <tr>
                 <th class="number_orders" style="text-align: center">№</th>
-                <th>Логин</th>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
-                <th>Права</th>
+                <th class="name">Логин</th>
+                <th class="name">Фамилия</th>
+                <th class="name">Имя</th>
+                <th class="name">Отчество</th>
+                <th class="name">Права</th>
             </tr>
             </thead>
             <tbody>
             <c:forEach items="${allAdmins}" var="user">
                 <tr>
                     <td class="number" style="text-align: center">${count1 + 1}</td>
-                    <td>${user.username}</td>
-                    <td>
+                    <td class="name">${user.username}</td>
+                    <td class="name">
                         <input type="text" class="form-control" name="id"
                                placeholder="Введите новый пароль" style="display: none" value="${user.id}">
                             ${user.fio}
                     </td>
-                    <td>${user.name}</td>
-                    <td>${user.lastName}</td>
-                    <td>
+                    <td class="name">${user.name}</td>
+                    <td class="name">${user.lastName}</td>
+                    <td class="name">
                         <div>
                             <select class="form-control" name="role">
                                 <option value="${user.roles.get(0).name}">
@@ -94,26 +95,26 @@
             <thead>
             <tr>
                 <th class="number_orders" style="text-align: center">№</th>
-                <th>Логин</th>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
-                <th>Права</th>
+                <th class="name">Логин</th>
+                <th class="name">Фамилия</th>
+                <th class="name">Имя</th>
+                <th class="name">Отчество</th>
+                <th class="name">Права</th>
             </tr>
             </thead>
             <tbody>
             <c:forEach items="${allManagers}" var="user">
                 <tr>
                     <td class="number" style="text-align: center">${count2 + 1}</td>
-                    <td>${user.username}</td>
-                    <td>
+                    <td class="name">${user.username}</td>
+                    <td class="name">
                         <input type="text" class="form-control" name="id"
                                placeholder="Введите новый пароль" style="display: none" value="${user.id}">
                             ${user.fio}
                     </td>
-                    <td>${user.name}</td>
-                    <td>${user.lastName}</td>
-                    <td>
+                    <td class="name">${user.name}</td>
+                    <td class="name">${user.lastName}</td>
+                    <td class="name">
                         <div>
                             <select class="form-control" name="role">
                                 <option value="${user.roles.get(0).name}">

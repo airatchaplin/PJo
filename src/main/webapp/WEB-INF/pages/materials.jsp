@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
     <link rel="stylesheet" href="../../resources/css/table_hover.css">
+    <link rel="stylesheet" href="../../resources/css/table_materials.css">
 </head>
 <body>
 <nav class="nav-first">
@@ -41,16 +42,16 @@
         <thead>
         <tr>
             <th class="number" style="text-align: center">№</th>
-            <th>Название материала</th>
-            <th>Толщина</th>
+            <th class="materials">Название материала</th>
+            <th class="materials">Толщина</th>
         </tr>
         </thead>
         <tbody>
         <c:forEach items="${materials}" var="material">
             <tr>
                 <td class="number" style="text-align: center">${count + 1}</td>
-                <td><a style="display: block" href="materials/${material.id}">${material.name}</a></td>
-                <td><a style="display: block" href="materials/${material.id}">${material.thickness}</a></td>
+                <td class="materials"><a style="display: block" href="materials/${material.id}">${material.name}</a></td>
+                <td class="materials"><a style="display: block" href="materials/${material.id}">${material.thickness}</a></td>
             </tr>
             <c:set var="count" value="${count + 1}" scope="page"/>
         </c:forEach>

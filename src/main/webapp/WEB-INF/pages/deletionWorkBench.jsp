@@ -2,7 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 
-<!DOCTYPE html>
+<!DOCTYPE html
 <html>
 <head>
     <title>Удаление станка</title>
@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
     <link rel="stylesheet" href="../../resources/css/table_add.css">
+    <link rel="stylesheet" href="../../resources/css/table_workbenches.css">
 </head>
 <body>
 
@@ -47,15 +48,17 @@
             <thead>
             <tr>
                 <th>Станок</th>
-                <th>Операция</th>
-                <th>Время окончния</th>
+                <th class="th_workbench_typeOperation">Операция</th>
+                <th class="th_workbench_currentThickness">Толщина</th>
+                <th class="th_workbench_dateEnd">Время окончния</th>
             </tr>
             </thead>
             <tbody>
             <tr>
                 <td>${workbench.name}</td>
-                <td>${workbench.typeOperation.name}</td>
-                <td>${workbench.dateEndDetail}</td>
+                <td class="th_workbench_typeOperation">${workbench.typeOperation.name}</td>
+                <td class="th_workbench_currentThickness">${workbench.currentThickness}</td>
+                <td class="th_workbench_dateEnd">${workbench.dateEndDetail}</td>
             </tr>
             </tbody>
         </table>

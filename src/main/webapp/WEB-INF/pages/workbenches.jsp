@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
     <link rel="stylesheet" href="../../resources/css/table_hover.css">
+    <link rel="stylesheet" href="../../resources/css/table_workbenches.css">
 </head>
 <body>
 
@@ -51,13 +52,14 @@
                         ${user.filter_workbenches.equals("workBenches")?"&#11167;":"&#11165;"}
                     </button>
                 </th>
-                <th>Операция
+                <th class="th_workbench_typeOperation">Операция
                     <button name="filter" value="typeOperation"
                             style="border: none;" type="submit">
                         ${user.filter_workbenches.equals("typeOperation")?"&#11167;":"&#11165;"}
                     </button>
                 </th>
-                <th>Время окончния
+                <th class="th_workbench_currentThickness">Толщина</th>
+                <th class="th_workbench_dateEnd">Время окончния
                     <button name="filter" value="dateEnd"
                             style="border: none;" type="submit">
                         ${user.filter_workbenches.equals("dateEnd")?"&#11167;":"&#11165;"}
@@ -71,8 +73,9 @@
             <tr>
                 <td class="number" style="text-align: center">${count + 1}</td>
                 <td><a class="table-href"  href="workbenches/${workbench.id}">${workbench.name}</a></td>
-                <td><a class="table-href"  href="workbenches/${workbench.id}">${workbench.typeOperation}</a></td>
-                <td><a class="table-href"  href="workbenches/${workbench.id}">${workbench.dateEndDetail}</a></td>
+                <td class="th_workbench_typeOperation"><a class="table-href"  href="workbenches/${workbench.id}">${workbench.typeOperation}</a></td>
+                <td class="th_workbench_currentThickness"><a class="table-href"  href="workbenches/${workbench.id}">${workbench.currentThickness}</a></td>
+                <td class="th_workbench_dateEnd"><a class="table-href"  href="workbenches/${workbench.id}">${workbench.dateEndDetail}</a></td>
             </tr>
             <c:set var="count" value="${count + 1}" scope="page"/>
         </c:forEach>

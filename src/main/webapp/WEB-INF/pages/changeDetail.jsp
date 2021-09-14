@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
     <link rel="stylesheet" href="../../resources/css/table_add.css">
+    <link rel="stylesheet" href="../../resources/css/table_details.css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 </head>
@@ -40,7 +41,7 @@
             <a href="/details/deletion/${detail.id}">Удалить деталь</a>
         </div>
         <div>
-            <input style="background: #f2f2f2; border: 0;" type="submit" value="Сохрнаить">
+            <input style="background: #f2f2f2; border: 0;cursor: pointer" type="submit" value="Сохрнаить">
         </div>
     </nav>
 
@@ -48,19 +49,19 @@
         <table class="simple-little-table" cellspacing='0'>
             <thead>
             <tr>
-                <th>Деталь</th>
-                <th>Материал</th>
+                <th class="detail_name">Деталь</th>
+                <th class="detail_material">Материал</th>
                 <th>Станки</th>
-                <th>Время детали на этом станке</th>
+                <th class="detail_time_work">Время</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td>
+                <td class="detail_name">
                     <input type="text" class="form-control" id="detailName" name="detailName"
                            placeholder="${detail.name}" value="${detail.name}" required>
                 </td>
-                <td>
+                <td class="detail_material">
                     <select class="form-control" name="materialId">
                         <option value="${detail.materialId}">
                             Выбранная: ${detail.materialName} ${detail.materialThickness}мм
@@ -141,7 +142,7 @@
                         </div>
                     </c:forEach>
                 </td>
-                <td>
+                <td class="detail_time_work">
                     <c:forEach items="${detail.timeWorkDetailsDtos}" var="timeWork">
                         <div>
                             <input type="text" class="form-control" id="timeWork" name="timeWork"

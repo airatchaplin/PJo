@@ -28,6 +28,11 @@ public class WorkBenchDto {
 
     int priority;
 
+    /**
+     * Толщина материала
+     */
+    private Double currentThickness;
+
     public static List<WorkBenchDto> compareWorkBenchesPriority(List<WorkBenchDto> workBenches) {
         Comparator<WorkBenchDto> comparator = Comparator.comparing(WorkBenchDto::getPriority);
         workBenches.sort(comparator);

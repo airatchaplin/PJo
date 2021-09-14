@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
     <link rel="stylesheet" href="../../resources/css/table_add.css">
+    <link rel="stylesheet" href="../../resources/css/table_materials.css">
 </head>
 <body>
 
@@ -47,20 +48,20 @@
         <table class="simple-little-table" cellspacing='0'>
             <thead>
             <tr>
-                <th>Название материала</th>
-                <th>Толщина</th>
+                <th class="materials">Название материала</th>
+                <th class="materials">Толщина</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td>
+                <td class="materials">
                     <input type="text" class="form-control" id="materialName" name="materialName"
                            placeholder="${material.getName()}" value="${material.getName()}" required>
                     <div class="error" style="color: red;">
                             ${materialNameRepeatError}
                     </div>
                 </td>
-                <td>
+                <td class="materials">
                     <input type="text" class="form-control" id="thickness" name="thickness"
                            placeholder="${material.thickness}" value="${material.thickness}" required>
                 </td>

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
     <link rel="stylesheet" href="../../resources/css/table_add.css">
+    <link rel="stylesheet" href="../../resources/css/table_materials.css">
 </head>
 <body>
 <nav class="nav-first">
@@ -42,14 +43,14 @@
     <table class="simple-little-table" cellspacing='0'>
         <thead>
         <tr>
-            <th>Название материала</th>
-            <th>Толщина</th>
+            <th class="materials">Название материала</th>
+            <th class="materials">Толщина</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td>${material.name}</td>
-            <td>${material.thickness}</td>
+            <td class="materials">${material.name}</td>
+            <td class="materials">${material.thickness}</td>
         </tr>
         </tbody>
     </table>

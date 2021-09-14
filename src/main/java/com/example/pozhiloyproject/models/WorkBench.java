@@ -42,4 +42,9 @@ public class WorkBench {
 //        workBenches.sort(comparator);
 //        return workBenches;
 //    }
+
+    /**
+     * Толщина материала
+     */
+    private Double currentThickness;
 }

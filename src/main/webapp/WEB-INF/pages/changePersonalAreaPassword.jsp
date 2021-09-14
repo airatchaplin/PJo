@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
     <link rel="stylesheet" href="../../resources/css/table_add.css">
+    <link rel="stylesheet" href="../../resources/css/table_personalArea.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 </head>
 <body>
@@ -45,20 +46,19 @@
         <table class="simple-little-table" cellspacing='0'>
             <thead>
             <tr>
-                <th>Пароль</th>
-                <th>Повторите пароль</th>
+                <th class="personal_areaPassword">Пароль</th>
+                <th class="personal_areaPassword">Повторите пароль</th>
                 <th>Показать</th>
-
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td>
+                <td class="personal_areaPassword">
                     <input type="password" class="form-control" id="password-input1" name="password"
                            placeholder="Введите новый пароль" value="" required>
                     <label style="color: red;text-align: center">${passwordError}</label>
                 </td>
-                <td>
+                <td class="personal_areaPassword">
                     <input type="password" class="form-control" id="password-input2" name="passwordConfirm"
                            placeholder="Повторите новый пароль" value="" required>
                     <label style="color: red;text-align: center">${passwordError}</label>

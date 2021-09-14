@@ -46,8 +46,8 @@
             <thead>
             <tr>
                 <th>Последовательность операций
-                    <input class="input_js" type="button" style="margin: 10px" value="+" id="add_more_fields"/>
-                    <input class="input_js" type="button" onclick="deleteRow()" value=" - ">
+                    <input class="input_js" type="button" style="margin: 10px;cursor: pointer" value="+" id="add_more_fields"/>
+                    <input class="input_js" type="button" style="cursor: pointer" onclick="deleteRow()" value=" - ">
                 </th>
             </tr>
             </thead>

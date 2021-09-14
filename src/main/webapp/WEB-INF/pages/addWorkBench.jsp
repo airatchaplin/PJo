@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
     <link rel="stylesheet" href="../../resources/css/table_add.css">
-
+    <link rel="stylesheet" href="../../resources/css/table_workbenches.css">
 </head>
 <body>
 <nav class="nav-first">
@@ -39,13 +39,14 @@
             <input style="background: #f2f2f2; border: 0;cursor: pointer; " type="submit" value="Сохранить">
         </div>
     </nav>
-    <div class="main" >
+    <div class="main">
         <table class="simple-little-table" cellspacing='0'>
             <thead>
             <tr>
                 <th>Станок</th>
-                <th>Операция</th>
-                <th>Время окончания</th>
+                <th class="th_workbench_typeOperation">Операция</th>
+                <th class="th_workbench_currentThickness">Толщина</th>
+                <th class="th_workbench_dateEnd">Время окончния</th>
             </tr>
             </thead>
             <tbody>
@@ -57,7 +58,7 @@
                         ${workBenchRepeatError}
                     </div>
                 </td>
-                <td>
+                <td class="th_workbench_typeOperation">
                     <select name="typeOperationId">
                         <option selected value="Выбирите операцию">Выбирите операцию</option>
                         <c:forEach items="${operations}" var="operation">
@@ -65,7 +66,11 @@
                         </c:forEach>
                     </select>
                 </td>
-                <td>
+                <td class="th_workbench_currentThickness">
+                    <input type="text" id="currentThickness" name="currentThickness"
+                           placeholder="Толщина" value="${currentThickness}" required>
+                </td>
+                <td class="th_workbench_dateEnd">
                     <input type="datetime-local" id="dateEndDetail" name="dateEndDetail"
                            placeholder="Станок" value="${dateEndDetail}" required>
                 </td>

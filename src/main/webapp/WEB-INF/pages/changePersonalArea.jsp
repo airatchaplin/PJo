@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
     <link rel="stylesheet" href="../../resources/css/table_add.css">
+    <link rel="stylesheet" href="../../resources/css/table_personalArea.css">
 </head>
 <body>
 <nav class="nav-first">
@@ -44,27 +45,27 @@
         <table class="simple-little-table" cellspacing='0'>
             <thead>
             <tr>
-                <th>Логин</th>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
+                <th class="personal_area">Логин</th>
+                <th class="personal_area">Фамилия</th>
+                <th class="personal_area">Имя</th>
+                <th class="personal_area">Отчество</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td>
+                <td class="personal_area">
                     <input type="text" class="form-control" id="username" name="username"
                            placeholder="Введите фамилию" value=" ${user.username}" required>
                 </td>
-                <td>
+                <td class="personal_area">
                     <input type="text" class="form-control" id="fio" name="fio"
                            placeholder="Введите фамилию" value=" ${user.fio}" required>
                 </td>
-                <td>
+                <td class="personal_area">
                     <input type="text" class="form-control" id="name" name="name"
                            placeholder="Введите имя" value="${user.name}" required>
                 </td>
-                <td>
+                <td class="personal_area">
                     <input type="text" class="form-control" id="LastName" name="lastName"
                            placeholder="Введите отчество" value="${user.lastName}" required>
                 </td>

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
     <link rel="stylesheet" href="../../resources/css/table_add.css">
+    <link rel="stylesheet" href="../../resources/css/table_managers.css">
 </head>
 <body>
 <nav class="nav-first">
@@ -45,16 +46,16 @@
         <table class="simple-little-table" cellspacing='0'>
             <thead>
             <tr>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
+                <th class="fio">Фамилия</th>
+                <th class="fio">Имя</th>
+                <th class="fio">Отчество</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td>${managerById.fio}</td>
-                <td>${managerById.name}</td>
-                <td>${managerById.lastName}</td>
+                <td class="fio">${managerById.fio}</td>
+                <td class="fio">${managerById.name}</td>
+                <td class="fio">${managerById.lastName}</td>
             </tr>
             </tbody>
         </table>

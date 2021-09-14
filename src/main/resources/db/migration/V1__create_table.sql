@@ -138,6 +138,7 @@ create table workbench
     id                uuid not null,
     date_end_detail   timestamp,
     name              varchar(255),
+    current_thickness float,
     type_operation_id uuid,
     primary key (id)
 );

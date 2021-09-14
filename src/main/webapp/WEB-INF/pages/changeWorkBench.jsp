@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
     <link rel="stylesheet" href="../../resources/css/table_add.css">
+    <link rel="stylesheet" href="../../resources/css/table_workbenches.css">
 </head>
 
 <body>
@@ -48,8 +49,9 @@
             <thead>
             <tr>
                 <th>Станок</th>
-                <th>Операция</th>
-                <th>Время окончния</th>
+                <th class="th_workbench_typeOperation">Операция</th>
+                <th class="th_workbench_currentThickness">Толщина</th>
+                <th class="th_workbench_dateEnd">Время окончния</th>
             </tr>
             </thead>
             <tbody>
@@ -61,7 +63,7 @@
                             ${workBenchRepeatError}
                     </div>
                 </td>
-                <td>
+                <td class="th_workbench_typeOperation">
                     <select class="form-control" name="typeOperationId">
                         <option selected value="${workbench.typeOperation.id}">Выбранная
                             операция ${workbench.typeOperation.name}</option>
@@ -70,7 +72,11 @@
                         </c:forEach>
                     </select>
                 </td>
-                <td>
+                <td class="th_workbench_currentThickness">
+                    <input type="text" class="form-control" id="currentThickness" name="currentThickness"
+                           value="${workbench.currentThickness}" required>
+                </td>
+                <td class="th_workbench_dateEnd">
                     <input type="datetime-local" class="form-control" id="dateEndDetail" name="dateEndDetail"
                            value="${workbench.dateEndDetail}" required>
                 </td>

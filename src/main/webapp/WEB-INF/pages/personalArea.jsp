@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
     <link rel="stylesheet" href="../../resources/css/table_add.css">
+    <link rel="stylesheet" href="../../resources/css/table_personalArea.css">
 </head>
 <body>
 <nav class="nav-first">
@@ -31,7 +32,7 @@
 </nav>
 <nav class="nav-second">
     <div>
-        <a  href="/change/personalArea">Редактировать
+        <a href="/change/personalArea">Редактировать
             профиль</a>
         <a href="/change/personalAreaPassword">Изменить
             пароль</a>
@@ -42,18 +43,18 @@
     <table class="simple-little-table" cellspacing='0'>
         <thead>
         <tr>
-            <th >Логин</th>
-            <th >Фамилия</th>
-            <th >Имя</th>
-            <th >Отчество</th>
+            <th class="personal_area">Логин</th>
+            <th class="personal_area">Фамилия</th>
+            <th class="personal_area">Имя</th>
+            <th class="personal_area">Отчество</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td>${user.username}</td>
-            <td>${user.fio}</td>
-            <td>${user.name}</td>
-            <td>${user.lastName}</td>
+            <td class="personal_area">${user.username}</td>
+            <td class="personal_area">${user.fio}</td>
+            <td class="personal_area">${user.name}</td>
+            <td class="personal_area">${user.lastName}</td>
         </tr>
         </tbody>
     </table>

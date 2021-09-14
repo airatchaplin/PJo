@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
     <link rel="stylesheet" href="../../resources/css/table_add.css">
+    <link rel="stylesheet" href="../../resources/css/table_details.css">
 </head>
 <body>
 <nav class="nav-first">
@@ -43,16 +44,16 @@
     <table class="simple-little-table" cellspacing='0'>
         <thead>
         <tr>
-            <th>Деталь</th>
+            <th class="detail_name">Деталь</th>
             <th>Материал</th>
             <th>Станки</th>
-            <th>Время детали на этом станке</th>
+            <th class="detail_time_work">Время</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td>${detail.name}</td>
-            <td>${detail.materialName} ${detail.materialThickness}мм</td>
+            <td class="detail_name">${detail.name}</td>
+            <td class="detail_material">${detail.materialName} ${detail.materialThickness}мм</td>
             <%--            <td>--%>
             <%--                <c:set var="count" value="0" scope="page"/>--%>
             <%--                <% int count = 0; %>--%>
@@ -100,7 +101,7 @@
                     </c:if>
                 </c:forEach>
             </td>
-            <td>
+            <td class="detail_time_work">
                 <c:forEach items="${detail.timeWorkDetailsDtos}" var="timeWork">
                     <pre>${timeWork.timeWork}</pre>
                 </c:forEach>

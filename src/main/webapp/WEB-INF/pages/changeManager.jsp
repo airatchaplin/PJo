@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
     <link rel="stylesheet" href="../../resources/css/table_add.css">
+    <link rel="stylesheet" href="../../resources/css/table_managers.css">
 </head>
 <body>
 <nav class="nav-first">
@@ -45,22 +46,22 @@
         <table class="simple-little-table" cellspacing='0'>
             <thead>
             <tr>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
+                <th class="fio">Фамилия</th>
+                <th class="fio">Имя</th>
+                <th class="fio">Отчество</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td>
+                <td class="fio">
                     <input type="text" class="form-control" id="fio" name="fio"
                            placeholder="${managerById.fio}" value="${managerById.fio}" required>
                 </td>
-                <td>
+                <td class="fio">
                     <input type="text" class="form-control" id="name" name="name"
                            placeholder="${managerById.name}" value="${managerById.name}" required>
                 </td>
-                <td>
+                <td class="fio">
                     <input type="text" class="form-control" id="lastName" name="lastName"
                            placeholder="${managerById.lastName}" value="${managerById.lastName}" required>
                 </td>

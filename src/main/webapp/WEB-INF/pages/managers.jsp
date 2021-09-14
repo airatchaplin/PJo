@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
     <link rel="stylesheet" href="../../resources/css/table_hover.css">
+    <link rel="stylesheet" href="../../resources/css/table_managers.css">
 </head>
 <body>
 <nav class="nav-first">
@@ -41,22 +42,22 @@
         <thead>
         <tr>
             <th class="number" style="text-align: center">№</th>
-            <th>Фамилия</th>
-            <th>Имя</th>
-            <th>Отчество</th>
+            <th class="fio">Фамилия</th>
+            <th class="fio">Имя</th>
+            <th class="fio">Отчество</th>
         </tr>
         </thead>
         <tbody>
         <c:forEach items="${managers}" var="manager">
             <tr>
                 <td class="number" style="text-align: center">${count + 1}</td>
-                <td><a style="display: block"
+                <td class="fio"><a style="display: block"
                        href="managers/${manager.getId()}">${manager.getFio()}</a>
                 </td>
-                <td><a style="display: block"
+                <td class="fio"><a style="display: block"
                        href="managers/${manager.getId()}">${manager.getName()}</a>
                 </td>
-                <td><a style="display: block"
+                <td class="fio"><a style="display: block"
                        href="managers/${manager.getId()}">${manager.getLastName()}</a>
                 </td>
             </tr>

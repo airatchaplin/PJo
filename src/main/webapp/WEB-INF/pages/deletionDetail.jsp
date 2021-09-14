@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
     <link rel="stylesheet" href="../../resources/css/table_add.css">
+    <link rel="stylesheet" href="../../resources/css/table_details.css">
 </head>
 <body>
 <nav class="nav-first">
@@ -40,7 +41,7 @@
     <div>
         <form:form action="/details/deletion/${detail.id}"
                    method="post">
-            <input style="background: #f2f2f2; border: 0;" type="submit" value="Удалить">
+            <input style="background: #f2f2f2; border: 0;cursor: pointer" type="submit" value="Удалить">
         </form:form>
     </div>
 </nav>
@@ -49,16 +50,16 @@
     <table class="simple-little-table" cellspacing='0'>
         <thead>
         <tr>
-            <th scope="col">Деталь</th>
-            <th scope="col">Материал</th>
-            <th scope="col">Станки</th>
-            <th scope="col">Время детали на этом станке</th>
+            <th class="detail_name">Деталь</th>
+            <th class="detail_material">Материал</th>
+            <th>Станки</th>
+            <th class="detail_time_work">Время</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td>${detail.name}</td>
-            <td>${detail.materialName} ${detail.materialThickness}мм</td>
+            <td class="detail_name">${detail.name}</td>
+            <td class="detail_material">${detail.materialName} ${detail.materialThickness}мм</td>
             <td>
                 <c:set var="countGibka" value="0" scope="page"/>
                 <c:set var="countRezka" value="0" scope="page"/>
@@ -120,23 +121,21 @@
                     </c:if>
 
 
-
-
-<%--                    <c:if test="${workbench.typeOperation.equals('ГИБКА')}">--%>
-<%--                        <c:if test="${count>0}">--%>
-<%--                            <pre style="color: red">Альтернатива: ${workbench.name}</pre>--%>
-<%--                        </c:if>--%>
-<%--                        <c:if test="${count==0}">--%>
-<%--                            <pre>${workbench.name}</pre>--%>
-<%--                            <c:set var="count" value="${count + 1}" scope="page"/>--%>
-<%--                        </c:if>--%>
-<%--                    </c:if>--%>
-<%--                    <c:if test="${!workbench.typeOperation.equals('ГИБКА')}">--%>
-<%--                        <pre>${workbench.name}</pre>--%>
-<%--                    </c:if>--%>
+                    <%--                    <c:if test="${workbench.typeOperation.equals('ГИБКА')}">--%>
+                    <%--                        <c:if test="${count>0}">--%>
+                    <%--                            <pre style="color: red">Альтернатива: ${workbench.name}</pre>--%>
+                    <%--                        </c:if>--%>
+                    <%--                        <c:if test="${count==0}">--%>
+                    <%--                            <pre>${workbench.name}</pre>--%>
+                    <%--                            <c:set var="count" value="${count + 1}" scope="page"/>--%>
+                    <%--                        </c:if>--%>
+                    <%--                    </c:if>--%>
+                    <%--                    <c:if test="${!workbench.typeOperation.equals('ГИБКА')}">--%>
+                    <%--                        <pre>${workbench.name}</pre>--%>
+                    <%--                    </c:if>--%>
                 </c:forEach>
             </td>
-            <td>
+            <td class="detail_time_work">
                 <c:forEach items="${detail.timeWorkDetailsDtos}" var="timeWork">
                     <pre>${timeWork.timeWork}</pre>
                 </c:forEach>

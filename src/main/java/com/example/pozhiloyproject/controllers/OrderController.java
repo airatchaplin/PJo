@@ -79,7 +79,7 @@ public class OrderController {
     @GetMapping("/addOrder")
     public String addOrderGet(Model model) {
         model.addAttribute("contragents", contragentService.getAllContragents());
-        model.addAttribute("details",DetailDto.compareMaterialName( detailService.getAllDetails()));
+        model.addAttribute("details", DetailDto.compareMaterialName(detailService.getAllDetails()));
         model.addAttribute("user", userService.getUserWeb());
         model.addAttribute("managers", userService.getManagers());
         return "addOrder";
@@ -130,8 +130,8 @@ public class OrderController {
         order.setObjectName(contragentService.getOneContragentById(UUID.fromString(contragentId)));
         order.setManager(userService.getUserById(UUID.fromString(managerId)));
         order.setEconomist(userService.getUserWeb());
-        order.setPainting("00:00");
-        order.setPacking("00:00");
+        order.setPainting("00/00/00/00");
+        order.setPacking("00/00/00/00");
         order.setComment(comment);
 
         List<Integer> countDetailList = new ArrayList<>();
@@ -197,11 +197,11 @@ public class OrderController {
      */
     @GetMapping("/orders/change/{id}")
     public String changeOrderGet(@PathVariable(value = "id") String id, Model model) {
-        List<Integer> weeks = Stream.of(1,2,3,4,5,6,7).collect(Collectors.toList());
-        List<Integer> days = Stream.of(1,2,3,4,5,6,7).collect(Collectors.toList());
-        List<Integer> hours = Stream.of(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23).collect(Collectors.toList());
+        List<Integer> weeks = Stream.of(1, 2, 3, 4, 5, 6, 7).collect(Collectors.toList());
+        List<Integer> days = Stream.of(1, 2, 3, 4, 5, 6, 7).collect(Collectors.toList());
+        List<Integer> hours = Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23).collect(Collectors.toList());
         List<Integer> minutes = new ArrayList<>();
-        for (int i = 1; i <=59 ; i++) {
+        for (int i = 1; i <= 59; i++) {
             minutes.add(i);
         }
         model.addAttribute("contragents", contragentService.getAllContragents());
@@ -209,10 +209,10 @@ public class OrderController {
         model.addAttribute("details", detailService.getAllDetails());
         model.addAttribute("order", orderService.getOrderById(UUID.fromString(id)));
         model.addAttribute("user", userService.getUserWeb());
-        model.addAttribute("weeks",weeks);
-        model.addAttribute("days",days);
-        model.addAttribute("hours",hours);
-        model.addAttribute("minutes",minutes);
+        model.addAttribute("weeks", weeks);
+        model.addAttribute("days", days);
+        model.addAttribute("hours", hours);
+        model.addAttribute("minutes", minutes);
         return "changeOrder";
     }
 
@@ -222,18 +222,24 @@ public class OrderController {
      * @param id          Идентификатор заказа
      * @param detailId    Идентификатор детали
      * @param countDetail Количество деталей
-     * @param packing     Упаковка
-     * @param painting    Покраска
      * @return Страница всех заказов
      */
     @PostMapping("/orders/change/{id}")
     public String changeOrderPost(@PathVariable(value = "id") String id,
                                   @RequestParam(required = true) List<String> detailId,
                                   @RequestParam(required = true) List<Integer> countDetail,
-                                  @RequestParam(required = true) String packing,
-                                  @RequestParam(required = true) String painting) {
+                                  @RequestParam(required = true) String weeksPaiting,
+                                  @RequestParam(required = true) String daysPaiting,
+                                  @RequestParam(required = true) String hoursPaiting,
+                                  @RequestParam(required = true) String minutesPaiting,
+                                  @RequestParam(required = true) String weeksPacking,
+                                  @RequestParam(required = true) String daysPacking,
+                                  @RequestParam(required = true) String hoursPacking,
+                                  @RequestParam(required = true) String minutesPacking) {
 
         Order order = orderService.getOrderById(UUID.fromString(id));
+        String packing = String.format("%1$s/%2$s/%3$s/%4$s", weeksPacking, daysPacking, hoursPacking, minutesPacking);
+        String painting = String.format("%1$s/%2$s/%3$s/%4$s", weeksPaiting, daysPaiting, hoursPaiting, minutesPaiting);
         order.setPacking(packing);
         order.setPainting(painting);
         for (int i = 0; i < detailId.size(); i++) {
@@ -388,10 +394,9 @@ public class OrderController {
      */
     @PostMapping("orders/check1/{id}")
     public String check1(@PathVariable(value = "id") String id) {
-        orderService.raschet(Integer.parseInt(id));
+        orderService.raschet(UUID.fromString(id));
         return "redirect:/orders/check1/" + id;
     }
-
 
 
     public void allModel(Model model) {
