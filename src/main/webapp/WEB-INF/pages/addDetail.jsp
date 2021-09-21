@@ -51,6 +51,7 @@
                 <th>Операции</th>
                 <th>Станки</th>
                 <th>Время</th>
+                <th>Примечание</th>
             </tr>
             </thead>
             <tbody>
@@ -80,6 +81,7 @@
                 </td>
                 <td id="columnWorkBench"></td>
                 <td id="columnTimeWork"></td>
+                <td id="columnComment"></td>
             </tr>
             </tbody>
         </table>
@@ -90,6 +92,7 @@
 <script>
     var countWorkBench = 0;
     var countTimeWork = 0;
+    var countComment = 0;
 
     function test1(select) {
         var selectedOption = select.options[select.selectedIndex];
@@ -101,10 +104,15 @@
         for (let i = countTimeWork; i >= 0; i--) {
             $("#forDeleteTimeWork" + i).remove();
         }
+        for (let i = countComment; i >= 0; i--) {
+            $("#forDeleteComment" + i).remove();
+        }
         countTimeWork = 0;
         countWorkBench = 0;
+        countComment = 0;
         countInp = 0;
         countOpt = 0;
+
         for (let i = 0; i < arr.length; i++) {
             if (arr[i] === "РЕЗКА") {
                 rezka();
@@ -149,20 +157,33 @@
 
         var component2 = '';
         component2 += '<div id="forDeleteTimeWork' + countTimeWork + '">';
-        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control"  name="timeWork" placeholder="Введите время детали" disabled>';
+        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control" value="" name="timeWork" placeholder="Введите время детали" disabled>';
         countInp++;
         component2 += '</div>';
         countTimeWork++;
         component2 += '<div style="margin-bottom: 10px;" id="forDeleteTimeWork' + countTimeWork + '">';
-        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control"  name="timeWork" placeholder="Введите время детали" disabled>';
+        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control" value="" name="timeWork" placeholder="Введите время детали" disabled>';
         countInp++;
         component2 += '<br>';
         component2 += '</div>';
-
         countTimeWork++;
+
+        var component3 = '';
+        component3 += '<div style="margin-bottom: 10px;" id="forDeleteComment' + countComment + '">';
+        component3 += '<div id="countComment' + countComment + '">';
+        component3 += '<input id="inp1' + countComment +'" type="text" class="form-control" value="" name="comment" placeholder="Примечание" disabled>';
+        component3 += '</div>';
+        countComment++;
+        component3 += '<div style="margin-bottom: 10px;" id="forDeleteComment' + countComment + '">';
+        component3 += '<div id="countComment' + countComment + '">';
+        component3 += '<input id="inp1' + countComment +'" type="text" class="form-control" value="" name="comment" placeholder="Примечание" disabled>';
+        component3 += '<br>';
+        component3 += '</div>';
+        countComment++;
 
         $('#columnWorkBench').append(component1);
         $('#columnTimeWork').append(component2);
+        $('#columnComment').append(component3);
 
     }
 
@@ -180,15 +201,24 @@
 
         var component2 = '';
         component2 += '<div style="margin-bottom: 10px;" id="forDeleteTimeWork' + countTimeWork + '">';
-        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control"  name="timeWork" placeholder="Введите время детали" disabled>';
+        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control" value="" name="timeWork" placeholder="Введите время детали" disabled>';
         countInp++;
         component2 += '<br>';
         component2 += '</div>';
 
+        var component3 = '';
+        component3 += '<div style="margin-bottom: 10px;" id="forDeleteComment' + countComment + '">';
+        component3 += '<div id="countComment' + countComment + '">';
+        component3 += '<input id="inp1' + countComment +'" type="text" class="form-control" value="" name="comment" placeholder="Примечание" disabled>';
+        component3 += '<br>';
+        component3 += '</div>';
+
         $('#columnWorkBench').append(component1);
         $('#columnTimeWork').append(component2);
+        $('#columnComment').append(component3);
         countWorkBench++;
         countTimeWork++;
+        countComment++
     }
 
     function prokatka() {
@@ -204,15 +234,23 @@
         component1 += '</div>';
         var component2 = '';
         component2 += '<div style="margin-bottom: 10px;" id="forDeleteTimeWork' + countTimeWork + '">';
-        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control"  name="timeWork" placeholder="Введите время детали" disabled>';
-        countInp++;
+        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control" value="" name="timeWork" placeholder="Введите время детали" disabled>';
         component2 += '<br>';
         component2 += '</div>';
+        var component3 = '';
+        component3 += '<div style="margin-bottom: 10px;" id="forDeleteComment' + countComment + '">';
+        component3 += '<div id="countComment' + countComment + '">';
+        component3 += '<input id="inp1' + countComment +'" type="text" class="form-control" value="" name="comment" placeholder="Примечание" disabled>';
+        component3 += '<br>';
+        component3 += '</div>';
+        countInp++;
 
         $('#columnWorkBench').append(component1);
         $('#columnTimeWork').append(component2);
+        $('#columnComment').append(component3);
         countWorkBench++;
         countTimeWork++;
+        countComment++;
     }
 
     function frezirovka() {
@@ -229,15 +267,24 @@
 
         var component2 = '';
         component2 += '<div style="margin-bottom: 10px;" id="forDeleteTimeWork' + countTimeWork + '">';
-        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control"  name="timeWork" placeholder="Введите время детали" disabled>';
-        countInp++;
+        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control" value=""  name="timeWork" placeholder="Введите время детали" disabled>';
         component2 += '<br>';
         component2 += '</div>';
 
+        var component3 = '';
+        component3 += '<div style="margin-bottom: 10px;" id="forDeleteComment' + countComment + '">';
+        component3 += '<div id="countComment' + countComment + '">';
+        component3 += '<input id="inp1' + countComment +'" type="text" class="form-control" value=""  name="comment" placeholder="Примечание" disabled>';
+        component3 += '<br>';
+        component3 += '</div>';
+        countInp++;
+
         $('#columnWorkBench').append(component1);
         $('#columnTimeWork').append(component2);
+        $('#columnComment').append(component3);
         countWorkBench++;
         countTimeWork++;
+        countComment++;
     }
 
     function gibka() {
@@ -273,36 +320,62 @@
 
         var component2 = '';
         component2 += '<div id="forDeleteTimeWork' + countTimeWork + '">';
-        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control"  name="timeWork" placeholder="Введите время детали" disabled>';
+        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control"  name="timeWork" value="" placeholder="Введите время детали" disabled>';
         countInp++;
         component2 += '</div>';
         countTimeWork++;
         component2 += '<div id="forDeleteTimeWork' + countTimeWork + '">';
-        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control"  name="timeWork" placeholder="Введите время детали" disabled>';
+        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control"  name="timeWork" value="" placeholder="Введите время детали" disabled>';
         countInp++;
         component2 += '</div>';
         countTimeWork++;
         component2 += '<div style="margin-bottom: 10px;" id="forDeleteTimeWork' + countTimeWork + '">';
-        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control"  name="timeWork" placeholder="Введите время детали" disabled>';
+        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control"  name="timeWork" value="" placeholder="Введите время детали" disabled>';
         countInp++;
         component2 += '<br>';
         component2 += '</div>';
         countTimeWork++;
+
+        var component3 = '';
+        component3 += '<div style="margin-bottom: 10px;" id="forDeleteComment' + countComment + '">';
+        component3 += '<div id="countComment' + countComment + '">';
+        component3 += '<input id="inp1' + countComment +'" type="text" class="form-control"  name="comment" value="" placeholder="Примечание" disabled>';
+        component3 += '</div>';
+        countComment++;
+        component3 += '<div style="margin-bottom: 10px;" id="forDeleteComment' + countComment + '">';
+        component3 += '<div id="countComment' + countComment + '">';
+        component3 += '<input id="inp1' + countComment +'" type="text" class="form-control"  name="comment" value="" placeholder="Примечание" disabled>';
+        component3 += '</div>';
+        countComment++;
+        component3 += '<div style="margin-bottom: 10px;" id="forDeleteComment' + countComment + '">';
+        component3 += '<div id="countComment' + countComment + '">';
+        component3 += '<input id="inp1' + countComment +'" type="text" class="form-control"  name="comment" value="" placeholder="Примечание" disabled>';
+        component3 += '<br>';
+        component3 += '</div>';
+        countComment++;
         $('#columnWorkBench').append(component1);
         $('#columnTimeWork').append(component2);
+        $('#columnComment').append(component3);
     }
 
     function OnSelectionChange (select) {
         var selectedOption = select.options[select.selectedIndex];
         var inp;
+        var inp1;
         var replAttr =selectedOption.id.replace('elem','inp');
+        var replAttr1 =selectedOption.id.replace('elem','inp1');
         if (replAttr.includes('selectedElement')){
             var repl = replAttr.replace('selectedElement','inp')
+            var repl1 = replAttr.replace('selectedElement','inp1')
             inp = document.getElementById(repl);
             inp.setAttribute('disabled',true);
+            inp1 = document.getElementById(repl1);
+            inp1.setAttribute('disabled',true);
         }else{
             inp = document.getElementById(replAttr);
             inp.removeAttribute('disabled');
+            inp1 = document.getElementById(replAttr1);
+            inp1.removeAttribute('disabled');
         }
     }
 

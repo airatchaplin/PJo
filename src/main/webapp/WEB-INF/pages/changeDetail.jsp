@@ -53,6 +53,7 @@
                 <th class="detail_material">Материал</th>
                 <th>Станки</th>
                 <th class="detail_time_work">Время</th>
+                <th class="detail_time_work">Примечание</th>
             </tr>
             </thead>
             <tbody>
@@ -77,76 +78,84 @@
                     <c:set var="countProbivka" value="0" scope="page"/>
                     <c:set var="countProkatka" value="0" scope="page"/>
                     <c:set var="countFrezirovka" value="0" scope="page"/>
-                    <c:forEach items="${detail.workBenchDtos}" var="det">
+                    <c:forEach items="${detail.detailInfoDtos}" var="detailInfo">
                         <div>
                             <select class="form-control" name="workBenchId">
-                                <c:if test="${det.typeOperation.equals('ГИБКА')}">
+                                <c:if test="${detailInfo.workBenchDto.typeOperation.equals('ГИБКА')}">
                                     <c:if test="${countGibka==3}">
-                                        <option style="color: red;margin-top: 10px" value="${det.id}">Выбранная
-                                            Альтернатива: ${det.name}</option>
+                                        <option style="color: red;margin-top: 10px" value="${detailInfo.workBenchDto.id}">Выбранная
+                                            Альтернатива: ${detailInfo.workBenchDto.name}</option>
                                     </c:if>
                                     <c:if test="${countGibka==2}">
-                                        <option style="color: red;margin-top: 10px" value="${det.id}">Выбранная
-                                            Альтернатива: ${det.name}</option>
+                                        <option style="color: red;margin-top: 10px" value="${detailInfo.workBenchDto.id}">Выбранная
+                                            Альтернатива: ${detailInfo.workBenchDto.name}</option>
                                         <c:set var="countGibka" value="${countGibka +1}" scope="page"/>
                                     </c:if>
                                     <c:if test="${countGibka==1}">
-                                        <option style="color: red;margin-top: 10px" value="${det.id}">Выбранная
-                                            Альтернатива: ${det.name}</option>
+                                        <option style="color: red;margin-top: 10px" value="$detailInfo.workBenchDto.id}">Выбранная
+                                            Альтернатива: ${detailInfo.workBenchDto.name}</option>
                                         <c:set var="countGibka" value="${countGibka +1}" scope="page"/>
                                     </c:if>
                                     <c:if test="${countGibka==0}">
-                                        <option value="${det.id}">Выбранная: ${det.name}</option>
+                                        <option value="${detailInfo.workBenchDto.id}">Выбранная: ${detailInfo.workBenchDto.name}</option>
                                         ${countGibka+1}
                                         <c:set var="countGibka" value="${countGibka +1}" scope="page"/>
                                     </c:if>
                                 </c:if>
-                                <c:if test="${det.typeOperation.equals('РЕЗКА')}">
+                                <c:if test="${detailInfo.workBenchDto.typeOperation.equals('РЕЗКА')}">
                                     <c:if test="${countRezka==2}">
-                                        <option style="color: red;margin-top: 10px" value="${det.id}">Выбранная
-                                            Альтернатива: ${det.name}</option>
+                                        <option style="color: red;margin-top: 10px" value="${detailInfo.workBenchDto.id}">Выбранная
+                                            Альтернатива: ${detailInfo.workBenchDto.name}</option>
                                         <c:set var="countRezka" value="${countRezka + 1}" scope="page"/>
                                     </c:if>
                                     <c:if test="${countRezka==1}">
-                                        <option style="color: red;margin-top: 10px" value="${det.id}">Выбранная
-                                            Альтернатива: ${det.name}</option>
+                                        <option style="color: red;margin-top: 10px" value="${detailInfo.workBenchDto.id}">Выбранная
+                                            Альтернатива: ${detailInfo.workBenchDto.name}</option>
                                         <c:set var="countRezka" value="${countRezka + 1}" scope="page"/>
                                     </c:if>
                                     <c:if test="${countRezka==0}">
-                                        <option value="${det.id}">Выбранная: ${det.name}</option>
+                                        <option value="${detailInfo.workBenchDto.id}">Выбранная: ${detailInfo.workBenchDto.name}</option>
                                         <c:set var="countRezka" value="${countRezka + 1}" scope="page"/>
                                     </c:if>
                                 </c:if>
-                                <c:if test="${det.typeOperation.equals('ПРОБИВКА')}">
+                                <c:if test="${detailInfo.workBenchDto.typeOperation.equals('ПРОБИВКА')}">
                                     <c:if test="${countProbivka==0}">
-                                        <option value="${det.id}">Выбранная: ${det.name}</option>
+                                        <option value="${detailInfo.workBenchDto.id}">Выбранная: ${detailInfo.workBenchDto.name}</option>
                                         <c:set var="countProbivka" value="${countProbivka + 1}" scope="page"/>
                                     </c:if>
                                 </c:if>
-                                <c:if test="${det.typeOperation.equals('ПРОКАТКА')}">
+                                <c:if test="${detailInfo.workBenchDto.typeOperation.equals('ПРОКАТКА')}">
                                     <c:if test="${countProkatka==0}">
-                                        <option value="${det.id}">Выбранная: ${det.name}</option>
+                                        <option value="${detailInfo.workBenchDto.id}">Выбранная: ${detailInfo.workBenchDto.name}</option>
                                         <c:set var="countProkatka" value="${countProkatka + 1}" scope="page"/>
                                     </c:if>
                                 </c:if>
-                                <c:if test="${det.typeOperation.equals('ФРЕЗЕРОВКА')}">
+                                <c:if test="${detailInfo.workBenchDto.typeOperation.equals('ФРЕЗЕРОВКА')}">
                                     <c:if test="${countFrezirovka==0}">
-                                        <option value="${det.id}">Выбранная: ${det.name}</option>
+                                        <option value="${detailInfo.workBenchDto.id}">Выбранная: ${detailInfo.workBenchDto.name}</option>
                                         <c:set var="countFrezirovka" value="${countFrezirovka + 1}" scope="page"/>
                                     </c:if>
                                 </c:if>
-                                <c:if test="${!det.typeOperation.equals('ГИБКА') && !det.typeOperation.equals('РЕЗКА')  }">
-                                    <option value="${det.id}">Выбранная: ${det.name}</option>
+                                <c:if test="${!detailInfo.workBenchDto.typeOperation.equals('ГИБКА') && !detailInfo.workBenchDto.typeOperation.equals('РЕЗКА')  }">
+                                    <option value="${detailInfo.workBenchDto.id}">Выбранная: ${detailInfo.workBenchDto.name}</option>
                                 </c:if>
                             </select>
                         </div>
                     </c:forEach>
                 </td>
                 <td class="detail_time_work">
-                    <c:forEach items="${detail.timeWorkDetailsDtos}" var="timeWork">
+                    <c:forEach items="${detail.detailInfoDtos}" var="detailInfo">
                         <div>
                             <input type="text" class="form-control" id="timeWork" name="timeWork"
-                                   placeholder="${timeWork.timeWork}" value="${timeWork.timeWork}" required>
+                                   placeholder="${detailInfo.timeWork}" value="${detailInfo.timeWork}" required>
+                        </div>
+                    </c:forEach>
+                </td>
+                <td class="detail_time_work">
+                    <c:forEach items="${detail.detailInfoDtos}" var="detailInfo">
+                        <div>
+                            <input type="text" class="form-control" id="comment" name="comment"
+                                   placeholder="${detailInfo.comment}" value="${detailInfo.comment}" required>
                         </div>
                     </c:forEach>
                 </td>

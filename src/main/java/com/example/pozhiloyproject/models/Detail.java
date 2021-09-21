@@ -3,8 +3,10 @@ package com.example.pozhiloyproject.models;
 import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
+
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 /**
  * Деталь
@@ -33,15 +35,9 @@ public class Detail {
     private Material material;
 
     /**
-     * Список времяни изготовления детали
+     * Информация о детали
      */
-    @OneToMany
-    private List<TimeWorkDetail> timeWorkDetails;
-
-    /**
-     * Список станков для детали
-     */
-    @ManyToMany
-    private List<WorkBench> workBenches;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<DetailInfo> detailInfos;
 
 }

@@ -1,7 +1,7 @@
 package com.example.pozhiloyproject.services;
 
-import com.example.pozhiloyproject.models.Detail;
-import com.example.pozhiloyproject.models.DetailInfo;
+
+import com.example.pozhiloyproject.models.DetailsOrder;
 import com.example.pozhiloyproject.models.Order;
 import com.example.pozhiloyproject.models.WorkBench;
 import com.example.pozhiloyproject.repository.OrderRepository;
@@ -171,11 +171,11 @@ public class OrderService {
         LocalDateTime dateOrderStart;
         LocalDateTime dateOrderEnd;
 
-        List<DetailInfo> detailInfosList = order.getDetailInfos();
+        List<DetailsOrder> detailsOrders = order.getDetailsOrders();
 
-        for (int i = 0; i < detailInfosList.size(); i++) {
+        for (int i = 0; i < detailsOrders.size(); i++) {
 
-            System.out.println(detailInfosList.get(i).getDetail());
+            System.out.println(detailsOrders.get(i).getDetail());
 
         }
     }

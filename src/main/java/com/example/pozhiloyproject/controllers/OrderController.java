@@ -5,14 +5,12 @@ import com.example.pozhiloyproject.models.*;
 import com.example.pozhiloyproject.services.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -35,7 +33,7 @@ public class OrderController {
     ContragentService contragentService;
 
     @Autowired
-    DetailInfoService detailInfoService;
+    DetailsOrderService detailInfoService;
 
     @Autowired
     CompletedOrderService completedOrderService;
@@ -160,30 +158,30 @@ public class OrderController {
 
             }
         }
-        List<DetailInfo> list = new ArrayList<>();
+        List<DetailsOrder> list = new ArrayList<>();
         List<Boolean> isCalculated = null;
 
         for (int i = 0; i < timesList.size(); i++) {
-            DetailInfo detailInfo = new DetailInfo();
-            detailInfo.setId(UUID.randomUUID());
-            detailInfo.setIncrement(i);
-            detailInfo.setDateStart(timesList.get(i));
+            DetailsOrder detailsOrder = new DetailsOrder();
+            detailsOrder.setId(UUID.randomUUID());
+            detailsOrder.setIncrement(i);
+            detailsOrder.setDateStart(timesList.get(i));
             if (detailId.get(i).equals("Выбирите деталь") && countDetailList.get(i) == 0) {
                 continue;
             } else {
-                detailInfo.setDetail(detailService.getDetailById(UUID.fromString(detailId.get(i))));
+                detailsOrder.setDetail(detailService.getDetailById(UUID.fromString(detailId.get(i))));
                 isCalculated = new ArrayList<>();
-                for (WorkBench workBench : detailService.getDetailById(UUID.fromString(detailId.get(i))).getWorkBenches()) {
-                    isCalculated.add(false);
-                }
-                detailInfo.setIsCalculated(isCalculated);
-                detailInfo.setCount(countDetailList.get(i));
-                detailInfoService.saveDetailInfo(detailInfo);
+//                for (WorkBench workBench : detailService.getDetailById(UUID.fromString(detailId.get(i))).getWorkBenches()) {
+//                    isCalculated.add(false);
+//                }
+                detailsOrder.setIsCalculated(isCalculated);
+                detailsOrder.setCount(countDetailList.get(i));
+                detailInfoService.saveDetailInfo(detailsOrder);
             }
-            list.add(detailInfo);
+            list.add(detailsOrder);
         }
 
-        order.setDetailInfos(list);
+        order.setDetailsOrders(list);
         orderService.saveOrder(order);
         return "redirect:/orders";
     }
@@ -244,9 +242,9 @@ public class OrderController {
         order.setPainting(painting);
         for (int i = 0; i < detailId.size(); i++) {
             if (!detailId.get(i).contains("Выбранная: ")) {
-                order.getDetailInfos().get(i).setDetail(detailService.getDetailById(UUID.fromString((detailId.get(i).replace("Выбранная: ", "")))));
+                order.getDetailsOrders().get(i).setDetail(detailService.getDetailById(UUID.fromString((detailId.get(i).replace("Выбранная: ", "")))));
             }
-            order.getDetailInfos().get(i).setCount(countDetail.get(i));
+            order.getDetailsOrders().get(i).setCount(countDetail.get(i));
         }
         orderService.saveOrder(order);
         return "redirect:/orders/" + id;
@@ -288,8 +286,8 @@ public class OrderController {
                                             @RequestParam(required = true) String comment, Model model
     ) {
         Order order = orderService.getOrderByNumber(Integer.parseInt(numberOrder));
-        List<DetailInfo> detailInfos = order.getDetailInfos();
-        int increment = detailInfos.size();
+        List<DetailsOrder> detailsOrders = order.getDetailsOrders();
+        int increment = detailsOrders.size();
         for (int i = 0; i < detailId.size(); i++) {
             if (detailId.get(i).equals("Выбирите деталь")) {
                 allModel(model);
@@ -304,22 +302,22 @@ public class OrderController {
                 return "addNewElementForOrder";
             }
 
-            DetailInfo detailInfo = new DetailInfo();
-            detailInfo.setIncrement(increment);
-            detailInfo.setId(UUID.randomUUID());
-            detailInfo.setDetail(detailService.getDetailById(UUID.fromString(detailId.get(i))));
-            detailInfo.setCount(Integer.parseInt(countDetail.get(i)));
-            detailInfo.setDateStart(dateStart.get(i).equals("") ? null : LocalDateTime.parse(dateStart.get(i)));
+            DetailsOrder detailsOrder = new DetailsOrder();
+            detailsOrder.setIncrement(increment);
+            detailsOrder.setId(UUID.randomUUID());
+            detailsOrder.setDetail(detailService.getDetailById(UUID.fromString(detailId.get(i))));
+            detailsOrder.setCount(Integer.parseInt(countDetail.get(i)));
+            detailsOrder.setDateStart(dateStart.get(i).equals("") ? null : LocalDateTime.parse(dateStart.get(i)));
 
             List<Boolean> isCalculated = new ArrayList<>();
-            for (int j = 0; j < detailInfo.getDetail().getWorkBenches().size(); j++) {
-                isCalculated.add(false);
-            }
-            detailInfo.setIsCalculated(isCalculated);
-            detailInfos.add(detailInfo);
+//            for (int j = 0; j < detailsOrder.getDetail().getWorkBenches().size(); j++) {
+//                isCalculated.add(false);
+//            }
+            detailsOrder.setIsCalculated(isCalculated);
+            detailsOrders.add(detailsOrder);
             increment++;
         }
-        order.setDetailInfos(detailInfos);
+        order.setDetailsOrders(detailsOrders);
         order.setComment(comment.equals("") ? order.getComment() : "; " + comment);
         orderService.saveOrder(order);
         return "redirect:/orders";
@@ -362,12 +360,12 @@ public class OrderController {
     public String deleteElementFromOrderPost(@PathVariable(value = "id") String id,
                                              @PathVariable(value = "increment") int increment) {
         Order order = orderService.getOrderById(UUID.fromString(id));
-        List<DetailInfo> detailInfos = order.getDetailInfos();
-        detailInfos.remove(increment);
-        for (int i = 0; i < detailInfos.size(); i++) {
-            detailInfos.get(i).setIncrement(i);
+        List<DetailsOrder> detailsOrders = order.getDetailsOrders();
+        detailsOrders.remove(increment);
+        for (int i = 0; i < detailsOrders.size(); i++) {
+            detailsOrders.get(i).setIncrement(i);
         }
-        order.setDetailInfos(detailInfos);
+        order.setDetailsOrders(detailsOrders);
         orderService.saveOrder(order);
         return "redirect:/orders";
     }

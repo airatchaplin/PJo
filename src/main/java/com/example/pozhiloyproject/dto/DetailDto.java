@@ -1,20 +1,10 @@
 package com.example.pozhiloyproject.dto;
 
-import com.example.pozhiloyproject.models.Material;
-import com.example.pozhiloyproject.models.TimeWorkDetail;
-import com.example.pozhiloyproject.models.WorkBench;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import java.sql.Array;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 
@@ -42,17 +32,10 @@ public class DetailDto {
      */
     private double materialThickness;
 
-
     /**
-     * Список времяни изготовления детали
+     * Инфомация о детали
      */
-    private List<TimeWorkDetailDto> timeWorkDetailsDtos;
-
-    /**
-     * Список станков для детали
-     */
-
-    private List<WorkBenchDto> workBenchDtos;
+    private List<DetailInfoDto> detailInfoDtos;
 
     String subsequenceTypeOperation;
 

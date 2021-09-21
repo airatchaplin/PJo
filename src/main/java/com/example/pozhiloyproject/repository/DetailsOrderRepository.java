@@ -1,11 +1,11 @@
 package com.example.pozhiloyproject.repository;
 
-import com.example.pozhiloyproject.models.TimeWorkDetail;
+import com.example.pozhiloyproject.models.DetailsOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
 @Repository
-public interface TimeWorkDetailRepository extends JpaRepository<TimeWorkDetail, UUID> {
+public interface DetailsOrderRepository extends JpaRepository<DetailsOrder, UUID> {
 }

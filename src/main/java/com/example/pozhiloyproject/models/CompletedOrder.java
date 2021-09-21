@@ -44,7 +44,7 @@ public class CompletedOrder {
      * Детали в заказе
      */
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<DetailInfo> detailInfos;
+    private List<DetailsOrder> detailInfos;
 
     /**
      * Дата запуска в производство

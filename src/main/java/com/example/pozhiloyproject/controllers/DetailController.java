@@ -35,9 +35,6 @@ public class DetailController {
     MaterialService materialService;
 
     @Autowired
-    TimeWorkDetailService timeWorkDetailService;
-
-    @Autowired
     UserService userService;
 
     @Autowired
@@ -45,6 +42,8 @@ public class DetailController {
 
     @Autowired
     SubsequenceTypeOperationService subsequenceTypeOperationService;
+    @Autowired
+    DetailInfoService detailInfoService;
 
     @Autowired
     Db db;
@@ -138,6 +137,7 @@ public class DetailController {
                                 @RequestParam(required = false) String materialId,
                                 @RequestParam(required = false) List<String> workBenchId,
                                 @RequestParam(required = false) List<String> timeWork,
+                                @RequestParam(required = false) List<String> comment,
                                 Model model) {
         detailName = detailName.replace(",", ".");
         if (detailService.checkDetail(detailName)) {
@@ -153,39 +153,28 @@ public class DetailController {
         detail.setName(detailName);
         detail.setMaterial(materialId.equals("Выберите материал") ? null : materialService.getOneMaterial(UUID.fromString(materialId)));
 
-        List<UUID> idWorkBenches = new ArrayList<>();
+
         List<WorkBench> workBenches = new ArrayList<>();
         for (String id : workBenchId) {
             if (!id.equals("Выберите станок")) {
                 WorkBench workBench = workBenchService.getOneWorkBenchById(UUID.fromString(id));
                 workBenches.add(workBench);
-                idWorkBenches.add(workBench.getId());
             }
         }
-        List<UUID> idTimeWorks = new ArrayList<>();
-        List<TimeWorkDetail> timeWorkDetailsList = new ArrayList<>();
-        for (String time : timeWork) {
-            if (!time.equals("")) {
-                TimeWorkDetail timeWorkDetail = new TimeWorkDetail();
-                timeWorkDetail.setId(UUID.randomUUID());
-                timeWorkDetail.setTimeWork(time);
-                timeWorkDetailService.saveTimeWorkDetail(timeWorkDetail);
-                timeWorkDetailsList.add(timeWorkDetail);
-                idTimeWorks.add(timeWorkDetail.getId());
-            }
-        }
-        detail.setTimeWorkDetails(timeWorkDetailsList);
-        detail.setWorkBenches(workBenches);
-        detailService.saveDetail(detail);
+        List<DetailInfo> detailInfos = new ArrayList<>();
+        for (int i = 0; i < workBenches.size(); i++) {
+            DetailInfo detailInfo = new DetailInfo();
+            detailInfo.setId(UUID.randomUUID());
+            detailInfo.setTimeWork(timeWork.get(i));
+            detailInfo.setComment(comment.get(i));
+            detailInfo.setPriority(i);
+            detailInfo.setWorkBenches(workBenches.get(i));
+            detailInfos.add(detailInfo);
+            detailInfoService.saveDetailInfo(detailInfo);
 
-        for (int i = 0; i < idWorkBenches.size(); i++) {
-            db.execute("update details_work_benches  set priority =" + i
-                    + " where detail_id = '" + detail.getId()
-                    + "' and work_benches_id ='" + idWorkBenches.get(i) + "'");
-            db.execute("update details_time_work_details  set priority =" + i
-                    + " where detail_id = '" + detail.getId()
-                    + "' and time_work_details_id ='" + idTimeWorks.get(i) + "'");
         }
+        detail.setDetailInfos(detailInfos);
+        detailService.saveDetail(detail);
         return "redirect:/details/" + detail.getId();
     }
 
@@ -258,13 +247,16 @@ public class DetailController {
                                    @RequestParam(required = false) String detailName,
                                    @RequestParam(required = false) String materialId,
                                    @RequestParam(required = false) List<String> timeWork,
+                                   @RequestParam(required = false) List<String> comment,
                                    Model model) {
 
         Detail detail = detailService.getDetailById(UUID.fromString(id));
         detail.setName(detailName);
         detail.setMaterial(materialService.getOneMaterial(UUID.fromString(materialId)));
-        for (int i = 0; i < timeWork.size(); i++) {
-            detail.getTimeWorkDetails().get(i).setTimeWork(timeWork.get(i));
+        for (int i = 0; i < detail.getDetailInfos().size(); i++) {
+            detail.getDetailInfos().get(i).setTimeWork(timeWork.get(i));
+            detail.getDetailInfos().get(i).setComment(comment.get(i));
+            detailInfoService.saveDetailInfo(detail.getDetailInfos().get(i));
         }
         detailService.saveDetail(detail);
         return "redirect:/details/" + id;

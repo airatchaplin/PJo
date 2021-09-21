@@ -1,21 +1,16 @@
 package com.example.pozhiloyproject.services;
 
 import com.example.pozhiloyproject.dto.DetailDto;
-import com.example.pozhiloyproject.dto.TimeWorkDetailDto;
+import com.example.pozhiloyproject.dto.DetailInfoDto;
 import com.example.pozhiloyproject.dto.WorkBenchDto;
 import com.example.pozhiloyproject.helper.Db;
 import com.example.pozhiloyproject.models.*;
 import com.example.pozhiloyproject.repository.DetailRepository;
-import com.example.pozhiloyproject.repository.TypeOperationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 /**
  * Сервис деталей
@@ -40,12 +35,6 @@ public class DetailService {
      */
     @Autowired
     TypeOperationService typeOperationService;
-
-    /**
-     * Сервис времени деталей
-     */
-    @Autowired
-    TimeWorkDetailService timeWorkDetailService;
 
     public List<DetailDto> getAllDetails() {
         List<Map<String, Object>> rows = db.call("select details.id   as detailId,\n" +
@@ -131,37 +120,28 @@ public class DetailService {
         detailDto.setMaterialName(detail.getMaterial().getName());
         detailDto.setMaterialThickness(detail.getMaterial().getThickness());
 
-        List<Map<String, Object>> mapList = db.call("select w.id, w.name, w.date_end_detail, t.name as type_operation_name, dwb.priority from details left join details_work_benches dwb on details.id = dwb.detail_id left join workbench w on dwb.work_benches_id = w.id left join type_operation t on w.type_operation_id = t.id where detail_id = '" + detail.getId() + "'");
-        List<Map<String, Object>> mapList2 = db.call("select detail_id,time_work_details_id,priority,time_work from details_time_work_details left join timeworkdetail t on t.id = details_time_work_details.time_work_details_id where detail_id = '" + detail.getId() + "'");
+        List<DetailInfoDto> detailInfoDtos = new ArrayList<>();
 
-        List<WorkBenchDto> workBenchDtos = new ArrayList<>();
-        List<TimeWorkDetailDto> timeWorkDetailsDtos = new ArrayList<>();
-        WorkBenchDto workBenchDto;
-        TimeWorkDetailDto timeWorkDetailDto;
-        for (int i = 0; i < mapList.size(); i++) {
-            DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-            LocalDateTime localDateTime = LocalDateTime.parse(mapList.get(i).get("date_end_detail").toString().replace(" ", "T"), dtf);
-            workBenchDto = new WorkBenchDto();
-            workBenchDto.setId((UUID) mapList.get(i).get("id"));
-            workBenchDto.setName(String.valueOf(mapList.get(i).get("name")));
-            workBenchDto.setDateEndDetail(localDateTime);
-            workBenchDto.setPriority((Integer) mapList.get(i).get("priority"));
-            workBenchDto.setTypeOperation(String.valueOf(mapList.get(i).get("type_operation_name")));
-            workBenchDtos.add(workBenchDto);
-            timeWorkDetailDto = new TimeWorkDetailDto();
-            timeWorkDetailDto.setId((UUID) mapList2.get(i).get("time_work_details_id"));
-            timeWorkDetailDto.setTimeWork(String.valueOf(mapList2.get(i).get("time_work")));
-            timeWorkDetailDto.setPriority((Integer) mapList2.get(i).get("priority"));
-            timeWorkDetailsDtos.add(timeWorkDetailDto);
+        for (int i = 0; i < detail.getDetailInfos().size(); i++) {
+            DetailInfoDto detailInfoDto = new DetailInfoDto();
+            detailInfoDto.setId(detail.getDetailInfos().get(i).getId());
+            detailInfoDto.setComment(detail.getDetailInfos().get(i).getComment());
+            detailInfoDto.setTimeWork(detail.getDetailInfos().get(i).getTimeWork());
+            detailInfoDto.setPriority(detail.getDetailInfos().get(i).getPriority());
+
+            WorkBenchDto workBenchDto = new WorkBenchDto();
+            workBenchDto.setId(detail.getDetailInfos().get(i).getWorkBenches().getId());
+            workBenchDto.setName(detail.getDetailInfos().get(i).getWorkBenches().getName());
+            workBenchDto.setDateEndDetail(detail.getDetailInfos().get(i).getWorkBenches().getDateEndDetail());
+            workBenchDto.setPriority(detail.getDetailInfos().get(i).getPriority());
+            workBenchDto.setTypeOperation(detail.getDetailInfos().get(i).getWorkBenches().getTypeOperation().getName());
+            workBenchDto.setCurrentThickness(detail.getDetailInfos().get(i).getWorkBenches().getCurrentThickness());
+
+            detailInfoDto.setWorkBenchDto(workBenchDto);
+            detailInfoDtos.add(detailInfoDto);
         }
-        List<WorkBenchDto> workBenchDtosSort = WorkBenchDto.compareWorkBenchesPriority(workBenchDtos);
-        List<String> subsequenceTypeOperations = new ArrayList<>();
-        for (WorkBenchDto w : workBenchDtosSort) {
-            subsequenceTypeOperations.add(w.getTypeOperation());
-        }
-        detailDto.setWorkBenchDtos(workBenchDtosSort);
-        detailDto.setSubsequenceTypeOperation(String.join(" -> ", subsequenceTypeOperations));
-        detailDto.setTimeWorkDetailsDtos(TimeWorkDetailDto.compareTimeWorkPriority(timeWorkDetailsDtos));
+        DetailInfoDto.comparePriority(detailInfoDtos);
+        detailDto.setDetailInfoDtos(detailInfoDtos);
 
         return detailDto;
     }

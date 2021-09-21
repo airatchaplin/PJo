@@ -1,4 +1,4 @@
-<%@ page import="com.example.pozhiloyproject.services.DetailInfoService" %>
+<%@ page import="com.example.pozhiloyproject.services.DetailsOrderService" %>
 <%@ page import="com.example.pozhiloyproject.services.OrderService" %>
 <%@ page import="com.example.pozhiloyproject.repository.OrderRepository" %>
 <%@ page import="org.springframework.beans.factory.annotation.Autowired" %>

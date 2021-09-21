@@ -52,7 +52,7 @@ public class Order {
      * Список деталей в заказе
      */
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<DetailInfo> detailInfos;
+    private List<DetailsOrder> detailsOrders;
 
     /**
      * Дата запуска в производство
