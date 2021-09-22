@@ -35,6 +35,7 @@
     <div>
         <a href="/addDetail">Добавить деталь</a>
         <a href="/details/change/${detail.id}">Изменить деталь</a>
+        <a href="/details/addWorkbench/${detail.id}">Добавить станок</a>
         <a href="/details/deletion/${detail.id}">Удалить
             деталь</a>
     </div>
@@ -101,16 +102,19 @@
                         <pre>${detailInfo.workBenchDto.name}</pre>
                     </c:if>
                 </c:forEach>
+                <pre>Упаковка</pre>
             </td>
             <td class="detail_time_work">
                 <c:forEach items="${detail.detailInfoDtos}" var="detailInfo">
-                    <pre>${detailInfo.timeWork}</pre>
+                    <pre>${detailInfo.timeWork.equals("")?" ":detailInfo.timeWork}</pre>
                 </c:forEach>
+                <pre>${detail.timePacking}</pre>
             </td>
             <td class="detail_time_work">
                 <c:forEach items="${detail.detailInfoDtos}" var="detailInfo">
                     <pre>${detailInfo.comment.equals("")?" ":detailInfo.comment}</pre>
                 </c:forEach>
+                <pre> </pre>
             </td>
 
         </tr>

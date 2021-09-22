@@ -59,6 +59,7 @@ create table details
 (
     id          uuid not null,
     name        varchar(255),
+    time_packing    varchar(255),
     material_id uuid,
     primary key (id)
 );
@@ -104,12 +105,6 @@ create table subsequence_type_operation_type_operations
 (
     subsequence_type_operation_id uuid not null,
     type_operations_id            uuid not null
-);
-create table timeworkdetail
-(
-    id        uuid not null,
-    time_work varchar(255),
-    primary key (id)
 );
 create table type_operation
 (

@@ -119,7 +119,7 @@ public class DetailService {
         detailDto.setMaterialId(detail.getMaterial().getId());
         detailDto.setMaterialName(detail.getMaterial().getName());
         detailDto.setMaterialThickness(detail.getMaterial().getThickness());
-
+        detailDto.setTimePacking(detail.getTimePacking());
         List<DetailInfoDto> detailInfoDtos = new ArrayList<>();
 
         for (int i = 0; i < detail.getDetailInfos().size(); i++) {

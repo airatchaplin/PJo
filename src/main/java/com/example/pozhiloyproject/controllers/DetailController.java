@@ -1,6 +1,7 @@
 package com.example.pozhiloyproject.controllers;
 
 import com.example.pozhiloyproject.dto.DetailDto;
+import com.example.pozhiloyproject.dto.DetailInfoDto;
 import com.example.pozhiloyproject.helper.Db;
 import com.example.pozhiloyproject.models.*;
 import com.example.pozhiloyproject.services.*;
@@ -137,6 +138,7 @@ public class DetailController {
                                 @RequestParam(required = false) String materialId,
                                 @RequestParam(required = false) List<String> workBenchId,
                                 @RequestParam(required = false) List<String> timeWork,
+                                @RequestParam(required = false) String timePacking,
                                 @RequestParam(required = false) List<String> comment,
                                 Model model) {
         detailName = detailName.replace(",", ".");
@@ -173,6 +175,7 @@ public class DetailController {
             detailInfoService.saveDetailInfo(detailInfo);
 
         }
+        detail.setTimePacking(timePacking);
         detail.setDetailInfos(detailInfos);
         detailService.saveDetail(detail);
         return "redirect:/details/" + detail.getId();
@@ -248,11 +251,13 @@ public class DetailController {
                                    @RequestParam(required = false) String materialId,
                                    @RequestParam(required = false) List<String> timeWork,
                                    @RequestParam(required = false) List<String> comment,
+                                   @RequestParam(required = false) String timePacking,
                                    Model model) {
 
         Detail detail = detailService.getDetailById(UUID.fromString(id));
         detail.setName(detailName);
         detail.setMaterial(materialService.getOneMaterial(UUID.fromString(materialId)));
+        detail.setTimePacking(timePacking);
         for (int i = 0; i < detail.getDetailInfos().size(); i++) {
             detail.getDetailInfos().get(i).setTimeWork(timeWork.get(i));
             detail.getDetailInfos().get(i).setComment(comment.get(i));
@@ -262,5 +267,30 @@ public class DetailController {
         return "redirect:/details/" + id;
     }
 
+    @GetMapping("details/addWorkbench/{id}")
+    public String addWorkBenchForDetail(@PathVariable(value = "id") String id,Model model) {
+        DetailDto detailDtoById = detailService.getDetailDtoById(UUID.fromString(id));
+        List<DetailInfoDto> detailInfoDtos = detailDtoById.getDetailInfoDtos();
+        List<DetailInfoDto> das = new ArrayList<>();
+        das.add(detailInfoDtos.get(2));
+        das.add(detailInfoDtos.get(0));
+        das.add(detailInfoDtos.get(1));
+        detailDtoById.setDetailInfoDtos(das);
+        model.addAttribute("detail", detailDtoById);
+        model.addAttribute("workbenches", workBenchService.getUniqueWorkBench(UUID.fromString(id)));
+        model.addAttribute("materials", Material.compare(materialService.getAllMaterials()));
+        model.addAttribute("user", userService.getUserWeb());
+        model.addAttribute("operations", subsequenceTypeOperationService.getAllSubsequenceTypeOperation());
+        for (TypeOperation typeOperation : typeOperationService.getAllTypeOperations()) {
+            List<WorkBench> workBenches = workBenchService.getWorkBenchesFilterOperationName(typeOperation.getId());
+            model.addAttribute(typeOperation.getName(), workBenches);
+        }
+        return "addWorkbenchForDetail";
+    }
 
+    @PostMapping("details/addWorkbench/{id}")
+    public String addWorkBenchForDetail(@PathVariable(value = "id") String id) {
+
+        return "addWorkbenchForDetail";
+    }
 }

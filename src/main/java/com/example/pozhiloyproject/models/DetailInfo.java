@@ -27,4 +27,5 @@ public class DetailInfo {
 
     private int priority;
 
+
 }

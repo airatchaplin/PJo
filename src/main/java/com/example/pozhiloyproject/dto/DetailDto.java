@@ -39,6 +39,8 @@ public class DetailDto {
 
     String subsequenceTypeOperation;
 
+    private String timePacking;
+
 
     public static List<DetailDto> compareDetailName(List<DetailDto> detailDtos) {
         Comparator<DetailDto> comparator = Comparator.comparing(DetailDto::getName);

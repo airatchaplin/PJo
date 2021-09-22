@@ -142,22 +142,30 @@
                             </select>
                         </div>
                     </c:forEach>
+                    <pre style="margin-left: 5px">Упаковка</pre>
                 </td>
                 <td class="detail_time_work">
                     <c:forEach items="${detail.detailInfoDtos}" var="detailInfo">
                         <div>
                             <input type="text" class="form-control" id="timeWork" name="timeWork"
-                                   placeholder="${detailInfo.timeWork}" value="${detailInfo.timeWork}" required>
+                                   placeholder="${detailInfo.timeWork}" value="${detailInfo.timeWork}">
                         </div>
                     </c:forEach>
+                    <div>
+                        <input type="text" class="form-control" id="timePacking" name="timePacking"
+                               placeholder="${detail.timePacking}" value="${detail.timePacking}">
+                    </div>
                 </td>
                 <td class="detail_time_work">
                     <c:forEach items="${detail.detailInfoDtos}" var="detailInfo">
                         <div>
                             <input type="text" class="form-control" id="comment" name="comment"
-                                   placeholder="${detailInfo.comment}" value="${detailInfo.comment}" required>
+                                   placeholder="${detailInfo.comment}" value="${detailInfo.comment}">
                         </div>
                     </c:forEach>
+                    <div>
+                        <input type="text" class="form-control" value="" disabled>
+                    </div>
                 </td>
             </tr>
             </tbody>

@@ -71,6 +71,12 @@ a {
     display: block;
 }
 
+.inputAdd{
+    background-color: #fc9696;
+    border-radius: 20px;
+    text-align: center;
+}
+
 input {
     border: none;
     outline: none;
@@ -107,6 +113,7 @@ pre {
     left: 0;
     overflow: auto;
 }
+
 
 
 

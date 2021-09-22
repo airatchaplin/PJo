@@ -87,16 +87,19 @@
                         <pre>${detailInfo.workBenchDto.name}</pre>
                     </c:if>
                 </c:forEach>
+                <pre>Упаковка</pre>
             </td>
             <td class="detail_time_work">
                 <c:forEach items="${detail.detailInfoDtos}" var="detailInfo">
                     <pre>${detailInfo.timeWork}</pre>
                 </c:forEach>
+                <pre>${detail.timePacking}</pre>
             </td>
             <td class="detail_time_work">
                 <c:forEach items="${detail.detailInfoDtos}" var="detailInfo">
                     <pre>${detailInfo.comment.equals("")?" ":detailInfo.comment}</pre>
                 </c:forEach>
+                <pre> </pre>
             </td>
         </tr>
         </tbody>

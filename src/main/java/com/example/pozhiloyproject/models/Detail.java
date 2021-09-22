@@ -40,4 +40,7 @@ public class Detail {
     @ManyToMany(cascade = CascadeType.ALL)
     private List<DetailInfo> detailInfos;
 
+
+    private String timePacking;
+
 }

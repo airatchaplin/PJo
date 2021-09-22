@@ -1,8 +1,11 @@
 package com.example.pozhiloyproject.services;
 
+import com.example.pozhiloyproject.dto.DetailDto;
 import com.example.pozhiloyproject.dto.WorkBenchDto;
 import com.example.pozhiloyproject.helper.Db;
+import com.example.pozhiloyproject.models.Detail;
 import com.example.pozhiloyproject.models.WorkBench;
+import com.example.pozhiloyproject.repository.DetailRepository;
 import com.example.pozhiloyproject.repository.WorkBenchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,9 @@ public class WorkBenchService {
 
     @Autowired
     Db db;
+
+    @Autowired
+    DetailService detailService;
 
     /**
      * Сохранение станка
@@ -129,5 +135,34 @@ public class WorkBenchService {
             return false;
         }
         return false;
+    }
+
+    public List<WorkBenchDto> getUniqueWorkBench(UUID detailId) {
+        List<Map<String, Object>> rows = db.call("select workbench.id   as workbenchId,\n" +
+                "       workbench.name as workbenchName,\n" +
+                "       date_end_detail,\n" +
+                "       towb.name      as typeOperationId,\n" +
+                "       current_thickness\n" +
+                "from workbench\n" +
+                "         left join type_operation towb on workbench.type_operation_id = towb.id");
+        List<WorkBenchDto> workBenchDtos = new ArrayList<>();
+
+        WorkBenchDto workBenchDto;
+        for (Map<String, Object> row : rows) {
+            workBenchDto = new WorkBenchDto();
+            workBenchDto.setId((UUID) row.get("workbenchId"));
+            workBenchDto.setName(String.valueOf(row.get("workbenchName")));
+            workBenchDto.setDateEndDetail(LocalDateTime.parse(row.get("date_end_detail").toString().replace(" ", "T")));
+            workBenchDto.setTypeOperation(String.valueOf(row.get("typeOperationId")));
+            workBenchDto.setCurrentThickness((Double) row.get("current_thickness"));
+            workBenchDtos.add(workBenchDto);
+        }
+        DetailDto detailDto = detailService.getDetailDtoById(detailId);
+        for (int i = 0; i < detailDto.getDetailInfoDtos().size(); i++) {
+            int finalI = i;
+            workBenchDtos.removeIf(x->x.getId().equals(detailDto.getDetailInfoDtos().get(finalI).getWorkBenchDto().getId()));
+
+        }
+        return workBenchDtos;
     }
 }

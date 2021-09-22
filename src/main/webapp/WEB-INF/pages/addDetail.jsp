@@ -87,7 +87,6 @@
         </table>
     </div>
 </form>
-
 </body>
 <script>
     var countWorkBench = 0;
@@ -130,6 +129,7 @@
                 frezirovka();
             }
         }
+        packing();
     }
 
 
@@ -139,7 +139,7 @@
         component1 += '<select  onchange="OnSelectionChange (this)" class="form-control" name="workBenchId">';
         component1 += '<option   id = "selectedElement' + countWorkBench + '" selected value="Выберите станок">Выберите станок</option>';
         component1 += '<c:forEach items="${РЕЗКА}" var="workbench">';
-        component1 += '<option  id = "elem'+countWorkBench+'" value="${workbench.id}">${workbench.name}</option>';
+        component1 += '<option  id = "elem' + countWorkBench + '" value="${workbench.id}">${workbench.name}</option>';
         component1 += '</c:forEach>';
         component1 += '</select>';
         component1 += '</div>';
@@ -148,7 +148,7 @@
         component1 += '<select  onchange="OnSelectionChange (this)" class="form-control" name="workBenchId">';
         component1 += '<option   id = "selectedElement' + countWorkBench + '" selected value="Выберите станок">Выберите станок</option>';
         component1 += '<c:forEach items="${РЕЗКА}" var="workbench">';
-        component1 += '<option  id = "elem'+countWorkBench+'" value="${workbench.id}">${workbench.name}</option>';
+        component1 += '<option  id = "elem' + countWorkBench + '" value="${workbench.id}">${workbench.name}</option>';
         component1 += '</c:forEach>';
         component1 += '</select>';
         component1 += '<br>';
@@ -157,12 +157,12 @@
 
         var component2 = '';
         component2 += '<div id="forDeleteTimeWork' + countTimeWork + '">';
-        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control" value="" name="timeWork" placeholder="Введите время детали" disabled>';
+        component2 += '<input id="inp' + countTimeWork + '" type="text" class="form-control" value="00:00:00" name="timeWork" placeholder="Введите время детали" disabled>';
         countInp++;
         component2 += '</div>';
         countTimeWork++;
         component2 += '<div style="margin-bottom: 10px;" id="forDeleteTimeWork' + countTimeWork + '">';
-        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control" value="" name="timeWork" placeholder="Введите время детали" disabled>';
+        component2 += '<input id="inp' + countTimeWork + '" type="text" class="form-control" value="00:00:00" name="timeWork" placeholder="Введите время детали" disabled>';
         countInp++;
         component2 += '<br>';
         component2 += '</div>';
@@ -171,12 +171,12 @@
         var component3 = '';
         component3 += '<div style="margin-bottom: 10px;" id="forDeleteComment' + countComment + '">';
         component3 += '<div id="countComment' + countComment + '">';
-        component3 += '<input id="inp1' + countComment +'" type="text" class="form-control" value="" name="comment" placeholder="Примечание" disabled>';
+        component3 += '<input id="inp1' + countComment + '" type="text" class="form-control" value="" name="comment" placeholder="Примечание" disabled>';
         component3 += '</div>';
         countComment++;
         component3 += '<div style="margin-bottom: 10px;" id="forDeleteComment' + countComment + '">';
         component3 += '<div id="countComment' + countComment + '">';
-        component3 += '<input id="inp1' + countComment +'" type="text" class="form-control" value="" name="comment" placeholder="Примечание" disabled>';
+        component3 += '<input id="inp1' + countComment + '" type="text" class="form-control" value="" name="comment" placeholder="Примечание" disabled>';
         component3 += '<br>';
         component3 += '</div>';
         countComment++;
@@ -193,7 +193,7 @@
         component1 += '<select  onchange="OnSelectionChange (this)" class="form-control" name="workBenchId">';
         component1 += '<option   id = "selectedElement' + countWorkBench + '" selected value="Выберите станок">Выберите станок</option>';
         component1 += '<c:forEach items="${ПРОБИВКА}" var="workbench">';
-        component1 += '<option  id = "elem'+countWorkBench+'" value="${workbench.id}">${workbench.name}</option>';
+        component1 += '<option  id = "elem' + countWorkBench + '" value="${workbench.id}">${workbench.name}</option>';
         component1 += '</c:forEach>';
         component1 += '</select>';
         component1 += '<br>';
@@ -201,7 +201,7 @@
 
         var component2 = '';
         component2 += '<div style="margin-bottom: 10px;" id="forDeleteTimeWork' + countTimeWork + '">';
-        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control" value="" name="timeWork" placeholder="Введите время детали" disabled>';
+        component2 += '<input id="inp' + countTimeWork + '" type="text" class="form-control" value="00:00:00" name="timeWork" placeholder="Введите время детали" disabled>';
         countInp++;
         component2 += '<br>';
         component2 += '</div>';
@@ -209,7 +209,7 @@
         var component3 = '';
         component3 += '<div style="margin-bottom: 10px;" id="forDeleteComment' + countComment + '">';
         component3 += '<div id="countComment' + countComment + '">';
-        component3 += '<input id="inp1' + countComment +'" type="text" class="form-control" value="" name="comment" placeholder="Примечание" disabled>';
+        component3 += '<input id="inp1' + countComment + '" type="text" class="form-control" value="" name="comment" placeholder="Примечание" disabled>';
         component3 += '<br>';
         component3 += '</div>';
 
@@ -227,20 +227,20 @@
         component1 += '<select  onchange="OnSelectionChange (this)" class="form-control" name="workBenchId">';
         component1 += '<option   id = "selectedElement' + countWorkBench + '" selected value="Выберите станок">Выберите станок</option>';
         component1 += '<c:forEach items="${ПРОКАТКА}" var="workbench">';
-        component1 += '<option  id = "elem'+countWorkBench+'" value="${workbench.id}">${workbench.name}</option>';
+        component1 += '<option  id = "elem' + countWorkBench + '" value="${workbench.id}">${workbench.name}</option>';
         component1 += '</c:forEach>';
         component1 += '</select>';
         component1 += '<br>';
         component1 += '</div>';
         var component2 = '';
         component2 += '<div style="margin-bottom: 10px;" id="forDeleteTimeWork' + countTimeWork + '">';
-        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control" value="" name="timeWork" placeholder="Введите время детали" disabled>';
+        component2 += '<input id="inp' + countTimeWork + '" type="text" class="form-control" value="00:00:00" name="timeWork" placeholder="Введите время детали" disabled>';
         component2 += '<br>';
         component2 += '</div>';
         var component3 = '';
         component3 += '<div style="margin-bottom: 10px;" id="forDeleteComment' + countComment + '">';
         component3 += '<div id="countComment' + countComment + '">';
-        component3 += '<input id="inp1' + countComment +'" type="text" class="form-control" value="" name="comment" placeholder="Примечание" disabled>';
+        component3 += '<input id="inp1' + countComment + '" type="text" class="form-control" value="" name="comment" placeholder="Примечание" disabled>';
         component3 += '<br>';
         component3 += '</div>';
         countInp++;
@@ -259,7 +259,7 @@
         component1 += '<select  onchange="OnSelectionChange (this)" class="form-control" name="workBenchId">';
         component1 += '<option   id = "selectedElement' + countWorkBench + '" selected value="Выберите станок">Выберите станок</option>';
         component1 += '<c:forEach items="${ФРЕЗЕРОВКА}" var="workbench">';
-        component1 += '<option  id = "elem'+countWorkBench+'" value="${workbench.id}">${workbench.name}</option>';
+        component1 += '<option  id = "elem' + countWorkBench + '" value="${workbench.id}">${workbench.name}</option>';
         component1 += '</c:forEach>';
         component1 += '</select>';
         component1 += '<br>';
@@ -267,14 +267,14 @@
 
         var component2 = '';
         component2 += '<div style="margin-bottom: 10px;" id="forDeleteTimeWork' + countTimeWork + '">';
-        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control" value=""  name="timeWork" placeholder="Введите время детали" disabled>';
+        component2 += '<input id="inp' + countTimeWork + '" type="text" class="form-control" value="00:00:00"  name="timeWork" placeholder="Введите время детали" disabled>';
         component2 += '<br>';
         component2 += '</div>';
 
         var component3 = '';
         component3 += '<div style="margin-bottom: 10px;" id="forDeleteComment' + countComment + '">';
         component3 += '<div id="countComment' + countComment + '">';
-        component3 += '<input id="inp1' + countComment +'" type="text" class="form-control" value=""  name="comment" placeholder="Примечание" disabled>';
+        component3 += '<input id="inp1' + countComment + '" type="text" class="form-control" value=""  name="comment" placeholder="Примечание" disabled>';
         component3 += '<br>';
         component3 += '</div>';
         countInp++;
@@ -293,7 +293,7 @@
         component1 += '<select  onchange="OnSelectionChange (this)" class="form-control" name="workBenchId">';
         component1 += '<option   id = "selectedElement' + countWorkBench + '" selected value="Выберите станок">Выберите станок</option>';
         component1 += '<c:forEach items="${ГИБКА}" var="workbench">';
-        component1 += '<option  id = "elem'+countWorkBench+'" value="${workbench.id}">${workbench.name}</option>';
+        component1 += '<option  id = "elem' + countWorkBench + '" value="${workbench.id}">${workbench.name}</option>';
         component1 += '</c:forEach>';
         component1 += '</select>';
         component1 += '</div>';
@@ -302,7 +302,7 @@
         component1 += '<select  onchange="OnSelectionChange (this)" class="form-control" name="workBenchId">';
         component1 += '<option   id = "selectedElement' + countWorkBench + '" selected value="Выберите станок">Выберите станок</option>';
         component1 += '<c:forEach items="${ГИБКА}" var="workbench">';
-        component1 += '<option  id = "elem'+countWorkBench+'" value="${workbench.id}">${workbench.name}</option>';
+        component1 += '<option  id = "elem' + countWorkBench + '" value="${workbench.id}">${workbench.name}</option>';
         component1 += '</c:forEach>';
         component1 += '</select>';
         component1 += '</div>';
@@ -311,7 +311,7 @@
         component1 += '<select  onchange="OnSelectionChange (this)" class="form-control" name="workBenchId">';
         component1 += '<option   id = "selectedElement' + countWorkBench + '" selected value="Выберите станок">Выберите станок</option>';
         component1 += '<c:forEach items="${ГИБКА}" var="workbench">';
-        component1 += '<option  id = "elem'+countWorkBench+'" value="${workbench.id}">${workbench.name}</option>';
+        component1 += '<option  id = "elem' + countWorkBench + '" value="${workbench.id}">${workbench.name}</option>';
         component1 += '</c:forEach>';
         component1 += '</select>';
         component1 += '<br>';
@@ -320,17 +320,17 @@
 
         var component2 = '';
         component2 += '<div id="forDeleteTimeWork' + countTimeWork + '">';
-        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control"  name="timeWork" value="" placeholder="Введите время детали" disabled>';
+        component2 += '<input id="inp' + countTimeWork + '" type="text" class="form-control"  name="timeWork" value="00:00:00" placeholder="Введите время детали" disabled>';
         countInp++;
         component2 += '</div>';
         countTimeWork++;
         component2 += '<div id="forDeleteTimeWork' + countTimeWork + '">';
-        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control"  name="timeWork" value="" placeholder="Введите время детали" disabled>';
+        component2 += '<input id="inp' + countTimeWork + '" type="text" class="form-control"  name="timeWork" value="00:00:00" placeholder="Введите время детали" disabled>';
         countInp++;
         component2 += '</div>';
         countTimeWork++;
         component2 += '<div style="margin-bottom: 10px;" id="forDeleteTimeWork' + countTimeWork + '">';
-        component2 += '<input id="inp' + countTimeWork +'" type="text" class="form-control"  name="timeWork" value="" placeholder="Введите время детали" disabled>';
+        component2 += '<input id="inp' + countTimeWork + '" type="text" class="form-control"  name="timeWork" value="00:00:00" placeholder="Введите время детали" disabled>';
         countInp++;
         component2 += '<br>';
         component2 += '</div>';
@@ -339,17 +339,17 @@
         var component3 = '';
         component3 += '<div style="margin-bottom: 10px;" id="forDeleteComment' + countComment + '">';
         component3 += '<div id="countComment' + countComment + '">';
-        component3 += '<input id="inp1' + countComment +'" type="text" class="form-control"  name="comment" value="" placeholder="Примечание" disabled>';
+        component3 += '<input id="inp1' + countComment + '" type="text" class="form-control"  name="comment" value="" placeholder="Примечание" disabled>';
         component3 += '</div>';
         countComment++;
         component3 += '<div style="margin-bottom: 10px;" id="forDeleteComment' + countComment + '">';
         component3 += '<div id="countComment' + countComment + '">';
-        component3 += '<input id="inp1' + countComment +'" type="text" class="form-control"  name="comment" value="" placeholder="Примечание" disabled>';
+        component3 += '<input id="inp1' + countComment + '" type="text" class="form-control"  name="comment" value="" placeholder="Примечание" disabled>';
         component3 += '</div>';
         countComment++;
         component3 += '<div style="margin-bottom: 10px;" id="forDeleteComment' + countComment + '">';
         component3 += '<div id="countComment' + countComment + '">';
-        component3 += '<input id="inp1' + countComment +'" type="text" class="form-control"  name="comment" value="" placeholder="Примечание" disabled>';
+        component3 += '<input id="inp1' + countComment + '" type="text" class="form-control"  name="comment" value="" placeholder="Примечание" disabled>';
         component3 += '<br>';
         component3 += '</div>';
         countComment++;
@@ -358,20 +358,51 @@
         $('#columnComment').append(component3);
     }
 
-    function OnSelectionChange (select) {
+    function packing() {
+        var component1 = '';
+        component1 += '<div style="margin-bottom: 10px;" id="forDeleteWorkBench' + countWorkBench + '">';
+        component1 += '<select  onchange="OnSelectionChange (this)" class="form-control">';
+        component1 += '<option  id = "elem' + countWorkBench + '" value="Упаковка">Упаковка</option>';
+        component1 += '</select>';
+        component1 += '<br>';
+        component1 += '</div>';
+
+        var component2 = '';
+        component2 += '<div style="margin-bottom: 10px;" id="forDeleteTimeWork' + countTimeWork + '">';
+        component2 += '<input id="inp' + countTimeWork + '" type="text" class="form-control" value="00:02:40" name="timePacking" placeholder="Введите время детали">';
+        countInp++;
+        component2 += '<br>';
+        component2 += '</div>';
+
+        var component3 = '';
+        component3 += '<div style="margin-bottom: 10px;" id="forDeleteComment' + countComment + '">';
+        component3 += '<div id="countComment' + countComment + '">';
+        component3 += '<input id="inp1' + countComment + '" type="text" class="form-control" value="" disabled>';
+        component3 += '<br>';
+        component3 += '</div>';
+
+        $('#columnWorkBench').append(component1);
+        $('#columnTimeWork').append(component2);
+        $('#columnComment').append(component3);
+        countWorkBench++;
+        countTimeWork++;
+        countComment++
+    }
+
+    function OnSelectionChange(select) {
         var selectedOption = select.options[select.selectedIndex];
         var inp;
         var inp1;
-        var replAttr =selectedOption.id.replace('elem','inp');
-        var replAttr1 =selectedOption.id.replace('elem','inp1');
-        if (replAttr.includes('selectedElement')){
-            var repl = replAttr.replace('selectedElement','inp')
-            var repl1 = replAttr.replace('selectedElement','inp1')
+        var replAttr = selectedOption.id.replace('elem', 'inp');
+        var replAttr1 = selectedOption.id.replace('elem', 'inp1');
+        if (replAttr.includes('selectedElement')) {
+            var repl = replAttr.replace('selectedElement', 'inp')
+            var repl1 = replAttr.replace('selectedElement', 'inp1')
             inp = document.getElementById(repl);
-            inp.setAttribute('disabled',true);
+            inp.setAttribute('disabled', true);
             inp1 = document.getElementById(repl1);
-            inp1.setAttribute('disabled',true);
-        }else{
+            inp1.setAttribute('disabled', true);
+        } else {
             inp = document.getElementById(replAttr);
             inp.removeAttribute('disabled');
             inp1 = document.getElementById(replAttr1);
