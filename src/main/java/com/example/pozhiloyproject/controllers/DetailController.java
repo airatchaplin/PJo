@@ -268,7 +268,7 @@ public class DetailController {
     }
 
     @GetMapping("details/addWorkbench/{id}")
-    public String addWorkBenchForDetail(@PathVariable(value = "id") String id,Model model) {
+    public String addWorkBenchForDetail(@PathVariable(value = "id") String id, Model model) {
         DetailDto detailDtoById = detailService.getDetailDtoById(UUID.fromString(id));
         List<DetailInfoDto> detailInfoDtos = detailDtoById.getDetailInfoDtos();
         List<DetailInfoDto> das = new ArrayList<>();
@@ -289,8 +289,24 @@ public class DetailController {
     }
 
     @PostMapping("details/addWorkbench/{id}")
-    public String addWorkBenchForDetail(@PathVariable(value = "id") String id) {
-
+    public String addWorkBenchForDetail(@PathVariable(value = "id") String id,
+                                        @RequestParam(required = false) List<String> workbenchName,
+                                        @RequestParam(required = false) List<String> timeWork,
+                                        @RequestParam(required = false) List<String> comment
+    ) {
+        Detail detail = detailService.getDetailById(UUID.fromString(id));
+//        detail.getDetailInfos().
+        List<DetailInfo> detailInfos = new ArrayList<>();
+        for (int i = 0; i < workbenchName.size(); i++) {
+            DetailInfo detailInfo = new DetailInfo();
+            detailInfo.setId(UUID.randomUUID());
+            detailInfo.setWorkBenches(workBenchService.getOneWorkBenchByName(workbenchName.get(i)));
+            detailInfo.setTimeWork(timeWork.get(0));
+            detailInfo.setComment(comment.get(i));
+            detailInfo.setPriority(i);
+            detailInfos.add(detailInfo);
+        }
+        detail.setDetailInfos(detailInfos);
         return "addWorkbenchForDetail";
     }
 }
