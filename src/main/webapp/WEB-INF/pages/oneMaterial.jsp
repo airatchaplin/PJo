@@ -13,33 +13,10 @@
     <link rel="stylesheet" href="../../resources/css/table_materials.css">
 </head>
 <body>
-<nav class="nav-first">
-    <div>
-        <a href="/">Главная страница</a>
-        <a href="/orders">Заказы </a>
-        <a href="/details">Детали</a>
-        <a href="/materials">Материалы </a>
-        <a href="/managers">Менеджеры </a>
-        <a href="/contragents">Контрагенты </a>
-        <a href="/workbenches">Станки </a>
-    </div>
-    <div>
-        <a style="display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}"
-           href="/admin/allUsers">Все пользователи</a>
-        <a href="/personalArea">${user.fio_i_o} </a>
-        <a href="/logout">Выход</a>
-    </div>
-</nav>
+<jsp:include page="../nav/nav_first.jsp"></jsp:include>
+<jsp:include page="../nav/material_nav_second.jsp"></jsp:include>
 
-<nav class="nav-second">
-    <div>
-        <a href="/addMaterial">Добавить материал</a>
-        <a href="/materials/change/${material.id}">Изменить материал</a>
-        <a href="/materials/deletion/${material.id}">Удалить материал</a>
-    </div>
-</nav>
-
-<div class="main">
+<div class="main" style="margin-top: 120px">
     <table class="simple-little-table" cellspacing='0'>
         <thead>
         <tr>

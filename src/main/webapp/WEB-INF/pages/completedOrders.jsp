@@ -12,34 +12,10 @@
     <link rel="stylesheet" href="../../resources/css/table_hover.css">
 </head>
 <body>
-<nav class="nav-first">
-    <div>
-        <a href="/">Главная страница</a>
-        <a href="/orders">Заказы </a>
-        <a href="/details">Детали</a>
-        <a href="/materials">Материалы </a>
-        <a href="/managers">Менеджеры </a>
-        <a href="/contragents">Контрагенты </a>
-        <a href="/workbenches">Станки </a>
-    </div>
-    <div>
-        <a style="display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}"
-           href="/admin/allUsers">Все пользователи</a>
-        <a href="/personalArea">${user.fio_i_o} </a>
-        <a href="/logout">Выход</a>
-    </div>
-</nav>
+<jsp:include page="../nav/nav_first.jsp"></jsp:include>
+<jsp:include page="../nav/order_nav_main.jsp"></jsp:include>
 
-
-<nav class="nav-second">
-    <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/orders">Действующие заказы</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/completed_orders">Завершенные заказы</a>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/addOrder">Добавить заказ</a>
-    </div>
-</nav>
-
-<div class="main" >
+<div class="main" style="margin-top: 120px">
     <table class="simple-little-table" cellspacing='0'>
         <thead>
         <tr>
@@ -55,9 +31,9 @@
         <tbody>
         <c:forEach items="${completed_order}" var="order">
             <tr>
-                <td><a style="display: block" href="orders/${order.id}">${order.numberOrder}</a></td>
-                <td><a style="display: block" href="orders/${order.id}">${order.objectName.name}</a></td>
-                <td><a style="display: block" href="orders/${order.id}">${order.manager.fio_i_o}</a></td>
+                <td><a style="display: block" href="/completed_orders/${order.id}">${order.numberOrder}</a></td>
+                <td><a style="display: block" href="/completed_orders/${order.id}">${order.objectName.name}</a></td>
+                <td><a style="display: block" href="/completed_orders/${order.id}">${order.manager.fio_i_o}</a></td>
 
                 <td>
                     <c:forEach items="${order.detailInfos}" var="detail">

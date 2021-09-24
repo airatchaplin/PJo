@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -269,14 +266,7 @@ public class DetailController {
 
     @GetMapping("details/addWorkbench/{id}")
     public String addWorkBenchForDetail(@PathVariable(value = "id") String id, Model model) {
-        DetailDto detailDtoById = detailService.getDetailDtoById(UUID.fromString(id));
-        List<DetailInfoDto> detailInfoDtos = detailDtoById.getDetailInfoDtos();
-        List<DetailInfoDto> das = new ArrayList<>();
-        das.add(detailInfoDtos.get(2));
-        das.add(detailInfoDtos.get(0));
-        das.add(detailInfoDtos.get(1));
-        detailDtoById.setDetailInfoDtos(das);
-        model.addAttribute("detail", detailDtoById);
+        model.addAttribute("detail", detailService.getDetailDtoById(UUID.fromString(id)));
         model.addAttribute("workbenches", workBenchService.getUniqueWorkBench(UUID.fromString(id)));
         model.addAttribute("materials", Material.compare(materialService.getAllMaterials()));
         model.addAttribute("user", userService.getUserWeb());
@@ -289,14 +279,14 @@ public class DetailController {
     }
 
     @PostMapping("details/addWorkbench/{id}")
-    public String addWorkBenchForDetail(@PathVariable(value = "id") String id,
+    public String addWorkBenchForDetail(@PathVariable(value = "id") String id,Model model,
                                         @RequestParam(required = false) List<String> workbenchName,
                                         @RequestParam(required = false) List<String> timeWork,
                                         @RequestParam(required = false) List<String> comment
     ) {
         Detail detail = detailService.getDetailById(UUID.fromString(id));
-//        detail.getDetailInfos().
         List<DetailInfo> detailInfos = new ArrayList<>();
+        Set<String> nameWorkbench = new HashSet<>(workbenchName);
         for (int i = 0; i < workbenchName.size(); i++) {
             DetailInfo detailInfo = new DetailInfo();
             detailInfo.setId(UUID.randomUUID());
@@ -306,7 +296,21 @@ public class DetailController {
             detailInfo.setPriority(i);
             detailInfos.add(detailInfo);
         }
+        if (nameWorkbench.size()<detailInfos.size()){
+            model.addAttribute("detail", detailService.getDetailDtoById(UUID.fromString(id)));
+            model.addAttribute("workbenches", workBenchService.getUniqueWorkBench(UUID.fromString(id)));
+            model.addAttribute("materials", Material.compare(materialService.getAllMaterials()));
+            model.addAttribute("user", userService.getUserWeb());
+            model.addAttribute("operations", subsequenceTypeOperationService.getAllSubsequenceTypeOperation());
+            for (TypeOperation typeOperation : typeOperationService.getAllTypeOperations()) {
+                List<WorkBench> workBenches = workBenchService.getWorkBenchesFilterOperationName(typeOperation.getId());
+                model.addAttribute(typeOperation.getName(), workBenches);
+            }
+            model.addAttribute("countWorkbenchError","Нельзя добавлять одинаковые станки!");
+            return "addWorkbenchForDetail";
+        }
         detail.setDetailInfos(detailInfos);
-        return "addWorkbenchForDetail";
+        detailService.saveDetail(detail);
+        return "redirect:/details/" + id;
     }
 }

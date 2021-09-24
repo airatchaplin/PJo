@@ -14,53 +14,30 @@
 </head>
 <body>
 
-<nav class="nav-first">
-    <div>
-        <a href="/">Главная страница</a>
-        <a href="/orders">Заказы </a>
-        <a href="/details">Детали</a>
-        <a href="/materials">Материалы </a>
-        <a href="/managers">Менеджеры </a>
-        <a href="/contragents">Контрагенты </a>
-        <a href="/workbenches">Станки </a>
-    </div>
-    <div>
-        <a style="display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}"
-           href="/admin/allUsers">Все пользователи</a>
-        <a href="/personalArea">${user.fio_i_o} </a>
-        <a href="/logout">Выход</a>
-    </div>
-</nav>
+<jsp:include page="../nav/nav_first.jsp"></jsp:include>
+<jsp:include page="../nav/workbench_nav_main.jsp"></jsp:include>
 
-<nav class="nav-second">
-    <div>
-        <a href="/addWorkBench">Добавить станок</a>
-        <a href="/typeOperations">Операции станков</a>
-        <a href="/typeOperations/subsequenceTypeOperation"> Последовательность операций станков</a>
-    </div>
-</nav>
-
-<div class="main">
+<div class="main" style="margin-top: 120px">
     <table class="simple-little-table" cellspacing='0'>
         <thead>
         <form method="post">
             <tr>
                 <th class="number" style="text-align: center">№</th>
                 <th>Станок
-                    <button name="filter" value="workBenches"
+                    <button class="button-filter" name="filter" value="workBenches"
                             style="border: none;" type="submit">
                         ${user.filter_workbenches.equals("workBenches")?"&#11167;":"&#11165;"}
                     </button>
                 </th>
                 <th class="th_workbench_typeOperation">Операция
-                    <button name="filter" value="typeOperation"
+                    <button class="button-filter" name="filter" value="typeOperation"
                             style="border: none;" type="submit">
                         ${user.filter_workbenches.equals("typeOperation")?"&#11167;":"&#11165;"}
                     </button>
                 </th>
                 <th class="th_workbench_currentThickness">Толщина</th>
                 <th class="th_workbench_dateEnd">Время окончния
-                    <button name="filter" value="dateEnd"
+                    <button class="button-filter" name="filter" value="dateEnd"
                             style="border: none;" type="submit">
                         ${user.filter_workbenches.equals("dateEnd")?"&#11167;":"&#11165;"}
                     </button>

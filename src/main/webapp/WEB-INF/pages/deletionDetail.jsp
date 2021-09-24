@@ -13,38 +13,13 @@
     <link rel="stylesheet" href="../../resources/css/table_details.css">
 </head>
 <body>
-<nav class="nav-first">
-    <div>
-        <a href="/">Главная страница</a>
-        <a href="/orders">Заказы </a>
-        <a href="/details">Детали</a>
-        <a href="/materials">Материалы </a>
-        <a href="/managers">Менеджеры </a>
-        <a href="/contragents">Контрагенты </a>
-        <a href="/workbenches">Станки </a>
-    </div>
-    <div>
-        <a style="display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}"
-           href="/admin/allUsers">Все пользователи</a>
-        <a href="/personalArea">${user.fio_i_o} </a>
-        <a href="/logout">Выход</a>
-    </div>
-</nav>
+<jsp:include page="../nav/nav_first.jsp"></jsp:include>
+<jsp:include page="../nav/details_nav_second.jsp"></jsp:include>
+<form:form action="/details/deletion/${detail.id}"
+           method="post">
+    <jsp:include page="../nav/nav_third_del.jsp"></jsp:include>
+</form:form>
 
-<nav class="nav-second">
-    <div>
-        <a href="/addDetail">Добавить деталь</a>
-        <a href="/details/change/${detail.id}">Изменить деталь</a>
-        <a href="/details/deletion/${detail.id}">Удалить
-            деталь</a>
-    </div>
-    <div>
-        <form:form action="/details/deletion/${detail.id}"
-                   method="post">
-            <input style="background: #f2f2f2; border: 0;cursor: pointer" type="submit" value="Удалить">
-        </form:form>
-    </div>
-</nav>
 
 <div class="main">
     <table class="simple-little-table" cellspacing='0'>

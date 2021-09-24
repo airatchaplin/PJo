@@ -12,36 +12,12 @@
     <link rel="stylesheet" href="../../resources/css/table_add.css">
 </head>
 <body>
-<nav class="nav-first">
-    <div>
-        <a href="/">Главная страница</a>
-        <a href="/orders">Заказы </a>
-        <a href="/details">Детали</a>
-        <a href="/materials">Материалы </a>
-        <a href="/managers">Менеджеры </a>
-        <a href="/contragents">Контрагенты </a>
-        <a href="/workbenches">Станки </a>
-    </div>
-    <div>
-        <a style="display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}"
-           href="/admin/allUsers">Все пользователи</a>
-        <a href="/personalArea">${user.fio_i_o} </a>
-        <a href="/logout">Выход</a>
-    </div>
-</nav>
+<jsp:include page="../nav/nav_first.jsp"></jsp:include>
+<jsp:include page="../nav/order_nav_second.jsp"></jsp:include>
 <form:form action="/orders/deletion/${order.id}" method="post">
-    <nav class="nav-second">
-        <div>
-            <a href="/orders/add/${order.id}">Добавить элемент</a>
-            <a href="/orders/change/${order.id}">Изменить заказ</a>
-            <a href="/orders/deletion/${order.id}">Удалить заказ</a>
-            <a href="/orders/check1/${order.id}">Расчитать время</a>
-        </div>
-        <div>
-            <input style="background: #f2f2f2; border: 0;cursor: pointer" type="submit" value="Удалить">
-        </div>
-    </nav>
+    <jsp:include page="../nav/nav_third_del.jsp"></jsp:include>
 </form:form>
+
 <div class="main">
     <table class="simple-little-table" cellspacing='0'>
         <thead>
@@ -95,7 +71,7 @@
         </thead>
         <tbody>
 
-        <c:forEach items="${order.detailInfos}" var="ord">
+        <c:forEach items="${order.detailsOrders}" var="ord">
             <tr>
                 <td>
                         ${ord.detail.name}

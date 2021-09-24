@@ -1,6 +1,5 @@
 package com.example.pozhiloyproject.controllers;
 
-import com.example.pozhiloyproject.dto.DetailDto;
 import com.example.pozhiloyproject.dto.WorkBenchDto;
 import com.example.pozhiloyproject.models.User;
 import com.example.pozhiloyproject.models.WorkBench;
@@ -70,7 +69,7 @@ public class WorkBenchController {
             case "dateEnd" -> user.setFilter_workbenches("dateEnd");
         }
         userService.saveUser(user);
-        return "redirect:/workbenches";
+        return "workbenches";
     }
 
     /**
@@ -113,7 +112,7 @@ public class WorkBenchController {
         workBench.setCurrentThickness(Double.valueOf(currentThickness.replace(",",".")));
         workBench.setDateEndDetail(LocalDateTime.parse(dateEndDetail));
         workBenchService.save(workBench);
-        return "redirect:/workbenches";
+        return "workbenches";
     }
 
     /**
@@ -177,7 +176,7 @@ public class WorkBenchController {
         workBench.setDateEndDetail(LocalDateTime.parse(dateEndDetail));
 
         workBenchService.save(workBench);
-        return "redirect:/workbenches";
+        return "/WEB-INF/workbench_page/workbenches.jsp";
     }
 
     /**
@@ -210,6 +209,6 @@ public class WorkBenchController {
             model.addAttribute("workBenchError", "Станок нельзя удалить, потому что он используется в заказах!");
             return "deletionWorkBench";
         }
-        return "redirect:/workbenches";
+        return "workbenches";
     }
 }

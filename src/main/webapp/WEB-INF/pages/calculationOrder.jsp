@@ -12,36 +12,16 @@
     <link rel="stylesheet" href="../../resources/css/table_add.css">
 </head>
 <body>
-<nav class="nav-first">
-    <div>
-        <a href="/">Главная страница</a>
-        <a href="/orders">Заказы </a>
-        <a href="/details">Детали</a>
-        <a href="/materials">Материалы </a>
-        <a href="/managers">Менеджеры </a>
-        <a href="/contragents">Контрагенты </a>
-        <a href="/workbenches">Станки </a>
-    </div>
-    <div>
-        <a style="display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}"
-           href="/admin/allUsers">Все пользователи</a>
-        <a href="/personalArea">${user.fio_i_o} </a>
-        <a href="/logout">Выход</a>
-    </div>
-</nav>
+<jsp:include page="../nav/nav_first.jsp"></jsp:include>
+<jsp:include page="../nav/order_nav_second.jsp"></jsp:include>
 <form:form method="post">
-    <nav class="nav-second">
+    <nav class="nav-third">
         <div>
-            <a href="/orders/add/${order.id}">Добавить элемент</a>
-            <a href="/orders/change/${order.id}">Изменить заказ</a>
-            <a href="/orders/deletion/${order.id}">Удалить заказ</a>
-            <a href="/orders/check1/${order.id}">Расчитать время</a>
-        </div>
-        <div>
-            <input style="background: #f2f2f2; border: 0;cursor: pointer" type="submit" value="Расчитать">
+            <button class="button-nav-second" type="submit">Расчитать</button>
         </div>
     </nav>
 </form:form>
+
 <div class="main">
     <table class="simple-little-table" cellspacing='0'>
         <thead>
@@ -93,7 +73,7 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${order.detailInfos}" var="ord">
+        <c:forEach items="${order.detailsOrders}" var="ord">
             <tr>
                 <td>
                         ${ord.detail.name}
@@ -102,13 +82,13 @@
                         ${ord.count}
                 </td>
                 <td>
-                    <c:forEach items="${ord.detail.workBenches}" var="workbench">
-                        <pre>${workbench.name}</pre>
+                    <c:forEach items="${ord.detail.detailInfos}" var="workbench">
+                        <pre>${workbench.workBenches.name}</pre>
                     </c:forEach>
                 </td>
                 <td>
-                    <c:forEach items="${ord.detail.workBenches}" var="workbench">
-                        <pre>${workbench.dateEndDetail}</pre>
+                    <c:forEach items="${ord.detail.detailInfos}" var="workbench">
+                        <pre>${workbench.workBenches.dateEndDetail}</pre>
                     </c:forEach>
                 </td>
                 <td>

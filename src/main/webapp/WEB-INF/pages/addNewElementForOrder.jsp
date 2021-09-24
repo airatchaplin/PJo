@@ -12,38 +12,12 @@
     <link rel="stylesheet" href="../../resources/css/table_add.css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-
 </head>
 <body>
-<nav class="nav-first">
-    <div>
-        <a href="/">Главная страница</a>
-        <a href="/orders">Заказы </a>
-        <a href="/details">Детали</a>
-        <a href="/materials">Материалы </a>
-        <a href="/managers">Менеджеры </a>
-        <a href="/contragents">Контрагенты </a>
-        <a href="/workbenches">Станки </a>
-    </div>
-    <div>
-        <a style="display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}"
-           href="/admin/allUsers">Все пользователи</a>
-        <a href="/personalArea">${user.fio_i_o} </a>
-        <a href="/logout">Выход</a>
-    </div>
-</nav>
+<jsp:include page="../nav/nav_first.jsp"></jsp:include>
+<jsp:include page="../nav/order_nav_second.jsp"></jsp:include>
 <form:form method="post">
-    <nav class="nav-second">
-        <div>
-            <a href="/orders/add/${order.id}">Добавить элемент</a>
-            <a href="/orders/change/${order.id}">Изменить заказ</a>
-            <a href="/orders/deletion/${order.id}">Удалить заказ</a>
-            <a href="/orders/check1/${order.id}">Расчитать время</a>
-        </div>
-        <div>
-            <input style="background: #f2f2f2; border: 0;cursor: pointer" type="submit" value="Сохранить">
-        </div>
-    </nav>
+    <jsp:include page="../nav/nav_third_save.jsp"></jsp:include>
 
     <div class="main">
         <table class="simple-little-table" cellspacing='0'>
@@ -89,8 +63,11 @@
             <thead>
             <tr>
                 <th>Деталь
-                    <input class="input_js" type="button" style="margin: 10px;cursor: pointer" value="+" id="add_more_fields"/>
-                    <input class="input_js" type="button" style="cursor: pointer" onclick="deleteRow()" value=" - ">
+                    <button class="input_js" style="background: #89e1fe;" type="button" id="add_more_fields">
+                        <img style="width: 12px" src="../../resources/icon/plus.png" alt=""></button>
+                    <button class="input_js" style="background: #89e1fe;" type="button"
+                            onclick="deleteRow()">
+                        <img style="width: 12px" src="../../resources/icon/minus.png" alt=""></button>
                 </th>
                 <th>Количество</th>
                 <th>Дата запуска в производство</th>

@@ -14,33 +14,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 </head>
 <body>
-<nav class="nav-first">
-    <div>
-        <a href="/">Главная страница</a>
-        <a href="/orders">Заказы </a>
-        <a href="/details">Детали</a>
-        <a href="/materials">Материалы </a>
-        <a href="/managers">Менеджеры </a>
-        <a href="/contragents">Контрагенты </a>
-        <a href="/workbenches">Станки </a>
-    </div>
-    <div>
-        <a style="display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}"
-           href="/admin/allUsers">Все пользователи</a>
-        <a href="/personalArea">${user.fio_i_o} </a>
-        <a href="/logout">Выход</a>
-    </div>
-</nav>
+<jsp:include page="../nav/nav_first.jsp"></jsp:include>
+<jsp:include page="../nav/personalArea_nav_second.jsp"></jsp:include>
 <form:form method="post">
-    <nav class="nav-second">
-        <div>
-            <a href="/change/personalArea">Редактировать профиль</a>
-            <a href="/change/personalAreaPassword">Изменить пароль</a>
-        </div>
-        <div>
-            <input style="background: #f2f2f2; border: 0;" type="submit" value="Сохрнаить">
-        </div>
-    </nav>
+    <jsp:include page="../nav/nav_third_save.jsp"></jsp:include>
 
     <div class="main">
         <table class="simple-little-table" cellspacing='0'>
@@ -64,7 +41,7 @@
                     <label style="color: red;text-align: center">${passwordError}</label>
                 </td>
                 <td>
-                    <input type="checkbox" class="form-check-input" style="font-size: x-large;">
+                    <input type="checkbox" class="form-check-input" style="height: 16px;">
                 </td>
 
             </tr>

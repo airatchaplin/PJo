@@ -13,32 +13,10 @@
     <link rel="stylesheet" href="../../resources/css/table_allUsers.css">
 </head>
 <body>
-<nav class="nav-first">
-    <div>
-        <a href="/">Главная страница</a>
-        <a href="/orders">Заказы </a>
-        <a href="/details">Детали</a>
-        <a href="/materials">Материалы </a>
-        <a href="/managers">Менеджеры </a>
-        <a href="/contragents">Контрагенты </a>
-        <a href="/workbenches">Станки </a>
-    </div>
-    <div>
-        <a style="display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}"
-           href="/admin/allUsers">Все пользователи</a>
-        <a href="/personalArea">${user.fio_i_o} </a>
-        <a href="/logout">Выход</a>
-    </div>
-</nav>
+<jsp:include page="../nav/nav_first.jsp"></jsp:include>
+<jsp:include page="../nav/admin_nav_second.jsp"></jsp:include>
 
-<nav class="nav-second">
-    <div>
-        <a style="padding: 10px;color: #000000;text-decoration: none;" href="/admin/allUsers/change">Изменить права
-        </a>
-    </div>
-</nav>
-
-<div class="main">
+<div class="main" style="margin-top: 120px">
     <div style="margin: 10px ; font-size: 15px">
         Экономисты
     </div>

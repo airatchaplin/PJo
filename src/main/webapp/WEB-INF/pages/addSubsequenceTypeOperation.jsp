@@ -14,40 +14,28 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 </head>
 <body>
-<nav class="nav-first">
-    <div>
-        <a href="/">Главная страница</a>
-        <a href="/orders">Заказы </a>
-        <a href="/details">Детали</a>
-        <a href="/materials">Материалы </a>
-        <a href="/managers">Менеджеры </a>
-        <a href="/contragents">Контрагенты </a>
-        <a href="/workbenches">Станки </a>
-    </div>
-    <div>
-        <a style="display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}"
-           href="/admin/allUsers">Все пользователи</a>
-        <a href="/personalArea">${user.fio_i_o} </a>
-        <a href="/logout">Выход</a>
-    </div>
+<jsp:include page="../nav/nav_first.jsp"></jsp:include>
+
+<nav class="nav-second">
+    <button class="button-nav-second" style="width: 260px;"
+            onclick="window.location.href = '/typeOperations/addSubsequenceTypeOperation';">Добавить очередь операций
+    </button>
 </nav>
 <form:form method="post">
-    <nav class="nav-second">
-        <div>
-            <a href="/typeOperations/addSubsequenceTypeOperation">Добавить последовательность операций</a>
-        </div>
-        <div>
-            <input style="background: #f2f2f2; border: 0;cursor: pointer; " type="submit" value="Сохранить">
-        </div>
-    </nav>
+    <jsp:include page="../nav/nav_third_save.jsp"></jsp:include>
+
 
     <div class="main">
         <table class="simple-little-table" cellspacing='0'>
             <thead>
             <tr>
                 <th>Последовательность операций
-                    <input class="input_js" type="button" style="margin: 10px;cursor: pointer" value="+" id="add_more_fields"/>
-                    <input class="input_js" type="button" style="cursor: pointer" onclick="deleteRow()" value=" - ">
+                        <%--                    <input class="input_js" type="button" style="margin: 10px;cursor: pointer" value="+" id="add_more_fields"/>--%>
+                        <%--                    <input class="input_js" type="button" style="cursor: pointer" onclick="deleteRow()" value=" - ">--%>
+                    <button class="input_js" type="button" id="add_more_fields">
+                        <img style="width: 12px" src="../../resources/icon/plus.png" alt=""></button>
+                    <button class="input_js" type="button" onclick="deleteRow()">
+                        <img style="width: 12px" src="../../resources/icon/minus.png" alt=""></button>
                 </th>
             </tr>
             </thead>
@@ -61,7 +49,7 @@
                         </c:forEach>
                     </select>
                     <div class="error" style="color: red;">
-                        ${errorSubsequenceTypeOperation}
+                            ${errorSubsequenceTypeOperation}
                     </div>
                 </td>
 

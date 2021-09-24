@@ -377,11 +377,11 @@ public class OrderController {
      * @param model Модель
      * @return Страница расчета
      */
-    @GetMapping("orders/check1/{id}")
-    public String check1(@PathVariable(value = "id") String id, Model model) {
+    @GetMapping("orders/calculationOrder/{id}")
+    public String calculationOrder(@PathVariable(value = "id") String id, Model model) {
         model.addAttribute("order", orderService.getOrderById(UUID.fromString(id)));
         model.addAttribute("user", userService.getUserWeb());
-        return "check1";
+        return "calculationOrder";
     }
 
     /**
@@ -390,10 +390,10 @@ public class OrderController {
      * @param id Идентификатор заказа
      * @return Страница заказа
      */
-    @PostMapping("orders/check1/{id}")
-    public String check1(@PathVariable(value = "id") String id) {
+    @PostMapping("orders/calculationOrder/{id}")
+    public String calculationOrder(@PathVariable(value = "id") String id) {
         orderService.raschet(UUID.fromString(id));
-        return "redirect:/orders/check1/" + id;
+        return "redirect:/orders/calculationOrder/" + id;
     }
 
 
@@ -427,5 +427,17 @@ public class OrderController {
     public String completeOrder(@PathVariable(value = "id") String id, Model model) {
         completedOrderService.saveCompletedOrder(orderService.getOrderById(UUID.fromString(id)));
         return "redirect:/orders";
+    }
+
+    /**
+     * Страница завершенного заказа
+     * @param model
+     * @return Страница завершенного заказа
+     */
+    @GetMapping("completed_orders/{id}")
+    public String getOneCompletedOrder(@PathVariable(value = "id") String id, Model model) {
+        model.addAttribute("completed_order", completedOrderService.getOneCompletedOrderById(UUID.fromString(id)));
+        model.addAttribute("user", userService.getUserWeb());
+        return "oneCompletedOrders";
     }
 }

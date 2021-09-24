@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -45,7 +44,7 @@ public class MainController {
     @GetMapping("/")
     public String main(Model model) {
         model.addAttribute("user", userService.getUserWeb());
-        return "index";
+        return "main";
     }
 
     /**
@@ -53,8 +52,8 @@ public class MainController {
      *
      * @return Страница входа
      */
-    @GetMapping("/login")
-    public String login() {
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login(){
         return "login";
     }
 
@@ -121,6 +120,7 @@ public class MainController {
         model.addAttribute("user", userService.getUserWeb());
         return "error";
     }
+
 
     /**
      * Страница личного кабинета метод GET

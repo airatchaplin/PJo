@@ -13,36 +13,11 @@
     <link rel="stylesheet" href="../../resources/css/table_allUsers.css">
 </head>
 <body>
-<nav class="nav-first">
-    <div>
-        <a href="/">Главная страница</a>
-        <a href="/orders">Заказы </a>
-        <a href="/details">Детали</a>
-        <a href="/materials">Материалы </a>
-        <a href="/managers">Менеджеры </a>
-        <a href="/contragents">Контрагенты </a>
-        <a href="/workbenches">Станки </a>
-    </div>
-    <div>
-        <a style="display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}"
-           href="/admin/allUsers">Все пользователи</a>
-        <a href="/personalArea">${user.fio_i_o} </a>
-        <a href="/logout">Выход</a>
-    </div>
-</nav>
-
-
+<jsp:include page="../nav/nav_first.jsp"></jsp:include>
+<jsp:include page="../nav/admin_nav_second.jsp"></jsp:include>
 <form:form action="/admin/allUsers/change"
            method="post">
-
-    <nav class="nav-second">
-        <div>
-            <a href="/admin/allUsers/change">Изменить права</a>
-        </div>
-        <div>
-            <input style="background: #f2f2f2; border: 0;" type="submit" value="Сохрнаить">
-        </div>
-    </nav>
+    <jsp:include page="../nav/nav_third_save.jsp"></jsp:include>
 
     <div class="main">
         <div style="margin: 10px ; font-size: 15px">

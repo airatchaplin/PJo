@@ -13,48 +13,31 @@
     <link rel="stylesheet" href="../../resources/css/table_details.css">
 </head>
 <body>
-<nav class="nav-first">
-    <div>
-        <a href="/">Главная страница</a>
-        <a href="/orders">Заказы </a>
-        <a href="/details">Детали</a>
-        <a href="/materials">Материалы </a>
-        <a href="/managers">Менеджеры </a>
-        <a href="/contragents">Контрагенты </a>
-        <a href="/workbenches">Станки </a>
-    </div>
-    <div>
-        <a style="display: ${user.roles.get(0).name.equalsIgnoreCase("ROLE_ADMIN") ? "contents" : "none"}"
-           href="/admin/allUsers">Все пользователи</a>
-        <a href="/personalArea">${user.fio_i_o} </a>
-        <a href="/logout">Выход</a>
-    </div>
-</nav>
+<jsp:include page="../nav/nav_first.jsp"></jsp:include>
 
 <nav class="nav-second">
-    <div>
-        <a href="/addDetail">Добавить деталь</a>
-    </div>
+    <button class="button-nav-second" style="width: 195px;"
+            onclick="window.location.href = '/addDetail';">Добавить деталь
+    </button>
 </nav>
-
-<div class="main">
+<div class="main" style="margin-top: 120px">
     <table class="simple-little-table" cellspacing='0'>
         <thead>
         <form:form>
             <tr>
                 <th class="number" style="text-align: center">№</th>
                 <th>Деталь
-                    <button name="filter" value="details" style="border: none;" type="submit">
+                    <button class="button-filter" name="filter" value="details" style="border: none;" type="submit">
                             ${user.filter_details.equals("details")?"&#11167;":"&#11165;"}
                     </button>
                 </th>
                 <th>Материал
-                    <button name="filter" value="materials" style="border: none;" type="submit">
+                    <button class="button-filter" name="filter" value="materials" style="border: none;" type="submit">
                             ${user.filter_details.equals("materials")?"&#11167;":"&#11165;"}
                     </button>
                 </th>
                 <th>Толщина
-                    <button name="filter" value="thickness" style="border: none;" type="submit">
+                    <button class="button-filter" name="filter" value="thickness" style="border: none;" type="submit">
                             ${user.filter_details.equals("thickness")?"&#11167;":"&#11165;"}
                     </button>
                 </th>
