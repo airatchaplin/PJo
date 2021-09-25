@@ -81,9 +81,36 @@
                 <td>
                         ${ord.count}
                 </td>
+<%--                <td>--%>
+<%--                    <c:forEach items="${ord.detail.detailInfos}" var="workbench">--%>
+<%--                        <pre>${workbench.workBenches.name}</pre>--%>
+<%--                    </c:forEach>--%>
+<%--                </td>--%>
                 <td>
-                    <c:forEach items="${ord.detail.detailInfos}" var="workbench">
-                        <pre>${workbench.workBenches.name}</pre>
+                    <c:set var="countGibka" value="0" scope="page"/>
+                    <c:set var="countRezka" value="0" scope="page"/>
+                    <c:forEach items="${ord.detail.detailInfos}" var="detailInfo">
+                        <c:if test="${detailInfo.workBenches.typeOperation.name.equals('ГИБКА')}">
+                            <c:if test="${countGibka>0}">
+                                <pre style="color: red">Альтернатива: ${detailInfo.workBenches.name}</pre>
+                            </c:if>
+                            <c:if test="${countGibka==0}">
+                                <pre>${detailInfo.workBenches.name}</pre>
+                                <c:set var="countGibka" value="${countGibka + 1}" scope="page"/>
+                            </c:if>
+                        </c:if>
+                        <c:if test="${detailInfo.workBenches.typeOperation.name.equals('РЕЗКА')}">
+                            <c:if test="${countRezka>0}">
+                                <pre style="color: red">Альтернатива: ${detailInfo.workBenches.name}</pre>
+                            </c:if>
+                            <c:if test="${countRezka==0}">
+                                <pre>${detailInfo.workBenches.name}</pre>
+                                <c:set var="countRezka" value="${countRezka + 1}" scope="page"/>
+                            </c:if>
+                        </c:if>
+                        <c:if test="${!detailInfo.workBenches.typeOperation.name.equals('ГИБКА') && !detailInfo.workBenches.typeOperation.name.equals('РЕЗКА')  }">
+                            <pre>${detailInfo.workBenches.name}</pre>
+                        </c:if>
                     </c:forEach>
                 </td>
                 <td>

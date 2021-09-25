@@ -27,5 +27,7 @@ public class DetailInfo {
 
     private int priority;
 
+    @Transient
+    boolean isSetting;
 
 }

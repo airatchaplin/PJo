@@ -1,22 +1,18 @@
 package com.example.pozhiloyproject.services;
 
 
-import com.example.pozhiloyproject.models.DetailsOrder;
-import com.example.pozhiloyproject.models.Order;
-import com.example.pozhiloyproject.models.WorkBench;
+import com.example.pozhiloyproject.models.*;
 import com.example.pozhiloyproject.repository.OrderRepository;
 import com.example.pozhiloyproject.repository.WorkBenchRepository;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.*;
 
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * Сервис заказов
@@ -78,7 +74,7 @@ public class OrderService {
     }
 
 
-//    public void raschet(int numberOrder) {
+    //    public void raschet(int numberOrder) {
 //
 //        Order order = orderRepository.findByNumberOrder(numberOrder);
 //        List<DetailInfo> detailInfos = order.getDetailInfos();
@@ -172,12 +168,36 @@ public class OrderService {
         LocalDateTime dateOrderEnd;
 
         List<DetailsOrder> detailsOrders = order.getDetailsOrders();
-
+        detailsOrders = sortByMaterialWorkbench(detailsOrders);
         for (int i = 0; i < detailsOrders.size(); i++) {
+            Double detailThickness = detailsOrders.get(i).getDetail().getMaterial().getThickness();
+            List<DetailInfo> detailInfos = detailsOrders.get(i).getDetail().getDetailInfos();
 
+            for (int j = 0; j < detailInfos.size(); j++) {
+                Double currentThickness = detailInfos.get(j).getWorkBenches().getCurrentThickness();
+                //если толщина текущего станка не равна толщине детали, то помечаем необходимости наладки
+                if (!detailThickness.equals(currentThickness)) {
+                    detailInfos.get(j).setSetting(true);
+                }
+
+                LocalDateTime dateEndDetailWorkbench = detailInfos.get(j).getWorkBenches().getDateEndDetail();
+            }
             System.out.println(detailsOrders.get(i).getDetail());
 
         }
+    }
+
+    public List<DetailsOrder> sortByMaterialWorkbench(List<DetailsOrder> detailsOrders) {
+        Set<DetailsOrder> sortDetailsOrder = new LinkedHashSet<>();
+        for (int i = 0; i < detailsOrders.size(); i++) {
+            Material materialDetail = detailsOrders.get(i).getDetail().getMaterial();
+            Double currentThickness = detailsOrders.get(i).getDetail().getDetailInfos().get(0).getWorkBenches().getCurrentThickness();
+            if (currentThickness.equals(materialDetail.getThickness())) {
+                sortDetailsOrder.add(detailsOrders.get(i));
+            }
+        }
+        sortDetailsOrder.addAll(detailsOrders);
+        return new ArrayList<>(sortDetailsOrder);
     }
 
 
