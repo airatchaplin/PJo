@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 public class OrderDto {
@@ -27,15 +28,7 @@ public class OrderDto {
 
     @Getter
     @Setter
-    private String detailName;
-
-    @Getter
-    @Setter
-    private int countDetail;
-
-    @Getter
-    @Setter
-    private String typeMaterial;
+    private String economist;
 
     @Getter
     @Setter
@@ -49,6 +42,8 @@ public class OrderDto {
     @Setter
     private String comment;
 
-
+    @Getter
+    @Setter
+    private List<DetailDto> detailDtos;
 
 }

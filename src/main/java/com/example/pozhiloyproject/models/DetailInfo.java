@@ -1,9 +1,13 @@
 package com.example.pozhiloyproject.models;
 
+import com.example.pozhiloyproject.dto.DetailDto;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -29,5 +33,15 @@ public class DetailInfo {
 
     @Transient
     boolean isSetting;
+
+    public static List<DetailInfo> comparePriority(List<DetailInfo> detailInfos) {
+        Comparator<DetailInfo> comparator = Comparator.comparing(DetailInfo::getPriority);
+        detailInfos.sort(comparator);
+        return detailInfos;
+    }
+
+
+
+
 
 }

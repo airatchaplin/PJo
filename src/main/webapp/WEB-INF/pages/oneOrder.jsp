@@ -25,8 +25,8 @@
                 <th>Контрагент</th>
                 <th>Экономист</th>
                 <th>Менеджер</th>
-                <th>Дата запуска в производство</th>
-                <th>Дата готовности заказа</th>
+<%--                <th>Дата запуска в производство</th>--%>
+<%--                <th>Дата готовности заказа</th>--%>
                 <th>Покраска Н/Д/Ч/М</th>
                 <th>Упаковка Н/Д/Ч/М</th>
                 <th>Коментарий</th>
@@ -40,12 +40,12 @@
                 <td> ${order.objectName.name} </td>
                 <td>${order.manager.fio_i_o} </td>
                 <td>${order.manager.fio_i_o} </td>
-                <td>
-                        ${order.dateStart}
-                </td>
-                <td>
-                        ${order.dateEnd}
-                </td>
+<%--                <td>--%>
+<%--                        ${order.dateStart}--%>
+<%--                </td>--%>
+<%--                <td>--%>
+<%--                        ${order.dateEnd}--%>
+<%--                </td>--%>
 
                 <td>
                         ${order.painting}
@@ -67,8 +67,8 @@
                 <th>Деталь</th>
                 <th>Материал</th>
                 <th>Количество</th>
-                <th>Дата запуска детали</th>
-                <th>Дата готовности детали</th>
+<%--                <th>Дата запуска детали</th>--%>
+<%--                <th>Дата готовности детали</th>--%>
             </tr>
             </thead>
             <tbody>
@@ -83,12 +83,12 @@
                     <td>
                             ${ord.count}
                     </td>
-                    <td>
-                            ${ord.dateStart}
-                    </td>
-                    <td>
-                            ${ord.dateEnd}
-                    </td>
+<%--                    <td>--%>
+<%--                            ${ord.dateStart}--%>
+<%--                    </td>--%>
+<%--                    <td>--%>
+<%--                            ${ord.dateEnd}--%>
+<%--                    </td>--%>
                 </tr>
                 <c:set var="count" value="${count + 1}" scope="page"/>
             </c:forEach>

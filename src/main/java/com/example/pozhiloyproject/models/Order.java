@@ -54,15 +54,6 @@ public class Order {
     @ManyToMany(cascade = CascadeType.ALL)
     private List<DetailsOrder> detailsOrders;
 
-    /**
-     * Дата запуска в производство
-     */
-    private LocalDateTime dateStart;
-
-    /**
-     * Дата заверешнения
-     */
-    private LocalDateTime dateEnd;
 
     /**
      * Комментарий
@@ -78,4 +69,16 @@ public class Order {
      * Покраска
      */
     private String painting;
+
+
+
+    /**
+     * Дата запуска в производство
+     */
+    private LocalDateTime dateStartOrder;
+
+    /**
+     * Дата заверешнения
+     */
+    private LocalDateTime dateEndOrder;
 }

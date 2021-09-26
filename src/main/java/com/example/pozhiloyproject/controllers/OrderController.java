@@ -41,6 +41,9 @@ public class OrderController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    DetailDateByWorkbenchService detailDateByWorkbenchService;
+
     /**
      * Страница всех заказов метод GET
      *
@@ -161,14 +164,30 @@ public class OrderController {
         List<DetailsOrder> list = new ArrayList<>();
         List<Boolean> isCalculated = null;
 
+        List<DetailDateByWorkbench> detailDateByWorkbenches = new ArrayList<>();
         for (int i = 0; i < timesList.size(); i++) {
             DetailsOrder detailsOrder = new DetailsOrder();
             detailsOrder.setId(UUID.randomUUID());
             detailsOrder.setIncrement(i);
-            detailsOrder.setDateStart(timesList.get(i));
+//            detailsOrder.setDateStart(timesList.get(i));
             if (detailId.get(i).equals("Выбирите деталь") && countDetailList.get(i) == 0) {
                 continue;
             } else {
+                Detail detailById = detailService.getDetailById(UUID.fromString(detailId.get(i)));
+
+                for (int j = 0; j < detailById.getDetailInfos().size(); j++) {
+                    DetailDateByWorkbench detailDateByWorkbench = new DetailDateByWorkbench();
+                    detailDateByWorkbench.setId(UUID.randomUUID());
+                    detailDateByWorkbench.setWorkBench(detailById.getDetailInfos().get(j).getWorkBenches());
+                    detailDateByWorkbench.setPriority(detailById.getDetailInfos().get(j).getPriority());
+                    detailDateByWorkbench.setSetting(false);
+
+                    detailDateByWorkbench.setDetailDateEnd(null);
+                    detailDateByWorkbench.setDetailDateStart(null);
+                    detailDateByWorkbenchService.saveDetailDateByWorkbench(detailDateByWorkbench);
+                    detailDateByWorkbenches.add(detailDateByWorkbench);
+
+                }
                 detailsOrder.setDetail(detailService.getDetailById(UUID.fromString(detailId.get(i))));
                 isCalculated = new ArrayList<>();
 //                for (WorkBench workBench : detailService.getDetailById(UUID.fromString(detailId.get(i))).getWorkBenches()) {
@@ -179,7 +198,10 @@ public class OrderController {
                 detailInfoService.saveDetailInfo(detailsOrder);
             }
             list.add(detailsOrder);
+            detailsOrder.setDetailDateByWorkbench(detailDateByWorkbenches);
+            detailDateByWorkbenches = new ArrayList<>();
         }
+
 
         order.setDetailsOrders(list);
         orderService.saveOrder(order);
@@ -307,7 +329,7 @@ public class OrderController {
             detailsOrder.setId(UUID.randomUUID());
             detailsOrder.setDetail(detailService.getDetailById(UUID.fromString(detailId.get(i))));
             detailsOrder.setCount(Integer.parseInt(countDetail.get(i)));
-            detailsOrder.setDateStart(dateStart.get(i).equals("") ? null : LocalDateTime.parse(dateStart.get(i)));
+//            detailsOrder.setDateStart(dateStart.get(i).equals("") ? null : LocalDateTime.parse(dateStart.get(i)));
 
             List<Boolean> isCalculated = new ArrayList<>();
 //            for (int j = 0; j < detailsOrder.getDetail().getWorkBenches().size(); j++) {

@@ -25,8 +25,8 @@
             <th>Экономист</th>
             <th>Деталь</th>
             <th>Кол-во</th>
-            <th>Дата запуска в производство</th>
-            <th>Дата готовности заказа</th>
+<%--            <th>Дата запуска в производство</th>--%>
+<%--            <th>Дата готовности заказа</th>--%>
             <th>Коментарий</th>
         </tr>
         </thead>
@@ -49,8 +49,8 @@
                         <pre><a style="display: block" href="orders/${order.id}">${detail.count}</a></pre>
                     </c:forEach>
                 </td>
-                <td><a style="display: block" href="orders/${order.id}">${order.dateStart}</a></td>
-                <td><a style="display: block" href="orders/${order.id}">${order.dateEnd}</a></td>
+<%--                <td><a style="display: block" href="orders/${order.id}">${order.dateStart}</a></td>--%>
+<%--                <td><a style="display: block" href="orders/${order.id}">${order.dateEnd}</a></td>--%>
                 <td><a style="display: block" href="orders/${order.id}">${order.comment}</a></td>
             </tr>
         </c:forEach>

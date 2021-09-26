@@ -30,8 +30,8 @@
             <th>Контрагент</th>
             <th>Экономист</th>
             <th>Менеджер</th>
-            <th>Дата запуска в производство</th>
-            <th>Дата готовности заказа</th>
+            <%--            <th>Дата запуска в производство</th>--%>
+            <%--            <th>Дата готовности заказа</th>--%>
             <th>Покраска</th>
             <th>Упаковка</th>
             <th>Коментарий</th>
@@ -43,12 +43,12 @@
             <td> ${order.objectName.name} </td>
             <td>${order.manager.fio_i_o} </td>
             <td>${order.manager.fio_i_o} </td>
-            <td>
-                ${order.dateStart}
-            </td>
-            <td>
-                ${order.dateEnd}
-            </td>
+            <%--            <td>--%>
+            <%--                ${order.dateStart}--%>
+            <%--            </td>--%>
+            <%--            <td>--%>
+            <%--                ${order.dateEnd}--%>
+            <%--            </td>--%>
             <td>
                 ${order.painting}
             </td>
@@ -68,7 +68,11 @@
             <th>Деталь</th>
             <th>Количество</th>
             <th>Станки по очередности производства детали</th>
+            <th>Время</th>
             <th>Время окончания других заказов на этих станках</th>
+            <th>Время начала на станке</th>
+            <th>Время окончания на станке</th>
+            <th>Наладка</th>
             <th>Расчитано Да/нет</th>
         </tr>
         </thead>
@@ -81,11 +85,11 @@
                 <td>
                         ${ord.count}
                 </td>
-<%--                <td>--%>
-<%--                    <c:forEach items="${ord.detail.detailInfos}" var="workbench">--%>
-<%--                        <pre>${workbench.workBenches.name}</pre>--%>
-<%--                    </c:forEach>--%>
-<%--                </td>--%>
+                    <%--                <td>--%>
+                    <%--                    <c:forEach items="${ord.detail.detailInfos}" var="workbench">--%>
+                    <%--                        <pre>${workbench.workBenches.name}</pre>--%>
+                    <%--                    </c:forEach>--%>
+                    <%--                </td>--%>
                 <td>
                     <c:set var="countGibka" value="0" scope="page"/>
                     <c:set var="countRezka" value="0" scope="page"/>
@@ -115,7 +119,27 @@
                 </td>
                 <td>
                     <c:forEach items="${ord.detail.detailInfos}" var="workbench">
+                        <pre>${workbench.timeWork}</pre>
+                    </c:forEach>
+                </td>
+                <td>
+                    <c:forEach items="${ord.detail.detailInfos}" var="workbench">
                         <pre>${workbench.workBenches.dateEndDetail}</pre>
+                    </c:forEach>
+                </td>
+                <td>
+                    <c:forEach items="${ord.detailDateByWorkbench}" var="DateByWorkbench">
+                        <pre>${DateByWorkbench.detailDateStart == null? " " : DateByWorkbench.detailDateStart}</pre>
+                    </c:forEach>
+                </td>
+                <td>
+                    <c:forEach items="${ord.detailDateByWorkbench}" var="DateByWorkbench">
+                        <pre>${DateByWorkbench.detailDateEnd== null? " " : DateByWorkbench.detailDateEnd}</pre>
+                    </c:forEach>
+                </td>
+                <td>
+                    <c:forEach items="${ord.detailDateByWorkbench}" var="DateByWorkbench">
+                        <pre>${DateByWorkbench.setting}</pre>
                     </c:forEach>
                 </td>
                 <td>

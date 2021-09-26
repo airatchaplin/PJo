@@ -40,8 +40,8 @@ public class CompletedOrderService {
         completedOrder.setObjectName(order.getObjectName());
         completedOrder.setManager(order.getManager());
         completedOrder.setDetailInfos(order.getDetailsOrders());
-        completedOrder.setDateStart(order.getDateStart());
-        completedOrder.setDateEnd(order.getDateEnd());
+//        completedOrder.setDateStart(order.getDateStart());
+//        completedOrder.setDateEnd(order.getDateEnd());
         completedOrder.setComment(order.getComment());
         completedOrderRepository.save(completedOrder);
 

@@ -20,48 +20,55 @@ create table contragents
     name varchar(255),
     primary key (id)
 );
+create table detail_date_by_workbench
+(
+    id                uuid    not null,
+    detail_date_end   timestamp,
+    detail_date_start timestamp,
+    is_setting        boolean not null,
+    priority          int4    not null,
+    work_bench_id     uuid,
+    primary key (id)
+);
 create table detail_info
 (
     id              uuid not null,
     comment         varchar(255),
+    priority        int4 not null,
     time_work       varchar(255),
     work_benches_id uuid,
-    priority        int,
     primary key (id)
 );
-create table details_order
+create table details
 (
-    id         uuid not null,
-    count      int4 not null,
-    date_end   timestamp,
-    date_start timestamp,
-    increment  int4 not null,
-    detail_id  uuid,
+    id           uuid not null,
+    name         varchar(255),
+    time_packing varchar(255),
+    material_id  uuid,
     primary key (id)
-);
-create table detail_info_is_calculated
-(
-    detail_info_id uuid not null,
-    is_calculated  boolean
 );
 create table details_detail_infos
 (
     detail_id       uuid not null,
     detail_infos_id uuid not null
 );
-
+create table details_order
+(
+    id        uuid not null,
+    count     int4 not null,
+    increment int4 not null,
+    detail_id uuid,
+    primary key (id)
+);
+create table details_order_detail_date_by_workbench
+(
+    details_order_id            uuid not null,
+    detail_date_by_workbench_id uuid not null
+);
 create table details_order_is_calculated
 (
     details_order_id uuid not null,
     is_calculated    boolean
-);
-create table details
-(
-    id          uuid not null,
-    name        varchar(255),
-    time_packing    varchar(255),
-    material_id uuid,
-    primary key (id)
 );
 create table materials
 (
@@ -72,16 +79,16 @@ create table materials
 );
 create table orders
 (
-    id             uuid not null,
-    comment        varchar(255),
-    date_end       timestamp,
-    date_start     timestamp,
-    number_order   int4 not null,
-    packing        varchar(255),
-    painting       varchar(255),
-    economist_id   uuid,
-    manager_id     uuid,
-    object_name_id uuid,
+    id               uuid not null,
+    comment          varchar(255),
+    date_end_order   timestamp,
+    date_start_order timestamp,
+    number_order     int4 not null,
+    packing          varchar(255),
+    painting         varchar(255),
+    economist_id     uuid,
+    manager_id       uuid,
+    object_name_id   uuid,
     primary key (id)
 );
 create table orders_details_orders
@@ -120,14 +127,14 @@ create table type_operation_work_benches
 create table users
 (
     id                 uuid not null,
+    filter_details     varchar(255),
+    filter_workbenches varchar(255),
     fio                varchar(255),
     fio_i_o            varchar(255),
     last_name          varchar(255),
     name               varchar(255),
     password           varchar(255),
     username           varchar(255),
-    filter_details     varchar,
-    filter_workbenches varchar,
     primary key (id)
 );
 create table users_roles
@@ -138,13 +145,14 @@ create table users_roles
 create table workbench
 (
     id                uuid not null,
+    current_thickness float8,
     date_end_detail   timestamp,
     name              varchar(255),
-    current_thickness float,
     type_operation_id uuid,
     primary key (id)
 );
-
+alter table if exists details_order_detail_date_by_workbench
+    add constraint UK_mi0kfsikflk8so26850lv1yrq unique (detail_date_by_workbench_id);
 alter table if exists type_operation_work_benches
     add constraint UK_oov9sv06v8kb7gywqqmcsbk3p unique (work_benches_id);
 alter table if exists completed_orders
@@ -155,6 +163,8 @@ alter table if exists completed_orders_detail_infos
     add constraint FKr2xejh03xcrgce53wg26b3rt9 foreign key (detail_infos_id) references details_order;
 alter table if exists completed_orders_detail_infos
     add constraint FKh5w58l9fgl79d67uen6bd7783 foreign key (completed_order_id) references completed_orders;
+alter table if exists detail_date_by_workbench
+    add constraint FK3ss5pmpjyrfd2xh7ep1j1ey2m foreign key (work_bench_id) references workbench;
 alter table if exists detail_info
     add constraint FK3ikrqrrvu5x6revuk6untc0wb foreign key (work_benches_id) references workbench;
 alter table if exists details
@@ -165,6 +175,10 @@ alter table if exists details_detail_infos
     add constraint FKl6tnrq6xxywbrso8g677y8ws8 foreign key (detail_id) references details;
 alter table if exists details_order
     add constraint FKarqo927ljstgpaglm3j18f4hp foreign key (detail_id) references details;
+alter table if exists details_order_detail_date_by_workbench
+    add constraint FKr7397fftcf8mnp6cvj45oo1qc foreign key (detail_date_by_workbench_id) references detail_date_by_workbench;
+alter table if exists details_order_detail_date_by_workbench
+    add constraint FKiywh0iw27t56ned7564au7n0o foreign key (details_order_id) references details_order;
 alter table if exists details_order_is_calculated
     add constraint FKd9rgvjf45s2663bxnqltkqjh9 foreign key (details_order_id) references details_order;
 alter table if exists orders
@@ -191,4 +205,3 @@ alter table if exists users_roles
     add constraint FK2o0jvgh89lemvvo17cbqvdxaa foreign key (user_id) references users;
 alter table if exists workbench
     add constraint FKwm0qawryp7tsjj64o66udkgo foreign key (type_operation_id) references type_operation;
-

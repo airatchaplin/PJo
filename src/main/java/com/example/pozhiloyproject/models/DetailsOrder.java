@@ -1,12 +1,7 @@
 package com.example.pozhiloyproject.models;
 
 import java.util.List;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import java.time.LocalDateTime;
+import javax.persistence.*;
 import java.util.UUID;
 
 import lombok.Getter;
@@ -44,20 +39,12 @@ public class DetailsOrder {
     private int increment;
 
     /**
-     * Дата запуска в производство детали
-     */
-    private LocalDateTime dateStart;
-
-    /**
-     * Дата завершения детали
-     */
-    private LocalDateTime dateEnd;
-
-    /**
      * Признак что деталь рассчитана
      */
     @ElementCollection
     private List<Boolean> isCalculated;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    List<DetailDateByWorkbench> detailDateByWorkbench;
 
 }
