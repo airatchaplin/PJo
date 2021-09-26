@@ -112,7 +112,7 @@ public class WorkBenchController {
         workBench.setCurrentThickness(Double.valueOf(currentThickness.replace(",",".")));
         workBench.setDateEndDetail(LocalDateTime.parse(dateEndDetail));
         workBenchService.save(workBench);
-        return "workbenches";
+        return "redirect:/workbenches";
     }
 
     /**
@@ -176,7 +176,7 @@ public class WorkBenchController {
         workBench.setDateEndDetail(LocalDateTime.parse(dateEndDetail));
 
         workBenchService.save(workBench);
-        return "/WEB-INF/workbench_page/workbenches.jsp";
+        return "redirect:/workbenches";
     }
 
     /**
@@ -209,6 +209,6 @@ public class WorkBenchController {
             model.addAttribute("workBenchError", "Станок нельзя удалить, потому что он используется в заказах!");
             return "deletionWorkBench";
         }
-        return "workbenches";
+        return "redirect:/workbenches";
     }
 }
