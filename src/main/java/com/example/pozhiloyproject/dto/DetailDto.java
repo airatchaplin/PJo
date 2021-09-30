@@ -35,7 +35,7 @@ public class DetailDto {
     /**
      * Инфомация о детали
      */
-    private List<DetailInfoDto> detailInfoDtos;
+    private List<DetailListDto> detailListDtos;
 
     private String timePacking;
 

@@ -21,7 +21,7 @@ public class WorkBenchDto {
 
     private String name;
 
-    private LocalDateTime dateEndDetail;
+    private String dateEndDetail;
 
 
     private String typeOperation;

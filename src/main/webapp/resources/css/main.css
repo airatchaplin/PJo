@@ -4,7 +4,8 @@ body {
 }
 
 .main {
-    margin-top: 180px
+    /*margin-top: 180px*/
+    margin-top: 10px
 }
 
 button {
@@ -43,39 +44,45 @@ a {
 }
 
 .nav-first {
-    position: fixed;
+    /*position: fixed;*/
     box-shadow: 0 0 5px;
     display: flex;
     justify-content: space-between;
     right: 0;
     left: 0;
-    background: #d1d1d1;
+    /*background: #d1d1d1;*/
+    background: #d1d1d100;
     top: 0;
+    height: 52px;
 }
 
 .nav-second {
-    position: fixed;
+    /*position: fixed;*/
     box-shadow: 0 5px 5px -5px;
     display: flex;
     justify-content: space-between;
     right: 0;
     left: 0;
-    background: #f2f2f2;
+    background: #d1d1d100;
+    /*background: #f2f2f2;*/
     /*padding: 15px;*/
     top: 0;
-    margin-top: 60px;
+    /*margin-top: 60px;*/
+    height: 52px;
 }
 .nav-third {
-    position: fixed;
+    /*position: fixed;*/
     box-shadow: 0 5px 5px -5px;
     display: flex;
     justify-content: space-between;
     right: 0;
     left: 0;
-    background: #f2f2f2;
+    height: 52px;
+    /*background: #f2f2f2;*/
+    background: #d1d1d100;
     /*padding: 15px;*/
     top: 0;
-    margin-top: 120px;
+    /*margin-top: 120px;*/
 }
 
 
@@ -165,13 +172,17 @@ button {
     color: black;
     width: 170px;
     height: 50px;
-    background: #f2f2f2;
+    /*background: #f2f2f2;*/
+    background:#d1d1d100;
+    font-variant: all-small-caps;
 }
 .button-nav-first{
-    background: #d1d1d1;
+    /*background: #d1d1d1;*/
+    background: #d1d1d100;
     color: black;
     width: 120px;
     height: 50px;
+    font-variant: all-small-caps;
 }
 .button-filter{
     color: black;

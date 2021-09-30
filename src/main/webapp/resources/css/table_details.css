@@ -1,11 +1,18 @@
 .detail_time_work{
-    width: 10%;
+    width: 5%;
 }
 
 .detail_material{
-    width: 15%;
+    width: 0%;
 }
 
 .detail_name{
-    width: 40%;
+    width: 15%;
+}
+.workbench_currentThickness{
+    width: 1%;
+}
+
+.workbench_name{
+    width: 1%;
 }

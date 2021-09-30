@@ -175,11 +175,11 @@ public class OrderController {
             } else {
                 Detail detailById = detailService.getDetailById(UUID.fromString(detailId.get(i)));
 
-                for (int j = 0; j < detailById.getDetailInfos().size(); j++) {
+//                for (int j = 0; j < detailById.getDetailInfos().size(); j++) {
                     DetailDateByWorkbench detailDateByWorkbench = new DetailDateByWorkbench();
                     detailDateByWorkbench.setId(UUID.randomUUID());
-                    detailDateByWorkbench.setWorkBench(detailById.getDetailInfos().get(j).getWorkBenches());
-                    detailDateByWorkbench.setPriority(detailById.getDetailInfos().get(j).getPriority());
+//                    detailDateByWorkbench.setWorkBench(detailById.getDetailInfos().get(j).getWorkBenches());
+//                    detailDateByWorkbench.setPriority(detailById.getDetailInfos().get(j).getPriority());
                     detailDateByWorkbench.setSetting(false);
 
                     detailDateByWorkbench.setDetailDateEnd(null);
@@ -187,7 +187,7 @@ public class OrderController {
                     detailDateByWorkbenchService.saveDetailDateByWorkbench(detailDateByWorkbench);
                     detailDateByWorkbenches.add(detailDateByWorkbench);
 
-                }
+//                }
                 detailsOrder.setDetail(detailService.getDetailById(UUID.fromString(detailId.get(i))));
                 isCalculated = new ArrayList<>();
 //                for (WorkBench workBench : detailService.getDetailById(UUID.fromString(detailId.get(i))).getWorkBenches()) {

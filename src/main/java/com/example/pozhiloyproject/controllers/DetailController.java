@@ -134,9 +134,12 @@ public class DetailController {
     public String addDetailPost(@RequestParam(required = false) String detailName,
                                 @RequestParam(required = false) String materialId,
                                 @RequestParam(required = false) List<String> workBenchId,
+                                @RequestParam(required = false) List<String> workBenchId1,
                                 @RequestParam(required = false) List<String> timeWork,
+                                @RequestParam(required = false) List<String> timeWork1,
                                 @RequestParam(required = false) String timePacking,
                                 @RequestParam(required = false) List<String> comment,
+                                @RequestParam(required = false) List<String> comment1,
                                 Model model) {
         detailName = detailName.replace(",", ".");
         if (detailService.checkDetail(detailName)) {
@@ -152,28 +155,16 @@ public class DetailController {
         detail.setName(detailName);
         detail.setMaterial(materialId.equals("Выберите материал") ? null : materialService.getOneMaterial(UUID.fromString(materialId)));
 
+        List<DetailList> detailLists = Stream.of(detailService.getDetailLists(workBenchId, timeWork, comment, 1))
+                .collect(Collectors.toList());
 
-        List<WorkBench> workBenches = new ArrayList<>();
-        for (String id : workBenchId) {
-            if (!id.equals("Выберите станок")) {
-                WorkBench workBench = workBenchService.getOneWorkBenchById(UUID.fromString(id));
-                workBenches.add(workBench);
-            }
+        if (workBenchId1 != null) {
+            detailLists.add(detailService.getDetailLists(workBenchId1, timeWork1, comment1, 2));
         }
-        List<DetailInfo> detailInfos = new ArrayList<>();
-        for (int i = 0; i < workBenches.size(); i++) {
-            DetailInfo detailInfo = new DetailInfo();
-            detailInfo.setId(UUID.randomUUID());
-            detailInfo.setTimeWork(timeWork.get(i));
-            detailInfo.setComment(comment.get(i));
-            detailInfo.setPriority(i);
-            detailInfo.setWorkBenches(workBenches.get(i));
-            detailInfos.add(detailInfo);
-            detailInfoService.saveDetailInfo(detailInfo);
 
-        }
         detail.setTimePacking(timePacking);
-        detail.setDetailInfos(detailInfos);
+        detail.setDetailLists(detailLists);
+//        detail.setDetailInfos(detailInfos);
         detailService.saveDetail(detail);
         return "redirect:/details/" + detail.getId();
     }
@@ -255,11 +246,11 @@ public class DetailController {
         detail.setName(detailName);
         detail.setMaterial(materialService.getOneMaterial(UUID.fromString(materialId)));
         detail.setTimePacking(timePacking);
-        for (int i = 0; i < detail.getDetailInfos().size(); i++) {
-            detail.getDetailInfos().get(i).setTimeWork(timeWork.get(i));
-            detail.getDetailInfos().get(i).setComment(comment.get(i));
-            detailInfoService.saveDetailInfo(detail.getDetailInfos().get(i));
-        }
+//        for (int i = 0; i < detail.getDetailInfos().size(); i++) {
+//            detail.getDetailInfos().get(i).setTimeWork(timeWork.get(i));
+//            detail.getDetailInfos().get(i).setComment(comment.get(i));
+//            detailInfoService.saveDetailInfo(detail.getDetailInfos().get(i));
+//        }
         detailService.saveDetail(detail);
         return "redirect:/details/" + id;
     }
@@ -279,7 +270,7 @@ public class DetailController {
     }
 
     @PostMapping("details/addWorkbench/{id}")
-    public String addWorkBenchForDetail(@PathVariable(value = "id") String id,Model model,
+    public String addWorkBenchForDetail(@PathVariable(value = "id") String id, Model model,
                                         @RequestParam(required = false) List<String> workbenchName,
                                         @RequestParam(required = false) List<String> timeWork,
                                         @RequestParam(required = false) List<String> comment
@@ -296,7 +287,7 @@ public class DetailController {
             detailInfo.setPriority(i);
             detailInfos.add(detailInfo);
         }
-        if (nameWorkbench.size()<detailInfos.size()){
+        if (nameWorkbench.size() < detailInfos.size()) {
             model.addAttribute("detail", detailService.getDetailDtoById(UUID.fromString(id)));
             model.addAttribute("workbenches", workBenchService.getUniqueWorkBench(UUID.fromString(id)));
             model.addAttribute("materials", Material.compare(materialService.getAllMaterials()));
@@ -306,10 +297,10 @@ public class DetailController {
                 List<WorkBench> workBenches = workBenchService.getWorkBenchesFilterOperationName(typeOperation.getId());
                 model.addAttribute(typeOperation.getName(), workBenches);
             }
-            model.addAttribute("countWorkbenchError","Нельзя добавлять одинаковые станки!");
+            model.addAttribute("countWorkbenchError", "Нельзя добавлять одинаковые станки!");
             return "addWorkbenchForDetail";
         }
-        detail.setDetailInfos(detailInfos);
+//        detail.setDetailInfos(detailInfos);
         detailService.saveDetail(detail);
         return "redirect:/details/" + id;
     }

@@ -11,6 +11,7 @@ import com.example.pozhiloyproject.repository.OrderRepository;
 import com.example.pozhiloyproject.repository.WorkBenchRepository;
 
 import java.time.DayOfWeek;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,12 +71,12 @@ public class OrderService {
     public Order getOrderById(UUID id) {
         Order order = orderRepository.findById(id).orElseThrow();
         for (int i = 0; i < order.getDetailsOrders().size(); i++) {
-            List<DetailInfo> detailInfos = order.getDetailsOrders().get(i).getDetail().getDetailInfos();
-            DetailInfo.comparePriority(detailInfos);
-            List<DetailDateByWorkbench> detailDateByWorkbench = order.getDetailsOrders().get(i).getDetailDateByWorkbench();
-            DetailDateByWorkbench.comparePriority(detailDateByWorkbench);
-            order.getDetailsOrders().get(i).getDetail().setDetailInfos(detailInfos);
-            order.getDetailsOrders().get(i).setDetailDateByWorkbench(detailDateByWorkbench);
+//            List<DetailInfo> detailInfos = order.getDetailsOrders().get(i).getDetail().getDetailInfos();
+//            DetailInfo.comparePriority(detailInfos);
+//            List<DetailDateByWorkbench> detailDateByWorkbench = order.getDetailsOrders().get(i).getDetailDateByWorkbench();
+//            DetailDateByWorkbench.comparePriority(detailDateByWorkbench);
+//            order.getDetailsOrders().get(i).getDetail().setDetailInfos(detailInfos);
+//            order.getDetailsOrders().get(i).setDetailDateByWorkbench(detailDateByWorkbench);
         }
         return order;
     }
@@ -188,223 +189,224 @@ public class OrderService {
 
         //Получаем список деталей в заказе и сортируем его по толщине текущего станка
         List<DetailsOrder> detailsOrders = order.getDetailsOrders();
-        detailsOrders = sortByMaterialWorkbench(detailsOrders);
+//        detailsOrders = sortByMaterialWorkbench(detailsOrders);
+        detailsOrders = sortByMaterialWorkbench1(detailsOrders);
         order.setDetailsOrders(detailsOrders);
 
-        OrderDto orderDto = setOrderDto(order);
-
-        int countDetailOrder = 0;
-
-        for (DetailsOrder detailsOrder : detailsOrders) {
-            Double detailThickness = detailsOrder.getDetail().getMaterial().getThickness();
-            List<DetailInfo> detailInfos = detailsOrder.getDetail().getDetailInfos();
-
-            //Заполняем DetailDto
-            setOrderDtoDetailDto(orderDto, detailsOrder);
-
-            for (int j = 0; j < detailInfos.size(); j++) {
-                Double currentThickness = detailInfos.get(j).getWorkBenches().getCurrentThickness();
-
-                LocalDateTime dateEndDetailWorkbench = null;
-
-                WorkBench workBenches = detailInfos.get(j).getWorkBenches();
-
-                int countDetail = detailsOrder.getCount();
-                if (!detailInfos.get(j).getWorkBenches().getTypeOperation().getName().equals("ГИБКА")) {
-
-                    dateEndDetailWorkbench = detailInfos.get(j).getWorkBenches().getDateEndDetail();
-
-                    if (detailThickness.equals(currentThickness) && j == 0) {
-                        //Сохраняем дату старта заказа с первой детали
-                        if (detailsOrders.indexOf(detailsOrder) == 0) {
-                            order.setDateStartOrder(dateEndDetailWorkbench);
-                        }
-                    } else if (!detailThickness.equals(currentThickness) && j == 0) {
-                        dateEndDetailWorkbench = Helper.addTwoHoursWithoutDayOff(dateEndDetailWorkbench);
-                        detailsOrder.getDetailDateByWorkbench().get(j).setSetting(true);
-
-                        //Сохраняем дату старта заказа с первой детали
-                        if (detailsOrders.indexOf(detailsOrder) == 0) {
-                            order.setDateStartOrder(dateEndDetailWorkbench);
-                        }
-                    } else if (!detailThickness.equals(currentThickness) && j > 0) {
-                        dateEndDetailWorkbench = Helper.addTwoHoursWithoutDayOff(dateEndDetailWorkbench);
-                        detailsOrder.getDetailDateByWorkbench().get(j).setSetting(true);
-                    }
-
-                    //Сохраняем дату старта детали на текущем станке
-                    int priority = detailInfos.get(j).getPriority();
-                    for (int i = 0; i < detailsOrder.getDetailDateByWorkbench().size(); i++) {
-                        if (detailsOrder.getDetailDateByWorkbench().get(i).getPriority() == priority) {
-                            detailsOrder.getDetailDateByWorkbench().get(i).setDetailDateStart(dateEndDetailWorkbench);
-                        }
-                    }
-
-
-                    if (j > 0) {
-                        for (int i = 0; i < detailsOrder.getDetailDateByWorkbench().size(); i++) {
-                            if (detailsOrder.getDetailDateByWorkbench().get(i).getPriority() == j - 1) {
-                                LocalDateTime detailDateStartFirst = detailsOrder.getDetailDateByWorkbench().get(i).getDetailDateStart();
-                                if (dateEndDetailWorkbench.isBefore(detailDateStartFirst)) {
-                                    List<String> timeWorkFirst = Arrays.asList(detailsOrder.getDetail().getDetailInfos().get(j-1).getTimeWork().split(":"));
-                                    dateEndDetailWorkbench = detailDateStartFirst;
-                                    dateEndDetailWorkbench = dateEndDetailWorkbench.plusMinutes(Integer.parseInt(timeWorkFirst.get(1)) * 2L);
-                                    dateEndDetailWorkbench = dateEndDetailWorkbench.plusSeconds(Integer.parseInt(timeWorkFirst.get(2)) * 2L);
-
-                                }
-                            }
-                        }
-                    }
-
-                    hour = Integer.parseInt(Arrays.asList(detailInfos.get(j).getTimeWork().split(":")).get(0));
-                    minute = Integer.parseInt(Arrays.asList(detailInfos.get(j).getTimeWork().split(":")).get(1));
-                    second = Integer.parseInt(Arrays.asList(detailInfos.get(j).getTimeWork().split(":")).get(2));
-
-                    dateEndDetailWorkbench = calculate(countDetail, dateEndDetailWorkbench, hour, minute, second);
-
-                    for (int i = 0; i < detailsOrder.getDetailDateByWorkbench().size(); i++) {
-                        if (detailsOrder.getDetailDateByWorkbench().get(i).getPriority() == priority) {
-                            detailsOrder.getDetailDateByWorkbench().get(i).setDetailDateEnd(dateEndDetailWorkbench);
-                        }
-                    }
-
-
-                    workBenches.setDateEndDetail(dateEndDetailWorkbench);
-                    workBenches.setCurrentThickness(detailThickness);
-                    workBenchRepository.save(workBenches);
-                    setOrderDtoDetailInfoDto(orderDto, detailInfos.get(j), countDetailOrder);
-
-
-                } else {
-                    //Расчет станков гибки
-                    List<DetailInfo> gibkaList = detailsOrder.getDetail().getDetailInfos()
-                            .stream().filter(x -> x.getWorkBenches().getTypeOperation().getName().equals("ГИБКА"))
-                            .collect(Collectors.toList());
-                    LocalDateTime localDateTimeCHPY_big = null;
-                    LocalDateTime localDateTimeCHPY_small = null;
-                    LocalDateTime localDateTimeManualMachine = null;
-
-                    for (DetailInfo info : gibkaList) {
-                        switch (info.getWorkBenches().getName()) {
-                            case "Гибочный пресс с ЧПУ 1,5м (ЧПУ маленький)" -> localDateTimeCHPY_small = info.getWorkBenches().getDateEndDetail();
-                            case "Гибочный пресс с ЧПУ 3м (ЧПУ большой)" -> localDateTimeCHPY_big = info.getWorkBenches().getDateEndDetail();
-                            case "Ручные станки" -> localDateTimeManualMachine = info.getWorkBenches().getDateEndDetail();
-                        }
-                    }
-                    System.out.println(localDateTimeCHPY_big);
-
-                    List<WorkBench> workBenchList = new ArrayList<>();
-                    int countGibka = j;
-                    for (int i = 0, gibkaListSize = gibkaList.size(); i < gibkaListSize; i++) {
-                        DetailInfo detailInfo = gibkaList.get(i);
-
-                        hour = Integer.parseInt(Arrays.asList(detailInfo.getTimeWork().split(":")).get(0));
-                        minute = Integer.parseInt(Arrays.asList(detailInfo.getTimeWork().split(":")).get(1));
-                        second = Integer.parseInt(Arrays.asList(detailInfo.getTimeWork().split(":")).get(2));
-
-
-                        workBenches = detailInfo.getWorkBenches();
-                        countDetail = detailsOrder.getCount();
-
-
-                        currentThickness = detailInfo.getWorkBenches().getCurrentThickness();
-                        dateEndDetailWorkbench = detailInfo.getWorkBenches().getDateEndDetail();
-                        if (!currentThickness.equals(detailThickness)) {
-                            dateEndDetailWorkbench = Helper.addTwoHoursWithoutDayOff(dateEndDetailWorkbench);
-                            for (int k = 0; k < detailsOrder.getDetailDateByWorkbench().size(); k++) {
-                                for (int l = 0; l < detailsOrder.getDetail().getDetailInfos().size(); l++) {
-                                    if (detailInfo.equals(detailsOrder.getDetail().getDetailInfos().get(l))){
-                                        detailsOrder.getDetailDateByWorkbench().get(k).setSetting(true);
-                                    }
-                                }
-                            }
-                            detailsOrder.getDetailDateByWorkbench().get(j).setSetting(true);
-                        }
-
-
-                        for (int k = 0; k < detailsOrder.getDetailDateByWorkbench().size(); k++) {
-                            if (detailsOrder.getDetailDateByWorkbench().get(k).getPriority() == j - 1) {
-                                LocalDateTime detailDateStartFirst = detailsOrder.getDetailDateByWorkbench().get(j - 1).getDetailDateStart();
-                                if (dateEndDetailWorkbench.isBefore(detailDateStartFirst) || dateEndDetailWorkbench.isEqual(detailDateStartFirst)) {
-                                    List<String> timeWorkFirst = Arrays.asList(detailsOrder.getDetail().getDetailInfos().get(j-1).getTimeWork().split(":"));
-                                    dateEndDetailWorkbench = detailDateStartFirst;
-                                    dateEndDetailWorkbench = dateEndDetailWorkbench.plusMinutes(Integer.parseInt(timeWorkFirst.get(1)) * 2L);
-                                    dateEndDetailWorkbench = dateEndDetailWorkbench.plusSeconds(Integer.parseInt(timeWorkFirst.get(2)) * 2L);
-
-                                }
-                            }
-                        }
-
-                        int priority = detailInfo.getPriority();
-                        for (int k = 0; k < detailsOrder.getDetailDateByWorkbench().size(); k++) {
-                            if (detailsOrder.getDetailDateByWorkbench().get(k).getPriority() == priority) {
-                                detailsOrder.getDetailDateByWorkbench().get(k).setDetailDateStart(dateEndDetailWorkbench);
-                            }
-                        }
-
-
-                        dateEndDetailWorkbench = calculate(countDetail, dateEndDetailWorkbench, hour, minute, second);
-
-                        for (int k = 0; k < detailsOrder.getDetailDateByWorkbench().size(); k++) {
-                            if (detailsOrder.getDetailDateByWorkbench().get(k).getPriority() == priority) {
-                                detailsOrder.getDetailDateByWorkbench().get(k).setDetailDateEnd(dateEndDetailWorkbench);
-                            }
-                        }
-                        detailsOrder.getDetailDateByWorkbench().get(countGibka).setDetailDateEnd(dateEndDetailWorkbench);
-                        detailInfo.getWorkBenches().setDateEndDetail(dateEndDetailWorkbench);
-                        workBenchList.add(detailInfo.getWorkBenches());
-                        countGibka++;
-                    }
-
-                    gibkaList.size();
-
-                    workBenchList = compareWorkbenches(workBenchList);
-                    UUID workbenchIdMinDateEnd = workBenchList.get(0).getId();
-                    // устанавливаем обратно даты
-                    for (DetailInfo detailInfo : gibkaList) {
-
-                        if (!workbenchIdMinDateEnd.equals(detailInfo.getWorkBenches().getId())) {
-                            switch (detailInfo.getWorkBenches().getName()) {
-                                case "Гибочный пресс с ЧПУ 1,5м (ЧПУ маленький)" -> detailInfo.getWorkBenches().setDateEndDetail(localDateTimeCHPY_small);
-                                case "Гибочный пресс с ЧПУ 3м (ЧПУ большой)" -> detailInfo.getWorkBenches().setDateEndDetail(localDateTimeCHPY_big);
-                                case "Ручные станки" -> detailInfo.getWorkBenches().setDateEndDetail(localDateTimeManualMachine);
-                            }
-                        }
-                    }
-                    for (int i = 0; i < gibkaList.size(); i++) {
-                        if (gibkaList.get(i).getWorkBenches().getId().equals(workbenchIdMinDateEnd)){
-                            workBenches = gibkaList.get(i).getWorkBenches();
-                            workBenches.setCurrentThickness(detailThickness);
-                        }
-                    }
-                    gibkaList.removeIf(x->x.getWorkBenches().getId().equals(workbenchIdMinDateEnd));
-
-//                    DetailInfo detailInfo = gibkaList.stream().filter(x -> x.getWorkBenches().getId().equals(finalWorkBenches.getId())).findFirst().orElseThrow();
-
-                    List<DetailDateByWorkbench> detailDateByWorkbench = detailsOrder.getDetailDateByWorkbench();
-                    for (int i = 0; i < detailDateByWorkbench.size(); i++) {
-
-                        for (int k = 0; k < gibkaList.size(); k++) {
-                           if(detailDateByWorkbench.get(i).getPriority() == gibkaList.get(k).getPriority()){
-                               detailDateByWorkbench.get(i).setDetailDateStart(null);
-                               detailDateByWorkbench.get(i).setDetailDateEnd(null);
-                               detailDateByWorkbench.get(i).setSetting(false);
-                           }
-                        }
-                    }
-//                    workBenches = workBenchRepository.findById(orderDate.getWorkbenchId()).orElseThrow();
-//                    workBenches.setDateEndDetail(orderDate.getDateEndDetail());
-                    workBenchRepository.save(workBenches);
-//                    setOrderDtoDetailInfoDto(orderDto, detailInfo, countDetailOrder);
-
-                    break;
-                }
-            }
-            countDetailOrder++;
-            detailInfoDtos = new ArrayList<>();
-
-        }
-        orderRepository.save(order);
+//        OrderDto orderDto = setOrderDto(order);
+//
+//        int countDetailOrder = 0;
+//
+//        for (DetailsOrder detailsOrder : detailsOrders) {
+//            Double detailThickness = detailsOrder.getDetail().getMaterial().getThickness();
+//            List<DetailInfo> detailInfos = detailsOrder.getDetail().getDetailInfos();
+//
+//            //Заполняем DetailDto
+//            setOrderDtoDetailDto(orderDto, detailsOrder);
+//
+//            for (int j = 0; j < detailInfos.size(); j++) {
+//                Double currentThickness = detailInfos.get(j).getWorkBenches().getCurrentThickness();
+//
+//                LocalDateTime dateEndDetailWorkbench = null;
+//
+//                WorkBench workBenches = detailInfos.get(j).getWorkBenches();
+//
+//                int countDetail = detailsOrder.getCount();
+//                if (!detailInfos.get(j).getWorkBenches().getTypeOperation().getName().equals("ГИБКА")) {
+//
+//                    dateEndDetailWorkbench = detailInfos.get(j).getWorkBenches().getDateEndDetail();
+//
+//                    if (detailThickness.equals(currentThickness) && j == 0) {
+//                        //Сохраняем дату старта заказа с первой детали
+//                        if (detailsOrders.indexOf(detailsOrder) == 0) {
+//                            order.setDateStartOrder(dateEndDetailWorkbench);
+//                        }
+//                    } else if (!detailThickness.equals(currentThickness) && j == 0) {
+//                        dateEndDetailWorkbench = Helper.addTwoHoursWithoutDayOff(dateEndDetailWorkbench);
+//                        detailsOrder.getDetailDateByWorkbench().get(j).setSetting(true);
+//
+//                        //Сохраняем дату старта заказа с первой детали
+//                        if (detailsOrders.indexOf(detailsOrder) == 0) {
+//                            order.setDateStartOrder(dateEndDetailWorkbench);
+//                        }
+//                    } else if (!detailThickness.equals(currentThickness) && j > 0) {
+//                        dateEndDetailWorkbench = Helper.addTwoHoursWithoutDayOff(dateEndDetailWorkbench);
+//                        detailsOrder.getDetailDateByWorkbench().get(j).setSetting(true);
+//                    }
+//
+//                    //Сохраняем дату старта детали на текущем станке
+//                    int priority = detailInfos.get(j).getPriority();
+//                    for (int i = 0; i < detailsOrder.getDetailDateByWorkbench().size(); i++) {
+//                        if (detailsOrder.getDetailDateByWorkbench().get(i).getPriority() == priority) {
+//                            detailsOrder.getDetailDateByWorkbench().get(i).setDetailDateStart(dateEndDetailWorkbench);
+//                        }
+//                    }
+//
+//
+//                    if (j > 0) {
+//                        for (int i = 0; i < detailsOrder.getDetailDateByWorkbench().size(); i++) {
+//                            if (detailsOrder.getDetailDateByWorkbench().get(i).getPriority() == j - 1) {
+//                                LocalDateTime detailDateStartFirst = detailsOrder.getDetailDateByWorkbench().get(i).getDetailDateStart();
+//                                if (dateEndDetailWorkbench.isBefore(detailDateStartFirst)) {
+//                                    List<String> timeWorkFirst = Arrays.asList(detailsOrder.getDetail().getDetailInfos().get(j-1).getTimeWork().split(":"));
+//                                    dateEndDetailWorkbench = detailDateStartFirst;
+//                                    dateEndDetailWorkbench = dateEndDetailWorkbench.plusMinutes(Integer.parseInt(timeWorkFirst.get(1)) * 2L);
+//                                    dateEndDetailWorkbench = dateEndDetailWorkbench.plusSeconds(Integer.parseInt(timeWorkFirst.get(2)) * 2L);
+//
+//                                }
+//                            }
+//                        }
+//                    }
+//
+//                    hour = Integer.parseInt(Arrays.asList(detailInfos.get(j).getTimeWork().split(":")).get(0));
+//                    minute = Integer.parseInt(Arrays.asList(detailInfos.get(j).getTimeWork().split(":")).get(1));
+//                    second = Integer.parseInt(Arrays.asList(detailInfos.get(j).getTimeWork().split(":")).get(2));
+//
+//                    dateEndDetailWorkbench = calculate(countDetail, dateEndDetailWorkbench, hour, minute, second);
+//
+//                    for (int i = 0; i < detailsOrder.getDetailDateByWorkbench().size(); i++) {
+//                        if (detailsOrder.getDetailDateByWorkbench().get(i).getPriority() == priority) {
+//                            detailsOrder.getDetailDateByWorkbench().get(i).setDetailDateEnd(dateEndDetailWorkbench);
+//                        }
+//                    }
+//
+//
+//                    workBenches.setDateEndDetail(dateEndDetailWorkbench);
+//                    workBenches.setCurrentThickness(detailThickness);
+//                    workBenchRepository.save(workBenches);
+//                    setOrderDtoDetailInfoDto(orderDto, detailInfos.get(j), countDetailOrder);
+//
+//
+//                } else {
+//                    //Расчет станков гибки
+//                    List<DetailInfo> gibkaList = detailsOrder.getDetail().getDetailInfos()
+//                            .stream().filter(x -> x.getWorkBenches().getTypeOperation().getName().equals("ГИБКА"))
+//                            .collect(Collectors.toList());
+//                    LocalDateTime localDateTimeCHPY_big = null;
+//                    LocalDateTime localDateTimeCHPY_small = null;
+//                    LocalDateTime localDateTimeManualMachine = null;
+//
+//                    for (DetailInfo info : gibkaList) {
+//                        switch (info.getWorkBenches().getName()) {
+//                            case "Гибочный пресс с ЧПУ 1,5м (ЧПУ маленький)" -> localDateTimeCHPY_small = info.getWorkBenches().getDateEndDetail();
+//                            case "Гибочный пресс с ЧПУ 3м (ЧПУ большой)" -> localDateTimeCHPY_big = info.getWorkBenches().getDateEndDetail();
+//                            case "Ручные станки" -> localDateTimeManualMachine = info.getWorkBenches().getDateEndDetail();
+//                        }
+//                    }
+//                    System.out.println(localDateTimeCHPY_big);
+//
+//                    List<WorkBench> workBenchList = new ArrayList<>();
+//                    int countGibka = j;
+//                    for (int i = 0, gibkaListSize = gibkaList.size(); i < gibkaListSize; i++) {
+//                        DetailInfo detailInfo = gibkaList.get(i);
+//
+//                        hour = Integer.parseInt(Arrays.asList(detailInfo.getTimeWork().split(":")).get(0));
+//                        minute = Integer.parseInt(Arrays.asList(detailInfo.getTimeWork().split(":")).get(1));
+//                        second = Integer.parseInt(Arrays.asList(detailInfo.getTimeWork().split(":")).get(2));
+//
+//
+//                        workBenches = detailInfo.getWorkBenches();
+//                        countDetail = detailsOrder.getCount();
+//
+//
+//                        currentThickness = detailInfo.getWorkBenches().getCurrentThickness();
+//                        dateEndDetailWorkbench = detailInfo.getWorkBenches().getDateEndDetail();
+//                        if (!currentThickness.equals(detailThickness)) {
+//                            dateEndDetailWorkbench = Helper.addTwoHoursWithoutDayOff(dateEndDetailWorkbench);
+//                            for (int k = 0; k < detailsOrder.getDetailDateByWorkbench().size(); k++) {
+//                                for (int l = 0; l < detailsOrder.getDetail().getDetailInfos().size(); l++) {
+//                                    if (detailInfo.equals(detailsOrder.getDetail().getDetailInfos().get(l))){
+//                                        detailsOrder.getDetailDateByWorkbench().get(k).setSetting(true);
+//                                    }
+//                                }
+//                            }
+//                            detailsOrder.getDetailDateByWorkbench().get(j).setSetting(true);
+//                        }
+//
+//
+//                        for (int k = 0; k < detailsOrder.getDetailDateByWorkbench().size(); k++) {
+//                            if (detailsOrder.getDetailDateByWorkbench().get(k).getPriority() == j - 1) {
+//                                LocalDateTime detailDateStartFirst = detailsOrder.getDetailDateByWorkbench().get(j - 1).getDetailDateStart();
+//                                if (dateEndDetailWorkbench.isBefore(detailDateStartFirst) || dateEndDetailWorkbench.isEqual(detailDateStartFirst)) {
+//                                    List<String> timeWorkFirst = Arrays.asList(detailsOrder.getDetail().getDetailInfos().get(j-1).getTimeWork().split(":"));
+//                                    dateEndDetailWorkbench = detailDateStartFirst;
+//                                    dateEndDetailWorkbench = dateEndDetailWorkbench.plusMinutes(Integer.parseInt(timeWorkFirst.get(1)) * 2L);
+//                                    dateEndDetailWorkbench = dateEndDetailWorkbench.plusSeconds(Integer.parseInt(timeWorkFirst.get(2)) * 2L);
+//
+//                                }
+//                            }
+//                        }
+//
+//                        int priority = detailInfo.getPriority();
+//                        for (int k = 0; k < detailsOrder.getDetailDateByWorkbench().size(); k++) {
+//                            if (detailsOrder.getDetailDateByWorkbench().get(k).getPriority() == priority) {
+//                                detailsOrder.getDetailDateByWorkbench().get(k).setDetailDateStart(dateEndDetailWorkbench);
+//                            }
+//                        }
+//
+//
+//                        dateEndDetailWorkbench = calculate(countDetail, dateEndDetailWorkbench, hour, minute, second);
+//
+//                        for (int k = 0; k < detailsOrder.getDetailDateByWorkbench().size(); k++) {
+//                            if (detailsOrder.getDetailDateByWorkbench().get(k).getPriority() == priority) {
+//                                detailsOrder.getDetailDateByWorkbench().get(k).setDetailDateEnd(dateEndDetailWorkbench);
+//                            }
+//                        }
+//                        detailsOrder.getDetailDateByWorkbench().get(countGibka).setDetailDateEnd(dateEndDetailWorkbench);
+//                        detailInfo.getWorkBenches().setDateEndDetail(dateEndDetailWorkbench);
+//                        workBenchList.add(detailInfo.getWorkBenches());
+//                        countGibka++;
+//                    }
+//
+//                    gibkaList.size();
+//
+//                    workBenchList = compareWorkbenches(workBenchList);
+//                    UUID workbenchIdMinDateEnd = workBenchList.get(0).getId();
+//                    // устанавливаем обратно даты
+//                    for (DetailInfo detailInfo : gibkaList) {
+//
+//                        if (!workbenchIdMinDateEnd.equals(detailInfo.getWorkBenches().getId())) {
+//                            switch (detailInfo.getWorkBenches().getName()) {
+//                                case "Гибочный пресс с ЧПУ 1,5м (ЧПУ маленький)" -> detailInfo.getWorkBenches().setDateEndDetail(localDateTimeCHPY_small);
+//                                case "Гибочный пресс с ЧПУ 3м (ЧПУ большой)" -> detailInfo.getWorkBenches().setDateEndDetail(localDateTimeCHPY_big);
+//                                case "Ручные станки" -> detailInfo.getWorkBenches().setDateEndDetail(localDateTimeManualMachine);
+//                            }
+//                        }
+//                    }
+//                    for (int i = 0; i < gibkaList.size(); i++) {
+//                        if (gibkaList.get(i).getWorkBenches().getId().equals(workbenchIdMinDateEnd)){
+//                            workBenches = gibkaList.get(i).getWorkBenches();
+//                            workBenches.setCurrentThickness(detailThickness);
+//                        }
+//                    }
+//                    gibkaList.removeIf(x->x.getWorkBenches().getId().equals(workbenchIdMinDateEnd));
+//
+////                    DetailInfo detailInfo = gibkaList.stream().filter(x -> x.getWorkBenches().getId().equals(finalWorkBenches.getId())).findFirst().orElseThrow();
+//
+//                    List<DetailDateByWorkbench> detailDateByWorkbench = detailsOrder.getDetailDateByWorkbench();
+//                    for (int i = 0; i < detailDateByWorkbench.size(); i++) {
+//
+//                        for (int k = 0; k < gibkaList.size(); k++) {
+//                           if(detailDateByWorkbench.get(i).getPriority() == gibkaList.get(k).getPriority()){
+//                               detailDateByWorkbench.get(i).setDetailDateStart(null);
+//                               detailDateByWorkbench.get(i).setDetailDateEnd(null);
+//                               detailDateByWorkbench.get(i).setSetting(false);
+//                           }
+//                        }
+//                    }
+////                    workBenches = workBenchRepository.findById(orderDate.getWorkbenchId()).orElseThrow();
+////                    workBenches.setDateEndDetail(orderDate.getDateEndDetail());
+//                    workBenchRepository.save(workBenches);
+////                    setOrderDtoDetailInfoDto(orderDto, detailInfo, countDetailOrder);
+//
+//                    break;
+//                }
+//            }
+//            countDetailOrder++;
+//            detailInfoDtos = new ArrayList<>();
+//
+//        }
+//        orderRepository.save(order);
     }
 
     public static List<WorkBench> compareWorkbenches(List<WorkBench> workBenches) {
@@ -459,21 +461,6 @@ public class OrderService {
                 dateSmokeBreakEndDay2 = dateSmokeBreakEndDay2.plusDays(1);
             }
         }
-//        while (countDetail > 0) {
-//            for (int k = 0; k < hour; k++) {
-//                assert dateEndDetailWorkbench != null;
-//                dateEndDetailWorkbench = dateEndDetailWorkbench.plusHours(1);
-//            }
-//            for (int k = 0; k < minute; k++) {
-//                assert dateEndDetailWorkbench != null;
-//                dateEndDetailWorkbench = dateEndDetailWorkbench.plusMinutes(1);
-//            }
-//            for (int k = 0; k < second; k++) {
-//                assert dateEndDetailWorkbench != null;
-//                dateEndDetailWorkbench = dateEndDetailWorkbench.plusSeconds(1);
-//            }
-//            countDetail--;
-//        }
         return dateEndDetailWorkbench;
     }
 
@@ -519,36 +506,55 @@ public class OrderService {
         workBenchDto.setName(detailInfo.getWorkBenches().getName());
         workBenchDto.setCurrentThickness(detailInfo.getWorkBenches().getCurrentThickness());
         workBenchDto.setTypeOperation(detailInfo.getWorkBenches().getTypeOperation().getName());
-        workBenchDto.setDateEndDetail(detailInfo.getWorkBenches().getDateEndDetail());
+        workBenchDto.setDateEndDetail(detailInfo.getWorkBenches().getDateEndDetail().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
 
         detailInfoDto.setWorkBenchDto(workBenchDto);
 
         detailInfoDtos.add(detailInfoDto);
 
-        orderDto.getDetailDtos().get(incr).setDetailInfoDtos(detailInfoDtos);
+//        orderDto.getDetailDtos().get(incr).setDetailInfoDtos(detailInfoDtos);
+    }
+
+    public List<DetailsOrder> sortByMaterialWorkbench1(List<DetailsOrder> detailsOrders) {
+
+        List<DetailsOrder> detailsOrdersMaterialПЭ = new ArrayList<>();
+        List<DetailsOrder> detailsOrdersMaterial = new ArrayList<>();
+
+        for (int i = 0; i < detailsOrders.size(); i++) {
+//            List<DetailInfo> detailInfos = detailsOrders.get(i).getDetail().getDetailInfos();
+            Material material = detailsOrders.get(i).getDetail().getMaterial();
+
+//            if (detailInfos.get(0).getWorkBenches().getId().toString().equals("71c7e64a-8904-4e04-b15e-293a58535a26")){
+//                detailsOrdersMaterialПЭ.add(detailsOrders.get(i));
+//            }else{
+//                detailsOrdersMaterial.add(detailsOrders.get(i));
+//            }
+
+        }
+        return detailsOrders;
     }
 
     public List<DetailsOrder> sortByMaterialWorkbench(List<DetailsOrder> detailsOrders) {
         Set<DetailsOrder> sortDetailsOrder = new LinkedHashSet<>();
         for (DetailsOrder detailsOrder : detailsOrders) {
             Material materialDetail = detailsOrder.getDetail().getMaterial();
-            Double currentThickness = detailsOrder.getDetail().getDetailInfos().get(0).getWorkBenches().getCurrentThickness();
-            if (currentThickness.equals(materialDetail.getThickness())) {
-                sortDetailsOrder.add(detailsOrder);
-            }
+//            Double currentThickness = detailsOrder.getDetail().getDetailInfos().get(0).getWorkBenches().getCurrentThickness();
+//            if (currentThickness.equals(materialDetail.getThickness())) {
+//                sortDetailsOrder.add(detailsOrder);
+//            }
         }
 
         sortDetailsOrder.addAll(detailsOrders);
         ArrayList<DetailsOrder> newDetailsOrders = new ArrayList<>(sortDetailsOrder);
         for (int i = 0; i < newDetailsOrders.size(); i++) {
             Double thickness = newDetailsOrders.get(i).getDetail().getMaterial().getThickness();
-            List<DetailInfo> detailInfos = newDetailsOrders.get(i).getDetail().getDetailInfos();
-            for (int j = 0; j < detailInfos.size(); j++) {
-                Double currentThickness = detailInfos.get(j).getWorkBenches().getCurrentThickness();
-                if (!thickness.equals(currentThickness)) {
-                    detailInfos.get(j).setSetting(true);
-                }
-            }
+//            List<DetailInfo> detailInfos = newDetailsOrders.get(i).getDetail().getDetailInfos();
+//            for (int j = 0; j < detailInfos.size(); j++) {
+//                Double currentThickness = detailInfos.get(j).getWorkBenches().getCurrentThickness();
+//                if (!thickness.equals(currentThickness)) {
+//                    detailInfos.get(j).setSetting(true);
+//                }
+//            }
         }
         return newDetailsOrders;
     }
