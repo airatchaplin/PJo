@@ -58,172 +58,60 @@
                     </c:if>
                     <td class="detail_material">${detailList.mainOrAlternative == "1"?"Основной" :"Запасной"}</td>
                     <c:if test="${countDetailList==0}">
-                        <td style="width: 30%;">
+                        <td class="workbench_name">
                             <c:set var="countGibka" value="0" scope="page"/>
                             <c:set var="countRezka" value="0" scope="page"/>
-                            <c:set var="countProbivka" value="0" scope="page"/>
-                            <c:set var="countProkatka" value="0" scope="page"/>
-                            <c:set var="countFrezirovka" value="0" scope="page"/>
                             <c:forEach items="${detailList.detailInfoDtos}" var="detailInfo">
-                                <div>
-                                    <select class="form-control" name="workBenchId">
-                                        <c:if test="${detailInfo.workBenchDto.typeOperation.equals('ГИБКА')}">
-                                            <c:if test="${countGibka==3}">
-                                                <option style="color: red;margin-top: 10px"
-                                                        value="${detailInfo.workBenchDto.id}">Выбранная
-                                                    Альтернатива: ${detailInfo.workBenchDto.name}</option>
-                                            </c:if>
-                                            <c:if test="${countGibka==2}">
-                                                <option style="color: red;margin-top: 10px"
-                                                        value="${detailInfo.workBenchDto.id}">Выбранная
-                                                    Альтернатива: ${detailInfo.workBenchDto.name}</option>
-                                                <c:set var="countGibka" value="${countGibka +1}" scope="page"/>
-                                            </c:if>
-                                            <c:if test="${countGibka==1}">
-                                                <option style="color: red;margin-top: 10px"
-                                                        value="$detailInfo.workBenchDto.id}">Выбранная
-                                                    Альтернатива: ${detailInfo.workBenchDto.name}</option>
-                                                <c:set var="countGibka" value="${countGibka +1}" scope="page"/>
-                                            </c:if>
-                                            <c:if test="${countGibka==0}">
-                                                <option value="${detailInfo.workBenchDto.id}">
-                                                    Выбранная: ${detailInfo.workBenchDto.name}</option>
-                                                ${countGibka+1}
-                                                <c:set var="countGibka" value="${countGibka +1}" scope="page"/>
-                                            </c:if>
-                                        </c:if>
-                                        <c:if test="${detailInfo.workBenchDto.typeOperation.equals('РЕЗКА')}">
-                                            <c:if test="${countRezka==2}">
-                                                <option style="color: red;margin-top: 10px"
-                                                        value="${detailInfo.workBenchDto.id}">Выбранная
-                                                    Альтернатива: ${detailInfo.workBenchDto.name}</option>
-                                                <c:set var="countRezka" value="${countRezka + 1}" scope="page"/>
-                                            </c:if>
-                                            <c:if test="${countRezka==1}">
-                                                <option style="color: red;margin-top: 10px"
-                                                        value="${detailInfo.workBenchDto.id}">Выбранная
-                                                    Альтернатива: ${detailInfo.workBenchDto.name}</option>
-                                                <c:set var="countRezka" value="${countRezka + 1}" scope="page"/>
-                                            </c:if>
-                                            <c:if test="${countRezka==0}">
-                                                <option value="${detailInfo.workBenchDto.id}">
-                                                    Выбранная: ${detailInfo.workBenchDto.name}</option>
-                                                <c:set var="countRezka" value="${countRezka + 1}" scope="page"/>
-                                            </c:if>
-                                        </c:if>
-                                        <c:if test="${detailInfo.workBenchDto.typeOperation.equals('ПРОБИВКА')}">
-                                            <c:if test="${countProbivka==0}">
-                                                <option value="${detailInfo.workBenchDto.id}">
-                                                    Выбранная: ${detailInfo.workBenchDto.name}</option>
-                                                <c:set var="countProbivka" value="${countProbivka + 1}" scope="page"/>
-                                            </c:if>
-                                        </c:if>
-                                        <c:if test="${detailInfo.workBenchDto.typeOperation.equals('ПРОКАТКА')}">
-                                            <c:if test="${countProkatka==0}">
-                                                <option value="${detailInfo.workBenchDto.id}">
-                                                    Выбранная: ${detailInfo.workBenchDto.name}</option>
-                                                <c:set var="countProkatka" value="${countProkatka + 1}" scope="page"/>
-                                            </c:if>
-                                        </c:if>
-                                        <c:if test="${detailInfo.workBenchDto.typeOperation.equals('ФРЕЗЕРОВКА')}">
-                                            <c:if test="${countFrezirovka==0}">
-                                                <option value="${detailInfo.workBenchDto.id}">
-                                                    Выбранная: ${detailInfo.workBenchDto.name}</option>
-                                                <c:set var="countFrezirovka" value="${countFrezirovka + 1}"
-                                                       scope="page"/>
-                                            </c:if>
-                                        </c:if>
-                                        <c:if test="${!detailInfo.workBenchDto.typeOperation.equals('ГИБКА') && !detailInfo.workBenchDto.typeOperation.equals('РЕЗКА')  }">
-                                            <option value="${detailInfo.workBenchDto.id}">
-                                                Выбранная: ${detailInfo.workBenchDto.name}</option>
-                                        </c:if>
-                                    </select>
-                                </div>
+                                <c:if test="${detailInfo.workBenchDto.typeOperation.equals('ГИБКА')}">
+                                    <c:if test="${countGibka>0}">
+                                        <pre style="color: red">Альтернатива: ${detailInfo.workBenchDto.name}</pre>
+                                    </c:if>
+                                    <c:if test="${countGibka==0}">
+                                        <pre>${detailInfo.workBenchDto.name}</pre>
+                                        <c:set var="countGibka" value="${countGibka + 1}" scope="page"/>
+                                    </c:if>
+                                </c:if>
+                                <c:if test="${detailInfo.workBenchDto.typeOperation.equals('РЕЗКА')}">
+                                    <c:if test="${countRezka>0}">
+                                        <pre style="color: red">Альтернатива: ${detailInfo.workBenchDto.name}</pre>
+                                    </c:if>
+                                    <c:if test="${countRezka==0}">
+                                        <pre>${detailInfo.workBenchDto.name}</pre>
+                                        <c:set var="countRezka" value="${countRezka + 1}" scope="page"/>
+                                    </c:if>
+                                </c:if>
+                                <c:if test="${!detailInfo.workBenchDto.typeOperation.equals('ГИБКА') && !detailInfo.workBenchDto.typeOperation.equals('РЕЗКА')  }">
+                                    <pre>${detailInfo.workBenchDto.name}</pre>
+                                </c:if>
                             </c:forEach>
-                         </td>
+                        </td>
                     </c:if>
                     <c:if test="${countDetailList>0}">
-                        <td style="width: 30%;">
+                        <td class="workbench_name">
                             <c:set var="countGibka" value="0" scope="page"/>
                             <c:set var="countRezka" value="0" scope="page"/>
-                            <c:set var="countProbivka" value="0" scope="page"/>
-                            <c:set var="countProkatka" value="0" scope="page"/>
-                            <c:set var="countFrezirovka" value="0" scope="page"/>
                             <c:forEach items="${detailList.detailInfoDtos}" var="detailInfo">
-                                <div>
-                                    <select class="form-control" name="workBenchId1">
-                                        <c:if test="${detailInfo.workBenchDto.typeOperation.equals('ГИБКА')}">
-                                            <c:if test="${countGibka==3}">
-                                                <option style="color: red;margin-top: 10px"
-                                                        value="${detailInfo.workBenchDto.id}">Выбранная
-                                                    Альтернатива: ${detailInfo.workBenchDto.name}</option>
-                                            </c:if>
-                                            <c:if test="${countGibka==2}">
-                                                <option style="color: red;margin-top: 10px"
-                                                        value="${detailInfo.workBenchDto.id}">Выбранная
-                                                    Альтернатива: ${detailInfo.workBenchDto.name}</option>
-                                                <c:set var="countGibka" value="${countGibka +1}" scope="page"/>
-                                            </c:if>
-                                            <c:if test="${countGibka==1}">
-                                                <option style="color: red;margin-top: 10px"
-                                                        value="$detailInfo.workBenchDto.id}">Выбранная
-                                                    Альтернатива: ${detailInfo.workBenchDto.name}</option>
-                                                <c:set var="countGibka" value="${countGibka +1}" scope="page"/>
-                                            </c:if>
-                                            <c:if test="${countGibka==0}">
-                                                <option value="${detailInfo.workBenchDto.id}">
-                                                    Выбранная: ${detailInfo.workBenchDto.name}</option>
-                                                ${countGibka+1}
-                                                <c:set var="countGibka" value="${countGibka +1}" scope="page"/>
-                                            </c:if>
-                                        </c:if>
-                                        <c:if test="${detailInfo.workBenchDto.typeOperation.equals('РЕЗКА')}">
-                                            <c:if test="${countRezka==2}">
-                                                <option style="color: red;margin-top: 10px"
-                                                        value="${detailInfo.workBenchDto.id}">Выбранная
-                                                    Альтернатива: ${detailInfo.workBenchDto.name}</option>
-                                                <c:set var="countRezka" value="${countRezka + 1}" scope="page"/>
-                                            </c:if>
-                                            <c:if test="${countRezka==1}">
-                                                <option style="color: red;margin-top: 10px"
-                                                        value="${detailInfo.workBenchDto.id}">Выбранная
-                                                    Альтернатива: ${detailInfo.workBenchDto.name}</option>
-                                                <c:set var="countRezka" value="${countRezka + 1}" scope="page"/>
-                                            </c:if>
-                                            <c:if test="${countRezka==0}">
-                                                <option value="${detailInfo.workBenchDto.id}">
-                                                    Выбранная: ${detailInfo.workBenchDto.name}</option>
-                                                <c:set var="countRezka" value="${countRezka + 1}" scope="page"/>
-                                            </c:if>
-                                        </c:if>
-                                        <c:if test="${detailInfo.workBenchDto.typeOperation.equals('ПРОБИВКА')}">
-                                            <c:if test="${countProbivka==0}">
-                                                <option value="${detailInfo.workBenchDto.id}">
-                                                    Выбранная: ${detailInfo.workBenchDto.name}</option>
-                                                <c:set var="countProbivka" value="${countProbivka + 1}" scope="page"/>
-                                            </c:if>
-                                        </c:if>
-                                        <c:if test="${detailInfo.workBenchDto.typeOperation.equals('ПРОКАТКА')}">
-                                            <c:if test="${countProkatka==0}">
-                                                <option value="${detailInfo.workBenchDto.id}">
-                                                    Выбранная: ${detailInfo.workBenchDto.name}</option>
-                                                <c:set var="countProkatka" value="${countProkatka + 1}" scope="page"/>
-                                            </c:if>
-                                        </c:if>
-                                        <c:if test="${detailInfo.workBenchDto.typeOperation.equals('ФРЕЗЕРОВКА')}">
-                                            <c:if test="${countFrezirovka==0}">
-                                                <option value="${detailInfo.workBenchDto.id}">
-                                                    Выбранная: ${detailInfo.workBenchDto.name}</option>
-                                                <c:set var="countFrezirovka" value="${countFrezirovka + 1}"
-                                                       scope="page"/>
-                                            </c:if>
-                                        </c:if>
-                                        <c:if test="${!detailInfo.workBenchDto.typeOperation.equals('ГИБКА') && !detailInfo.workBenchDto.typeOperation.equals('РЕЗКА')  }">
-                                            <option value="${detailInfo.workBenchDto.id}">
-                                                Выбранная: ${detailInfo.workBenchDto.name}</option>
-                                        </c:if>
-                                    </select>
-                                </div>
+                                <c:if test="${detailInfo.workBenchDto.typeOperation.equals('ГИБКА')}">
+                                    <c:if test="${countGibka>0}">
+                                        <pre style="color: red">Альтернатива: ${detailInfo.workBenchDto.name}</pre>
+                                    </c:if>
+                                    <c:if test="${countGibka==0}">
+                                        <pre>${detailInfo.workBenchDto.name}</pre>
+                                        <c:set var="countGibka" value="${countGibka + 1}" scope="page"/>
+                                    </c:if>
+                                </c:if>
+                                <c:if test="${detailInfo.workBenchDto.typeOperation.equals('РЕЗКА')}">
+                                    <c:if test="${countRezka>0}">
+                                        <pre style="color: red">Альтернатива: ${detailInfo.workBenchDto.name}</pre>
+                                    </c:if>
+                                    <c:if test="${countRezka==0}">
+                                        <pre>${detailInfo.workBenchDto.name}</pre>
+                                        <c:set var="countRezka" value="${countRezka + 1}" scope="page"/>
+                                    </c:if>
+                                </c:if>
+                                <c:if test="${!detailInfo.workBenchDto.typeOperation.equals('ГИБКА') && !detailInfo.workBenchDto.typeOperation.equals('РЕЗКА')  }">
+                                    <pre>${detailInfo.workBenchDto.name}</pre>
+                                </c:if>
                             </c:forEach>
                         </td>
                     </c:if>

@@ -62,6 +62,7 @@ public class MaterialController {
     public String addMaterialPost(@RequestParam(required = false) String materialName, @RequestParam(required = false) String thickness, Model model) {
         if (materialService.checkMaterial(materialName, thickness)) {
             model.addAttribute("materials", materialService.getAllMaterials());
+            model.addAttribute("user", userService.getUserWeb());
             model.addAttribute("materialNameRepeatError", "Материал с таким наименованием и толщиной уже существует. Придумайте другое название и толщину!");
             return "addMaterial";
         }
@@ -120,6 +121,7 @@ public class MaterialController {
                                      @RequestParam(required = false) String materialName, @RequestParam(required = false) String thickness, Model model) {
         if (materialService.checkMaterial(materialName, thickness)) {
             model.addAttribute("material", materialService.getOneMaterial(UUID.fromString(id)));
+            model.addAttribute("user", userService.getUserWeb());
             model.addAttribute("materialNameRepeatError", "Материал с таким наименованием и толщиной уже существует!");
             return "changeMaterial";
         }
@@ -157,6 +159,7 @@ public class MaterialController {
         try {
             materialService.deleteMaterial(materialService.getOneMaterial(UUID.fromString(id)));
         } catch (Exception e) {
+            model.addAttribute("user", userService.getUserWeb());
             model.addAttribute("material", materialService.getOneMaterial(UUID.fromString(id)));
             model.addAttribute("materialError", "Материал нельзя удалить, потому что он используется в заказах!");
             return "deletionMaterial";

@@ -25,8 +25,8 @@
                 <th>Контрагент</th>
                 <th>Экономист</th>
                 <th>Менеджер</th>
-<%--                <th>Дата запуска в производство</th>--%>
-<%--                <th>Дата готовности заказа</th>--%>
+                    <%--                <th>Дата запуска в производство</th>--%>
+                    <%--                <th>Дата готовности заказа</th>--%>
                 <th>Покраска Н/Д/Ч/М</th>
                 <th>Упаковка Н/Д/Ч/М</th>
                 <th>Коментарий</th>
@@ -37,15 +37,15 @@
             <tr>
 
                 <td> ${order.numberOrder} </td>
-                <td> ${order.objectName.name} </td>
-                <td>${order.manager.fio_i_o} </td>
-                <td>${order.manager.fio_i_o} </td>
-<%--                <td>--%>
-<%--                        ${order.dateStart}--%>
-<%--                </td>--%>
-<%--                <td>--%>
-<%--                        ${order.dateEnd}--%>
-<%--                </td>--%>
+                <td> ${order.objectName} </td>
+                <td>${order.manager} </td>
+                <td>${order.manager} </td>
+                    <%--                <td>--%>
+                    <%--                        ${order.dateStart}--%>
+                    <%--                </td>--%>
+                    <%--                <td>--%>
+                    <%--                        ${order.dateEnd}--%>
+                    <%--                </td>--%>
 
                 <td>
                         ${order.painting}
@@ -75,19 +75,19 @@
             <c:forEach items="${order.detailsOrders}" var="ord">
                 <tr>
                     <td>
-                            ${ord.detail.name}
+                            ${ord.detailOrder.name}
                     </td>
                     <td>
-                            ${ord.detail.material.name} ${ord.detail.material.thickness}мм
+                            ${ord.detailOrder.material.name} ${ord.detailOrder.material.thickness}мм
                     </td>
                     <td>
                             ${ord.count}
                     </td>
 <%--                    <td>--%>
-<%--                            ${ord.dateStart}--%>
+<%--                            ${ord.detailOrder.detailOrderLists.get(0).detailDateByWorkbench.get(0).detailDateStart}--%>
 <%--                    </td>--%>
 <%--                    <td>--%>
-<%--                            ${ord.dateEnd}--%>
+<%--                            ${ord.detailOrder.detailOrderLists.get(0).detailDateByWorkbench.get(ord.detailOrder.detailOrderLists.get(0).detailDateByWorkbench.size()-1).detailDateEnd}--%>
 <%--                    </td>--%>
                 </tr>
                 <c:set var="count" value="${count + 1}" scope="page"/>

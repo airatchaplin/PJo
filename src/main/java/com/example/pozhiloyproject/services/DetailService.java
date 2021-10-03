@@ -162,7 +162,10 @@ public class DetailService {
             detailListDtos.add(detailListDto);
         }
         detailDto.setDetailListDtos(detailListDtos);
-
+        List<DetailListDto> detailList = detailDto.getDetailListDtos();
+        for (DetailListDto detailListDto : detailList) {
+            DetailInfoDto.comparePriority(detailListDto.getDetailInfoDtos());
+        }
         return detailDto;
     }
 
@@ -190,7 +193,9 @@ public class DetailService {
             DetailInfo detailInfo = new DetailInfo();
             detailInfo.setId(UUID.randomUUID());
             detailInfo.setTimeWork(timeWork.get(i));
-            detailInfo.setComment(comment.get(i));
+            if (!comment.isEmpty()) {
+                detailInfo.setComment(comment.get(i));
+            }
             detailInfo.setPriority(i);
             detailInfo.setWorkBenches(workBenches.get(i));
             detailInfos.add(detailInfo);

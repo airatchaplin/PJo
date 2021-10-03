@@ -15,144 +15,301 @@
 <jsp:include page="../nav/nav_first.jsp"></jsp:include>
 <jsp:include page="../nav/order_nav_second.jsp"></jsp:include>
 <form:form method="post">
-    <nav class="nav-third">
+    <nav class="nav-third" style="justify-content: normal;">
         <div>
             <button class="button-nav-second" type="submit">Расчитать</button>
         </div>
+
+        <div>
+            <button class="button-nav-second" formaction="/orders/rollback/${order.id}" type="submit">Откатить изменения</button>
+        </div>
     </nav>
-</form:form>
 
-<div class="main">
-    <table class="simple-little-table" cellspacing='0'>
-        <thead>
-        <tr>
-            <th>№ заказа</th>
-            <th>Контрагент</th>
-            <th>Экономист</th>
-            <th>Менеджер</th>
-            <%--            <th>Дата запуска в производство</th>--%>
-            <%--            <th>Дата готовности заказа</th>--%>
-            <th>Покраска</th>
-            <th>Упаковка</th>
-            <th>Коментарий</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td> ${order.numberOrder} </td>
-            <td> ${order.objectName.name} </td>
-            <td>${order.manager.fio_i_o} </td>
-            <td>${order.manager.fio_i_o} </td>
-            <%--            <td>--%>
-            <%--                ${order.dateStart}--%>
-            <%--            </td>--%>
-            <%--            <td>--%>
-            <%--                ${order.dateEnd}--%>
-            <%--            </td>--%>
-            <td>
-                ${order.painting}
-            </td>
-            <td>
-                ${order.packing}
-            </td>
-            <td>
-                ${order.comment}
-            </td>
-        </tr>
-        </tbody>
-    </table>
 
-    <table style="margin-top: 8px" class="simple-little-table" cellspacing='0'>
-        <thead>
-        <tr>
-            <th>Деталь</th>
-            <th>Количество</th>
-            <th>Станки по очередности производства детали</th>
-            <th>Время</th>
-            <th>Время окончания других заказов на этих станках</th>
-            <th>Время начала на станке</th>
-            <th>Время окончания на станке</th>
-            <th>Наладка</th>
-            <th>Расчитано Да/нет</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach items="${order.detailsOrders}" var="ord">
+    <div class="main">
+        <table class="simple-little-table" cellspacing='0'>
+            <thead>
             <tr>
-                <td>
-                        ${ord.detail.name}
-                </td>
-                <td>
-                        ${ord.count}
-                </td>
-                    <%--                <td>--%>
-                    <%--                    <c:forEach items="${ord.detail.detailInfos}" var="workbench">--%>
-                    <%--                        <pre>${workbench.workBenches.name}</pre>--%>
-                    <%--                    </c:forEach>--%>
-                    <%--                </td>--%>
-                <td>
-                    <c:set var="countGibka" value="0" scope="page"/>
-                    <c:set var="countRezka" value="0" scope="page"/>
-                    <c:forEach items="${ord.detail.detailInfos}" var="detailInfo">
-                        <c:if test="${detailInfo.workBenches.typeOperation.name.equals('ГИБКА')}">
-                            <c:if test="${countGibka>0}">
-                                <pre style="color: red">Альтернатива: ${detailInfo.workBenches.name}</pre>
-                            </c:if>
-                            <c:if test="${countGibka==0}">
-                                <pre>${detailInfo.workBenches.name}</pre>
-                                <c:set var="countGibka" value="${countGibka + 1}" scope="page"/>
-                            </c:if>
-                        </c:if>
-                        <c:if test="${detailInfo.workBenches.typeOperation.name.equals('РЕЗКА')}">
-                            <c:if test="${countRezka>0}">
-                                <pre style="color: red">Альтернатива: ${detailInfo.workBenches.name}</pre>
-                            </c:if>
-                            <c:if test="${countRezka==0}">
-                                <pre>${detailInfo.workBenches.name}</pre>
-                                <c:set var="countRezka" value="${countRezka + 1}" scope="page"/>
-                            </c:if>
-                        </c:if>
-                        <c:if test="${!detailInfo.workBenches.typeOperation.name.equals('ГИБКА') && !detailInfo.workBenches.typeOperation.name.equals('РЕЗКА')  }">
-                            <pre>${detailInfo.workBenches.name}</pre>
-                        </c:if>
-                    </c:forEach>
-                </td>
-                <td>
-                    <c:forEach items="${ord.detail.detailInfos}" var="workbench">
-                        <pre>${workbench.timeWork}</pre>
-                    </c:forEach>
-                </td>
-                <td>
-                    <c:forEach items="${ord.detail.detailInfos}" var="workbench">
-                        <pre>${workbench.workBenches.dateEndDetail}</pre>
-                    </c:forEach>
-                </td>
-                <td>
-                    <c:forEach items="${ord.detailDateByWorkbench}" var="DateByWorkbench">
-                        <pre>${DateByWorkbench.detailDateStart == null? " " : DateByWorkbench.detailDateStart}</pre>
-                    </c:forEach>
-                </td>
-                <td>
-                    <c:forEach items="${ord.detailDateByWorkbench}" var="DateByWorkbench">
-                        <pre>${DateByWorkbench.detailDateEnd== null? " " : DateByWorkbench.detailDateEnd}</pre>
-                    </c:forEach>
-                </td>
-                <td>
-                    <c:forEach items="${ord.detailDateByWorkbench}" var="DateByWorkbench">
-                        <pre>${DateByWorkbench.setting}</pre>
-                    </c:forEach>
-                </td>
-                <td>
-                    <c:forEach items="${ord.isCalculated}" var="isCalc">
-                        <pre> ${isCalc?"Да":"Нет"}</pre>
-                    </c:forEach>
-                </td>
+                <th>№ заказа</th>
+                <th>Контрагент</th>
+                <th>Экономист</th>
+                <th>Менеджер</th>
+                    <%--            <th>Дата запуска в производство</th>--%>
+                    <%--            <th>Дата готовности заказа</th>--%>
+                <th>Покраска</th>
+                <th>Упаковка</th>
+                <th>Дата запуска в производство</th>
+                <th>Дата готовности заказа</th>
+                <th>Коментарий</th>
+                <th>Расчитан</th>
             </tr>
-        </c:forEach>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            <tr>
+                <td> ${order.numberOrder} </td>
+                <td> ${order.objectName} </td>
+                <td>${order.economist} </td>
+                <td>${order.manager} </td>
+                    <%--            <td>--%>
+                    <%--                ${order.dateStart}--%>
+                    <%--            </td>--%>
+                    <%--            <td>--%>
+                    <%--                ${order.dateEnd}--%>
+                    <%--            </td>--%>
+                <td>
+                        ${order.painting}
+                </td>
+                <td>
+                        ${order.packing}
+                </td>
+                <td>${order.dateStartOrder}</td>
+                <td>${order.dateEndOrder}</td>
+                <td>
+                        ${order.comment}
+                </td>
+                <td>${order.calculated == true ? "Да" : "Нет"}</td>
+            </tr>
+            </tbody>
+        </table>
 
-</div>
+        <table style="margin-top: 8px" class="simple-little-table" cellspacing='0'>
+            <thead>
+            <tr>
+                <th>Деталь</th>
+                <th>Материал</th>
+                <th>Кол-во</th>
+                <th>Выбор</th>
+                <th>Станки</th>
+                <th>Время</th>
+                <th>Время окончания станков</th>
+                <th>Тек.Толщ.</th>
+                <th>Время начала на станке</th>
+                <th>Время окончания на станке</th>
+                <th>Наладка</th>
+            </tr>
+            </thead>
+            <tbody>
 
+            <c:forEach items="${order.detailsOrders}" var="detailsOrders">
+                <c:forEach items="${detailsOrders.detailOrder.detailOrderLists}" var="detailLists">
+                    <tr>
+                        <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==0}">
+                            <td>
+                                    ${detailsOrders.detailOrder.name}
+                            </td>
+                            <td>
+                                    ${detailsOrders.detailOrder.material.name} ${detailsOrders.detailOrder.material.thickness}мм
+                            </td>
+                            <td>
+                                    ${detailsOrders.count}
+                            </td>
+                        </c:if>
+                        <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==1}">
+                            <td style="background: #fee8e8;"></td>
+                            <td style="background: #fee8e8;"></td>
+                            <td style="background: #fee8e8;"></td>
+                        </c:if>
+                        <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==0}">
+                            <td style="text-align: center;">
+                                <div>
+                                        ${detailLists.mainOrAlternative == "1"?"Основной" :"Запасной"}
+                                    <c:if test="${detailLists.selected}">
+                                        <input style="height: 20px;margin: 0;" type="checkbox" value="${detailLists.id}"
+                                               name="isSelected" checked>
+                                    </c:if>
+                                    <c:if test="${!detailLists.selected}">
+                                        <input style="height: 20px;margin: 0;" type="checkbox" value="${detailLists.id}"
+                                               name="isSelected">
+                                    </c:if>
+                                </div>
+                            </td>
+                        </c:if>
+                        <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==1}">
+                            <td style="background: #fee8e8;text-align: center;">
+                                <div>
+                                        ${detailLists.mainOrAlternative == "1"?"Основной" :"Запасной"}
+                                    <c:if test="${detailLists.selected}">
+                                        <input style="height: 20px;margin: 0;" type="checkbox" value="${detailLists.id}"
+                                               name="isSelected" checked>
+                                    </c:if>
+                                    <c:if test="${!detailLists.selected}">
+                                        <input style="height: 20px;margin: 0;" type="checkbox" value="${detailLists.id}"
+                                               name="isSelected">
+                                    </c:if>
+                                </div>
+                            </td>
+                        </c:if>
+
+                            <%--                <td>--%>
+                            <%--                    <c:forEach items="${ord.detail.detailInfos}" var="workbench">--%>
+                            <%--                        <pre>${workbench.workBenches.name}</pre>--%>
+                            <%--                    </c:forEach>--%>
+                            <%--                </td>--%>
+                        <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==0}">
+                            <td>
+                                <c:set var="countGibka" value="0" scope="page"/>
+                                <c:set var="countRezka" value="0" scope="page"/>
+                                <c:forEach items="${detailLists.detailOrderInfos}" var="detailInfo">
+                                    <c:if test="${detailInfo.workBenches.typeOperation.equals('ГИБКА')}">
+                                        <c:if test="${countGibka>0}">
+                                            <pre style="color: red">Альтернатива: ${detailInfo.workBenches.name}</pre>
+                                        </c:if>
+                                        <c:if test="${countGibka==0}">
+                                            <pre>${detailInfo.workBenches.name}</pre>
+                                            <c:set var="countGibka" value="${countGibka + 1}" scope="page"/>
+                                        </c:if>
+                                    </c:if>
+                                    <c:if test="${detailInfo.workBenches.typeOperation.equals('РЕЗКА')}">
+                                        <c:if test="${countRezka>0}">
+                                            <pre style="color: red">Альтернатива: ${detailInfo.workBenches.name}</pre>
+                                        </c:if>
+                                        <c:if test="${countRezka==0}">
+                                            <pre>${detailInfo.workBenches.name}</pre>
+                                            <c:set var="countRezka" value="${countRezka + 1}" scope="page"/>
+                                        </c:if>
+                                    </c:if>
+                                    <c:if test="${!detailInfo.workBenches.typeOperation.equals('ГИБКА') && !detailInfo.workBenches.typeOperation.equals('РЕЗКА')  }">
+                                        <pre>${detailInfo.workBenches.name}</pre>
+                                    </c:if>
+                                </c:forEach>
+                            </td>
+                        </c:if>
+                        <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==1}">
+                            <td style="background: #fee8e8;">
+                                <c:set var="countGibka" value="0" scope="page"/>
+                                <c:set var="countRezka" value="0" scope="page"/>
+                                <c:forEach items="${detailLists.detailOrderInfos}" var="detailInfo">
+                                    <c:if test="${detailInfo.workBenches.typeOperation.equals('ГИБКА')}">
+                                        <c:if test="${countGibka>0}">
+                                            <pre style="color: red">Альтернатива: ${detailInfo.workBenches.name}</pre>
+                                        </c:if>
+                                        <c:if test="${countGibka==0}">
+                                            <pre>${detailInfo.workBenches.name}</pre>
+                                            <c:set var="countGibka" value="${countGibka + 1}" scope="page"/>
+                                        </c:if>
+                                    </c:if>
+                                    <c:if test="${detailInfo.workBenches.typeOperation.equals('РЕЗКА')}">
+                                        <c:if test="${countRezka>0}">
+                                            <pre style="color: red">Альтернатива: ${detailInfo.workBenches.name}</pre>
+                                        </c:if>
+                                        <c:if test="${countRezka==0}">
+                                            <pre>${detailInfo.workBenches.name}</pre>
+                                            <c:set var="countRezka" value="${countRezka + 1}" scope="page"/>
+                                        </c:if>
+                                    </c:if>
+                                    <c:if test="${!detailInfo.workBenches.typeOperation.equals('ГИБКА') && !detailInfo.workBenches.typeOperation.equals('РЕЗКА')  }">
+                                        <pre>${detailInfo.workBenches.name}</pre>
+                                    </c:if>
+                                </c:forEach>
+                            </td>
+                        </c:if>
+                        <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==0}">
+                            <td>
+                                <c:forEach items="${detailLists.detailOrderInfos}" var="workbench">
+                                    <pre>${workbench.timeWork}</pre>
+                                </c:forEach>
+                            </td>
+                        </c:if>
+                        <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==1}">
+                            <td style="background: #fee8e8;">
+                                <c:forEach items="${detailLists.detailOrderInfos}" var="workbench">
+                                    <pre>${workbench.timeWork}</pre>
+                                </c:forEach>
+                            </td>
+                        </c:if>
+                        <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==0}">
+                            <td>
+                                <c:forEach items="${detailLists.detailOrderInfos}" var="workbench">
+                                    <pre>${workbench.workBenches.dateEndDetail}</pre>
+                                </c:forEach>
+                            </td>
+                        </c:if>
+                        <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==1}">
+                            <td style="background: #fee8e8;">
+                                <c:forEach items="${detailLists.detailOrderInfos}" var="workbench">
+                                    <pre>${workbench.workBenches.dateEndDetail}</pre>
+                                </c:forEach>
+                            </td>
+                        </c:if>
+                        <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==0}">
+                            <td>
+                                <c:forEach items="${detailLists.detailOrderInfos}" var="workbench">
+                                    <pre>${workbench.workBenches.currentThickness}мм</pre>
+                                </c:forEach>
+                            </td>
+                        </c:if>
+                        <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==1}">
+                            <td style="background: #fee8e8;">
+                                <c:forEach items="${detailLists.detailOrderInfos}" var="workbench">
+                                    <pre>${workbench.workBenches.currentThickness}мм</pre>
+                                </c:forEach>
+                            </td>
+                        </c:if>
+                        <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==0}">
+                            <td>
+                                <c:forEach
+                                        items="${detailsOrders.detailOrder.detailOrderLists.get(0).detailDateByWorkbench}"
+                                        var="detailDateByWorkbench">
+                                    <pre>${detailDateByWorkbench.detailDateStart == null? " " : detailDateByWorkbench.detailDateStart}</pre>
+                                </c:forEach>
+                            </td>
+                        </c:if>
+                        <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==1}">
+                            <td style="background: #fee8e8;">
+                                <c:forEach
+                                        items="${detailsOrders.detailOrder.detailOrderLists.get(1).detailDateByWorkbench}"
+                                        var="detailDateByWorkbench">
+                                    <pre>${detailDateByWorkbench.detailDateStart == null? " " : detailDateByWorkbench.detailDateStart}</pre>
+                                </c:forEach>
+                            </td>
+                        </c:if>
+                        <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==0}">
+                            <td>
+                                <c:forEach
+                                        items="${detailsOrders.detailOrder.detailOrderLists.get(0).detailDateByWorkbench}"
+                                        var="DateByWorkbench">
+                                    <pre>${DateByWorkbench.detailDateEnd== null? " " : DateByWorkbench.detailDateEnd}</pre>
+                                </c:forEach>
+                            </td>
+                        </c:if>
+                        <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==1}">
+                            <td style="background: #fee8e8;">
+                                <c:forEach
+                                        items="${detailsOrders.detailOrder.detailOrderLists.get(1).detailDateByWorkbench}"
+                                        var="DateByWorkbench">
+                                    <pre>${DateByWorkbench.detailDateEnd== null? " " : DateByWorkbench.detailDateEnd}</pre>
+                                </c:forEach>
+                            </td>
+                        </c:if>
+                        <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==0}">
+                            <td>
+                                <c:forEach
+                                        items="${detailsOrders.detailOrder.detailOrderLists.get(0).detailDateByWorkbench}"
+                                        var="DateByWorkbench">
+                                    <pre>${DateByWorkbench.setting == true ? "Да" : "Нет"}</pre>
+                                </c:forEach>
+                            </td>
+                        </c:if>
+                        <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==1}">
+                            <td style="background: #fee8e8;">
+                                <c:forEach
+                                        items="${detailsOrders.detailOrder.detailOrderLists.get(1).detailDateByWorkbench}"
+                                        var="DateByWorkbench">
+                                    <pre>${DateByWorkbench.setting == true ? "Да" : "Нет"}</pre>
+                                </c:forEach>
+                            </td>
+                        </c:if>
+                            <%--                        </c:if>--%>
+                    </tr>
+                </c:forEach>
+            </c:forEach>
+            </tbody>
+        </table>
+        <div style="color: red">
+            ${errorRollback}
+        </div>
+
+    </div>
+</form:form>
 </body>
 </html>

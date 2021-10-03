@@ -33,7 +33,7 @@
             </tr>
             </tbody>
         </table>
-        <label style="color: red">${materialError}</label>
+        <div class="error-text">${materialError}</div>
     </div>
 </form:form>
 

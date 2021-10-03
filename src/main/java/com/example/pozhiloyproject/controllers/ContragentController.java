@@ -74,6 +74,7 @@ public class ContragentController {
     @PostMapping("/addContragent")
     public String addContragentsPost(@RequestParam(required = false) String contragentName, Model model) {
         if (contragentService.checkContragent(contragentName)) {
+            model.addAttribute("user", userService.getUserWeb());
             model.addAttribute("contragentNameError", "Контрагент с таким наименованием уже существует!");
             return "addContragent";
         }
@@ -112,6 +113,7 @@ public class ContragentController {
 
         if (contragentService.checkContragent(UUID.fromString(id), contragentName)) {
             model.addAttribute("contragent", contragentService.getOneContragentById(UUID.fromString(id)));
+            model.addAttribute("user", userService.getUserWeb());
             model.addAttribute("contragentNameError", "Контрагент с таким наименованием уже существует!");
             return "changeContragent";
         }
@@ -147,6 +149,7 @@ public class ContragentController {
         try {
             contragentService.deleteContragent(contragentService.getOneContragentById(UUID.fromString(id)));
         } catch (Exception e) {
+            model.addAttribute("user", userService.getUserWeb());
             model.addAttribute("contragent", contragentService.getOneContragentById(UUID.fromString(id)));
             model.addAttribute("contragentError", "Контрагента нельзя удалить, потому что он используется в заказах!");
             return "deletionContragent";

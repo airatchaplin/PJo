@@ -238,7 +238,9 @@ public class DetailController {
                                    @RequestParam(required = false) String detailName,
                                    @RequestParam(required = false) String materialId,
                                    @RequestParam(required = false) List<String> timeWork,
+                                   @RequestParam(required = false) List<String> timeWork1,
                                    @RequestParam(required = false) List<String> comment,
+                                   @RequestParam(required = false) List<String> comment1,
                                    @RequestParam(required = false) String timePacking,
                                    Model model) {
 
@@ -246,16 +248,31 @@ public class DetailController {
         detail.setName(detailName);
         detail.setMaterial(materialService.getOneMaterial(UUID.fromString(materialId)));
         detail.setTimePacking(timePacking);
-//        for (int i = 0; i < detail.getDetailInfos().size(); i++) {
-//            detail.getDetailInfos().get(i).setTimeWork(timeWork.get(i));
-//            detail.getDetailInfos().get(i).setComment(comment.get(i));
-//            detailInfoService.saveDetailInfo(detail.getDetailInfos().get(i));
-//        }
+        List<DetailList> detailLists = detail.getDetailLists();
+
+        for (DetailList detailList : detailLists) {
+            List<DetailInfo> detailInfos = detailList.getDetailInfos();
+            DetailInfo.comparePriority(detailInfos);
+            if (detailList.getMainOrAlternative() == 1) {
+                for (int j = 0; j < detailInfos.size(); j++) {
+                    DetailInfo detailInfo = detailInfos.get(j);
+                    detailInfo.setTimeWork(timeWork.get(j));
+                    detailInfo.setComment(comment.get(j));
+                }
+            } else if (detailList.getMainOrAlternative() == 2) {
+                for (int j = 0; j < detailInfos.size(); j++) {
+                    DetailInfo detailInfo = detailInfos.get(j);
+                    detailInfo.setTimeWork(timeWork1.get(j));
+                    detailInfo.setComment(comment1.get(j));
+                }
+            }
+        }
+
         detailService.saveDetail(detail);
         return "redirect:/details/" + id;
     }
 
-    @GetMapping("details/addWorkbench/{id}")
+    @GetMapping("details/addWorkbenchMain/{id}")
     public String addWorkBenchForDetail(@PathVariable(value = "id") String id, Model model) {
         model.addAttribute("detail", detailService.getDetailDtoById(UUID.fromString(id)));
         model.addAttribute("workbenches", workBenchService.getUniqueWorkBench(UUID.fromString(id)));
@@ -269,13 +286,27 @@ public class DetailController {
         return "addWorkbenchForDetail";
     }
 
-    @PostMapping("details/addWorkbench/{id}")
+    @GetMapping("details/addWorkbenchAlternative/{id}")
+    public String addWorkBenchForDetail1(@PathVariable(value = "id") String id, Model model) {
+        model.addAttribute("detail", detailService.getDetailDtoById(UUID.fromString(id)));
+        model.addAttribute("workbenches", workBenchService.getUniqueWorkBench(UUID.fromString(id)));
+        model.addAttribute("materials", Material.compare(materialService.getAllMaterials()));
+        model.addAttribute("user", userService.getUserWeb());
+        model.addAttribute("operations", subsequenceTypeOperationService.getAllSubsequenceTypeOperation());
+        for (TypeOperation typeOperation : typeOperationService.getAllTypeOperations()) {
+            List<WorkBench> workBenches = workBenchService.getWorkBenchesFilterOperationName(typeOperation.getId());
+            model.addAttribute(typeOperation.getName(), workBenches);
+        }
+        return "addWorkbenchForDetail1";
+    }
+
+    @PostMapping("details/addWorkbenchMain/{id}")
     public String addWorkBenchForDetail(@PathVariable(value = "id") String id, Model model,
                                         @RequestParam(required = false) List<String> workbenchName,
                                         @RequestParam(required = false) List<String> timeWork,
-                                        @RequestParam(required = false) List<String> comment
-    ) {
+                                        @RequestParam(required = false) List<String> comment) {
         Detail detail = detailService.getDetailById(UUID.fromString(id));
+        DetailList detailList = detail.getDetailLists().get(0);
         List<DetailInfo> detailInfos = new ArrayList<>();
         Set<String> nameWorkbench = new HashSet<>(workbenchName);
         for (int i = 0; i < workbenchName.size(); i++) {
@@ -300,6 +331,44 @@ public class DetailController {
             model.addAttribute("countWorkbenchError", "Нельзя добавлять одинаковые станки!");
             return "addWorkbenchForDetail";
         }
+        detail.getDetailLists().get(0).setDetailInfos(detailInfos);
+//        detail.setDetailInfos(detailInfos);
+        detailService.saveDetail(detail);
+        return "redirect:/details/" + id;
+    }
+
+    @PostMapping("details/addWorkbenchAlternative/{id}")
+    public String addWorkBenchForDetail1(@PathVariable(value = "id") String id, Model model,
+                                         @RequestParam(required = false) List<String> workbenchName,
+                                         @RequestParam(required = false) List<String> timeWork,
+                                         @RequestParam(required = false) List<String> comment) {
+        Detail detail = detailService.getDetailById(UUID.fromString(id));
+        DetailList detailList = detail.getDetailLists().get(1);
+        List<DetailInfo> detailInfos = new ArrayList<>();
+        Set<String> nameWorkbench = new HashSet<>(workbenchName);
+        for (int i = 0; i < workbenchName.size(); i++) {
+            DetailInfo detailInfo = new DetailInfo();
+            detailInfo.setId(UUID.randomUUID());
+            detailInfo.setWorkBenches(workBenchService.getOneWorkBenchByName(workbenchName.get(i)));
+            detailInfo.setTimeWork(timeWork.get(0));
+            detailInfo.setComment(comment.get(i));
+            detailInfo.setPriority(i);
+            detailInfos.add(detailInfo);
+        }
+        if (nameWorkbench.size() < detailInfos.size()) {
+            model.addAttribute("detail", detailService.getDetailDtoById(UUID.fromString(id)));
+            model.addAttribute("workbenches", workBenchService.getUniqueWorkBench(UUID.fromString(id)));
+            model.addAttribute("materials", Material.compare(materialService.getAllMaterials()));
+            model.addAttribute("user", userService.getUserWeb());
+            model.addAttribute("operations", subsequenceTypeOperationService.getAllSubsequenceTypeOperation());
+            for (TypeOperation typeOperation : typeOperationService.getAllTypeOperations()) {
+                List<WorkBench> workBenches = workBenchService.getWorkBenchesFilterOperationName(typeOperation.getId());
+                model.addAttribute(typeOperation.getName(), workBenches);
+            }
+            model.addAttribute("countWorkbenchError", "Нельзя добавлять одинаковые станки!");
+            return "addWorkbenchForDetail";
+        }
+        detail.getDetailLists().get(1).setDetailInfos(detailInfos);
 //        detail.setDetailInfos(detailInfos);
         detailService.saveDetail(detail);
         return "redirect:/details/" + id;

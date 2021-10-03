@@ -29,13 +29,13 @@
                 <td>
                     <input type="text" class="form-control" id="contragentName" name="contragentName"
                            placeholder="Введите название контрагента" value="${contragent.name}" required>
-                    <div class="error" style="color: red;">
-                            ${contragentNameError}
-                    </div>
                 </td>
             </tr>
             </tbody>
         </table>
+        <div class="error-text">
+            <div> ${contragentNameError}</div>
+        </div>
     </div>
 </form:form>
 </body>

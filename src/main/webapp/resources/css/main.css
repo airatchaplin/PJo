@@ -70,6 +70,7 @@ a {
     /*margin-top: 60px;*/
     height: 52px;
 }
+
 .nav-third {
     /*position: fixed;*/
     box-shadow: 0 5px 5px -5px;
@@ -168,15 +169,17 @@ button {
     border-radius: 5px;
 
 }
-.button-nav-second{
+
+.button-nav-second {
     color: black;
     width: 170px;
     height: 50px;
     /*background: #f2f2f2;*/
-    background:#d1d1d100;
+    background: #d1d1d100;
     font-variant: all-small-caps;
 }
-.button-nav-first{
+
+.button-nav-first {
     /*background: #d1d1d1;*/
     background: #d1d1d100;
     color: black;
@@ -184,17 +187,20 @@ button {
     height: 50px;
     font-variant: all-small-caps;
 }
-.button-filter{
+
+.button-filter {
     color: black;
     background: #ececec;
     width: 30px;
     margin-left: 5px;
 }
-.input-hover:hover{
+
+.input-hover:hover {
     background: #f2f2f2;
     background: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#f0f0f0));
     background: -moz-linear-gradient(top, #f2f2f2, #f0f0f0);
 }
+
 button:hover {
     transform: translateY(2px);
     box-shadow: 0px 0px transparent, 0px 5px 10px rgba(0, 0, 0, 0.25);
@@ -204,5 +210,11 @@ button:focus {
     outline: none;
 }
 
-
+.error-text {
+    color: red;
+    font-variant: all-small-caps;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 20px;
+}
 

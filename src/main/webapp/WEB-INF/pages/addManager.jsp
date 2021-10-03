@@ -38,9 +38,6 @@
                 <td>
                     <input type="text" class="form-control" id="username" name="username"
                            placeholder="Введите логин" value="${username}" required>
-                    <div class="error" style="color: red;">
-                            ${errorUsername}
-                    </div>
                 </td>
                 <td>
                     <input type="text" class="form-control" id="password" name="password"
@@ -61,6 +58,7 @@
             </tr>
             </tbody>
         </table>
+        <div class="error-text">${errorUsername} </div>
     </div>
 </form:form>
 

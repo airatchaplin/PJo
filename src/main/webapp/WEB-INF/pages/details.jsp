@@ -20,7 +20,7 @@
             onclick="window.location.href = '/addDetail';">Добавить деталь
     </button>
 </nav>
-<div class="main" style="margin-top: 120px">
+<div class="main" >
     <table class="simple-little-table" cellspacing='0'>
         <thead>
         <form:form>

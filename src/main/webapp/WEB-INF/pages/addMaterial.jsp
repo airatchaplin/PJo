@@ -37,9 +37,6 @@
                 <td class="materials">
                     <input type="text" class="form-control" id="materialName" name="materialName"
                            placeholder="Введите название материала" value="" required>
-                    <div class="error" style="color: red;">
-                        ${materialNameRepeatError}
-                    </div>
                 </td>
                 <td class="materials">
                     <input type="text" class="form-control" id="thickness" name="thickness"
@@ -48,6 +45,9 @@
             </tr>
             </tbody>
         </table>
+        <div class="error-text">
+            ${materialNameRepeatError}
+        </div>
     </div>
 </form>
 

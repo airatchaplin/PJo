@@ -32,20 +32,19 @@
             <tbody>
             <tr>
                 <td>
-                    <input type="text" id="workBenchName" name="workBenchName"
-                           placeholder="Введите название станка" value="${workbench.name}" required>
-                    <div class="error" style="color: red;">
-                            ${workBenchRepeatError}
-                    </div>
+                        ${workbench.name}
+<%--                    <input type="text" id="workBenchName" name="workBenchName"--%>
+<%--                           placeholder="Введите название станка" value="${workbench.name}" required>--%>
                 </td>
                 <td class="th_workbench_typeOperation">
-                    <select class="form-control" name="typeOperationId">
-                        <option selected value="${workbench.typeOperation.id}">Выбранная
-                            операция ${workbench.typeOperation.name}</option>
-                        <c:forEach items="${operations}" var="operation">
-                            <option value="${operation.id}">${operation.name}</option>
-                        </c:forEach>
-                    </select>
+                        ${workbench.typeOperation.name}
+<%--                    <select class="form-control" name="typeOperationId">--%>
+<%--                        <option selected value="${workbench.typeOperation.id}">Выбранная--%>
+<%--                            операция ${workbench.typeOperation.name}</option>--%>
+<%--                        <c:forEach items="${operations}" var="operation">--%>
+<%--                            <option value="${operation.id}">${operation.name}</option>--%>
+<%--                        </c:forEach>--%>
+<%--                    </select>--%>
                 </td>
                 <td class="th_workbench_currentThickness">
                     <input type="text" class="form-control" id="currentThickness" name="currentThickness"
@@ -53,11 +52,14 @@
                 </td>
                 <td class="th_workbench_dateEnd">
                     <input type="datetime-local" class="form-control" id="dateEndDetail" name="dateEndDetail"
-                           value="${workbench.dateEndDetail}" required>
+                           value="${dateEndDetail}" required>
                 </td>
             </tr>
             </tbody>
         </table>
+        <div class="error-text">
+                ${workBenchRepeatError}
+        </div>
     </div>
 </form:form>
 </body>

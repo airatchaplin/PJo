@@ -78,7 +78,7 @@
                         </c:forEach>
                     </select>
                 </td>
-                <td>Альтернатива</td>
+                <td>Вариант</td>
                 <td id="columnWorkBench1"></td>
                 <td id="columnTimeWork1"></td>
                 <td id="columnComment1"></td>

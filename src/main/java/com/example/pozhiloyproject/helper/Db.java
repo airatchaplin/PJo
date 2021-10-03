@@ -20,7 +20,6 @@ public class Db {
 
     public void execute(String sql){
         try {
-
             jdbcTemplate.execute(sql);
         } catch (DataAccessException e) {
             e.printStackTrace();
@@ -31,7 +30,6 @@ public class Db {
     public List<Map<String, Object>> call(String sql){
         List<Map<String, Object>> maps = new ArrayList<>();
         try {
-
              maps = jdbcTemplate.queryForList(sql);
         } catch (DataAccessException e) {
             e.printStackTrace();
