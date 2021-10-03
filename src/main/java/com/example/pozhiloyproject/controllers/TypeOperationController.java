@@ -122,8 +122,18 @@ public class TypeOperationController {
      */
     @PostMapping("/typeOperations/change/{id}")
     public String changeTypeOperationPost(@PathVariable(name = "id") String id, @RequestParam(required = false) String nameTypeOperation, Model model) {
+        if (id.equals("e0c90c05-b0b4-45df-8885-5e0cf058f242")
+                || nameTypeOperation.equals("83e811fd-5619-45e3-908c-d0e1484668e1")
+                || nameTypeOperation.equals("baeaf517-07d0-4c11-8c95-e918a97d0ef8")
+                || nameTypeOperation.equals("d0ef057c-247f-4b68-bcc2-d32b6ce868ce")
+                || nameTypeOperation.equals("d09c6991-63ea-4896-9c10-784918c6b620")) {
+            model.addAttribute("errorNameTypeOperation", "Нельзя изменять базовые операции!");
+            model.addAttribute("operation", typeOperationService.getOneTypeOperation(UUID.fromString(id)));
+            model.addAttribute("user", userService.getUserWeb());
+            return "changeTypeOperation";
+        }
         if (typeOperationService.checkAddTypeOperation(UUID.fromString(id), nameTypeOperation)) {
-            model.addAttribute("errorTypeOperation", "Операция с таким наименованием уже существует!");
+            model.addAttribute("errorNameTypeOperation", "Операция с таким наименованием уже существует!");
             model.addAttribute("operation", typeOperationService.getOneTypeOperation(UUID.fromString(id)));
             model.addAttribute("user", userService.getUserWeb());
             return "changeTypeOperation";
@@ -203,7 +213,7 @@ public class TypeOperationController {
         }
         description = description.substring(0, description.length() - 4);
 
-        if (subsequenceTypeOperationService.checkSubsequenceTypeOperation(description)){
+        if (subsequenceTypeOperationService.checkSubsequenceTypeOperation(description)) {
             model.addAttribute("errorSubsequenceTypeOperation", "Последовательность операции с такими параметрами уже существует!");
             model.addAttribute("operations", typeOperationService.getAllTypeOperations());
             model.addAttribute("user", userService.getUserWeb());

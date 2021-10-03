@@ -35,7 +35,9 @@
             </tr>
             </tbody>
         </table>
-        <label style="color: red">${managerError}</label>
+        <div class="error-text">
+                ${managerError}
+        </div>
     </div>
 </form:form>
 

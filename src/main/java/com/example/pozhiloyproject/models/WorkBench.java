@@ -37,12 +37,6 @@ public class WorkBench {
     @ManyToOne
     private TypeOperation typeOperation;
 
-//    public static List<WorkBench> compare(List<WorkBench> workBenches){
-//        Comparator<WorkBench> comparator = Comparator.comparing(WorkBench::getName);
-//        workBenches.sort(comparator);
-//        return workBenches;
-//    }
-
     /**
      * Толщина материала
      */

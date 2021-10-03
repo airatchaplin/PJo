@@ -37,8 +37,9 @@ public class Detail {
     /**
      * Информация о детали
      */
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<DetailInfo> detailInfos;
+//    @ManyToMany(cascade = CascadeType.ALL)
+            @OneToMany(cascade = CascadeType.ALL)
+    private List<DetailList> detailLists;
 
 
     private String timePacking;

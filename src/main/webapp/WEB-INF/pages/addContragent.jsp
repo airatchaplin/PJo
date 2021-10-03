@@ -14,7 +14,13 @@
 <body>
 
 <jsp:include page="../nav/nav_first.jsp"></jsp:include>
-<jsp:include page="../nav/contragent_nav_second.jsp"></jsp:include>
+<nav class="nav-second">
+    <div>
+        <button class="button-nav-second" style="width: 195px;"
+                onclick="window.location.href = '/addContragent';">Добавить контрагента
+        </button>
+    </div>
+</nav>
 <form action="addContragent" method="post">
     <jsp:include page="../nav/nav_third_save.jsp"></jsp:include>
 
@@ -30,13 +36,16 @@
                 <td>
                     <input type="text" class="form-control" id="contragentName" name="contragentName"
                            placeholder="Введите название контрагента" value="" required>
-                    <div class="error" style="color: red;">
-                        ${contragentNameError}
-                    </div>
                 </td>
             </tr>
             </tbody>
         </table>
+
+        <c:if test="${contragentNameError!=null}">
+        <div class="error-text">
+            <div> ${contragentNameError}</div>
+        </div>
+        </c:if>
     </div>
 </form>
 

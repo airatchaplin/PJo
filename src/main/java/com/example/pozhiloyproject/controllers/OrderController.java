@@ -1,10 +1,13 @@
 package com.example.pozhiloyproject.controllers;
 
 import com.example.pozhiloyproject.dto.DetailDto;
+import com.example.pozhiloyproject.dto.OrderDto;
+import com.example.pozhiloyproject.helper.Db;
 import com.example.pozhiloyproject.models.*;
 import com.example.pozhiloyproject.services.*;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -44,6 +47,21 @@ public class OrderController {
     @Autowired
     DetailDateByWorkbenchService detailDateByWorkbenchService;
 
+    @Autowired
+    DetailOrderService detailOrderService;
+
+    @Autowired
+    DetailOrderListService detailOrderListService;
+
+    @Autowired
+    DetailOrderInfoService detailOrderInfoService;
+
+    @Autowired
+    OldOrderService oldOrderService;
+
+    @Autowired
+    Db db;
+
     /**
      * Страница всех заказов метод GET
      *
@@ -66,7 +84,7 @@ public class OrderController {
      */
     @GetMapping("/orders/{id}")
     public String getOneOrder(@PathVariable(value = "id") String id, Model model) {
-        model.addAttribute("order", orderService.getOrderById(UUID.fromString(id)));
+        model.addAttribute("order", orderService.getOrderDtoById(UUID.fromString(id)));
         model.addAttribute("user", userService.getUserWeb());
         return "oneOrder";
     }
@@ -94,7 +112,6 @@ public class OrderController {
      * @param managerId    Идентификатор  менеджера
      * @param detailId     Идентификатор детали
      * @param countDetail  Количество деталей
-     * @param dateStart    Дата запуска в производство
      * @param comment      Комментарий
      * @param model        Модель
      * @return Страница всех заказов
@@ -105,10 +122,8 @@ public class OrderController {
                                @RequestParam(required = true) String managerId,
                                @RequestParam(required = true) List<String> detailId,
                                @RequestParam(required = true) List<String> countDetail,
-                               @RequestParam(required = true) List<String> dateStart,
                                @RequestParam(required = true) String comment,
-                               Model model
-    ) {
+                               Model model) {
         Order order = new Order();
         Order findOrder = null;
         CompletedOrder findCompletedOrder = null;
@@ -126,6 +141,16 @@ public class OrderController {
             model.addAttribute("user", userService.getUserWeb());
             return "addOrder";
         }
+
+        List<Map<String, Object>> call = db.call("select max(increment) from orders");
+        long incr = 0;
+        if (call.get(0).get("max") == null) {
+            order.setIncrement(incr);
+        } else {
+            incr = (long) call.get(0).get("max");
+            incr++;
+        }
+        order.setIncrement(incr);
         order.setId(UUID.randomUUID());
         order.setNumberOrder(Integer.parseInt(numberOrder));
         order.setObjectName(contragentService.getOneContragentById(UUID.fromString(contragentId)));
@@ -144,66 +169,72 @@ public class OrderController {
                 countDetailList.add(Integer.parseInt(s));
             }
         }
-        List<LocalDateTime> timesList = new ArrayList<>();
 
-        if (dateStart.isEmpty()) {
-            for (int i = 0; i < countDetailList.size(); i++) {
-                timesList.add(null);
-            }
-        } else {
-
-            for (String s : dateStart) {
-                if (s.equals("")) {
-                    timesList.add(null);
-                } else {
-                    timesList.add(LocalDateTime.parse(s));
-                }
-
-            }
-        }
         List<DetailsOrder> list = new ArrayList<>();
-        List<Boolean> isCalculated = null;
 
-        List<DetailDateByWorkbench> detailDateByWorkbenches = new ArrayList<>();
-        for (int i = 0; i < timesList.size(); i++) {
+        for (int i = 0; i < countDetailList.size(); i++) {
             DetailsOrder detailsOrder = new DetailsOrder();
             detailsOrder.setId(UUID.randomUUID());
             detailsOrder.setIncrement(i);
-//            detailsOrder.setDateStart(timesList.get(i));
+            detailsOrder.setCount(Integer.parseInt(countDetail.get(i)));
+
             if (detailId.get(i).equals("Выбирите деталь") && countDetailList.get(i) == 0) {
                 continue;
             } else {
                 Detail detailById = detailService.getDetailById(UUID.fromString(detailId.get(i)));
 
-                for (int j = 0; j < detailById.getDetailInfos().size(); j++) {
-                    DetailDateByWorkbench detailDateByWorkbench = new DetailDateByWorkbench();
-                    detailDateByWorkbench.setId(UUID.randomUUID());
-                    detailDateByWorkbench.setWorkBench(detailById.getDetailInfos().get(j).getWorkBenches());
-                    detailDateByWorkbench.setPriority(detailById.getDetailInfos().get(j).getPriority());
-                    detailDateByWorkbench.setSetting(false);
+                DetailOrder detailOrder = new DetailOrder();
+                detailOrder.setId(UUID.randomUUID());
+                detailOrder.setName(detailById.getName());
+                detailOrder.setMaterial(detailById.getMaterial());
+                detailOrder.setTimePacking(detailById.getTimePacking());
 
-                    detailDateByWorkbench.setDetailDateEnd(null);
-                    detailDateByWorkbench.setDetailDateStart(null);
-                    detailDateByWorkbenchService.saveDetailDateByWorkbench(detailDateByWorkbench);
-                    detailDateByWorkbenches.add(detailDateByWorkbench);
+                List<DetailList> detailLists = detailById.getDetailLists();
+                List<DetailOrderList> detailOrderLists = new ArrayList<>();
+                for (DetailList detailList : detailLists) {
+                    DetailOrderList detailOrderList = new DetailOrderList();
+                    detailOrderList.setId(UUID.randomUUID());
+                    detailOrderList.setMainOrAlternative(detailList.getMainOrAlternative());
+                    detailOrderList.setSelected(false);
 
+
+                    List<DetailInfo> detailInfos = detailList.getDetailInfos();
+                    List<DetailOrderInfo> detailOrderInfos = new ArrayList<>();
+                    List<DetailDateByWorkbench> detailDateByWorkbenchs = new ArrayList<>();
+                    for (DetailInfo detailInfo : detailInfos) {
+                        DetailOrderInfo detailOrderInfo = new DetailOrderInfo();
+                        detailOrderInfo.setId(UUID.randomUUID());
+                        detailOrderInfo.setPriority(detailInfo.getPriority());
+                        detailOrderInfo.setTimeWork(detailInfo.getTimeWork());
+                        detailOrderInfo.setComment(detailInfo.getComment());
+                        detailOrderInfo.setWorkBenches(detailInfo.getWorkBenches());
+                        detailOrderInfo.setSetting(false);
+
+                        DetailDateByWorkbench detailDateByWorkbench = new DetailDateByWorkbench();
+                        detailDateByWorkbench.setId(UUID.randomUUID());
+                        detailDateByWorkbench.setDetailDateEnd(null);
+                        detailDateByWorkbench.setDetailDateStart(null);
+                        detailDateByWorkbench.setWorkBench(detailInfo.getWorkBenches());
+                        detailDateByWorkbench.setPriority(detailInfo.getPriority());
+                        detailDateByWorkbench.setSetting(false);
+
+                        detailOrderInfos.add(detailOrderInfo);
+                        detailDateByWorkbenchs.add(detailDateByWorkbench);
+                    }
+                    detailOrderLists.add(detailOrderList);
+                    detailOrderList.setDetailOrderInfos(detailOrderInfos);
+                    detailOrderList.setDetailDateByWorkbench(detailDateByWorkbenchs);
+                    detailOrderListService.saveDetailOrderList(detailOrderList);
                 }
-                detailsOrder.setDetail(detailService.getDetailById(UUID.fromString(detailId.get(i))));
-                isCalculated = new ArrayList<>();
-//                for (WorkBench workBench : detailService.getDetailById(UUID.fromString(detailId.get(i))).getWorkBenches()) {
-//                    isCalculated.add(false);
-//                }
-                detailsOrder.setIsCalculated(isCalculated);
-                detailsOrder.setCount(countDetailList.get(i));
-                detailInfoService.saveDetailInfo(detailsOrder);
+                detailOrder.setDetailOrderLists(detailOrderLists);
+                detailsOrder.setDetailOrder(detailOrder);
+                detailOrderService.saveDetailOrder(detailOrder);
             }
             list.add(detailsOrder);
-            detailsOrder.setDetailDateByWorkbench(detailDateByWorkbenches);
-            detailDateByWorkbenches = new ArrayList<>();
         }
-
-
         order.setDetailsOrders(list);
+
+        oldOrderService.fillOldOrderByOrder(order);
         orderService.saveOrder(order);
         return "redirect:/orders";
     }
@@ -264,7 +295,7 @@ public class OrderController {
         order.setPainting(painting);
         for (int i = 0; i < detailId.size(); i++) {
             if (!detailId.get(i).contains("Выбранная: ")) {
-                order.getDetailsOrders().get(i).setDetail(detailService.getDetailById(UUID.fromString((detailId.get(i).replace("Выбранная: ", "")))));
+//                order.getDetailsOrders().get(i).setDetail(detailService.getDetailById(UUID.fromString((detailId.get(i).replace("Выбранная: ", "")))));
             }
             order.getDetailsOrders().get(i).setCount(countDetail.get(i));
         }
@@ -292,34 +323,30 @@ public class OrderController {
     /**
      * Страница добавления детали к заказу метод POST
      *
-     * @param numberOrder Номер заказа
      * @param detailId    Идентификатор детали
      * @param countDetail Количество детаелй
-     * @param dateStart   Дата запуска в производство
-     * @param comment     Комментарий
      * @param model       Модель
      * @return Страница всех заказов
      */
     @PostMapping("/orders/add/{id}")
-    public String addNewElementForOrderPost(@RequestParam(required = true) String numberOrder,
+    public String addNewElementForOrderPost(@PathVariable(value = "id") String id,
+
                                             @RequestParam(required = true) List<String> detailId,
-                                            @RequestParam(required = true) List<String> countDetail,
-                                            @RequestParam(required = true) List<String> dateStart,
-                                            @RequestParam(required = true) String comment, Model model
+                                            @RequestParam(required = true) List<String> countDetail, Model model
     ) {
-        Order order = orderService.getOrderByNumber(Integer.parseInt(numberOrder));
+        Order order = orderService.getOrderById(UUID.fromString(id));
         List<DetailsOrder> detailsOrders = order.getDetailsOrders();
         int increment = detailsOrders.size();
         for (int i = 0; i < detailId.size(); i++) {
             if (detailId.get(i).equals("Выбирите деталь")) {
                 allModel(model);
-                model.addAttribute("order", orderService.getOrderByNumber(Integer.parseInt(numberOrder)));
+//                model.addAttribute("order", orderService.getOrderByNumber(Integer.parseInt(numberOrder)));
                 model.addAttribute("detailError", "Не выбрана деталь!");
                 return "addNewElementForOrder";
             }
             if (countDetail.get(i).equals("")) {
                 allModel(model);
-                model.addAttribute("order", orderService.getOrderByNumber(Integer.parseInt(numberOrder)));
+//                model.addAttribute("order", orderService.getOrderByNumber(Integer.parseInt(numberOrder)));
                 model.addAttribute("countDetailError", "Не может быть пустым!");
                 return "addNewElementForOrder";
             }
@@ -327,20 +354,15 @@ public class OrderController {
             DetailsOrder detailsOrder = new DetailsOrder();
             detailsOrder.setIncrement(increment);
             detailsOrder.setId(UUID.randomUUID());
-            detailsOrder.setDetail(detailService.getDetailById(UUID.fromString(detailId.get(i))));
+//            detailsOrder.setDetail(detailService.getDetailById(UUID.fromString(detailId.get(i))));
             detailsOrder.setCount(Integer.parseInt(countDetail.get(i)));
 //            detailsOrder.setDateStart(dateStart.get(i).equals("") ? null : LocalDateTime.parse(dateStart.get(i)));
 
-            List<Boolean> isCalculated = new ArrayList<>();
-//            for (int j = 0; j < detailsOrder.getDetail().getWorkBenches().size(); j++) {
-//                isCalculated.add(false);
-//            }
-            detailsOrder.setIsCalculated(isCalculated);
             detailsOrders.add(detailsOrder);
             increment++;
         }
         order.setDetailsOrders(detailsOrders);
-        order.setComment(comment.equals("") ? order.getComment() : "; " + comment);
+
         orderService.saveOrder(order);
         return "redirect:/orders";
     }
@@ -401,7 +423,7 @@ public class OrderController {
      */
     @GetMapping("orders/calculationOrder/{id}")
     public String calculationOrder(@PathVariable(value = "id") String id, Model model) {
-        model.addAttribute("order", orderService.getOrderById(UUID.fromString(id)));
+        model.addAttribute("order", orderService.getOrderDtoById(UUID.fromString(id)));
         model.addAttribute("user", userService.getUserWeb());
         return "calculationOrder";
     }
@@ -413,7 +435,28 @@ public class OrderController {
      * @return Страница заказа
      */
     @PostMapping("orders/calculationOrder/{id}")
-    public String calculationOrder(@PathVariable(value = "id") String id) {
+    public String calculationOrder(@PathVariable(value = "id") String id, @RequestParam(required = true) List<String> isSelected) {
+        Order order = orderService.getOrderById(UUID.fromString(id));
+
+        List<DetailsOrder> detailsOrders = order.getDetailsOrders();
+        for (String s : isSelected) {
+            UUID detailListId = UUID.fromString(s);
+            for (DetailsOrder detailsOrder : detailsOrders) {
+                List<DetailOrderList> detailOrderLists = detailsOrder.getDetailOrder().getDetailOrderLists();
+                for (DetailOrderList detailOrderList : detailOrderLists) {
+                    if (detailOrderList.getId().equals(detailListId)) {
+                        detailOrderList.setSelected(true);
+                        break;
+                    }
+                }
+            }
+        }
+        List<DetailsOrder> detailsOrder = order.getDetailsOrders();
+        for (DetailsOrder value : detailsOrder) {
+            List<DetailOrderList> detailOrderLists = value.getDetailOrder().getDetailOrderLists();
+            DetailOrderList.removeIf(detailOrderLists);
+        }
+        orderService.saveOrder(order);
         orderService.raschet(UUID.fromString(id));
         return "redirect:/orders/calculationOrder/" + id;
     }
@@ -453,6 +496,7 @@ public class OrderController {
 
     /**
      * Страница завершенного заказа
+     *
      * @param model
      * @return Страница завершенного заказа
      */
@@ -461,5 +505,23 @@ public class OrderController {
         model.addAttribute("completed_order", completedOrderService.getOneCompletedOrderById(UUID.fromString(id)));
         model.addAttribute("user", userService.getUserWeb());
         return "oneCompletedOrders";
+    }
+
+    @PostMapping("orders/rollback/{id}")
+    public String rollbackCalculateOrder(@PathVariable(value = "id") String id, Model model) {
+        Order order = orderService.getOrderById(UUID.fromString(id));
+        OrderDto orderDto = orderService.getOrderDtoById(UUID.fromString(id));
+        List<Map<String, Object>> call = db.call("select max(increment) from orders");
+        long maxIncrement = (long) call.get(0).get("max");
+        if (maxIncrement == order.getIncrement()) {
+            oldOrderService.fillOrderByOldOrder(UUID.fromString(id), order);
+        } else {
+            model.addAttribute("order", orderDto);
+            model.addAttribute("user", userService.getUserWeb());
+            model.addAttribute("errorRollback", "Откатить можео только последний");
+            return "calculationOrder";
+        }
+
+        return "redirect:/orders/calculationOrder/" + id;
     }
 }

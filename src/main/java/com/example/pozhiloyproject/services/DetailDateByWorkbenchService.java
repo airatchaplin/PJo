@@ -14,4 +14,8 @@ public class DetailDateByWorkbenchService {
     public void saveDetailDateByWorkbench(DetailDateByWorkbench detailDateByWorkbench){
         detailDateByWorkbenchRepository.save(detailDateByWorkbench);
     }
+
+    public void deleteDetailDateByWorkbench(DetailDateByWorkbench dateByWorkbench) {
+        detailDateByWorkbenchRepository.delete(dateByWorkbench);
+    }
 }

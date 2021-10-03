@@ -30,7 +30,7 @@
             </tr>
             </tbody>
         </table>
-        <label style="color: red">${contragentError}</label>
+        <div class="error-text">${contragentError}</div>
     </div>
 </form:form>
 </body>

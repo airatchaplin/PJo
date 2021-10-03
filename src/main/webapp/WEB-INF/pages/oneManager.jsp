@@ -17,7 +17,7 @@
 <jsp:include page="../nav/nav_first.jsp"></jsp:include>
 <jsp:include page="../nav/manager_nav_second.jsp"></jsp:include>
 
-<div class="main" style="margin-top: 120px;">
+<div class="main" >
     <table class="simple-little-table" cellspacing='0'>
         <thead>
         <tr>

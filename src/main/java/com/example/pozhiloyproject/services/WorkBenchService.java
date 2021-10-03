@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +61,8 @@ public class WorkBenchService {
             workBenchDto = new WorkBenchDto();
             workBenchDto.setId((UUID) row.get("workbenchId"));
             workBenchDto.setName(String.valueOf(row.get("workbenchName")));
-            workBenchDto.setDateEndDetail(LocalDateTime.parse(row.get("date_end_detail").toString().replace(" ", "T")));
+            LocalDateTime parse = LocalDateTime.parse(row.get("date_end_detail").toString().replace(" ", "T"));
+            workBenchDto.setDateEndDetail(parse.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
             workBenchDto.setTypeOperation(String.valueOf(row.get("typeOperationId")));
             workBenchDto.setCurrentThickness((Double) row.get("current_thickness"));
             workBenchDtos.add(workBenchDto);
@@ -152,17 +154,18 @@ public class WorkBenchService {
             workBenchDto = new WorkBenchDto();
             workBenchDto.setId((UUID) row.get("workbenchId"));
             workBenchDto.setName(String.valueOf(row.get("workbenchName")));
-            workBenchDto.setDateEndDetail(LocalDateTime.parse(row.get("date_end_detail").toString().replace(" ", "T")));
+            LocalDateTime parse = LocalDateTime.parse(row.get("date_end_detail").toString().replace(" ", "T"));
+            workBenchDto.setDateEndDetail(parse.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
             workBenchDto.setTypeOperation(String.valueOf(row.get("typeOperationId")));
             workBenchDto.setCurrentThickness((Double) row.get("current_thickness"));
             workBenchDtos.add(workBenchDto);
         }
-        DetailDto detailDto = detailService.getDetailDtoById(detailId);
-        for (int i = 0; i < detailDto.getDetailInfoDtos().size(); i++) {
-            int finalI = i;
-            workBenchDtos.removeIf(x->x.getId().equals(detailDto.getDetailInfoDtos().get(finalI).getWorkBenchDto().getId()));
-
-        }
+//        DetailDto detailDto = detailService.getDetailDtoById(detailId);
+//        for (int i = 0; i < detailDto.getDetailInfoDtos().size(); i++) {
+//            int finalI = i;
+//            workBenchDtos.removeIf(x->x.getId().equals(detailDto.getDetailInfoDtos().get(finalI).getWorkBenchDto().getId()));
+//
+//        }
         return workBenchDtos;
     }
 }

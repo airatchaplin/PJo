@@ -3,10 +3,12 @@ package com.example.pozhiloyproject.models;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import com.example.pozhiloyproject.dto.DetailInfoDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +26,8 @@ public class Order {
      */
     @Id
     private UUID id;
+
+    long increment;
 
     /**
      * Номер заказа
@@ -71,7 +75,6 @@ public class Order {
     private String painting;
 
 
-
     /**
      * Дата запуска в производство
      */
@@ -81,4 +84,12 @@ public class Order {
      * Дата заверешнения
      */
     private LocalDateTime dateEndOrder;
+
+    private boolean isCalculated;
+
+    public static List<Order> compareIncrement(List<Order> orderList) {
+        Comparator<Order> comparator = Comparator.comparing(Order::getIncrement);
+        orderList.sort(comparator);
+        return orderList;
+    }
 }

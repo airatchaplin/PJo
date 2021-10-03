@@ -16,7 +16,7 @@
 <jsp:include page="../nav/subsequence_nav_second.jsp"></jsp:include>
 
 
-<div class="main" style="margin-top: 120px">
+<div class="main">
     <table class="simple-little-table" cellspacing='0'>
         <thead>
         <tr>

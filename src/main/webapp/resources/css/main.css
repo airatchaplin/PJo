@@ -4,7 +4,8 @@ body {
 }
 
 .main {
-    margin-top: 180px
+    /*margin-top: 180px*/
+    margin-top: 10px
 }
 
 button {
@@ -43,39 +44,46 @@ a {
 }
 
 .nav-first {
-    position: fixed;
+    /*position: fixed;*/
     box-shadow: 0 0 5px;
     display: flex;
     justify-content: space-between;
     right: 0;
     left: 0;
-    background: #d1d1d1;
+    /*background: #d1d1d1;*/
+    background: #d1d1d100;
     top: 0;
+    height: 52px;
 }
 
 .nav-second {
-    position: fixed;
+    /*position: fixed;*/
     box-shadow: 0 5px 5px -5px;
     display: flex;
     justify-content: space-between;
     right: 0;
     left: 0;
-    background: #f2f2f2;
+    background: #d1d1d100;
+    /*background: #f2f2f2;*/
     /*padding: 15px;*/
     top: 0;
-    margin-top: 60px;
+    /*margin-top: 60px;*/
+    height: 52px;
 }
+
 .nav-third {
-    position: fixed;
+    /*position: fixed;*/
     box-shadow: 0 5px 5px -5px;
     display: flex;
     justify-content: space-between;
     right: 0;
     left: 0;
-    background: #f2f2f2;
+    height: 52px;
+    /*background: #f2f2f2;*/
+    background: #d1d1d100;
     /*padding: 15px;*/
     top: 0;
-    margin-top: 120px;
+    /*margin-top: 120px;*/
 }
 
 
@@ -161,29 +169,38 @@ button {
     border-radius: 5px;
 
 }
-.button-nav-second{
+
+.button-nav-second {
     color: black;
     width: 170px;
     height: 50px;
-    background: #f2f2f2;
+    /*background: #f2f2f2;*/
+    background: #d1d1d100;
+    font-variant: all-small-caps;
 }
-.button-nav-first{
-    background: #d1d1d1;
+
+.button-nav-first {
+    /*background: #d1d1d1;*/
+    background: #d1d1d100;
     color: black;
     width: 120px;
     height: 50px;
+    font-variant: all-small-caps;
 }
-.button-filter{
+
+.button-filter {
     color: black;
     background: #ececec;
     width: 30px;
     margin-left: 5px;
 }
-.input-hover:hover{
+
+.input-hover:hover {
     background: #f2f2f2;
     background: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#f0f0f0));
     background: -moz-linear-gradient(top, #f2f2f2, #f0f0f0);
 }
+
 button:hover {
     transform: translateY(2px);
     box-shadow: 0px 0px transparent, 0px 5px 10px rgba(0, 0, 0, 0.25);
@@ -193,5 +210,11 @@ button:focus {
     outline: none;
 }
 
-
+.error-text {
+    color: red;
+    font-variant: all-small-caps;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 20px;
+}
 

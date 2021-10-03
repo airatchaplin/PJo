@@ -31,20 +31,14 @@ public class DetailsOrder {
      * Деталь
      */
     @ManyToOne
-    private Detail detail;
+    private DetailOrder detailOrder;
 
     /**
      * Последовательность
      */
     private int increment;
 
-    /**
-     * Признак что деталь рассчитана
-     */
-    @ElementCollection
-    private List<Boolean> isCalculated;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    List<DetailDateByWorkbench> detailDateByWorkbench;
+
 
 }

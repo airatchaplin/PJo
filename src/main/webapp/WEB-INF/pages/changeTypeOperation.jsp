@@ -14,7 +14,7 @@
 
 <body>
 <jsp:include page="../nav/nav_first.jsp"></jsp:include>
-<jsp:include page="../nav/typeOperation_nav_second.jsp"></jsp:include>
+<%--<jsp:include page="../nav/typeOperation_nav_second.jsp"></jsp:include>--%>
 <form:form method="post">
     <jsp:include page="../nav/nav_third_save.jsp"></jsp:include>
 
@@ -30,13 +30,14 @@
                 <td>
                     <input type="text" class="form-control" id="nameTypeOperation" name="nameTypeOperation"
                            placeholder="Введите название операции" value="${operation.name}" required>
-                    <div class="error" style="color: red;">
-                            ${errorNameTypeOperation}
-                    </div>
+
                 </td>
             </tr>
             </tbody>
         </table>
+        <div class="error-text">
+                ${errorNameTypeOperation}
+        </div>
     </div>
 </form:form>
 </body>
