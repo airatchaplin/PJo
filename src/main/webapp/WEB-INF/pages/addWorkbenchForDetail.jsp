@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Добавление станка Основной</title>
+    <title>Добавление станка - Основной</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
@@ -17,8 +17,8 @@
 <body id="bod">
 <jsp:include page="../nav/nav_first.jsp"></jsp:include>
 <jsp:include page="../nav/details_nav_second.jsp"></jsp:include>
+<jsp:include page="../nav/details_workbench_nav_third.jsp"></jsp:include>
 
-<%--    <jsp:include page="../nav/nav_third_save.jsp"></jsp:include>--%>
 <form method="post">
 <nav style="
  /* position: fixed; */

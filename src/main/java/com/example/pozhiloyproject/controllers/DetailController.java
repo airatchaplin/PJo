@@ -451,7 +451,7 @@ public class DetailController {
                                            @RequestParam(required = false) List<String> comment1,
                                            Model model) {
 
-        List<String> workbenchesId = workBenchId1.stream().filter(x->!x.equals("Выберите станок")).collect(Collectors.toList());
+        List<String> workbenchesId = workBenchId1.stream().filter(x -> !x.equals("Выберите станок")).collect(Collectors.toList());
 
         if (workbenchesId.isEmpty()) {
             DetailDto detailDto = detailService.getDetailDtoById(UUID.fromString(id));
@@ -501,5 +501,63 @@ public class DetailController {
         detailService.saveDetail(detail);
 
         return "redirect:/details/" + id;
+    }
+
+    @GetMapping("details/deleteWorkbenchMain/{id}")
+    public String deleteWorkBenchForDetailGet(@PathVariable(value = "id") String id, Model model) {
+        model.addAttribute("detail", detailService.getDetailDtoById(UUID.fromString(id)));
+        model.addAttribute("workbenches", workBenchService.getUniqueWorkBench(UUID.fromString(id)));
+        model.addAttribute("materials", Material.compare(materialService.getAllMaterials()));
+        model.addAttribute("user", userService.getUserWeb());
+        model.addAttribute("operations", subsequenceTypeOperationService.getAllSubsequenceTypeOperation());
+        for (TypeOperation typeOperation : typeOperationService.getAllTypeOperations()) {
+            List<WorkBench> workBenches = workBenchService.getWorkBenchesFilterOperationName(typeOperation.getId());
+            model.addAttribute(typeOperation.getName(), workBenches);
+        }
+        return "deleteWorkbenchForDetail";
+    }
+
+    @PostMapping("details/deleteWorkbenchMain/{id}")
+    public String deleteWorkBenchForDetailPost(@PathVariable(value = "id") String id,
+                                               @RequestParam(required = false) String detailId, Model model) {
+        Detail detail = detailService.getDetailById(UUID.fromString(detailId));
+        List<DetailInfo> detailInfos = detail.getDetailLists().get(0).getDetailInfos();
+        detailInfos.removeIf(x -> x.getWorkBenches().equals(workBenchService.getOneWorkBenchById(UUID.fromString(id))));
+
+        for (int i = 0; i < detailInfos.size(); i++) {
+            DetailInfo detailInfo = detailInfos.get(i);
+            detailInfo.setPriority(i);
+        }
+        detailService.saveDetail(detail);
+        return "redirect:/details/deleteWorkbenchMain/" + detailId;
+    }
+
+    @GetMapping("details/deleteWorkbenchAlternative/{id}")
+    public String deleteWorkBenchForDetailGet1(@PathVariable(value = "id") String id, Model model) {
+        model.addAttribute("detail", detailService.getDetailDtoById(UUID.fromString(id)));
+        model.addAttribute("workbenches", workBenchService.getUniqueWorkBench(UUID.fromString(id)));
+        model.addAttribute("materials", Material.compare(materialService.getAllMaterials()));
+        model.addAttribute("user", userService.getUserWeb());
+        model.addAttribute("operations", subsequenceTypeOperationService.getAllSubsequenceTypeOperation());
+        for (TypeOperation typeOperation : typeOperationService.getAllTypeOperations()) {
+            List<WorkBench> workBenches = workBenchService.getWorkBenchesFilterOperationName(typeOperation.getId());
+            model.addAttribute(typeOperation.getName(), workBenches);
+        }
+        return "deleteWorkbenchForDetail1";
+    }
+
+    @PostMapping("details/deleteWorkbenchAlternative/{id}")
+    public String deleteWorkBenchForDetailPost1(@PathVariable(value = "id") String id,
+                                               @RequestParam(required = false) String detailId, Model model) {
+        Detail detail = detailService.getDetailById(UUID.fromString(detailId));
+        List<DetailInfo> detailInfos = detail.getDetailLists().get(1).getDetailInfos();
+        detailInfos.removeIf(x -> x.getWorkBenches().equals(workBenchService.getOneWorkBenchById(UUID.fromString(id))));
+
+        for (int i = 0; i < detailInfos.size(); i++) {
+            DetailInfo detailInfo = detailInfos.get(i);
+            detailInfo.setPriority(i);
+        }
+        detailService.saveDetail(detail);
+        return "redirect:/details/deleteWorkbenchAlternative/" + detailId;
     }
 }
