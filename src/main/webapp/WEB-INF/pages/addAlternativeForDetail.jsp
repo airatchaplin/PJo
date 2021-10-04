@@ -1,3 +1,4 @@
+<%@ page import="java.util.stream.Collectors" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
@@ -16,11 +17,7 @@
 </head>
 <body id="bod">
 <jsp:include page="../nav/nav_first.jsp"></jsp:include>
-<nav class="nav-second">
-    <button class="button-nav-second" style="width: 195px;"
-            onclick="window.location.href = '/addDetail';">Добавить деталь
-    </button>
-</nav>
+<jsp:include page="../nav/details_nav_second.jsp"></jsp:include>
 <form method="post">
     <jsp:include page="../nav/nav_third_save.jsp"></jsp:include>
 
@@ -39,31 +36,52 @@
             </thead>
             <tbody>
             <tr>
+                <td class="detail_name">${detail.name}</td>
+                <td class="detail_material">${detail.materialName} ${detail.materialThickness}мм</td>
                 <td>
-                    <textarea name="detailName" placeholder="Введите название детали" required></textarea >
-<%--                    <input type="text" class="form-control" id="detailName" name="detailName"--%>
-<%--                           placeholder="Введите название детали" value="" required>--%>
-                </td>
-                <td>
-                    <select class="form-control" name="materialId">
-                        <option selected value="Выберите материал">Выбирите материал</option>
-                        <c:forEach items="${materials}" var="material">
-                            <option value="${material.id}">${material.name} ${material.thickness}мм</option>
-                        </c:forEach>
-                    </select>
-                </td>
-                <td id="columnOperation">
-                    <select onchange="test1(this)" class="form-control">
-                        <option selected value="Выберите операции">Выбирите операции</option>
-                        <c:forEach items="${operations}" var="operation">
-                            <option value="${operation.description}">${operation.description}</option>
-                        </c:forEach>
-                    </select>
+                    ${typeOperationsName}
                 </td>
                 <td>Основной</td>
-                <td id="columnWorkBench"></td>
-                <td id="columnTimeWork"></td>
-                <td id="columnComment"></td>
+                <td>
+                    <c:set var="countGibka" value="0" scope="page"/>
+                    <c:set var="countRezka" value="0" scope="page"/>
+                    <c:forEach items="${detail.detailListDtos.get(0).detailInfoDtos}" var="detailInfo">
+                        <c:if test="${detailInfo.workBenchDto.typeOperation.equals('ГИБКА')}">
+                            <c:if test="${countGibka>0}">
+                                <pre style="color: red">Альтернатива: ${detailInfo.workBenchDto.name}</pre>
+                            </c:if>
+                            <c:if test="${countGibka==0}">
+                                <pre>${detailInfo.workBenchDto.name}</pre>
+                                <c:set var="countGibka" value="${countGibka + 1}" scope="page"/>
+                            </c:if>
+                        </c:if>
+                        <c:if test="${detailInfo.workBenchDto.typeOperation.equals('РЕЗКА')}">
+                            <c:if test="${countRezka>0}">
+                                <pre style="color: red">Альтернатива: ${detailInfo.workBenchDto.name}</pre>
+                            </c:if>
+                            <c:if test="${countRezka==0}">
+                                <pre>${detailInfo.workBenchDto.name}</pre>
+                                <c:set var="countRezka" value="${countRezka + 1}" scope="page"/>
+                            </c:if>
+                        </c:if>
+                        <c:if test="${!detailInfo.workBenchDto.typeOperation.equals('ГИБКА') && !detailInfo.workBenchDto.typeOperation.equals('РЕЗКА')  }">
+                            <pre>${detailInfo.workBenchDto.name}</pre>
+                        </c:if>
+                    </c:forEach>
+                </td>
+                <td>
+                    <c:forEach items="${detail.detailListDtos.get(0).detailInfoDtos}" var="detailInfo">
+                        <pre>${detailInfo.timeWork}</pre>
+                    </c:forEach>
+                </td>
+                <td>
+                    <c:forEach items="${detail.detailListDtos.get(0).detailInfoDtos}" var="detailInfo">
+                        <pre>${detailInfo.comment}</pre>
+                    </c:forEach>
+                </td>
+                <%--                <td id="columnWorkBench"></td>--%>
+                <%--                <td id="columnTimeWork"></td>--%>
+                <%--                <td id="columnComment"></td>--%>
             </tr>
             <tr>
                 <td></td>
@@ -97,7 +115,7 @@
             </tr>
             </tbody>
         </table>
-        <div class="error-text" >
+        <div class="error-text">
             ${detailError}
         </div>
     </div>

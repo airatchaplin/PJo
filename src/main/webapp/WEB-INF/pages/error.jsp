@@ -12,7 +12,7 @@
 </head>
 <body>
 <jsp:include page="../nav/nav_first_error.jsp"></jsp:include>
-<h1 style="height: 100vh;
+<h1 style="height: 85vh;
   display: flex;
   align-items: center;
   justify-content: center;">Нет доступа</h1>

@@ -21,7 +21,7 @@
         </div>
 
         <div>
-            <button class="button-nav-second" formaction="/orders/rollback/${order.id}" type="submit">Откатить изменения</button>
+            <button class="button-nav-second" formaction="/orders/rollback/${order.id}" type="submit">Отменить</button>
         </div>
     </nav>
 
@@ -98,10 +98,10 @@
                                     ${detailsOrders.detailOrder.name}
                             </td>
                             <td>
-                                    ${detailsOrders.detailOrder.material.name} ${detailsOrders.detailOrder.material.thickness}мм
+                                    ${detailsOrders.detailOrder.material.name} ${detailsOrders.detailOrder.material.thickness} мм
                             </td>
                             <td>
-                                    ${detailsOrders.count}
+                                    ${detailsOrders.count} шт
                             </td>
                         </c:if>
                         <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==1}">
@@ -234,14 +234,14 @@
                         <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==0}">
                             <td>
                                 <c:forEach items="${detailLists.detailOrderInfos}" var="workbench">
-                                    <pre>${workbench.workBenches.currentThickness}мм</pre>
+                                    <pre>${workbench.workBenches.currentThickness} мм</pre>
                                 </c:forEach>
                             </td>
                         </c:if>
                         <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==1}">
                             <td style="background: #fee8e8;">
                                 <c:forEach items="${detailLists.detailOrderInfos}" var="workbench">
-                                    <pre>${workbench.workBenches.currentThickness}мм</pre>
+                                    <pre>${workbench.workBenches.currentThickness} мм</pre>
                                 </c:forEach>
                             </td>
                         </c:if>
