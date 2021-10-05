@@ -25,41 +25,6 @@
 
     <div class="main">
 
-
-            <%--        <div class="col-sm-6" style="display: flex">--%>
-            <%--            <label style="margin-left: 10px;margin-top: 15px;width: 60%;" for="numberOrder" class="form-label">Номер--%>
-            <%--                заказа</label>--%>
-            <%--            <input style="margin: 10px;" type="text" class="form-control" id="numberOrder"--%>
-            <%--                   name="numberOrder"--%>
-            <%--                   placeholder="Введите номер детали" value="" required>--%>
-            <%--        </div>--%>
-            <%--        <div class="error" style="color: red;">--%>
-            <%--                ${numberOrderError}--%>
-            <%--        </div>--%>
-            <%--        <div class="col-sm-6" style="display: flex">--%>
-            <%--            <label style="margin-left: 10px;margin-top: 15px;width: 60%;" for="numberOrder" class="form-label">Выбирете--%>
-            <%--                контрагента</label>--%>
-            <%--            <select style="margin: 10px;" class="form-control" name="contragentId">--%>
-            <%--                <c:forEach items="${contragents}" var="contragent">--%>
-            <%--                    <option value="${contragent.id}">${contragent.name}</option>--%>
-            <%--                </c:forEach>--%>
-            <%--            </select>--%>
-            <%--        </div>--%>
-            <%--        <div class="col-sm-6" style="display: flex">--%>
-            <%--            <label style="margin-left: 10px;margin-top: 15px;width: 60%;" for="numberOrder"--%>
-            <%--                   class="form-label">Менеджер</label>--%>
-            <%--            <select style="margin: 10px;" class="form-control" name="managerId">--%>
-            <%--                <c:forEach items="${managers}" var="manager">--%>
-            <%--                    <option value="${manager.id}">${manager.fio_i_o}</option>--%>
-            <%--                </c:forEach>--%>
-            <%--            </select>--%>
-            <%--        </div>--%>
-            <%--        <div class="col-sm-6" style="display: flex">--%>
-            <%--            <label style="margin-left: 10px;margin-top: 15px;width: 60%;" for="numberOrder" class="form-label">Коментарий</label>--%>
-            <%--            <input style="margin: 10px;" type="text" class="form-control" id="comment"--%>
-            <%--                   name="comment"--%>
-            <%--                   placeholder="Введите коментарий">--%>
-            <%--        </div>--%>
         <table class="simple-little-table" cellspacing='0'>
             <thead>
             <tr>
@@ -76,7 +41,6 @@
                         <img style="width: 12px" src="../../resources/icon/minus.png" alt=""></button>
                 </th>
                 <th>Количество</th>
-                <th>Дата запуска в производство</th>
                 <th>Комментарий</th>
             </tr>
             </thead>
@@ -108,21 +72,10 @@
                             <option value="${detail.id}">${detail.name}</option>
                         </c:forEach>
                     </select>
-                        <%--                        <select class="selectpicker" data-show-subtext="true" data-live-search="true" name="detailName">--%>
-                        <%--                            <option value="Выбирите деталь">Выбирите деталь</option>--%>
-                        <%--                            <c:forEach items="${details}" var="detail">--%>
-                        <%--                                <option data-subtext="Длина:${detail.length} Ширина:${detail.width} Толщина:${detail.thickness}"--%>
-                        <%--                                        value="${detail.getName()}">${detail.getName()}</option>--%>
-                        <%--                            </c:forEach>--%>
-                        <%--                        </select>--%>
                 </td>
                 <td>
                     <input type="text" class="form-control" id="countDetail" name="countDetail"
                            placeholder="Количество" required>
-                </td>
-                <td>
-                    <input type="datetime-local" class="form-control" id="dateStart"
-                           name="dateStart">
                 </td>
                 <td>
                     <input type="text" class="form-control" id="comment"
@@ -147,8 +100,6 @@
         html += '<td></td>';
         html += '<td><select class="form-control" name="detailId"> <option value="Выбирите деталь">Выбирите деталь</option><c:forEach items="${details}" var="detail"> <option value="${detail.id}">${detail.name}</option></c:forEach> </select> </td>';
         html += '<td><input type="text" class="form-control" id="countDetail" name="countDetail" placeholder="Количество" required> </td>';
-        html += '<td><div> <input type="datetime-local" class="form-control" id="dateStart" name="dateStart"> </div></td>';
-
         html += '<td></td>';
         html += '</tr>';
         $('table').append(html);

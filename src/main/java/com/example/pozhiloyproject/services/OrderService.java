@@ -195,6 +195,7 @@ public class OrderService {
             detailsOrderDto.setDetailOrder(detailOrderDto);
             detailsOrderDtos.add(detailsOrderDto);
         }
+        DetailsOrderDto.comparePriority(detailsOrderDtos);
         orderDto.setDetailsOrders(detailsOrderDtos);
         return orderDto;
     }
@@ -326,7 +327,7 @@ public class OrderService {
                 } else {
                     //Расчет станков гибки
                     List<DetailOrderInfo> gibkaList = detailOrderList.getDetailOrderInfos()
-                            .stream().filter(x -> x.getWorkBenches().getTypeOperation().getName().equals("ГИБКА"))
+                            .stream().filter(x -> x.getWorkBenches().getTypeOperation().getName().equals("ГИБКА") && !x.getTimeWork().equals("00:00:00"))
                             .collect(Collectors.toList());
                     LocalDateTime localDateTimeCHPY_big = null;
                     LocalDateTime localDateTimeCHPY_small = null;
@@ -422,6 +423,7 @@ public class OrderService {
                         if (orderInfo.getWorkBenches().getId().equals(workbenchIdMinDateEnd)) {
                             workBenches = orderInfo.getWorkBenches();
                             workBenches.setCurrentThickness(detailThickness);
+//                            orderInfo.getWorkBenches(false);
                         }
                     }
                     gibkaList.removeIf(x -> x.getWorkBenches().getId().equals(workbenchIdMinDateEnd));

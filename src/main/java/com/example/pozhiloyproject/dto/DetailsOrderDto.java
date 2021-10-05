@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,4 +37,10 @@ public class DetailsOrderDto {
      * Последовательность
      */
     private int increment;
+
+    public static List<DetailsOrderDto> comparePriority(List<DetailsOrderDto> detailsOrderDtos) {
+        Comparator<DetailsOrderDto> comparator = Comparator.comparing(DetailsOrderDto::getIncrement);
+        detailsOrderDtos.sort(comparator);
+        return detailsOrderDtos;
+    }
 }

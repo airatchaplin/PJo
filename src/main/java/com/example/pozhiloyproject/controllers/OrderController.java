@@ -1,13 +1,11 @@
 package com.example.pozhiloyproject.controllers;
 
-import com.example.pozhiloyproject.dto.DetailDto;
-import com.example.pozhiloyproject.dto.OrderDto;
+import com.example.pozhiloyproject.dto.*;
 import com.example.pozhiloyproject.helper.Db;
 import com.example.pozhiloyproject.models.*;
 import com.example.pozhiloyproject.services.*;
 
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -15,10 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * Контроллер заказов
@@ -58,6 +52,9 @@ public class OrderController {
 
     @Autowired
     OldOrderService oldOrderService;
+
+    @Autowired
+    WorkBenchService workBenchService;
 
     @Autowired
     Db db;
@@ -428,6 +425,7 @@ public class OrderController {
         return "calculationOrder";
     }
 
+
     /**
      * Страница расчета заказа метод POST
      *
@@ -456,6 +454,39 @@ public class OrderController {
             List<DetailOrderList> detailOrderLists = value.getDetailOrder().getDetailOrderLists();
             DetailOrderList.removeIf(detailOrderLists);
         }
+
+        Set<String> workbenchName = new LinkedHashSet<>();
+        for (DetailsOrder item : detailsOrder) {
+            workbenchName.add(item.getDetailOrder().getDetailOrderLists().get(0).getDetailOrderInfos().get(0).getWorkBenches().getName());
+        }
+        List<String> workbenchNames = new ArrayList<>(workbenchName);
+
+        List<DetailsOrder> detailsOrderSort = new ArrayList<>();
+        int countIncr = 0;
+        for (String name : workbenchNames) {
+            WorkBench workBench = workBenchService.getOneWorkBenchByName(name);
+            Double currentThickness = workBench.getCurrentThickness();
+
+            List<DetailsOrder> detailsOrderList = new ArrayList<>();
+            for (DetailsOrder item : detailsOrder) {
+                WorkBench workBenches = item.getDetailOrder().getDetailOrderLists().get(0).getDetailOrderInfos().get(0).getWorkBenches();
+                Double thickness = item.getDetailOrder().getMaterial().getThickness();
+                if (workBench.equals(workBenches) && thickness.equals(currentThickness)) {
+                    item.setIncrement(countIncr);
+                    detailsOrderSort.add(item);
+                    countIncr++;
+                } else if (workBench.equals(workBenches) && !thickness.equals(currentThickness)) {
+                    detailsOrderList.add(item);
+                }
+            }
+            for (DetailsOrder value : detailsOrderList) {
+                value.setIncrement(countIncr);
+                detailsOrderSort.add(value);
+                countIncr++;
+            }
+        }
+
+        order.setDetailsOrders(detailsOrderSort);
         orderService.saveOrder(order);
         orderService.raschet(UUID.fromString(id));
         return "redirect:/orders/calculationOrder/" + id;

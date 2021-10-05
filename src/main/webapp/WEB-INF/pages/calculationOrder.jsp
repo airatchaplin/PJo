@@ -97,7 +97,7 @@
                             <td>
                                     ${detailsOrders.detailOrder.name}
                             </td>
-                            <td>
+                            <td style="width: 7%;">
                                     ${detailsOrders.detailOrder.material.name} ${detailsOrders.detailOrder.material.thickness} мм
                             </td>
                             <td>
@@ -106,7 +106,7 @@
                         </c:if>
                         <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==1}">
                             <td style="background: #fee8e8;"></td>
-                            <td style="background: #fee8e8;"></td>
+                            <td style="background: #fee8e8;width: 7%;"></td>
                             <td style="background: #fee8e8;"></td>
                         </c:if>
                         <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==0}">
