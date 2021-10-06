@@ -22,7 +22,7 @@
     <table class="simple-little-table" cellspacing='0'>
         <thead>
         <tr>
-            <th>№ заказа</th>
+            <th class="number_orders" style="text-align: center">№</th>
             <th>Контрагент</th>
             <th>Экономист</th>
             <th>Менеджер</th>
@@ -37,15 +37,15 @@
 
         <tr>
 
-            <td> ${order.numberOrder} </td>
+            <td  class="number_orders" style="text-align: center"> ${order.numberOrder} </td>
             <td> ${order.objectName.name} </td>
             <td>${order.manager.fio_i_o} </td>
             <td>${order.manager.fio_i_o} </td>
             <td>
-                ${order.dateStart}
+                ${order.dateStartOrder}
             </td>
             <td>
-                ${order.dateEnd}
+                ${order.dateEndOrder}
             </td>
 
             <td>
@@ -74,17 +74,24 @@
         <c:forEach items="${order.detailsOrders}" var="ord">
             <tr>
                 <td>
-                        ${ord.detail.name}
+                        ${ord.detailOrder.name}
                 </td>
                 <td>
                         ${ord.count}
                 </td>
 
-                <td class="deletElem">
-                    <form:form action="/orders/deletion/${order.id}/${ord.increment}"
-                               method="post">
-                        <input style="border: 0;cursor: pointer" type="submit" value="&#128937;">
-                    </form:form>
+                <td style="padding: 0;width: 1%;">
+<%--                    <form:form action="/orders/deletion/${order.id}/${ord.increment}"--%>
+<%--                               method="post">--%>
+<%--                        <input style="border: 0;cursor: pointer" type="submit" value="&#128937;">--%>
+<%--                    </form:form>--%>
+                    <form method="post" action="/orders/deletion/${order.id}/${ord.increment}">
+                        <button style="color: black;width: 150px;height: 50px;background: #d1d1d100;font-variant: all-small-caps;"
+                                type="submit"
+                                onclick="window.location.href = '/orders/deletion/${order.id}/${ord.increment}';">
+                            Удалить
+                        </button>
+                    </form>
                 </td>
             </tr>
         </c:forEach>

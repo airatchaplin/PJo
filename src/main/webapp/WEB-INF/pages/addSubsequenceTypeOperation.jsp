@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Добавление последовательности операций</title>
+    <title>Добавление очереди операций</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
@@ -29,12 +29,12 @@
         <table class="simple-little-table" cellspacing='0'>
             <thead>
             <tr>
-                <th>Последовательность операций
+                <th>Очередь операций
                         <%--                    <input class="input_js" type="button" style="margin: 10px;cursor: pointer" value="+" id="add_more_fields"/>--%>
                         <%--                    <input class="input_js" type="button" style="cursor: pointer" onclick="deleteRow()" value=" - ">--%>
-                    <button class="input_js" type="button" id="add_more_fields">
+                    <button style="background: #89e1fe;" class="input_js" type="button" id="add_more_fields">
                         <img style="width: 12px" src="../../resources/icon/plus.png" alt=""></button>
-                    <button class="input_js" type="button" onclick="deleteRow()">
+                    <button style="background: #89e1fe;" class="input_js" type="button" onclick="deleteRow()">
                         <img style="width: 12px" src="../../resources/icon/minus.png" alt=""></button>
                 </th>
             </tr>

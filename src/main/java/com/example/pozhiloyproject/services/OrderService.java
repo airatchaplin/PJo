@@ -359,8 +359,8 @@ public class OrderService {
                         if (!currentThickness.equals(detailThickness)) {
                             dateEndDetailWorkbench = Helper.addTwoHoursWithoutDayOff(dateEndDetailWorkbench);
                             for (int k = 0; k < detailOrderList.getDetailDateByWorkbench().size(); k++) {
-                                for (int l = 0; l < detailOrderList.getDetailOrderInfos().size(); l++) {
-                                    if (detailInfo.equals(detailOrderList.getDetailOrderInfos().get(l))) {
+                                for (DetailOrderInfo detailOrderInfo : gibkaList) {
+                                    if (detailOrderList.getDetailOrderInfos().get(k).equals(detailOrderInfo)) {
                                         detailOrderList.getDetailDateByWorkbench().get(k).setSetting(true);
                                         break;
                                     }

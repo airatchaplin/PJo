@@ -23,7 +23,7 @@
         <table class="simple-little-table" cellspacing='0'>
             <thead>
             <tr>
-                <th>№ заказа</th>
+                <th class="number_orders" style="text-align: center">№</th>
                 <th>Контрагент</th>
                 <th>Экономист</th>
                 <th>Менеджер</th>
@@ -36,7 +36,7 @@
             </thead>
             <tbody>
             <tr>
-                <td> ${order.numberOrder} </td>
+                <td class="number_orders" style="text-align: center"> ${order.numberOrder} </td>
                 <td> ${order.objectName.name} </td>
                 <td>${order.manager.fio_i_o} </td>
                 <td>${order.manager.fio_i_o} </td>
@@ -82,6 +82,12 @@
                 </tr>
                 </thead>
                 <tbody>
+                <c:forEach items="${order.detailsOrders}" var="detailsOrders">
+                    <tr>
+                        <td>${detailsOrders.detailOrder.name}</td>
+                        <td>${detailsOrders.count}</td>
+                    </tr>
+                </c:forEach>
                 <tr>
                     <td>
                         <select class="form-control" name="detailId">
@@ -90,22 +96,19 @@
                                 <option value="${detail.id}">${detail.name}</option>
                             </c:forEach>
                         </select>
-                        <div class="error" style="color: red;text-align: center">
-                                ${detailError}
-                        </div>
                     </td>
                     <td>
                         <input type="text" class="form-control" id="countDetail" name="countDetail"
-                               placeholder="Количество">
-                        <div class="error" style="color: red;text-align: center">
-                                ${countDetailError}
-                        </div>
+                               placeholder="Количество" required>
                     </td>
 
 
                 </tr>
                 </tbody>
             </table>
+            <div class="error-text">
+                    ${detailError}
+            </div>
 
     </div>
 </form:form>

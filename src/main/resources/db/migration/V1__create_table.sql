@@ -1,18 +1,23 @@
 create table completed_orders
 (
-    id             uuid not null,
-    comment        varchar(255),
-    date_end       timestamp,
-    date_start     timestamp,
-    number_order   int4 not null,
-    manager_id     uuid,
-    object_name_id uuid,
+    id               uuid    not null,
+    comment          varchar(255),
+    date_end_order   timestamp,
+    date_start_order timestamp,
+    increment        int8    not null,
+    is_calculated    boolean not null,
+    number_order     int4    not null,
+    packing          varchar(255),
+    painting         varchar(255),
+    economist_id     uuid,
+    manager_id       uuid,
+    object_name_id   uuid,
     primary key (id)
 );
-create table completed_orders_detail_infos
+create table completed_orders_details_orders
 (
     completed_order_id uuid not null,
-    detail_infos_id    uuid not null
+    details_orders_id  uuid not null
 );
 create table contragents
 (
@@ -303,13 +308,15 @@ alter table if exists old_detail_order_list_detail_order_infos
 alter table if exists type_operation_work_benches
     add constraint UK_oov9sv06v8kb7gywqqmcsbk3p unique (work_benches_id);
 alter table if exists completed_orders
+    add constraint FKhfga6nc19anx7la8k52ta8rj foreign key (economist_id) references users;
+alter table if exists completed_orders
     add constraint FKlyeyp88hw379vbml5077gxae3 foreign key (manager_id) references users;
 alter table if exists completed_orders
     add constraint FK66pn2bog0lt454xfy3md1h5wg foreign key (object_name_id) references contragents;
-alter table if exists completed_orders_detail_infos
-    add constraint FKr2xejh03xcrgce53wg26b3rt9 foreign key (detail_infos_id) references details_order;
-alter table if exists completed_orders_detail_infos
-    add constraint FKh5w58l9fgl79d67uen6bd7783 foreign key (completed_order_id) references completed_orders;
+alter table if exists completed_orders_details_orders
+    add constraint FKqm26kij9nbtlnmcvpv8mtppdi foreign key (details_orders_id) references details_order;
+alter table if exists completed_orders_details_orders
+    add constraint FKcndlvqqvi475tn7f7jgg58e1b foreign key (completed_order_id) references completed_orders;
 alter table if exists detail_date_by_workbench
     add constraint FKo9fjfk95svc4x3cboncriukn1 foreign key (work_bench_id) references workbench;
 alter table if exists detail_info
@@ -398,3 +405,4 @@ alter table if exists users_roles
     add constraint FK2o0jvgh89lemvvo17cbqvdxaa foreign key (user_id) references users;
 alter table if exists workbench
     add constraint FKwm0qawryp7tsjj64o66udkgo foreign key (type_operation_id) references type_operation;
+

@@ -32,7 +32,6 @@ public class DetailOrder {
     /**
      * Информация о детали
      */
-//    @ManyToMany(cascade = CascadeType.ALL)
     @OneToMany(cascade = CascadeType.ALL)
     private List<DetailOrderList> detailOrderLists;
 

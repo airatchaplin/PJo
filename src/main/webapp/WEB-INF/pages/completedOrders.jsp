@@ -37,7 +37,7 @@
 
                 <td>
                     <c:forEach items="${order.detailInfos}" var="detail">
-                        <pre> ${detail.detail.name} </pre>
+                        <pre> ${detail.detailOrder.name} </pre>
                     </c:forEach>
                 </td>
                 <td>

@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Последовательности операций</title>
+    <title>Очередь операций</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
@@ -25,7 +25,7 @@
         <thead>
         <tr>
             <th class="number" style="text-align: center">№</th>
-            <th>Последовательности операций</th>
+            <th>Очередь операций</th>
         </tr>
         </thead>
         <tbody>

@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Удаление последовательности операции</title>
+    <title>Удаление очереди операции</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
@@ -21,7 +21,7 @@
         <table class="simple-little-table" cellspacing='0'>
             <thead>
             <tr>
-                <th>Последовательность операций</th>
+                <th>Очередь операций</th>
             </tr>
             </thead>
             <tbody>

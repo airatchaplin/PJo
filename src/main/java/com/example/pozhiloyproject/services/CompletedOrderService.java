@@ -39,10 +39,16 @@ public class CompletedOrderService {
         completedOrder.setNumberOrder(order.getNumberOrder());
         completedOrder.setObjectName(order.getObjectName());
         completedOrder.setManager(order.getManager());
-        completedOrder.setDetailInfos(order.getDetailsOrders());
-//        completedOrder.setDateStart(order.getDateStart());
-//        completedOrder.setDateEnd(order.getDateEnd());
+        completedOrder.setDetailsOrders(order.getDetailsOrders());
+        completedOrder.setDateStartOrder(order.getDateStartOrder());
+        completedOrder.setDateEndOrder(order.getDateEndOrder());
         completedOrder.setComment(order.getComment());
+        completedOrder.setCalculated(order.isCalculated());
+        completedOrder.setEconomist(order.getEconomist());
+        completedOrder.setIncrement(order.getIncrement());
+        completedOrder.setPacking(order.getPacking());
+        completedOrder.setPainting(order.getPainting());
+
         completedOrderRepository.save(completedOrder);
 
         orderRepository.delete(order);

@@ -29,8 +29,6 @@ VALUES ('21ee3088-6f02-4894-a84a-cdc9900d0bfb'::uuid, 'ПЭ', 1.2);
 INSERT INTO public.materials (id, "name", thickness)
 VALUES ('f4b5146e-8660-4a12-a3e3-1cfffa46d03b'::uuid, 'ПЭ', 1.5);
 INSERT INTO public.materials (id, "name", thickness)
-VALUES ('4a6da7e6-a8bf-40b9-8a0e-0bd8abf6802e'::uuid, 'ОЦ', 0.3);
-INSERT INTO public.materials (id, "name", thickness)
 VALUES ('735e79f5-a36b-43d8-85c0-5d4042bffe4f'::uuid, 'ПО', 2.0);
 INSERT INTO public.materials (id, "name", thickness)
 VALUES ('825d8bb4-ca85-486a-9686-1721db35c584'::uuid, 'ПО', 1.0);

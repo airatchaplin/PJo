@@ -21,12 +21,12 @@
         <table class="simple-little-table" cellspacing='0'>
             <thead>
             <tr>
-                <th>№ заказа</th>
+                <th class="number_orders" style="text-align: center">№</th>
                 <th>Контрагент</th>
                 <th>Экономист</th>
                 <th>Менеджер</th>
-                <th>Дата запуска в производство</th>
-                <th>Дата готовности заказа</th>
+                    <%--                <th>Дата запуска в производство</th>--%>
+                    <%--                <th>Дата готовности заказа</th>--%>
                 <th>Покраска</th>
                 <th>Упаковка</th>
                 <th>Коментарий</th>
@@ -35,21 +35,21 @@
             <tbody>
 
             <tr>
-                <td> ${order.numberOrder} </td>
+                <td class="number_orders" style="text-align: center"> ${order.numberOrder} </td>
                 <td> ${order.objectName.name} </td>
                 <td>${order.manager.fio_i_o} </td>
                 <td>${order.manager.fio_i_o} </td>
-                <td>
-                    <div>
-                        <input type="datetime-local" class="form-control" id="dateStart"
-                               name="dateStart">
-                    </div>
-                </td>
-                <td>
-                    <div>
-                        <input type="datetime-local" class="form-control" id="dateEnd" name="dateEnd">
-                    </div>
-                </td>
+                    <%--                <td>--%>
+                    <%--                    <div>--%>
+                    <%--                        <input type="datetime-local" class="form-control" id="dateStart"--%>
+                    <%--                               name="dateStart">--%>
+                    <%--                    </div>--%>
+                    <%--                </td>--%>
+                    <%--                <td>--%>
+                    <%--                    <div>--%>
+                    <%--                        <input type="datetime-local" class="form-control" id="dateEnd" name="dateEnd">--%>
+                    <%--                    </div>--%>
+                    <%--                </td>--%>
                 <td class="paiting">
                     <div>
                         <select name="weeksPaiting" id="weeksPaiting">
@@ -131,12 +131,14 @@
             <c:forEach items="${order.detailsOrders}" var="ord">
                 <tr>
                     <td>
-                        <select class="form-control" name="detailId">
-                            <option>Выбранная: ${ord.detail.name}</option>
-                            <c:forEach items="${details}" var="detail">
-                                <option value="${detail.id}">${detail.name}</option>
-                            </c:forEach>
-                        </select>
+                            <%--                        <select class="form-control" name="detailId">--%>
+                            <%--                            <option>Выбранная: ${ord.detailOrder.name}</option>--%>
+                            ${ord.detailOrder.name}
+                        <input type="text" name="detailId" value="${ord.detailOrder.id}" style="display: none;">
+                            <%--                            <c:forEach items="${details}" var="detail">--%>
+                            <%--                                <option value="${detail.id}">${detail.name}</option>--%>
+                            <%--                            </c:forEach>--%>
+                            <%--                        </select>--%>
                     </td>
                     <td>
                         <div>

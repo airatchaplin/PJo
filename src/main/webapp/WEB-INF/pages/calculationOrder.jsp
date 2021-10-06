@@ -30,7 +30,7 @@
         <table class="simple-little-table" cellspacing='0'>
             <thead>
             <tr>
-                <th>№ заказа</th>
+                <th class="number_orders" style="text-align: center">№</th>
                 <th>Контрагент</th>
                 <th>Экономист</th>
                 <th>Менеджер</th>
@@ -46,16 +46,10 @@
             </thead>
             <tbody>
             <tr>
-                <td> ${order.numberOrder} </td>
+                <td class="number_orders" style="text-align: center"> ${order.numberOrder} </td>
                 <td> ${order.objectName} </td>
                 <td>${order.economist} </td>
                 <td>${order.manager} </td>
-                    <%--            <td>--%>
-                    <%--                ${order.dateStart}--%>
-                    <%--            </td>--%>
-                    <%--            <td>--%>
-                    <%--                ${order.dateEnd}--%>
-                    <%--            </td>--%>
                 <td>
                         ${order.painting}
                 </td>
@@ -98,7 +92,8 @@
                                     ${detailsOrders.detailOrder.name}
                             </td>
                             <td style="width: 7%;">
-                                    ${detailsOrders.detailOrder.material.name} ${detailsOrders.detailOrder.material.thickness} мм
+                                    ${detailsOrders.detailOrder.material.name} ${detailsOrders.detailOrder.material.thickness}
+                                мм
                             </td>
                             <td>
                                     ${detailsOrders.count} шт
@@ -306,7 +301,7 @@
             </tbody>
         </table>
         <div style="color: red">
-            ${errorRollback}
+                ${errorRollback}
         </div>
 
     </div>

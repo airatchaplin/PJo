@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,10 +19,12 @@ import java.util.UUID;
 public class CompletedOrder {
 
     /**
-     * ID
+     * Id
      */
     @Id
     private UUID id;
+
+    long increment;
 
     /**
      * Номер заказа
@@ -41,24 +44,50 @@ public class CompletedOrder {
     private User manager;
 
     /**
-     * Детали в заказе
+     * Экономист
+     */
+    @ManyToOne
+    private User economist;
+
+    /**
+     * Список деталей в заказе
      */
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<DetailsOrder> detailInfos;
+    private List<DetailsOrder> detailsOrders;
 
-    /**
-     * Дата запуска в производство
-     */
-    private LocalDateTime dateStart;
-
-    /**
-     * Дата завершения заказа
-     */
-    private LocalDateTime dateEnd;
 
     /**
      * Комментарий
      */
     private String comment;
+
+    /**
+     * Упаковка
+     */
+    private String packing;
+
+    /**
+     * Покраска
+     */
+    private String painting;
+
+
+    /**
+     * Дата запуска в производство
+     */
+    private LocalDateTime dateStartOrder;
+
+    /**
+     * Дата заверешнения
+     */
+    private LocalDateTime dateEndOrder;
+
+    private boolean isCalculated;
+
+    public static List<Order> compareIncrement(List<Order> orderList) {
+        Comparator<Order> comparator = Comparator.comparing(Order::getIncrement);
+        orderList.sort(comparator);
+        return orderList;
+    }
 
 }
