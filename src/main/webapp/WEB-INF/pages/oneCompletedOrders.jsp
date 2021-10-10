@@ -20,7 +20,7 @@
     <table class="simple-little-table" cellspacing='0'>
         <thead>
         <tr>
-            <th>№ заказа</th>
+            <th class="number_orders" style="text-align: center">№</th>
             <th>Контрагент</th>
             <th>Экономист</th>
             <th>Менеджер</th>
@@ -34,7 +34,7 @@
         <tbody>
 
         <tr>
-            <td> ${completed_order.numberOrder} </td>
+            <td class="number_orders" style="text-align: center"> ${completed_order.numberOrder} </td>
             <td> ${completed_order.objectName} </td>
             <td>${completed_order.manager} </td>
             <td>${completed_order.economist} </td>
