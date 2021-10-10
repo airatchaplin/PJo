@@ -59,7 +59,6 @@ public class CompletedOrder {
     @ManyToMany(cascade = CascadeType.ALL)
     private List<CompletedDetailsOrder> detailsOrders;
 
-
     /**
      * Комментарий
      */
@@ -74,7 +73,6 @@ public class CompletedOrder {
      * Покраска
      */
     private String painting;
-
 
     /**
      * Дата запуска в производство

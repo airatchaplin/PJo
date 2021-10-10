@@ -21,8 +21,11 @@ public class DetailDateByWorkbenchDto {
     WorkBench workBench;
 
     String detailDateStart;
+
     String detailDateEnd;
+
     boolean isSetting;
+
     int priority;
 
     public static List<DetailDateByWorkbenchDto> comparePriority(List<DetailDateByWorkbenchDto> detailDateByWorkbenches) {

@@ -12,7 +12,6 @@ import java.util.UUID;
 @Setter
 public class DetailDto {
 
-
     private UUID id;
 
     /**

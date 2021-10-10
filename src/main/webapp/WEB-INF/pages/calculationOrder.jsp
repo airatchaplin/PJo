@@ -23,12 +23,11 @@
             <button class="button-nav-second" formaction="/orders/rollback/${order.id}" type="submit">Отменить</button>
         </div>
         <c:if test="${!order.calculated}">
-        <div>
-            <button class="button-nav-second" type="submit">Расчитать</button>
-        </div>
+            <div>
+                <button class="button-nav-second" type="submit">Расчитать</button>
+            </div>
         </c:if>
     </nav>
-
 
     <div class="main">
         <table class="simple-little-table" cellspacing='0'>
@@ -116,13 +115,19 @@
                             <td style="text-align: center;">
                                 <div>
                                         ${detailLists.mainOrAlternative == "1"?"Основной" :"Запасной"}
-                                    <c:if test="${detailLists.selected}">
-                                        <input style="height: 20px;margin: 0;" type="checkbox" value="${detailLists.id}"
-                                               name="isSelected" checked>
+                                    <c:if test="${!order.calculated}">
+                                        <c:if test="${detailLists.selected}">
+                                            <input style="height: 20px;margin: 0;" type="checkbox"
+                                                   value="${detailLists.id}"
+                                                   name="isSelected" checked>
+                                        </c:if>
                                     </c:if>
-                                    <c:if test="${!detailLists.selected}">
-                                        <input style="height: 20px;margin: 0;" type="checkbox" value="${detailLists.id}"
-                                               name="isSelected">
+                                    <c:if test="${!order.calculated}">
+                                        <c:if test="${!detailLists.selected}">
+                                            <input style="height: 20px;margin: 0;" type="checkbox"
+                                                   value="${detailLists.id}"
+                                                   name="isSelected">
+                                        </c:if>
                                     </c:if>
                                 </div>
                             </td>
@@ -307,7 +312,8 @@
                             <c:if test="${!order.calculated}">
                                 <td>
                                     <select class="form-control" name="increment">
-                                        <option selected value="${detailsOrders.increment}">&#9733;${detailsOrders.increment}</option>
+                                        <option selected value="${detailsOrders.increment}">
+                                            &#9733;${detailsOrders.increment}</option>
                                         <c:forEach items="${incr}" var="in">
                                             <option value="${in}">${in}</option>
                                         </c:forEach>

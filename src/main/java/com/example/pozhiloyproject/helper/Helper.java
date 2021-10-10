@@ -9,6 +9,9 @@ public class Helper {
         return object == null ? "" : object.toString();
     }
 
+    /**
+     * Добавление два дня если это выходные
+     */
     public static LocalDateTime addTwoHoursWithoutDayOff(LocalDateTime localDateTime) {
         LocalDateTime dateStartDay = LocalDateTime.parse(localDateTime.toLocalDate() + "T08:30");
         LocalDateTime dateEndDay = LocalDateTime.parse(localDateTime.toLocalDate() + "T16:30");

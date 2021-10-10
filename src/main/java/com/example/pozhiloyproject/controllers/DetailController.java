@@ -182,7 +182,7 @@ public class DetailController {
         Detail detail = new Detail();
         detail.setId(UUID.randomUUID());
         detail.setName(detailName);
-        detail.setMaterial(materialId.equals("Выберите материал") ? null : materialService.getOneMaterial(UUID.fromString(materialId)));
+        detail.setMaterial(materialService.getOneMaterial(UUID.fromString(materialId)));
 
         List<DetailList> detailLists = Stream.of(detailService.getDetailLists(workBenchId, timeWork, comment, 1))
                 .collect(Collectors.toList());
@@ -193,7 +193,6 @@ public class DetailController {
 
         detail.setTimePacking(timePacking);
         detail.setDetailLists(detailLists);
-//        detail.setDetailInfos(detailInfos);
         detailService.saveDetail(detail);
         return "redirect:/details/" + detail.getId();
     }
@@ -272,7 +271,6 @@ public class DetailController {
                                    @RequestParam(required = false) List<String> comment1,
                                    @RequestParam(required = false) String timePacking,
                                    Model model) {
-
         Detail detail = detailService.getDetailById(UUID.fromString(id));
         detail.setName(detailName);
         detail.setMaterial(materialService.getOneMaterial(UUID.fromString(materialId)));
@@ -300,7 +298,6 @@ public class DetailController {
                 }
             }
         }
-
         detailService.saveDetail(detail);
         return "redirect:/details/" + id;
     }
@@ -365,7 +362,6 @@ public class DetailController {
             return "addWorkbenchForDetail";
         }
         detail.getDetailLists().get(0).setDetailInfos(detailInfos);
-//        detail.setDetailInfos(detailInfos);
         detailService.saveDetail(detail);
         return "redirect:/details/" + id;
     }
@@ -402,7 +398,6 @@ public class DetailController {
             return "addWorkbenchForDetail";
         }
         detail.getDetailLists().get(1).setDetailInfos(detailInfos);
-//        detail.setDetailInfos(detailInfos);
         detailService.saveDetail(detail);
         return "redirect:/details/" + id;
     }
@@ -475,8 +470,6 @@ public class DetailController {
             }
             return "addAlternativeForDetail";
         }
-
-
         Detail detail = detailService.getDetailById(UUID.fromString(id));
         DetailList detailList = new DetailList();
         detailList.setId(UUID.randomUUID());
@@ -499,7 +492,6 @@ public class DetailController {
         detailList.setDetailInfos(detailInfos);
         detail.getDetailLists().add(detailList);
         detailService.saveDetail(detail);
-
         return "redirect:/details/" + id;
     }
 
@@ -523,7 +515,6 @@ public class DetailController {
         Detail detail = detailService.getDetailById(UUID.fromString(detailId));
         List<DetailInfo> detailInfos = detail.getDetailLists().get(0).getDetailInfos();
         detailInfos.removeIf(x -> x.getWorkBenches().equals(workBenchService.getOneWorkBenchById(UUID.fromString(id))));
-
         for (int i = 0; i < detailInfos.size(); i++) {
             DetailInfo detailInfo = detailInfos.get(i);
             detailInfo.setPriority(i);
@@ -552,7 +543,6 @@ public class DetailController {
         Detail detail = detailService.getDetailById(UUID.fromString(detailId));
         List<DetailInfo> detailInfos = detail.getDetailLists().get(1).getDetailInfos();
         detailInfos.removeIf(x -> x.getWorkBenches().equals(workBenchService.getOneWorkBenchById(UUID.fromString(id))));
-
         for (int i = 0; i < detailInfos.size(); i++) {
             DetailInfo detailInfo = detailInfos.get(i);
             detailInfo.setPriority(i);

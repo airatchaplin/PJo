@@ -38,5 +38,8 @@ public class CompletedDetailOrder {
     @OneToMany(cascade = CascadeType.ALL)
     private List<CompletedDetailOrderList> detailOrderLists;
 
+    /**
+     * Время упаковки в формате 00:00:00
+     */
     private String timePacking;
 }

@@ -19,16 +19,20 @@ import java.util.UUID;
 @Getter
 @Setter
 public class CompletedDetailDateByWorkbench {
+
     @Id
-    UUID id;
+    private UUID id;
 
     @ManyToOne
-    WorkBench workBench;
+    private WorkBench workBench;
 
-    LocalDateTime detailDateStart;
-    LocalDateTime detailDateEnd;
-    boolean isSetting;
-    int priority;
+    private LocalDateTime detailDateStart;
+
+    private LocalDateTime detailDateEnd;
+
+    private boolean isSetting;
+
+    private int priority;
 
     public static List<CompletedDetailDateByWorkbench> comparePriority(List<CompletedDetailDateByWorkbench> detailDateByWorkbenches) {
         Comparator<CompletedDetailDateByWorkbench> comparator = Comparator.comparing(CompletedDetailDateByWorkbench::getPriority);

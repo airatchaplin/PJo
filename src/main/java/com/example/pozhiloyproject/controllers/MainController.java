@@ -37,9 +37,6 @@ public class MainController {
 
     /**
      * Главная страница
-     *
-     * @param model
-     * @return
      */
     @GetMapping("/")
     public String main(Model model) {
@@ -53,7 +50,7 @@ public class MainController {
      * @return Страница входа
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(){
+    public String login() {
         return "login";
     }
 
@@ -211,7 +208,6 @@ public class MainController {
         model.addAttribute("user", userService.getUserWeb());
         return "redirect:/personalArea";
     }
-
 
 
 }

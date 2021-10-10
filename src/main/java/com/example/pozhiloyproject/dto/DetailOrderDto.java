@@ -36,5 +36,6 @@ public class DetailOrderDto {
     private String timePacking;
 
     String dateStartDetail;
+
     String dateEndDetail;
 }

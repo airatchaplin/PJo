@@ -26,7 +26,6 @@ public class CompletedOrderDto {
     /**
      * Контрагент
      */
-
     private String objectName;
 
     /**
@@ -42,9 +41,7 @@ public class CompletedOrderDto {
     /**
      * Список деталей в заказе
      */
-
     private List<DetailsOrderDto> detailsOrders;
-
 
     /**
      * Комментарий
@@ -61,7 +58,6 @@ public class CompletedOrderDto {
      */
     private String painting;
 
-
     /**
      * Дата запуска в производство
      */
@@ -72,6 +68,9 @@ public class CompletedOrderDto {
      */
     private String dateEndOrder;
 
+    /**
+     * Признак расчитанности заказа
+     */
     private boolean isCalculated;
 
     public static List<CompletedOrderDto> compareIncrement(List<CompletedOrderDto> orderList) {

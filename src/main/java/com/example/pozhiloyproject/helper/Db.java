@@ -1,6 +1,5 @@
 package com.example.pozhiloyproject.helper;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
@@ -17,14 +16,12 @@ public class Db {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-
     public void execute(String sql){
         try {
             jdbcTemplate.execute(sql);
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
-
     }
 
     public List<Map<String, Object>> call(String sql){
@@ -35,9 +32,6 @@ public class Db {
             e.printStackTrace();
         }
         return maps;
-
     }
-
-
 
 }
