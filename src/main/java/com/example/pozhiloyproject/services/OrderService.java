@@ -147,8 +147,8 @@ public class OrderService {
                             "order by ddbw.priority", id, detailOrder.getId()));
 
             if (!mapList.isEmpty()) {
-                LocalDateTime dateStart = LocalDateTime.parse(String.valueOf(mapList.get(0).get("detail_date_start")).replace(" ","T"));
-                LocalDateTime dateEnd =  LocalDateTime.parse(String.valueOf(mapList.get(mapList.size() - 1).get("detail_date_end")).replace(" ","T"));
+                LocalDateTime dateStart = LocalDateTime.parse(String.valueOf(mapList.get(0).get("detail_date_start")).replace(" ", "T"));
+                LocalDateTime dateEnd = LocalDateTime.parse(String.valueOf(mapList.get(mapList.size() - 1).get("detail_date_end")).replace(" ", "T"));
                 detailOrderDto.setDateStartDetail(dateStart.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
                 detailOrderDto.setDateEndDetail(dateEnd.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
             } else {
@@ -354,9 +354,15 @@ public class OrderService {
 
                     for (DetailOrderInfo info : gibkaList) {
                         switch (info.getWorkBenches().getName()) {
-                            case "Гибочный пресс с ЧПУ 1,5м (ЧПУ маленький)" -> localDateTimeCHPY_small = info.getWorkBenches().getDateEndDetail();
-                            case "Гибочный пресс с ЧПУ 3м (ЧПУ большой)" -> localDateTimeCHPY_big = info.getWorkBenches().getDateEndDetail();
-                            case "Ручные станки" -> localDateTimeManualMachine = info.getWorkBenches().getDateEndDetail();
+                            case "Гибочный пресс с ЧПУ 1,5м (ЧПУ маленький)":
+                                localDateTimeCHPY_small = info.getWorkBenches().getDateEndDetail();
+                                break;
+                            case "Гибочный пресс с ЧПУ 3м (ЧПУ большой)":
+                                localDateTimeCHPY_big = info.getWorkBenches().getDateEndDetail();
+                                break;
+                            case "Ручные станки":
+                                localDateTimeManualMachine = info.getWorkBenches().getDateEndDetail();
+                                break;
                         }
                     }
                     System.out.println(localDateTimeCHPY_big);
@@ -426,9 +432,15 @@ public class OrderService {
 
                         if (!workbenchIdMinDateEnd.equals(detailInfo.getWorkBenches().getId())) {
                             switch (detailInfo.getWorkBenches().getName()) {
-                                case "Гибочный пресс с ЧПУ 1,5м (ЧПУ маленький)" -> detailInfo.getWorkBenches().setDateEndDetail(localDateTimeCHPY_small);
-                                case "Гибочный пресс с ЧПУ 3м (ЧПУ большой)" -> detailInfo.getWorkBenches().setDateEndDetail(localDateTimeCHPY_big);
-                                case "Ручные станки" -> detailInfo.getWorkBenches().setDateEndDetail(localDateTimeManualMachine);
+                                case "Гибочный пресс с ЧПУ 1,5м (ЧПУ маленький)":
+                                    detailInfo.getWorkBenches().setDateEndDetail(localDateTimeCHPY_small);
+                                    break;
+                                case "Гибочный пресс с ЧПУ 3м (ЧПУ большой)":
+                                    detailInfo.getWorkBenches().setDateEndDetail(localDateTimeCHPY_big);
+                                    break;
+                                case "Ручные станки":
+                                    detailInfo.getWorkBenches().setDateEndDetail(localDateTimeManualMachine);
+                                    break;
                             }
                         }
                     }

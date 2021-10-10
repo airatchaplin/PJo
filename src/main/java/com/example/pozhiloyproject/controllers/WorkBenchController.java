@@ -44,9 +44,15 @@ public class WorkBenchController {
         User user = userService.getUserWeb();
         if (user.getFilter_workbenches() != null) {
             switch (user.getFilter_workbenches()) {
-                case "workBenches" -> model.addAttribute("workbenches", WorkBenchDto.compareWorkBenchesName(workBenchService.getAllWorkBench()));
-                case "typeOperation" -> model.addAttribute("workbenches", WorkBenchDto.compareWorkBenchesTypeOperation(workBenchService.getAllWorkBench()));
-                case "dateEnd" -> model.addAttribute("workbenches", WorkBenchDto.compareWorkBenchesDateEnd(workBenchService.getAllWorkBench()));
+                case "workBenches":
+                    model.addAttribute("workbenches", WorkBenchDto.compareWorkBenchesName(workBenchService.getAllWorkBench()));
+                    break;
+                case "typeOperation":
+                    model.addAttribute("workbenches", WorkBenchDto.compareWorkBenchesTypeOperation(workBenchService.getAllWorkBench()));
+                    break;
+                case "dateEnd":
+                    model.addAttribute("workbenches", WorkBenchDto.compareWorkBenchesDateEnd(workBenchService.getAllWorkBench()));
+                    break;
             }
         } else {
             model.addAttribute("workbenches", workBenchService.getAllWorkBench());
@@ -65,9 +71,15 @@ public class WorkBenchController {
     public String getAllWorkBenches(@RequestParam(required = false) String filter) {
         User user = userService.getUserWeb();
         switch (filter) {
-            case "workBenches" -> user.setFilter_workbenches("workBenches");
-            case "typeOperation" -> user.setFilter_workbenches("typeOperation");
-            case "dateEnd" -> user.setFilter_workbenches("dateEnd");
+            case "workBenches":
+                user.setFilter_workbenches("workBenches");
+                break;
+            case "typeOperation":
+                user.setFilter_workbenches("typeOperation");
+                break;
+            case "dateEnd":
+                user.setFilter_workbenches("dateEnd");
+                break;
         }
         userService.saveUser(user);
         return "workbenches";
@@ -110,7 +122,7 @@ public class WorkBenchController {
         workBench.setId(UUID.randomUUID());
         workBench.setName(nameWorkBench);
         workBench.setTypeOperation(typeOperationService.getOneTypeOperation(UUID.fromString(typeOperationId)));
-        workBench.setCurrentThickness(Double.valueOf(currentThickness.replace(",",".")));
+        workBench.setCurrentThickness(Double.valueOf(currentThickness.replace(",", ".")));
         workBench.setDateEndDetail(LocalDateTime.parse(dateEndDetail));
         workBenchService.save(workBench);
         return "redirect:/workbenches";
@@ -150,9 +162,9 @@ public class WorkBenchController {
     /**
      * Страница изменения станка метод POST
      *
-     * @param id              Идентификатор станка
-     * @param dateEndDetail   Время окончания на этом станке
-     * @param model           Модель
+     * @param id            Идентификатор станка
+     * @param dateEndDetail Время окончания на этом станке
+     * @param model         Модель
      * @return Страница всех станков
      */
     @PostMapping("workbenches/change/{id}")
@@ -161,7 +173,7 @@ public class WorkBenchController {
                                       @RequestParam(required = false) String dateEndDetail, Model model) {
 
         WorkBench workBench = workBenchService.getOneWorkBenchById(UUID.fromString(id));
-        workBench.setCurrentThickness(Double.valueOf(currentThickness.replace(",",".")));
+        workBench.setCurrentThickness(Double.valueOf(currentThickness.replace(",", ".")));
         workBench.setDateEndDetail(LocalDateTime.parse(dateEndDetail));
         workBenchService.save(workBench);
         return "redirect:/workbenches";

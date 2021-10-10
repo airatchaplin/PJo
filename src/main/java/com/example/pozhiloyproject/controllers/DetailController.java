@@ -57,9 +57,15 @@ public class DetailController {
         User user = userService.getUserWeb();
         if (user.getFilter_details() != null) {
             switch (user.getFilter_details()) {
-                case "thickness" -> model.addAttribute("details", DetailDto.compareMaterialThickness(detailService.getAllDetails()));
-                case "details" -> model.addAttribute("details", DetailDto.compareDetailName(detailService.getAllDetails()));
-                case "materials" -> model.addAttribute("details", DetailDto.compareMaterialName(detailService.getAllDetails()));
+                case "thickness":
+                    model.addAttribute("details", DetailDto.compareMaterialThickness(detailService.getAllDetails()));
+                    break;
+                case "details":
+                    model.addAttribute("details", DetailDto.compareDetailName(detailService.getAllDetails()));
+                    break;
+                case "materials":
+                    model.addAttribute("details", DetailDto.compareMaterialName(detailService.getAllDetails()));
+                    break;
             }
         } else {
             model.addAttribute("details", detailService.getAllDetails());
@@ -78,9 +84,15 @@ public class DetailController {
     public String getAllDetails(@RequestParam(required = false) String filter) {
         User user = userService.getUserWeb();
         switch (filter) {
-            case "thickness" -> user.setFilter_details("thickness");
-            case "details" -> user.setFilter_details("details");
-            case "materials" -> user.setFilter_details("materials");
+            case "thickness":
+                user.setFilter_details("thickness");
+                break;
+            case "details":
+                user.setFilter_details("details");
+                break;
+            case "materials":
+                user.setFilter_details("materials");
+                break;
         }
         userService.saveUser(user);
         return "redirect:/details";
@@ -539,7 +551,7 @@ public class DetailController {
 
     @PostMapping("details/deleteWorkbenchAlternative/{id}")
     public String deleteWorkBenchForDetailPost1(@PathVariable(value = "id") String id,
-                                               @RequestParam(required = false) String detailId, Model model) {
+                                                @RequestParam(required = false) String detailId, Model model) {
         Detail detail = detailService.getDetailById(UUID.fromString(detailId));
         List<DetailInfo> detailInfos = detail.getDetailLists().get(1).getDetailInfos();
         detailInfos.removeIf(x -> x.getWorkBenches().equals(workBenchService.getOneWorkBenchById(UUID.fromString(id))));
