@@ -33,9 +33,9 @@
             <tr>
                 <td class="number_orders" style="text-align: center"><a style="display: block"
                                                                  href="orders/${order.id}">${order.numberOrder}</a></td>
-                <td><a style="display: block" href="orders/${order.id}">${order.objectName.name}</a></td>
-                <td><a style="display: block" href="orders/${order.id}">${order.manager.fio_i_o}</a></td>
-                <td><a style="display: block" href="orders/${order.id}">${order.economist.fio_i_o}</a></td>
+                <td><a style="display: block" href="orders/${order.id}">${order.objectName}</a></td>
+                <td><a style="display: block" href="orders/${order.id}">${order.manager}</a></td>
+                <td><a style="display: block" href="orders/${order.id}">${order.economist}</a></td>
                 <td><a style="display: block" href="orders/${order.id}">${order.dateStartOrder}</a></td>
                 <td><a style="display: block" href="orders/${order.id}">${order.dateEndOrder}</a></td>
 

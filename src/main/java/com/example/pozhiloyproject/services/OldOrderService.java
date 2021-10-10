@@ -218,4 +218,8 @@ public class OldOrderService {
         order.setDetailsOrders(detailsOrders);
         orderService.saveOrder(order);
     }
+
+    public void deleteOldOrder(int numberOrder) {
+        oldOrderRepository.delete(oldOrderRepository.findByNumberOrder(numberOrder));
+    }
 }

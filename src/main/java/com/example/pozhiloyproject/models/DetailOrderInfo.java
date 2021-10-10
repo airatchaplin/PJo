@@ -30,8 +30,8 @@ public class DetailOrderInfo {
 
     boolean isSetting;
 
-    public static List<DetailInfo> comparePriority(List<DetailInfo> detailInfos) {
-        Comparator<DetailInfo> comparator = Comparator.comparing(DetailInfo::getPriority);
+    public static List<DetailOrderInfo> comparePriority(List<DetailOrderInfo> detailInfos) {
+        Comparator<DetailOrderInfo> comparator = Comparator.comparing(DetailOrderInfo::getPriority);
         detailInfos.sort(comparator);
         return detailInfos;
     }

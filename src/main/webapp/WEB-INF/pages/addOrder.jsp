@@ -85,8 +85,12 @@
             </tr>
             </tbody>
         </table>
+        <div class="error-text">
+                ${numberOrderError}
+        </div>
     </div>
 </form:form>
+
 
 </body>
 

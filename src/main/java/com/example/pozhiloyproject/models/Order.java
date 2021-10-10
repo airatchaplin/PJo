@@ -92,4 +92,10 @@ public class Order {
         orderList.sort(comparator);
         return orderList;
     }
+
+    public static List<DetailsOrder> compareIncrementDetailsOrder(List<DetailsOrder> detailsOrders) {
+        Comparator<DetailsOrder> comparator = Comparator.comparing(DetailsOrder::getIncrement);
+        detailsOrders.sort(comparator);
+        return detailsOrders;
+    }
 }

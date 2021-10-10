@@ -1,6 +1,6 @@
 package com.example.pozhiloyproject.repository;
 
-import com.example.pozhiloyproject.models.CompletedOrder;
+import com.example.pozhiloyproject.models.completedOrder.CompletedOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

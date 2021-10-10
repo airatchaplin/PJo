@@ -1,21 +1,24 @@
-package com.example.pozhiloyproject.dto;
+package com.example.pozhiloyproject.models.completedOrder;
 
 import com.example.pozhiloyproject.models.DetailOrderList;
 import com.example.pozhiloyproject.models.Material;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
+@Entity
+@Table
 @Getter
 @Setter
-public class DetailOrderDto {
+public class CompletedDetailOrder {
 
+    /**
+     * id Детали
+     */
+    @Id
     private UUID id;
 
     /**
@@ -26,15 +29,14 @@ public class DetailOrderDto {
     /**
      * Материал детали
      */
+    @ManyToOne
     private Material material;
 
     /**
      * Информация о детали
      */
-    private List<DetailOrderListDto> detailOrderLists;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<CompletedDetailOrderList> detailOrderLists;
 
     private String timePacking;
-
-    String dateStartDetail;
-    String dateEndDetail;
 }

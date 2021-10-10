@@ -10,4 +10,6 @@ import java.util.UUID;
 public interface OldOrderRepository extends JpaRepository<OldOrder, UUID> {
 
     OldOrder findByOrderId(UUID id);
+
+    OldOrder findByNumberOrder(int numberOrder);
 }

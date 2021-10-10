@@ -1,26 +1,15 @@
 package com.example.pozhiloyproject.dto;
 
-import com.example.pozhiloyproject.models.Contragent;
-import com.example.pozhiloyproject.models.DetailsOrder;
-import com.example.pozhiloyproject.models.Order;
-import com.example.pozhiloyproject.models.User;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
 @Getter
 @Setter
-public class OrderDto {
-
+public class CompletedOrderDto {
 
     /**
      * Id
@@ -85,10 +74,9 @@ public class OrderDto {
 
     private boolean isCalculated;
 
-    public static List<OrderDto> compareIncrement(List<OrderDto> orderList) {
-        Comparator<OrderDto> comparator = Comparator.comparing(OrderDto::getIncrement);
+    public static List<CompletedOrderDto> compareIncrement(List<CompletedOrderDto> orderList) {
+        Comparator<CompletedOrderDto> comparator = Comparator.comparing(CompletedOrderDto::getIncrement);
         orderList.sort(comparator);
         return orderList;
     }
-
 }

@@ -3,6 +3,7 @@ package com.example.pozhiloyproject.controllers;
 import com.example.pozhiloyproject.dto.*;
 import com.example.pozhiloyproject.helper.Db;
 import com.example.pozhiloyproject.models.*;
+import com.example.pozhiloyproject.models.completedOrder.CompletedOrder;
 import com.example.pozhiloyproject.services.*;
 
 import java.util.*;
@@ -297,8 +298,10 @@ public class OrderController {
             }
         }
         String comment1 = order.getComment();
-        comment1+="\n" + comment;
+        comment1 += "\n" + comment;
         order.setComment(comment1);
+        oldOrderService.deleteOldOrder(order.getNumberOrder());
+        oldOrderService.fillOldOrderByOrder(order);
         orderService.saveOrder(order);
         return "redirect:/orders/" + id;
     }
@@ -336,7 +339,6 @@ public class OrderController {
      */
     @PostMapping("/orders/add/{id}")
     public String addNewElementForOrderPost(@PathVariable(value = "id") String id,
-
                                             @RequestParam(required = true) List<String> detailId,
                                             @RequestParam(required = true) List<String> countDetail, Model model) {
         Order order = orderService.getOrderById(UUID.fromString(id));
@@ -415,6 +417,9 @@ public class OrderController {
             increment++;
         }
         order.setDetailsOrders(detailsOrders);
+
+        oldOrderService.deleteOldOrder(order.getNumberOrder());
+        oldOrderService.fillOldOrderByOrder(order);
         orderService.saveOrder(order);
         return "redirect:/orders/" + id;
     }
@@ -441,7 +446,9 @@ public class OrderController {
      */
     @PostMapping("/orders/deletion/{id}")
     public String deleteOrderPost(@PathVariable(value = "id") String id) {
-        orderService.deleteOrder(orderService.getOrderById(UUID.fromString(id)));
+        Order order = orderService.getOrderById(UUID.fromString(id));
+        oldOrderService.deleteOldOrder(order.getNumberOrder());
+        orderService.deleteOrder(order);
         return "redirect:/orders";
     }
 
@@ -462,6 +469,8 @@ public class OrderController {
             detailsOrders.get(i).setIncrement(i);
         }
         order.setDetailsOrders(detailsOrders);
+        oldOrderService.deleteOldOrder(order.getNumberOrder());
+        oldOrderService.fillOldOrderByOrder(order);
         orderService.saveOrder(order);
         return "redirect:/orders";
     }
@@ -475,7 +484,15 @@ public class OrderController {
      */
     @GetMapping("orders/calculationOrder/{id}")
     public String calculationOrder(@PathVariable(value = "id") String id, Model model) {
-        model.addAttribute("order", orderService.getOrderDtoById(UUID.fromString(id)));
+        OrderDto orderDto = orderService.getOrderDtoById(UUID.fromString(id));
+        List<DetailsOrderDto> detailsOrders = orderDto.getDetailsOrders();
+
+        List<Integer> incr = new ArrayList<>();
+        for (int i = 0; i < detailsOrders.size(); i++) {
+            incr.add(i);
+        }
+        model.addAttribute("order", orderDto);
+        model.addAttribute("incr", incr);
         model.addAttribute("user", userService.getUserWeb());
         return "calculationOrder";
     }
@@ -488,65 +505,23 @@ public class OrderController {
      * @return Страница заказа
      */
     @PostMapping("orders/calculationOrder/{id}")
-    public String calculationOrder(@PathVariable(value = "id") String id, @RequestParam(required = true) List<String> isSelected) {
+    public String calculationOrder(@PathVariable(value = "id") String id,
+                                   @RequestParam(required = true) List<String> detailId,
+                                   @RequestParam(required = true) List<String> increment) {
         Order order = orderService.getOrderById(UUID.fromString(id));
-
-        List<DetailsOrder> detailsOrders = order.getDetailsOrders();
-        for (String s : isSelected) {
-            UUID detailListId = UUID.fromString(s);
-            for (DetailsOrder detailsOrder : detailsOrders) {
-                List<DetailOrderList> detailOrderLists = detailsOrder.getDetailOrder().getDetailOrderLists();
-                for (DetailOrderList detailOrderList : detailOrderLists) {
-                    if (detailOrderList.getId().equals(detailListId)) {
-                        detailOrderList.setSelected(true);
-                        break;
-                    }
+        if (!order.isCalculated()) {
+            List<DetailsOrder> detailsOrders = order.getDetailsOrders();
+            for (int i = 0; i < detailsOrders.size(); i++) {
+                DetailsOrder detailsOrder = detailsOrders.get(i);
+                if (detailsOrder.getId().equals(UUID.fromString(detailId.get(i)))) {
+                    detailsOrder.setIncrement(Integer.parseInt(increment.get(i)));
                 }
             }
+            orderService.saveOrder(order);
+            orderService.raschet(order);
         }
-        List<DetailsOrder> detailsOrder = order.getDetailsOrders();
-        for (DetailsOrder value : detailsOrder) {
-            List<DetailOrderList> detailOrderLists = value.getDetailOrder().getDetailOrderLists();
-            DetailOrderList.removeIf(detailOrderLists);
-        }
-
-        Set<String> workbenchName = new LinkedHashSet<>();
-        for (DetailsOrder item : detailsOrder) {
-            workbenchName.add(item.getDetailOrder().getDetailOrderLists().get(0).getDetailOrderInfos().get(0).getWorkBenches().getName());
-        }
-        List<String> workbenchNames = new ArrayList<>(workbenchName);
-
-        List<DetailsOrder> detailsOrderSort = new ArrayList<>();
-        int countIncr = 0;
-        for (String name : workbenchNames) {
-            WorkBench workBench = workBenchService.getOneWorkBenchByName(name);
-            Double currentThickness = workBench.getCurrentThickness();
-
-            List<DetailsOrder> detailsOrderList = new ArrayList<>();
-            for (DetailsOrder item : detailsOrder) {
-                WorkBench workBenches = item.getDetailOrder().getDetailOrderLists().get(0).getDetailOrderInfos().get(0).getWorkBenches();
-                Double thickness = item.getDetailOrder().getMaterial().getThickness();
-                if (workBench.equals(workBenches) && thickness.equals(currentThickness)) {
-                    item.setIncrement(countIncr);
-                    detailsOrderSort.add(item);
-                    countIncr++;
-                } else if (workBench.equals(workBenches) && !thickness.equals(currentThickness)) {
-                    detailsOrderList.add(item);
-                }
-            }
-            for (DetailsOrder value : detailsOrderList) {
-                value.setIncrement(countIncr);
-                detailsOrderSort.add(value);
-                countIncr++;
-            }
-        }
-
-        order.setDetailsOrders(detailsOrderSort);
-        orderService.saveOrder(order);
-        orderService.raschet(UUID.fromString(id));
         return "redirect:/orders/calculationOrder/" + id;
     }
-
 
     public void allModel(Model model) {
         model.addAttribute("contragents", contragentService.getAllContragents());
@@ -568,6 +543,18 @@ public class OrderController {
     }
 
     /**
+     * Удаление завершенных заказов
+     *
+     * @param model Модель
+     * @return Страница всех завершенных заказов
+     */
+    @PostMapping("/completed_orders")
+    public String deleteCompletedOrdersByUpdateDate(Model model) {
+        completedOrderService.deleteCompletedOrderByUpdateDate();
+        return "redirect:/completed_orders";
+    }
+
+    /**
      * Перенос заказа в завершенные заказы
      *
      * @param id    Идентификатор заказа
@@ -583,16 +570,20 @@ public class OrderController {
     /**
      * Страница завершенного заказа
      *
-     * @param model
      * @return Страница завершенного заказа
      */
     @GetMapping("completed_orders/{id}")
     public String getOneCompletedOrder(@PathVariable(value = "id") String id, Model model) {
-        model.addAttribute("completed_order", completedOrderService.getOneCompletedOrderById(UUID.fromString(id)));
+        model.addAttribute("completed_order", completedOrderService.getCompleteOrderDto(UUID.fromString(id)));
         model.addAttribute("user", userService.getUserWeb());
         return "oneCompletedOrders";
     }
 
+    /**
+     * Откатить заказ после расчета
+     *
+     * @param id Идентификатор заказа
+     */
     @PostMapping("orders/rollback/{id}")
     public String rollbackCalculateOrder(@PathVariable(value = "id") String id, Model model) {
         Order order = orderService.getOrderById(UUID.fromString(id));
@@ -607,7 +598,37 @@ public class OrderController {
             model.addAttribute("errorRollback", "Откатить можео только последний");
             return "calculationOrder";
         }
+        return "redirect:/orders/calculationOrder/" + id;
+    }
 
+    /**
+     * Сохранение последовательности деталей
+     *
+     * @param id         Идентификатор заказа
+     * @param isSelected Выбранные детали
+     */
+    @PostMapping("orders/select/{id}")
+    public String selectCalculateOrder(@PathVariable(value = "id") String id, @RequestParam(required = true) List<String> isSelected, Model model) {
+        Order order = orderService.getOrderById(UUID.fromString(id));
+        List<DetailsOrder> detailsOrders = order.getDetailsOrders();
+        for (String s : isSelected) {
+            UUID detailListId = UUID.fromString(s);
+            for (DetailsOrder detailsOrder : detailsOrders) {
+                List<DetailOrderList> detailOrderLists = detailsOrder.getDetailOrder().getDetailOrderLists();
+                for (DetailOrderList detailOrderList : detailOrderLists) {
+                    if (detailOrderList.getId().equals(detailListId)) {
+                        detailOrderList.setSelected(true);
+                        break;
+                    }
+                }
+            }
+        }
+        List<DetailsOrder> detailsOrder = order.getDetailsOrders();
+        for (DetailsOrder value : detailsOrder) {
+            List<DetailOrderList> detailOrderLists = value.getDetailOrder().getDetailOrderLists();
+            DetailOrderList.removeIf(detailOrderLists);
+        }
+        orderService.saveOrder(order);
         return "redirect:/orders/calculationOrder/" + id;
     }
 }

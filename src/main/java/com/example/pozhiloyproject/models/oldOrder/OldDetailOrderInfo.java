@@ -5,10 +5,7 @@ import com.example.pozhiloyproject.models.WorkBench;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -27,7 +24,7 @@ public class OldDetailOrderInfo {
      */
     private String timeWork;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private OldWorkBench workBenches;
 
     private String comment;

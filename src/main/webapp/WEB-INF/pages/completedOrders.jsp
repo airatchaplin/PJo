@@ -14,17 +14,19 @@
 <body>
 <jsp:include page="../nav/nav_first.jsp"></jsp:include>
 <jsp:include page="../nav/order_nav_main.jsp"></jsp:include>
-
+<form:form method="post">
+    <jsp:include page="../nav/nav_third_completed_orders.jsp"></jsp:include>
+</form:form>
 <div class="main">
     <table class="simple-little-table" cellspacing='0'>
         <thead>
         <tr>
             <th class="number_orders" style="text-align: center">№</th>
-            <th >Объект</th>
+            <th>Объект</th>
             <th>Менеджер</th>
-            <th >Деталь</th>
+            <th>Экономист</th>
             <th>Дата запуска в производство</th>
-            <th >Дата готовности заказа</th>
+            <th>Дата готовности заказа</th>
             <th>Коментарий</th>
         </tr>
         </thead>
@@ -32,25 +34,18 @@
         <c:forEach items="${completed_order}" var="order">
             <tr>
                 <td><a style="display: block" href="/completed_orders/${order.id}">${order.numberOrder}</a></td>
-                <td><a style="display: block" href="/completed_orders/${order.id}">${order.objectName.name}</a></td>
-                <td><a style="display: block" href="/completed_orders/${order.id}">${order.manager.fio_i_o}</a></td>
+                <td><a style="display: block" href="/completed_orders/${order.id}">${order.objectName}</a></td>
+                <td><a style="display: block" href="/completed_orders/${order.id}">${order.manager}</a></td>
+                <td><a style="display: block" href="/completed_orders/${order.id}">${order.economist}</a></td>
 
                 <td>
-                    <c:forEach items="${order.detailInfos}" var="detail">
-                        <pre> ${detail.detailOrder.name} </pre>
-                    </c:forEach>
+                    <a style="display: block" href="/completed_orders/${order.id}">${order.dateStartOrder}</a>
                 </td>
                 <td>
-                    <c:forEach items="${order.detailInfos}" var="detail">
-                        <pre> ${detail.count} </pre>
-                    </c:forEach>
+                    <a style="display: block" href="/completed_orders/${order.id}">${order.dateEndOrder}</a>
                 </td>
                 <td>
-                        ${order.dateStart}
-                <td>
-                        ${order.dateEnd}
-                <td>
-                        ${order.comment}
+                    <a style="display: block" href="/completed_orders/${order.id}">${order.comment}</a>
                 </td>
             </tr>
         </c:forEach>

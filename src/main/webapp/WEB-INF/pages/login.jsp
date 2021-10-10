@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../../resources/css/login.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
-
+    <link rel="icon" type="image/png" sizes="32x32" href="../../resources/icon/test.png">
 </head>
 <body style="margin: 1px">
 <div class="login-box">

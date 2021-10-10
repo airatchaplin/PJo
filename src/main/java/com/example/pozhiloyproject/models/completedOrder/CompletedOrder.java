@@ -1,5 +1,9 @@
-package com.example.pozhiloyproject.models;
+package com.example.pozhiloyproject.models.completedOrder;
 
+import com.example.pozhiloyproject.models.Contragent;
+import com.example.pozhiloyproject.models.DetailsOrder;
+import com.example.pozhiloyproject.models.Order;
+import com.example.pozhiloyproject.models.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -53,7 +57,7 @@ public class CompletedOrder {
      * Список деталей в заказе
      */
     @ManyToMany(cascade = CascadeType.ALL)
-    private List<DetailsOrder> detailsOrders;
+    private List<CompletedDetailsOrder> detailsOrders;
 
 
     /**
@@ -83,6 +87,8 @@ public class CompletedOrder {
     private LocalDateTime dateEndOrder;
 
     private boolean isCalculated;
+
+    private LocalDateTime updateDate;
 
     public static List<Order> compareIncrement(List<Order> orderList) {
         Comparator<Order> comparator = Comparator.comparing(Order::getIncrement);

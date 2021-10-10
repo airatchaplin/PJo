@@ -67,8 +67,8 @@
                 <th>Деталь</th>
                 <th>Материал</th>
                 <th>Количество</th>
-<%--                <th>Дата запуска детали</th>--%>
-<%--                <th>Дата готовности детали</th>--%>
+                <th>Дата запуска детали</th>
+                <th>Дата готовности детали</th>
             </tr>
             </thead>
             <tbody>
@@ -83,12 +83,12 @@
                     <td>
                             ${ord.count}
                     </td>
-<%--                    <td>--%>
-<%--                            ${ord.detailOrder.detailOrderLists.get(0).detailDateByWorkbench.get(0).detailDateStart}--%>
-<%--                    </td>--%>
-<%--                    <td>--%>
-<%--                            ${ord.detailOrder.detailOrderLists.get(0).detailDateByWorkbench.get(ord.detailOrder.detailOrderLists.get(0).detailDateByWorkbench.size()-1).detailDateEnd}--%>
-<%--                    </td>--%>
+                    <td>
+                            ${ord.detailOrder.dateStartDetail}
+                    </td>
+                    <td>
+                            ${ord.detailOrder.dateEndDetail}
+                    </td>
                 </tr>
                 <c:set var="count" value="${count + 1}" scope="page"/>
             </c:forEach>

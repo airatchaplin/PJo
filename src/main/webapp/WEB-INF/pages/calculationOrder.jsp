@@ -17,12 +17,16 @@
 <form:form method="post">
     <nav class="nav-third" style="justify-content: normal;">
         <div>
-            <button class="button-nav-second" type="submit">Расчитать</button>
+            <button class="button-nav-second" formaction="/orders/select/${order.id}" type="submit">Применить</button>
         </div>
-
         <div>
             <button class="button-nav-second" formaction="/orders/rollback/${order.id}" type="submit">Отменить</button>
         </div>
+        <c:if test="${!order.calculated}">
+        <div>
+            <button class="button-nav-second" type="submit">Расчитать</button>
+        </div>
+        </c:if>
     </nav>
 
 
@@ -34,8 +38,6 @@
                 <th>Контрагент</th>
                 <th>Экономист</th>
                 <th>Менеджер</th>
-                    <%--            <th>Дата запуска в производство</th>--%>
-                    <%--            <th>Дата готовности заказа</th>--%>
                 <th>Покраска</th>
                 <th>Упаковка</th>
                 <th>Дата запуска в производство</th>
@@ -80,6 +82,11 @@
                 <th>Время начала на станке</th>
                 <th>Время окончания на станке</th>
                 <th>Наладка</th>
+                <c:if test="${order.detailsOrders.size()>0}">
+                    <c:if test="${order.detailsOrders.get(0).detailOrder.detailOrderLists.size()==1 && !order.calculated}">
+                        <th>Расчитать</th>
+                    </c:if>
+                </c:if>
             </tr>
             </thead>
             <tbody>
@@ -89,6 +96,7 @@
                     <tr>
                         <c:if test="${detailsOrders.detailOrder.detailOrderLists.indexOf(detailLists)==0}">
                             <td>
+                                <input type="text" name="detailId" value="${detailsOrders.id}" style="display: none">
                                     ${detailsOrders.detailOrder.name}
                             </td>
                             <td style="width: 7%;">
@@ -294,7 +302,19 @@
                                 </c:forEach>
                             </td>
                         </c:if>
-                            <%--                        </c:if>--%>
+
+                        <c:if test="${detailsOrders.detailOrder.detailOrderLists.size()==1}">
+                            <c:if test="${!order.calculated}">
+                                <td>
+                                    <select class="form-control" name="increment">
+                                        <option selected value="${detailsOrders.increment}">&#9733;${detailsOrders.increment}</option>
+                                        <c:forEach items="${incr}" var="in">
+                                            <option value="${in}">${in}</option>
+                                        </c:forEach>
+                                    </select>
+                                </td>
+                            </c:if>
+                        </c:if>
                     </tr>
                 </c:forEach>
             </c:forEach>

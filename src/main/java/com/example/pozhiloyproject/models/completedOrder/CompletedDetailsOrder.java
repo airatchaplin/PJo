@@ -1,5 +1,6 @@
-package com.example.pozhiloyproject.models.oldOrder;
+package com.example.pozhiloyproject.models.completedOrder;
 
+import com.example.pozhiloyproject.models.DetailOrder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +11,7 @@ import java.util.UUID;
 @Table
 @Getter
 @Setter
-public class OldDetailsOrder {
+public class CompletedDetailsOrder {
 
     /**
      * Id
@@ -27,7 +28,7 @@ public class OldDetailsOrder {
      * Деталь
      */
     @ManyToOne(cascade = CascadeType.ALL)
-    private OldDetailOrder detailOrder;
+    private CompletedDetailOrder detailOrder;
 
     /**
      * Последовательность

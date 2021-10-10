@@ -1,18 +1,16 @@
 package com.example.pozhiloyproject.services;
 
-
 import com.example.pozhiloyproject.dto.*;
+import com.example.pozhiloyproject.helper.Db;
 import com.example.pozhiloyproject.helper.Helper;
 import com.example.pozhiloyproject.models.*;
 import com.example.pozhiloyproject.repository.OrderRepository;
 import com.example.pozhiloyproject.repository.WorkBenchRepository;
 
-import java.time.DayOfWeek;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.header.Header;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -36,13 +34,21 @@ public class OrderService {
     @Autowired
     DetailDateByWorkbenchService detailDateByWorkbenchService;
 
+    @Autowired
+    Db db;
+
     /**
      * Получение списка всех заказов
      *
      * @return Список всех заказов
      */
-    public List<Order> getAllOrders() {
-        return Order.compareIncrement(orderRepository.findAll());
+    public List<OrderDto> getAllOrders() {
+        List<Map<String, Object>> ordersId = db.call("select id from orders");
+        List<OrderDto> orderDtos = new ArrayList<>();
+        for (Map<String, Object> stringObjectMap : ordersId) {
+            orderDtos.add(getOrderDtoById((UUID) stringObjectMap.get("id")));
+        }
+        return OrderDto.compareIncrement(orderDtos);
     }
 
     /**
@@ -124,6 +130,31 @@ public class OrderService {
             detailOrderDto.setTimePacking(detailOrder.getTimePacking());
             detailOrderDto.setMaterial(detailOrder.getMaterial());
 
+            List<Map<String, Object>> mapList = db.call(String.format(
+                    "select  o.id, ddbw.detail_date_start, ddbw.detail_date_end, ddbw.priority\n" +
+                            "from orders\n" +
+                            "         join orders_details_orders odo on orders.id = odo.order_id\n" +
+                            "         join details_order d on odo.details_orders_id = d.id\n" +
+                            "         join detail_order o on d.detail_order_id = o.id\n" +
+                            "         join detail_order_detail_order_lists dodol on o.id = dodol.detail_order_id\n" +
+                            "         join detail_order_list dol on dodol.detail_order_lists_id = dol.id\n" +
+                            "         join detail_order_list_detail_date_by_workbench dolddbw on dol.id = dolddbw.detail_order_list_id\n" +
+                            "         join detail_date_by_workbench ddbw on dolddbw.detail_date_by_workbench_id = ddbw.id\n" +
+                            "where orders.id = '%1$s'\n" +
+                            "  and detail_date_start is not null\n" +
+                            "  and detail_date_end is not null\n" +
+                            "and o.id ='%2$s'\n" +
+                            "order by ddbw.priority", id, detailOrder.getId()));
+
+            if (!mapList.isEmpty()) {
+                LocalDateTime dateStart = LocalDateTime.parse(String.valueOf(mapList.get(0).get("detail_date_start")).replace(" ","T"));
+                LocalDateTime dateEnd =  LocalDateTime.parse(String.valueOf(mapList.get(mapList.size() - 1).get("detail_date_end")).replace(" ","T"));
+                detailOrderDto.setDateStartDetail(dateStart.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+                detailOrderDto.setDateEndDetail(dateEnd.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+            } else {
+                detailOrderDto.setDateStartDetail("");
+                detailOrderDto.setDateEndDetail("");
+            }
             List<DetailOrderList> detailOrderLists = detailOrder.getDetailOrderLists();
             List<DetailOrderListDto> detailOrderListsDtos = new ArrayList<>();
 
@@ -210,45 +241,37 @@ public class OrderService {
     }
 
 
-    public void raschet(UUID id) {
-        Order order = getOrderById(id);
-
+    public void raschet(Order order) {
         if (order.isCalculated()) {
             return;
         }
-        LocalDateTime dateOrderStart;
-        LocalDateTime dateOrderEnd;
         int hour;
         int minute;
         int second;
 
         //Получаем список деталей в заказе и сортируем его по толщине текущего станка
         List<DetailsOrder> detailsOrders = order.getDetailsOrders();
-//        detailsOrders = sortByMaterialWorkbench(detailsOrders);
-//        detailsOrders = sortByMaterialWorkbench1(detailsOrders);
-        order.setDetailsOrders(detailsOrders);
 
-//        OrderDto orderDto = setOrderDto(order);
-//
-        int countDetailOrder = 0;
+        Order.compareIncrementDetailsOrder(detailsOrders);
 
         for (DetailsOrder detailsOrder : detailsOrders) {
             Double detailThickness = detailsOrder.getDetailOrder().getMaterial().getThickness();
             List<DetailOrderList> detailOrderLists = detailsOrder.getDetailOrder().getDetailOrderLists();
 
             List<DetailOrderInfo> detailOrderInfos = new ArrayList<>();
-
+            List<DetailDateByWorkbench> detailDateByWorkbenches = new ArrayList<>();
 
             DetailOrderList detailOrderList = new DetailOrderList();
             for (DetailOrderList detailOrdList : detailOrderLists) {
                 if (detailOrdList.isSelected()) {
                     detailOrderInfos = detailOrdList.getDetailOrderInfos();
+                    detailDateByWorkbenches = detailOrdList.getDetailDateByWorkbench();
                     detailOrderList = detailOrdList;
                 }
             }
 
-            //Заполняем DetailDto
-//            setOrderDtoDetailDto(orderDto, detailsOrder);
+            DetailOrderInfo.comparePriority(detailOrderInfos);
+            DetailDateByWorkbench.comparePriority(detailDateByWorkbenches);
 
             for (int j = 0; j < detailOrderInfos.size(); j++) {
                 Double currentThickness = detailOrderInfos.get(j).getWorkBenches().getCurrentThickness();
@@ -289,7 +312,6 @@ public class OrderService {
                         }
                     }
 
-
 //                    if (j > 0) {
 //                        for (int i = 0; i < detailList.getDetailDateByWorkbench().size(); i++) {
 //                            if (detailList.getDetailDateByWorkbench().get(i).getPriority() == j - 1) {
@@ -317,12 +339,9 @@ public class OrderService {
                         }
                     }
 
-
                     workBenches.setDateEndDetail(dateEndDetailWorkbench);
                     workBenches.setCurrentThickness(detailThickness);
                     workBenchRepository.save(workBenches);
-//                    setOrderDtoDetailInfoDto(orderDto, detailOrderInfos.get(j), countDetailOrder);
-
 
                 } else {
                     //Расчет станков гибки
@@ -349,10 +368,8 @@ public class OrderService {
                         minute = Integer.parseInt(Arrays.asList(detailInfo.getTimeWork().split(":")).get(1));
                         second = Integer.parseInt(Arrays.asList(detailInfo.getTimeWork().split(":")).get(2));
 
-
                         workBenches = detailInfo.getWorkBenches();
                         countDetail = detailsOrder.getCount();
-
 
                         currentThickness = detailInfo.getWorkBenches().getCurrentThickness();
                         dateEndDetailWorkbench = detailInfo.getWorkBenches().getDateEndDetail();
@@ -368,7 +385,6 @@ public class OrderService {
                             }
                             detailOrderList.getDetailDateByWorkbench().get(j).setSetting(true);
                         }
-
 
                         for (int k = 0; k < detailOrderList.getDetailDateByWorkbench().size(); k++) {
                             if (detailOrderList.getDetailDateByWorkbench().get(k).getPriority() == j - 1) {
@@ -390,7 +406,6 @@ public class OrderService {
                             }
                         }
 
-
                         dateEndDetailWorkbench = calculate(countDetail, dateEndDetailWorkbench, hour, minute, second);
 
                         for (int k = 0; k < detailOrderList.getDetailDateByWorkbench().size(); k++) {
@@ -403,8 +418,6 @@ public class OrderService {
                         workBenchList.add(detailInfo.getWorkBenches());
                         countGibka++;
                     }
-
-                    gibkaList.size();
 
                     compareWorkbenches(workBenchList);
                     UUID workbenchIdMinDateEnd = workBenchList.get(0).getId();
@@ -423,44 +436,29 @@ public class OrderService {
                         if (orderInfo.getWorkBenches().getId().equals(workbenchIdMinDateEnd)) {
                             workBenches = orderInfo.getWorkBenches();
                             workBenches.setCurrentThickness(detailThickness);
-//                            orderInfo.getWorkBenches(false);
                         }
                     }
                     gibkaList.removeIf(x -> x.getWorkBenches().getId().equals(workbenchIdMinDateEnd));
-
-//                    DetailInfo detailInfo = gibkaList.stream().filter(x -> x.getWorkBenches().getId().equals(finalWorkBenches.getId())).findFirst().orElseThrow();
-
-
-                    List<DetailDateByWorkbench> detailDateByWorkbench = detailOrderList.getDetailDateByWorkbench();
-
 
                     for (DetailOrderInfo detailOrderInfo : gibkaList) {
 
                         detailOrderInfos.removeIf(x -> x.getPriority() == detailOrderInfo.getPriority());
                         detailOrderLists.forEach(x -> x.getDetailDateByWorkbench().removeIf(y -> y.getPriority() == detailOrderInfo.getPriority()));
                     }
-//                    workBenches = workBenchRepository.findById(orderDate.getWorkbenchId()).orElseThrow();
-//                    workBenches.setDateEndDetail(orderDate.getDateEndDetail());
                     workBenchRepository.save(workBenches);
                     order.setDateEndOrder(workBenches.getDateEndDetail());
-//                    setOrderDtoDetailInfoDto(orderDto, detailInfo, countDetailOrder);
 
                     break;
                 }
             }
-            countDetailOrder++;
-
-
         }
-
         order.setCalculated(true);
         orderRepository.save(order);
     }
 
-    public static List<WorkBench> compareWorkbenches(List<WorkBench> workBenches) {
+    public static void compareWorkbenches(List<WorkBench> workBenches) {
         Comparator<WorkBench> comparator = Comparator.comparing(WorkBench::getDateEndDetail);
         workBenches.sort(comparator);
-        return workBenches;
     }
 
     private LocalDateTime calculate(int countDetail, LocalDateTime dateEndDetailWorkbench
@@ -511,6 +509,4 @@ public class OrderService {
         }
         return dateEndDetailWorkbench;
     }
-
-
 }
