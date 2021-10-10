@@ -15,7 +15,7 @@
     <name>PozhiloyProject</name>
     <description>Demo project for Spring Boot</description>
     <properties>
-        <java.version>17</java.version>
+        <java.version>10.0.2</java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -126,15 +126,15 @@
 <!--                    <target>17</target>-->
 <!--                </configuration>-->
             </plugin>
-            <plugin>
-                <groupId>com.heroku.sdk</groupId>
-                <artifactId>heroku-maven-plugin</artifactId>
-                <version>0.3.4</version>
-                <configuration>
-                    <appName>PozhiloyProject</appName>
-                    <jdkVersion>17</jdkVersion>
-                </configuration>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>com.heroku.sdk</groupId>-->
+<!--                <artifactId>heroku-maven-plugin</artifactId>-->
+<!--                <version>0.3.4</version>-->
+<!--                <configuration>-->
+<!--                    <appName>PozhiloyProject</appName>-->
+<!--                    <jdkVersion>17</jdkVersion>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 </project>
