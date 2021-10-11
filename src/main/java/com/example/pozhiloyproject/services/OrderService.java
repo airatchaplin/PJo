@@ -114,6 +114,45 @@ public class OrderService {
         orderDto.setManager(order.getManager().getFio_i_o());
         orderDto.setIncrement(order.getIncrement());
 
+        if (order.getDateEnd() != null) {
+            orderDto.setDateEnd(order.getDateEnd().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+        } else {
+            orderDto.setDateEnd(null);
+        }
+
+        if (order.getDateStartFirstPackage() != null) {
+            orderDto.setDateStartFirstPackage(order.getDateStartFirstPackage().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+        } else {
+            orderDto.setDateStartFirstPackage(null);
+        }
+        if (order.getDateEndFirstPackage() != null) {
+            orderDto.setDateEndFirstPackage(order.getDateEndFirstPackage().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+        } else {
+            orderDto.setDateEndFirstPackage(null);
+        }
+
+        if (order.getDateStartPainting() != null) {
+            orderDto.setDateStartPainting(order.getDateStartPainting().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+        } else {
+            orderDto.setDateStartPainting(null);
+        }
+        if (order.getDateEndPainting() != null) {
+            orderDto.setDateEndPainting(order.getDateEndPainting().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+        } else {
+            orderDto.setDateEndPainting(null);
+        }
+
+        if (order.getDateStartSecondPackage() != null) {
+            orderDto.setDateStartSecondPackage(order.getDateStartSecondPackage().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+        } else {
+            orderDto.setDateStartSecondPackage(null);
+        }
+        if (order.getDateEndSecondPackage() != null) {
+            orderDto.setDateEndSecondPackage(order.getDateEndSecondPackage().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+        } else {
+            orderDto.setDateEndSecondPackage(null);
+        }
+
         List<DetailsOrder> detailsOrdersForDto = order.getDetailsOrders();
         List<DetailsOrderDto> detailsOrderDtos = new ArrayList<>();
 
@@ -466,7 +505,51 @@ public class OrderService {
             }
         }
         order.setCalculated(true);
+        setFirstPackageOrder(order);
         orderRepository.save(order);
+    }
+
+    public void setFirstPackageOrder(Order order) {
+        List<DetailsOrder> detailsOrders = order.getDetailsOrders();
+        LocalDateTime dateEndOrder = order.getDateEndOrder();
+        order.setDateStartFirstPackage(order.getDateEndOrder());
+
+        int countMaterialPO = 0;
+        for (DetailsOrder detailsOrder : detailsOrders) {
+            int count = detailsOrder.getCount();
+
+            String timePacking = detailsOrder.getDetailOrder().getTimePacking();
+            int hour = Integer.parseInt(Arrays.asList(timePacking.split(":")).get(0));
+            int minute = Integer.parseInt(Arrays.asList(timePacking.split(":")).get(1));
+            int second = Integer.parseInt(Arrays.asList(timePacking.split(":")).get(2));
+
+            dateEndOrder = calculate(count, dateEndOrder, hour, minute, second);
+            if (detailsOrder.getDetailOrder().getMaterial().getName().equals("ПО")) {
+                countMaterialPO++;
+            }
+        }
+
+        order.setDateEndFirstPackage(dateEndOrder);
+        if (countMaterialPO == 0) {
+            order.setDateEnd(dateEndOrder);
+        }
+    }
+
+    public void setSecondPackageOrder(Order order) {
+        List<DetailsOrder> detailsOrders = order.getDetailsOrders();
+        LocalDateTime dateEndOrder = order.getDateEndPainting();
+        order.setDateStartSecondPackage(order.getDateEndPainting());
+        for (DetailsOrder detailsOrder : detailsOrders) {
+            if (detailsOrder.getDetailOrder().getMaterial().getName().equals("ПО")) {
+                int count = detailsOrder.getCount();
+                String timePacking = detailsOrder.getDetailOrder().getTimePacking();
+                int hour = Integer.parseInt(Arrays.asList(timePacking.split(":")).get(0));
+                int minute = Integer.parseInt(Arrays.asList(timePacking.split(":")).get(1));
+                int second = Integer.parseInt(Arrays.asList(timePacking.split(":")).get(2));
+                dateEndOrder = calculate(count, dateEndOrder, hour, minute, second);
+            }
+        }
+        order.setDateEndSecondPackage(dateEndOrder);
     }
 
     public static void compareWorkbenches(List<WorkBench> workBenches) {
@@ -522,4 +605,6 @@ public class OrderService {
         }
         return dateEndDetailWorkbench;
     }
+
+
 }

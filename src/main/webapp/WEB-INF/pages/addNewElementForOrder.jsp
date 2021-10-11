@@ -29,8 +29,6 @@
                 <th>Менеджер</th>
                 <th>Дата запуска в производство</th>
                 <th>Дата готовности заказа</th>
-                <th>Покраска</th>
-                <th>Упаковка</th>
                 <th>Коментарий</th>
             </tr>
             </thead>
@@ -44,13 +42,7 @@
                         ${order.dateStartOrder}
                 </td>
                 <td>
-                        ${order.dateEndOrder}
-                </td>
-                <td>
-                        ${order.painting}
-                </td>
-                <td>
-                        ${order.packing}
+                        ${order.dateEnd}
                 </td>
                 <td>
                         ${order.comment}

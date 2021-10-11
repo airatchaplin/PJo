@@ -85,6 +85,20 @@ public class Order {
      */
     private LocalDateTime dateEndOrder;
 
+    private LocalDateTime dateStartFirstPackage;
+
+    private LocalDateTime dateEndFirstPackage;
+
+    private LocalDateTime dateStartPainting;
+
+    private LocalDateTime dateEndPainting;
+
+    private LocalDateTime dateStartSecondPackage;
+
+    private LocalDateTime dateEndSecondPackage;
+
+    private LocalDateTime dateEnd;
+
     private boolean isCalculated;
 
     public static List<Order> compareIncrement(List<Order> orderList) {

@@ -274,18 +274,25 @@ create table old_work_bench
 );
 create table orders
 (
-    id               uuid    not null,
-    comment          varchar(255),
-    date_end_order   timestamp,
-    date_start_order timestamp,
-    increment        int8    not null,
-    is_calculated    boolean not null,
-    number_order     int4    not null,
-    packing          varchar(255),
-    painting         varchar(255),
-    economist_id     uuid,
-    manager_id       uuid,
-    object_name_id   uuid,
+    id                        uuid    not null,
+    comment                   varchar(255),
+    date_end_order            timestamp,
+    date_start_order          timestamp,
+    date_end_first_package    timestamp,
+    date_start_first_package  timestamp,
+    date_end_second_package   timestamp,
+    date_start_second_package timestamp,
+    date_end_painting         timestamp,
+    date_start_painting       timestamp,
+    date_end                  timestamp,
+    increment                 int8    not null,
+    is_calculated             boolean not null,
+    number_order              int4    not null,
+    packing                   varchar(255),
+    painting                  varchar(255),
+    economist_id              uuid,
+    manager_id                uuid,
+    object_name_id            uuid,
     primary key (id)
 );
 create table orders_details_orders

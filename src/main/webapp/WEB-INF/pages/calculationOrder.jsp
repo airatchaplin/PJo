@@ -58,7 +58,7 @@
                         ${order.packing}
                 </td>
                 <td>${order.dateStartOrder}</td>
-                <td>${order.dateEndOrder}</td>
+                <td>${order.dateEnd}</td>
                 <td>
                         ${order.comment}
                 </td>

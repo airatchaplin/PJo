@@ -83,6 +83,20 @@ public class OrderDto {
      */
     private String dateEndOrder;
 
+    private String dateStartFirstPackage;
+
+    private String dateEndFirstPackage;
+
+    private String dateStartPainting;
+
+    private String dateEndPainting;
+
+    private String dateStartSecondPackage;
+
+    private String dateEndSecondPackage;
+
+    private String dateEnd;
+
     private boolean isCalculated;
 
     public static List<OrderDto> compareIncrement(List<OrderDto> orderList) {

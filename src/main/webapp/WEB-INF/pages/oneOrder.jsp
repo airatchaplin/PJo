@@ -25,10 +25,8 @@
                 <th>Контрагент</th>
                 <th>Экономист</th>
                 <th>Менеджер</th>
-                    <%--                <th>Дата запуска в производство</th>--%>
-                    <%--                <th>Дата готовности заказа</th>--%>
-                <th>Покраска Н/Д/Ч/М</th>
-                <th>Упаковка Н/Д/Ч/М</th>
+                <th>Дата запуска в производство</th>
+                <th>Дата готовности заказа</th>
                 <th>Коментарий</th>
             </tr>
             </thead>
@@ -36,23 +34,17 @@
 
             <tr>
 
-                <td class="number_orders" style="text-align: center"> ${order.numberOrder} </td>
-                <td> ${order.objectName} </td>
-                <td>${order.manager} </td>
-                <td>${order.manager} </td>
-                    <%--                <td>--%>
-                    <%--                        ${order.dateStart}--%>
-                    <%--                </td>--%>
-                    <%--                <td>--%>
-                    <%--                        ${order.dateEnd}--%>
-                    <%--                </td>--%>
+                <td class="number_orders" style="text-align: center"> ${order.numberOrder}</td>
+                <td> ${order.objectName}</td>
+                <td>${order.manager}</td>
+                <td>${order.manager}</td>
+                <td>
+                        ${order.dateStartOrder}
+                </td>
+                <td>
+                        ${order.dateEnd}
+                </td>
 
-                <td>
-                        ${order.painting}
-                </td>
-                <td>
-                        ${order.packing}
-                </td>
                 <td>
                         ${order.comment}
                 </td>
@@ -60,6 +52,38 @@
             </tbody>
         </table>
 
+        <table style="margin-top: 8px" class="simple-little-table" cellspacing='0'>
+            <thead>
+            <tr>
+                <th></th>
+                <th>Дата запуска</th>
+                <th>Дата окончания</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr>
+                <td>Производство</td>
+                <td>${order.dateStartOrder}</td>
+                <td>${order.dateEndOrder}</td>
+            </tr>
+            <tr>
+                <td>Упаковка</td>
+                <td>${order.dateStartFirstPackage}</td>
+                <td>${order.dateEndFirstPackage}</td>
+            </tr>
+            <tr>
+                <td>Покраска</td>
+                <td>${order.dateStartPainting}</td>
+                <td>${order.dateEndPainting}</td>
+            </tr>
+            <tr>
+                <td>Упаковка после покраски</td>
+                <td>${order.dateStartSecondPackage}</td>
+                <td>${order.dateEndSecondPackage}</td>
+            </tr>
+            </tbody>
+        </table>
 
         <table style="margin-top: 8px" class="simple-little-table" cellspacing='0'>
             <thead>

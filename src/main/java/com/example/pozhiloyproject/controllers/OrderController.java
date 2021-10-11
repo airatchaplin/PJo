@@ -6,6 +6,8 @@ import com.example.pozhiloyproject.models.*;
 import com.example.pozhiloyproject.models.completedOrder.CompletedOrder;
 import com.example.pozhiloyproject.services.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -246,22 +248,41 @@ public class OrderController {
      */
     @GetMapping("/orders/change/{id}")
     public String changeOrderGet(@PathVariable(value = "id") String id, Model model) {
-        List<Integer> weeks = Stream.of(1, 2, 3, 4, 5, 6, 7).collect(Collectors.toList());
-        List<Integer> days = Stream.of(1, 2, 3, 4, 5, 6, 7).collect(Collectors.toList());
-        List<Integer> hours = Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23).collect(Collectors.toList());
-        List<Integer> minutes = new ArrayList<>();
-        for (int i = 1; i <= 59; i++) {
-            minutes.add(i);
-        }
+
+        Order order = orderService.getOrderById(UUID.fromString(id));
         model.addAttribute("contragents", contragentService.getAllContragents());
         model.addAttribute("managers", userService.getManagers());
         model.addAttribute("details", detailService.getAllDetails());
-        model.addAttribute("order", orderService.getOrderById(UUID.fromString(id)));
+        model.addAttribute("order", order);
         model.addAttribute("user", userService.getUserWeb());
-        model.addAttribute("weeks", weeks);
-        model.addAttribute("days", days);
-        model.addAttribute("hours", hours);
-        model.addAttribute("minutes", minutes);
+
+        if (order.getDateStartOrder()!= null) {
+            model.addAttribute("dateStartOrder", order.getDateStartOrder().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+        }
+        if (order.getDateEndOrder()!= null) {
+            model.addAttribute("dateEndOrder", order.getDateEndOrder().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+        }
+
+        if (order.getDateStartFirstPackage()!= null) {
+            model.addAttribute("dateStartFirstPackage", order.getDateStartFirstPackage().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+        }
+        if (order.getDateEndFirstPackage()!= null) {
+            model.addAttribute("dateEndFirstPackage", order.getDateEndFirstPackage().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+        }
+
+        if (order.getDateStartPainting()!= null) {
+            model.addAttribute("dateStartPainting", order.getDateStartPainting().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm")));
+        }
+        if (order.getDateEndPainting()!= null) {
+            model.addAttribute("dateEndPainting", order.getDateEndPainting().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm")));
+        }
+
+        if (order.getDateStartSecondPackage()!= null) {
+            model.addAttribute("dateStartSecondPackage", order.getDateStartSecondPackage().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+        }
+        if (order.getDateEndSecondPackage()!= null) {
+            model.addAttribute("dateEndSecondPackage", order.getDateEndSecondPackage().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+        }
         return "changeOrder";
     }
 
@@ -277,21 +298,9 @@ public class OrderController {
     public String changeOrderPost(@PathVariable(value = "id") String id,
                                   @RequestParam(required = true) List<String> detailId,
                                   @RequestParam(required = true) List<Integer> countDetail,
-                                  @RequestParam(required = true) String weeksPaiting,
-                                  @RequestParam(required = true) String daysPaiting,
-                                  @RequestParam(required = true) String hoursPaiting,
-                                  @RequestParam(required = true) String minutesPaiting,
-                                  @RequestParam(required = true) String weeksPacking,
-                                  @RequestParam(required = true) String daysPacking,
-                                  @RequestParam(required = true) String hoursPacking,
-                                  @RequestParam(required = true) String minutesPacking,
                                   @RequestParam(required = true) String comment) {
 
         Order order = orderService.getOrderById(UUID.fromString(id));
-        String packing = String.format("%1$s/%2$s/%3$s/%4$s", weeksPacking, daysPacking, hoursPacking, minutesPacking);
-        String painting = String.format("%1$s/%2$s/%3$s/%4$s", weeksPaiting, daysPaiting, hoursPaiting, minutesPaiting);
-        order.setPacking(packing);
-        order.setPainting(painting);
         for (int i = 0; i < detailId.size(); i++) {
             if (order.getDetailsOrders().get(i).getDetailOrder().getId().toString().equals(detailId.get(i))) {
                 order.getDetailsOrders().get(i).setCount(countDetail.get(i));
@@ -302,6 +311,26 @@ public class OrderController {
         order.setComment(comment1);
         oldOrderService.deleteOldOrder(order.getNumberOrder());
         oldOrderService.fillOldOrderByOrder(order);
+        orderService.saveOrder(order);
+        return "redirect:/orders/" + id;
+    }
+
+    @PostMapping("/orders/changeDatePainting/{id}")
+    public String changeDatePaintingOrderPost(@PathVariable(value = "id") String id,
+                                  @RequestParam(required = true) String dateStartPainting,
+                                  @RequestParam(required = true) String dateEndPainting) {
+
+        Order order = orderService.getOrderById(UUID.fromString(id));
+        LocalDateTime startPainting = LocalDateTime.parse(dateStartPainting);
+        LocalDateTime endPainting = LocalDateTime.parse(dateEndPainting);
+        order.setDateStartPainting(startPainting);
+        order.setDateEndPainting(endPainting);
+        orderService.setSecondPackageOrder(order);
+        if (order.getDateEndSecondPackage()!=null){
+            order.setDateEnd(order.getDateEndSecondPackage());
+        }else {
+            order.setDateEnd(order.getDateEndFirstPackage());
+        }
         orderService.saveOrder(order);
         return "redirect:/orders/" + id;
     }

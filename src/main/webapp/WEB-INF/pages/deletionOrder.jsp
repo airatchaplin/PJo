@@ -28,8 +28,6 @@
             <th>Менеджер</th>
             <th>Дата запуска в производство</th>
             <th>Дата готовности заказа</th>
-            <th>Покраска</th>
-            <th>Упаковка</th>
             <th>Коментарий</th>
         </tr>
         </thead>
@@ -37,7 +35,7 @@
 
         <tr>
 
-            <td  class="number_orders" style="text-align: center"> ${order.numberOrder} </td>
+            <td class="number_orders" style="text-align: center"> ${order.numberOrder} </td>
             <td> ${order.objectName.name} </td>
             <td>${order.manager.fio_i_o} </td>
             <td>${order.manager.fio_i_o} </td>
@@ -45,14 +43,7 @@
                 ${order.dateStartOrder}
             </td>
             <td>
-                ${order.dateEndOrder}
-            </td>
-
-            <td>
-                ${order.painting}
-            </td>
-            <td>
-                ${order.packing}
+                ${order.dateEnd}
             </td>
             <td>
                 ${order.comment}
@@ -66,7 +57,11 @@
         <tr>
             <th scope="col">Деталь</th>
             <th scope="col">Количество</th>
-            <th scope="col">Удалить</th>
+            <c:if test="${order.calculated}">
+            </c:if>
+            <c:if test="${!order.calculated}">
+                <th scope="col">Удалить</th>
+            </c:if>
         </tr>
         </thead>
         <tbody>
@@ -80,19 +75,19 @@
                         ${ord.count}
                 </td>
 
-                <td style="padding: 0;width: 1%;">
-<%--                    <form:form action="/orders/deletion/${order.id}/${ord.increment}"--%>
-<%--                               method="post">--%>
-<%--                        <input style="border: 0;cursor: pointer" type="submit" value="&#128937;">--%>
-<%--                    </form:form>--%>
-                    <form method="post" action="/orders/deletion/${order.id}/${ord.increment}">
-                        <button style="color: black;width: 150px;height: 50px;background: #d1d1d100;font-variant: all-small-caps;"
-                                type="submit"
-                                onclick="window.location.href = '/orders/deletion/${order.id}/${ord.increment}';">
-                            Удалить
-                        </button>
-                    </form>
-                </td>
+                <c:if test="${order.calculated}">
+                </c:if>
+                <c:if test="${!order.calculated}">
+                    <td style="padding: 0;width: 1%;">
+                        <form method="post" action="/orders/deletion/${order.id}/${ord.increment}">
+                            <button style="color: black;width: 150px;height: 50px;background: #d1d1d100;font-variant: all-small-caps;"
+                                    type="submit"
+                                    onclick="window.location.href = '/orders/deletion/${order.id}/${ord.increment}';">
+                                Удалить
+                            </button>
+                        </form>
+                    </td>
+                </c:if>
             </tr>
         </c:forEach>
         </tbody>
