@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Сервис заказов
@@ -149,7 +146,8 @@ public class CompletedOrderService {
      * @return Завершенный заказ
      */
     public CompletedOrder getOneCompletedOrderById(UUID id) {
-        return completedOrderRepository.findById(id).orElseThrow();
+        Optional<CompletedOrder> completedOrder = completedOrderRepository.findById(id);
+        return completedOrder.orElse(new CompletedOrder());
     }
 
     /**
@@ -169,7 +167,7 @@ public class CompletedOrderService {
      * @return DTO завершенного заказа
      */
     public CompletedOrderDto getCompleteOrderDto(UUID id) {
-        CompletedOrder order = completedOrderRepository.findById(id).orElseThrow();
+        CompletedOrder order = getOneCompletedOrderById(id);
         List<CompletedDetailsOrder> detailsOrders = order.getDetailsOrders();
         for (CompletedDetailsOrder detailsOrder : detailsOrders) {
             List<CompletedDetailOrderList> detailOrderLists = detailsOrder.getDetailOrder().getDetailOrderLists();

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -42,7 +43,8 @@ public class SubsequenceTypeOperationService {
      * @return Последовательность операции
      */
     public SubsequenceTypeOperation getOneSubsequenceTypeOperation(UUID id) {
-        return subsequenceTypeOperationRepository.findById(id).orElseThrow();
+        Optional<SubsequenceTypeOperation> subsequenceTypeOperation = subsequenceTypeOperationRepository.findById(id);
+        return subsequenceTypeOperation.orElse(new SubsequenceTypeOperation());
     }
 
     /**

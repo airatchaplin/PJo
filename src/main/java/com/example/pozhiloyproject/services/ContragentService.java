@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -46,7 +47,8 @@ public class ContragentService {
      * @return Контрагент
      */
     public Contragent getOneContragentById(UUID id) {
-        return contragentRepository.findById(id).orElseThrow();
+        Optional<Contragent> contragent = contragentRepository.findById(id);
+        return contragent.orElse(new Contragent());
     }
 
     /**

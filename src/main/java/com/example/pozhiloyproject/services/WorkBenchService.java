@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Сервис станков
@@ -87,7 +84,8 @@ public class WorkBenchService {
      * @return Станок
      */
     public WorkBench getOneWorkBenchById(UUID id) {
-        return workBenchRepository.findById(id).orElseThrow();
+        Optional<WorkBench> workBench = workBenchRepository.findById(id);
+        return workBench.orElse(new WorkBench());
     }
 
     /**
@@ -127,7 +125,7 @@ public class WorkBenchService {
      * @return Результат
      */
     public boolean checkAddWorkBench(UUID id, String name) {
-        WorkBench currentWorkBench = workBenchRepository.findById(id).orElseThrow();
+        WorkBench currentWorkBench = getOneWorkBenchById(id);
         WorkBench findWorkBench = getOneWorkBenchByName(name);
         if (currentWorkBench.equals(findWorkBench)) {
             return false;

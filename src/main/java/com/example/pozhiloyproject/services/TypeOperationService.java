@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -37,7 +38,8 @@ public class TypeOperationService {
      * @return Тип операции
      */
     public TypeOperation getOneTypeOperation(UUID id) {
-        return typeOperationRepository.findById(id).orElseThrow();
+        Optional<TypeOperation> typeOperation = typeOperationRepository.findById(id);
+        return typeOperation.orElse(new TypeOperation());
     }
 
     /**
@@ -68,7 +70,7 @@ public class TypeOperationService {
      * @return Результат
      */
     public boolean checkAddTypeOperation(UUID id, String name) {
-        TypeOperation currentTypeOperation = typeOperationRepository.findById(id).orElseThrow();
+        TypeOperation currentTypeOperation = getOneTypeOperation(id);
         TypeOperation findTypeOperation = typeOperationRepository.findByName(name);
         if (currentTypeOperation.equals(findTypeOperation)) {
             return false;

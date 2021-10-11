@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -43,7 +44,8 @@ public class MaterialService {
      * @return Материал
      */
     public Material getOneMaterial(UUID id) {
-        return materialsRepository.findById(id).orElseThrow();
+        Optional<Material> material = materialsRepository.findById(id);
+        return material.orElse(new Material());
     }
 
     /**

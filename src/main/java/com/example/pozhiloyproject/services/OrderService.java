@@ -72,7 +72,8 @@ public class OrderService {
 
 
     public Order getOrderById(UUID id) {
-        return orderRepository.findById(id).orElseThrow();
+        Optional<Order> order = orderRepository.findById(id);
+        return order.orElse(new Order());
     }
 
     /**
@@ -82,7 +83,7 @@ public class OrderService {
      * @return Заказ
      */
     public OrderDto getOrderDtoById(UUID id) {
-        Order order = orderRepository.findById(id).orElseThrow();
+        Order order = getOrderById(id);
         List<DetailsOrder> detailsOrders = order.getDetailsOrders();
         for (DetailsOrder detailsOrder : detailsOrders) {
             List<DetailOrderList> detailOrderLists = detailsOrder.getDetailOrder().getDetailOrderLists();

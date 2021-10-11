@@ -47,7 +47,7 @@ public class UserService implements UserDetailsService {
      */
     public User getUserWeb() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return userRepository.findById(user.getId()).orElseThrow();
+        return getUserById(user.getId());
     }
 
     /**
@@ -109,7 +109,7 @@ public class UserService implements UserDetailsService {
     public void updateRolesAllUsers(List<String> id, List<String> role) {
         User user;
         for (int i = 0; i < id.size(); i++) {
-            user = userRepository.findById(UUID.fromString(id.get(i))).orElseThrow();
+            user = getUserById(UUID.fromString(id.get(i)));
             List<Role> roles = new ArrayList<>();
             roles.add(roleRepository.findByName(role.get(i)));
             user.setRoles(roles);
@@ -124,7 +124,8 @@ public class UserService implements UserDetailsService {
      * @return Пользователь
      */
     public User getUserById(UUID id) {
-        return userRepository.findById(id).orElseThrow();
+        Optional<User> user = userRepository.findById(id);
+        return user.orElse(new User());
     }
 
     /**

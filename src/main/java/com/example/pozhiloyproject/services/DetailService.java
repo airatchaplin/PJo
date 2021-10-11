@@ -70,8 +70,8 @@ public class DetailService {
      * @return DetailDto
      */
     public DetailDto getDetailDtoById(UUID id) {
-        Detail detail = detailRepository.findById(id).orElseThrow();
-        return setAttributesDetailDto(detail);
+        Optional<Detail> detail = detailRepository.findById(id);
+        return setAttributesDetailDto(detail.orElse(new Detail()));
     }
 
     /**
@@ -81,7 +81,8 @@ public class DetailService {
      * @return Detail
      */
     public Detail getDetailById(UUID id) {
-        return detailRepository.findById(id).orElseThrow();
+        Optional<Detail> detail = detailRepository.findById(id);
+        return detail.orElse(new Detail());
     }
 
     /**
@@ -184,8 +185,8 @@ public class DetailService {
         List<WorkBench> workBenches = new ArrayList<>();
         for (String id : workBenchId) {
             if (!id.equals("Выберите станок")) {
-                WorkBench workBench = workBenchRepository.findById(UUID.fromString(id)).orElseThrow();
-                workBenches.add(workBench);
+                Optional<WorkBench> workBench = workBenchRepository.findById(UUID.fromString(id));
+                workBenches.add(workBench.orElse(new WorkBench()));
             }
         }
         List<DetailInfo> detailInfos = new ArrayList<>();
