@@ -1,6 +1,8 @@
 package com.example.pozhiloyproject.controllers;
 
+import com.example.pozhiloyproject.dto.StatisticsDto;
 import com.example.pozhiloyproject.models.User;
+import com.example.pozhiloyproject.models.WorkBench;
 import com.example.pozhiloyproject.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,8 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Main контроллер
@@ -34,6 +41,9 @@ public class MainController {
 
     @Autowired
     TypeOperationService typeOperationService;
+
+    @Autowired
+    MainService mainService;
 
     /**
      * Главная страница
@@ -209,5 +219,31 @@ public class MainController {
         return "redirect:/personalArea";
     }
 
+    @GetMapping("/statistics")
+    public String getStatistics(Model model) {
+        model.addAttribute("user", userService.getUserWeb());
+        model.addAttribute("workbenches", workBenchService.getAllWorkBench());
+        return "statistics";
+    }
 
+    @GetMapping("/statistics/{id}")
+    public String getStatistics(@PathVariable(name = "id") String id, Model model) {
+        model.addAttribute("months", Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12).collect(Collectors.toList()));
+        model.addAttribute("user", userService.getUserWeb());
+        model.addAttribute("workBench",  workBenchService.getOneWorkBenchById(UUID.fromString(id)).getName());
+        return "oneStatistics";
+    }
+
+    @PostMapping("/statistics/{id}")
+    public String getStatistics(@PathVariable(name = "id") String id, Model model, @RequestParam(required = false) String nowDate) {
+        if (!nowDate.equals("Выберите месяц")) {
+            WorkBench workBench = workBenchService.getOneWorkBenchById(UUID.fromString(id));
+            model.addAttribute("statistics", mainService.getStatistics(nowDate, workBench.getName()));
+            model.addAttribute("workBench",  workBench.getName());
+        }
+        model.addAttribute("user", userService.getUserWeb());
+        model.addAttribute("currentMonth",nowDate);
+        model.addAttribute("months", Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12).collect(Collectors.toList()));
+        return "oneStatistics";
+    }
 }

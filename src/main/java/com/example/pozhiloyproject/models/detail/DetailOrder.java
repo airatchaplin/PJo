@@ -1,22 +1,18 @@
-package com.example.pozhiloyproject.models;
+package com.example.pozhiloyproject.models.detail;
+
+import com.example.pozhiloyproject.models.Material;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.Cascade;
-
-/**
- * Деталь
- */
 @Entity
-@Table(name = "details")
+@Table
 @Getter
 @Setter
-public class Detail {
-
+public class DetailOrder {
     /**
      * id Детали
      */
@@ -37,11 +33,8 @@ public class Detail {
     /**
      * Информация о детали
      */
-//    @ManyToMany(cascade = CascadeType.ALL)
-            @OneToMany(cascade = CascadeType.ALL)
-    private List<DetailList> detailLists;
-
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<DetailOrderList> detailOrderLists;
 
     private String timePacking;
-
 }

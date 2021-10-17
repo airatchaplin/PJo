@@ -1,6 +1,6 @@
 package com.example.pozhiloyproject.services;
 
-import com.example.pozhiloyproject.models.DetailOrderList;
+import com.example.pozhiloyproject.models.detail.DetailOrderList;
 import com.example.pozhiloyproject.repository.DetailOrderListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

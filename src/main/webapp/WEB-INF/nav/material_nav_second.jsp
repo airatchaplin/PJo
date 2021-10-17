@@ -2,14 +2,14 @@
 
 <nav class="nav-second">
     <div>
-        <button class="button-nav-second" style="width: 195px;"
+        <button class="button-nav-second"
                 onclick="window.location.href = '/addMaterial';">Добавить материал
         </button>
-        <button class="button-nav-second" style="width: 195px;"
+        <button class="button-nav-second"
                 onclick="window.location.href = '/materials/change/${material.id}';">Изменить
             материал
         </button>
-        <button class="button-nav-second" style="width: 195px;"
+        <button class="button-nav-second"
                 onclick="window.location.href = '/materials/deletion/${material.id}';">Удалить
             материал
         </button>

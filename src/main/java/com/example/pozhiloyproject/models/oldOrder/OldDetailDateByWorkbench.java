@@ -1,6 +1,6 @@
 package com.example.pozhiloyproject.models.oldOrder;
 
-import com.example.pozhiloyproject.models.DetailDateByWorkbench;
+import com.example.pozhiloyproject.models.detail.DetailDateByWorkbench;
 import com.example.pozhiloyproject.models.WorkBench;
 import lombok.Getter;
 import lombok.Setter;

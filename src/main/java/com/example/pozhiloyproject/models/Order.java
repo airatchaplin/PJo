@@ -1,14 +1,12 @@
 package com.example.pozhiloyproject.models;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
-import com.example.pozhiloyproject.dto.DetailInfoDto;
+import com.example.pozhiloyproject.models.detail.DetailsOrder;
 import lombok.Getter;
 import lombok.Setter;
 

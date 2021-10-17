@@ -1,7 +1,9 @@
 package com.example.pozhiloyproject.controllers;
 
 import com.example.pozhiloyproject.models.User;
+import com.example.pozhiloyproject.models.setting.SettingView;
 import com.example.pozhiloyproject.services.RoleService;
+import com.example.pozhiloyproject.services.SettingService;
 import com.example.pozhiloyproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,7 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
 public class ManagerController {
@@ -24,10 +28,15 @@ public class ManagerController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    SettingService settingService;
+
     @GetMapping("/managers")
     public String getAllManagers(Model model) {
         model.addAttribute("user", userService.getUserWeb());
         model.addAttribute("managers", userService.getManagers());
+        List<SettingView> settingViews = settingService.getSetting().getSettingViews();
+        model.addAttribute("setting",settingViews.stream().filter(x -> x.getName().equals("Менеджеры")).collect(Collectors.toList()));
         return "managers";
     }
 
@@ -79,6 +88,8 @@ public class ManagerController {
     public String getOneManager(@PathVariable(name = "id") String id, Model model) {
         model.addAttribute("managerById",userService.getUserById(UUID.fromString(id)));
         model.addAttribute("user", userService.getUserWeb());
+        List<SettingView> settingViews = settingService.getSetting().getSettingViews();
+        model.addAttribute("setting",settingViews.stream().filter(x -> x.getName().equals("Менеджеры")).collect(Collectors.toList()));
         return "oneManager";
     }
 

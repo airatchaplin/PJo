@@ -2,10 +2,8 @@ package com.example.pozhiloyproject.controllers;
 
 import com.example.pozhiloyproject.models.SubsequenceTypeOperation;
 import com.example.pozhiloyproject.models.TypeOperation;
-import com.example.pozhiloyproject.services.SubsequenceTypeOperationService;
-import com.example.pozhiloyproject.services.TypeOperationService;
-import com.example.pozhiloyproject.services.UserService;
-import com.example.pozhiloyproject.services.WorkBenchService;
+import com.example.pozhiloyproject.models.setting.SettingView;
+import com.example.pozhiloyproject.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Контроллер типов операций
@@ -35,6 +34,9 @@ public class TypeOperationController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    SettingService settingService;
 
     /**
      * Страница всех типов операций метод GET
@@ -237,6 +239,8 @@ public class TypeOperationController {
     public String allSubsequenceTypeOperationGet(Model model) {
         model.addAttribute("operations", subsequenceTypeOperationService.getAllSubsequenceTypeOperation());
         model.addAttribute("user", userService.getUserWeb());
+        List<SettingView> settingViews = settingService.getSetting().getSettingViews();
+        model.addAttribute("setting",settingViews.stream().filter(x -> x.getName().equals("Станки")).collect(Collectors.toList()));
         return "subsequenceTypeOperation";
     }
 
@@ -252,6 +256,8 @@ public class TypeOperationController {
         model.addAttribute("operation", subsequenceTypeOperationService.getOneSubsequenceTypeOperation(UUID.fromString(id)));
         model.addAttribute("user", userService.getUserWeb());
         model.addAttribute("user", userService.getUserWeb());
+        List<SettingView> settingViews = settingService.getSetting().getSettingViews();
+        model.addAttribute("setting", settingViews.stream().filter(x -> x.getName().equals("Станки")).collect(Collectors.toList()));
         return "oneSubsequenceTypeOperation";
     }
 

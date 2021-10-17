@@ -13,9 +13,22 @@
 </head>
 <body>
 <jsp:include page="../nav/nav_first.jsp"></jsp:include>
-<jsp:include page="../nav/order_nav_second.jsp"></jsp:include>
+
+<c:if test="${setting.get(0).viewing==false && user.roles.get(0).name.equals('ROLE_USER')}">
+    <jsp:include page="../nav/order_nav_second.jsp"></jsp:include>
+</c:if>
+<c:if test="${user.roles.get(0).name.equals('ROLE_ADMIN')}">
+    <jsp:include page="../nav/order_nav_second.jsp"></jsp:include>
+</c:if>
+
 <form:form action="/orders/${order.id}" method="post">
-    <jsp:include page="../nav/nav_third_complete.jsp"></jsp:include>
+    <c:if test="${setting.get(0).viewing==false && user.roles.get(0).name.equals('ROLE_USER')}">
+        <jsp:include page="../nav/nav_third_complete.jsp"></jsp:include>
+    </c:if>
+    <c:if test="${user.roles.get(0).name.equals('ROLE_ADMIN')}">
+        <jsp:include page="../nav/nav_third_complete.jsp"></jsp:include>
+    </c:if>
+
 
     <div class="main">
         <table class="simple-little-table" cellspacing='0'>

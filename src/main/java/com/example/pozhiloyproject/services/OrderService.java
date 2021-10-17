@@ -4,9 +4,12 @@ import com.example.pozhiloyproject.dto.*;
 import com.example.pozhiloyproject.helper.Db;
 import com.example.pozhiloyproject.helper.Helper;
 import com.example.pozhiloyproject.models.*;
+import com.example.pozhiloyproject.models.detail.*;
+import com.example.pozhiloyproject.models.setting.Setting;
 import com.example.pozhiloyproject.repository.OrderRepository;
 import com.example.pozhiloyproject.repository.WorkBenchRepository;
 
+import java.time.DayOfWeek;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -36,6 +39,9 @@ public class OrderService {
 
     @Autowired
     Db db;
+
+    @Autowired
+    SettingService settingService;
 
     /**
      * Получение списка всех заказов
@@ -331,7 +337,7 @@ public class OrderService {
                             order.setDateStartOrder(dateEndDetailWorkbench);
                         }
                     } else if (!detailThickness.equals(currentThickness) && j == 0) {
-                        dateEndDetailWorkbench = Helper.addTwoHoursWithoutDayOff(dateEndDetailWorkbench);
+                        dateEndDetailWorkbench = addTwoHoursWithoutDayOff(dateEndDetailWorkbench);
                         detailOrderList.getDetailDateByWorkbench().get(j).setSetting(true);
 
                         //Сохраняем дату старта заказа с первой детали
@@ -339,7 +345,7 @@ public class OrderService {
                             order.setDateStartOrder(dateEndDetailWorkbench);
                         }
                     } else if (!detailThickness.equals(currentThickness) && j > 0) {
-                        dateEndDetailWorkbench = Helper.addTwoHoursWithoutDayOff(dateEndDetailWorkbench);
+                        dateEndDetailWorkbench = addTwoHoursWithoutDayOff(dateEndDetailWorkbench);
                         detailOrderList.getDetailDateByWorkbench().get(j).setSetting(true);
                     }
 
@@ -420,7 +426,7 @@ public class OrderService {
                         currentThickness = detailInfo.getWorkBenches().getCurrentThickness();
                         dateEndDetailWorkbench = detailInfo.getWorkBenches().getDateEndDetail();
                         if (!currentThickness.equals(detailThickness)) {
-                            dateEndDetailWorkbench = Helper.addTwoHoursWithoutDayOff(dateEndDetailWorkbench);
+                            dateEndDetailWorkbench = addTwoHoursWithoutDayOff(dateEndDetailWorkbench);
                             for (int k = 0; k < detailOrderList.getDetailDateByWorkbench().size(); k++) {
                                 for (DetailOrderInfo detailOrderInfo : gibkaList) {
                                     if (detailOrderList.getDetailOrderInfos().get(k).equals(detailOrderInfo)) {
@@ -509,6 +515,43 @@ public class OrderService {
         orderRepository.save(order);
     }
 
+    /**
+     * Добавление два дня если это выходные
+     */
+    public LocalDateTime addTwoHoursWithoutDayOff(LocalDateTime localDateTime) {
+        LocalDateTime dateStartDay = LocalDateTime.parse(localDateTime.toLocalDate() + "T08:30");
+        LocalDateTime dateEndDay = LocalDateTime.parse(localDateTime.toLocalDate() + "T16:30");
+
+        Setting setting = settingService.getSetting();
+
+        int hour = Integer.parseInt(Arrays.asList(setting.getTimeWorkAdjustment().split(":")).get(0));
+        int minute = Integer.parseInt(Arrays.asList(setting.getTimeWorkAdjustment().split(":")).get(1));
+
+        int allMinutes = hour * 60 + minute;
+        if (localDateTime.getDayOfWeek().equals(DayOfWeek.FRIDAY)) {
+            for (int i = 0; i < allMinutes; i++) {
+                if (!localDateTime.isAfter(dateEndDay)) {
+                    localDateTime = localDateTime.plusMinutes(1);
+                } else {
+                    dateStartDay = dateStartDay.plusDays(3);
+                    dateEndDay = dateEndDay.plusDays(3);
+                    localDateTime = dateStartDay;
+                }
+            }
+        } else {
+            for (int i = 0; i < allMinutes; i++) {
+                if (!localDateTime.isAfter(dateEndDay)) {
+                    localDateTime = localDateTime.plusMinutes(1);
+                } else {
+                    dateStartDay = dateStartDay.plusDays(1);
+                    dateEndDay = dateEndDay.plusDays(1);
+                    localDateTime = dateStartDay;
+                }
+            }
+        }
+        return localDateTime;
+    }
+
     public void setFirstPackageOrder(Order order) {
         List<DetailsOrder> detailsOrders = order.getDetailsOrders();
         LocalDateTime dateEndOrder = order.getDateEndOrder();
@@ -589,18 +632,33 @@ public class OrderService {
                 dateEndDetailWorkbench = dateEndDetailWorkbench.plusMinutes(minute);
                 dateEndDetailWorkbench = dateEndDetailWorkbench.plusSeconds(second);
             } else {
-                dateStartDay = dateStartDay.plusDays(1);
-                dateEndDay = dateEndDay.plusDays(1);
-                dateEndDetailWorkbench = dateStartDay;
+                if (dateEndDetailWorkbench.getDayOfWeek().equals(DayOfWeek.FRIDAY)) {
+                    dateStartDay = dateStartDay.plusDays(3);
+                    dateEndDay = dateEndDay.plusDays(3);
+                    dateEndDetailWorkbench = dateStartDay;
 
-                dateLunchStartDay = dateLunchStartDay.plusDays(1);
-                dateLunchEndDay = dateLunchEndDay.plusDays(1);
+                    dateLunchStartDay = dateLunchStartDay.plusDays(3);
+                    dateLunchEndDay = dateLunchEndDay.plusDays(3);
 
-                dateSmokeBreakStartDay1 = dateSmokeBreakStartDay1.plusDays(1);
-                dateSmokeBreakEndDay1 = dateSmokeBreakEndDay1.plusDays(1);
+                    dateSmokeBreakStartDay1 = dateSmokeBreakStartDay1.plusDays(3);
+                    dateSmokeBreakEndDay1 = dateSmokeBreakEndDay1.plusDays(3);
 
-                dateSmokeBreakStartDay2 = dateSmokeBreakStartDay2.plusDays(1);
-                dateSmokeBreakEndDay2 = dateSmokeBreakEndDay2.plusDays(1);
+                    dateSmokeBreakStartDay2 = dateSmokeBreakStartDay2.plusDays(3);
+                    dateSmokeBreakEndDay2 = dateSmokeBreakEndDay2.plusDays(3);
+                } else {
+                    dateStartDay = dateStartDay.plusDays(1);
+                    dateEndDay = dateEndDay.plusDays(1);
+                    dateEndDetailWorkbench = dateStartDay;
+
+                    dateLunchStartDay = dateLunchStartDay.plusDays(1);
+                    dateLunchEndDay = dateLunchEndDay.plusDays(1);
+
+                    dateSmokeBreakStartDay1 = dateSmokeBreakStartDay1.plusDays(1);
+                    dateSmokeBreakEndDay1 = dateSmokeBreakEndDay1.plusDays(1);
+
+                    dateSmokeBreakStartDay2 = dateSmokeBreakStartDay2.plusDays(1);
+                    dateSmokeBreakEndDay2 = dateSmokeBreakEndDay2.plusDays(1);
+                }
             }
         }
         return dateEndDetailWorkbench;

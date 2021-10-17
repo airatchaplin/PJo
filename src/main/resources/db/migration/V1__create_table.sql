@@ -355,6 +355,50 @@ create table workbench
     type_operation_id uuid,
     primary key (id)
 );
+create table setting
+(
+    id                   uuid not null,
+    time_work_adjustment varchar(255),
+    primary key (id)
+);
+
+create table setting_setting_weekends
+(
+    setting_id          uuid not null,
+    setting_weekends_id uuid not null
+);
+create table setting_weekend
+(
+    id         uuid not null,
+    date_end   date,
+    date_start date,
+    name       varchar(255),
+    primary key (id)
+);
+create table setting_view
+(
+    id         uuid    not null,
+    is_viewing boolean not null,
+    name       varchar(255),
+    primary key (id)
+);
+create table setting_setting_views
+(
+    setting_id       uuid not null,
+    setting_views_id uuid not null
+);
+alter table setting_setting_views
+    add constraint UK_rkdj3sje7c132oext3aubg5f3 unique (setting_views_id);
+alter table setting_setting_views
+    add constraint FK9o7iv764i15t1cgbja0a4hp6n foreign key (setting_views_id) references setting_view;
+alter table setting_setting_views
+    add constraint FKpa9owo489vvp2eq1cgk4aafr2 foreign key (setting_id) references setting;
+alter table setting_setting_weekends
+    add constraint UK_5sa77b6ry8twy7wqiq4xlscfc unique (setting_weekends_id);
+alter table setting_setting_weekends
+    add constraint FKdlbi3ninio2j58ll7apnh6lf9 foreign key (setting_weekends_id) references setting_weekend;
+alter table setting_setting_weekends
+    add constraint FKgjh5t0saus2lhnh448ptv4gk8 foreign key (setting_id) references setting;
 alter table if exists completed_detail_order_detail_order_lists
     add constraint UK_ntnmbs9sfyjpxofr6uvbd1sr6 unique (detail_order_lists_id);
 alter table if exists completed_detail_order_list_detail_date_by_workbench

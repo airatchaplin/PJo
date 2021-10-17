@@ -1,12 +1,8 @@
 package com.example.pozhiloyproject.dto;
 
-import com.example.pozhiloyproject.models.DetailInfo;
-import com.example.pozhiloyproject.models.WorkBench;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;

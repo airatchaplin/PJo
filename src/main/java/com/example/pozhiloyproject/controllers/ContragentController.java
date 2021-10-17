@@ -1,7 +1,9 @@
 package com.example.pozhiloyproject.controllers;
 
 import com.example.pozhiloyproject.models.Contragent;
+import com.example.pozhiloyproject.models.setting.SettingView;
 import com.example.pozhiloyproject.services.ContragentService;
+import com.example.pozhiloyproject.services.SettingService;
 import com.example.pozhiloyproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Контроллер контрагентов
@@ -25,6 +29,9 @@ public class ContragentController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    SettingService settingService;
+
     /**
      * Страница всех контрагентов метод GET
      *
@@ -35,6 +42,8 @@ public class ContragentController {
     public String getAllContragents(Model model) {
         model.addAttribute("contragents", contragentService.getAllContragents());
         model.addAttribute("user", userService.getUserWeb());
+        List<SettingView> settingViews = settingService.getSetting().getSettingViews();
+        model.addAttribute("setting",settingViews.stream().filter(x -> x.getName().equals("Контрагенты")).collect(Collectors.toList()));
         return "contragents";
     }
 
@@ -49,6 +58,8 @@ public class ContragentController {
     public String getOneContragent(@PathVariable(name = "id") String id, Model model) {
         model.addAttribute("user", userService.getUserWeb());
         model.addAttribute("contragent", contragentService.getOneContragentById(UUID.fromString(id)));
+        List<SettingView> settingViews = settingService.getSetting().getSettingViews();
+        model.addAttribute("setting",settingViews.stream().filter(x -> x.getName().equals("Контрагенты")).collect(Collectors.toList()));
         return "oneContragent";
     }
 

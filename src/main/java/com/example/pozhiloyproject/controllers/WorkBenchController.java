@@ -3,6 +3,8 @@ package com.example.pozhiloyproject.controllers;
 import com.example.pozhiloyproject.dto.WorkBenchDto;
 import com.example.pozhiloyproject.models.User;
 import com.example.pozhiloyproject.models.WorkBench;
+import com.example.pozhiloyproject.models.setting.SettingView;
+import com.example.pozhiloyproject.services.SettingService;
 import com.example.pozhiloyproject.services.TypeOperationService;
 import com.example.pozhiloyproject.services.UserService;
 import com.example.pozhiloyproject.services.WorkBenchService;
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Контроллер странков
@@ -32,6 +36,9 @@ public class WorkBenchController {
 
     @Autowired
     TypeOperationService typeOperationService;
+
+    @Autowired
+    SettingService settingService;
 
     /**
      * Страница всех станков метод GET
@@ -82,7 +89,7 @@ public class WorkBenchController {
                 break;
         }
         userService.saveUser(user);
-        return "workbenches";
+        return "redirect:/workbenches";
     }
 
     /**
@@ -139,6 +146,8 @@ public class WorkBenchController {
     public String getOneWorkBench(@PathVariable(name = "id") String id, Model model) {
         model.addAttribute("workbench", workBenchService.getOneWorkBenchById(UUID.fromString(id)));
         model.addAttribute("user", userService.getUserWeb());
+        List<SettingView> settingViews = settingService.getSetting().getSettingViews();
+        model.addAttribute("setting",settingViews.stream().filter(x -> x.getName().equals("Станки")).collect(Collectors.toList()));
         return "oneWorkBench";
     }
 

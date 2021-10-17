@@ -1,6 +1,5 @@
-package com.example.pozhiloyproject.models;
+package com.example.pozhiloyproject.models.detail;
 
-import java.util.List;
 import javax.persistence.*;
 import java.util.UUID;
 
@@ -30,7 +29,7 @@ public class DetailsOrder {
     /**
      * Деталь
      */
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private DetailOrder detailOrder;
 
     /**

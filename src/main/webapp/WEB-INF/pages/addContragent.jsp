@@ -16,7 +16,7 @@
 <jsp:include page="../nav/nav_first.jsp"></jsp:include>
 <nav class="nav-second">
     <div>
-        <button class="button-nav-second" style="width: 195px;"
+        <button class="button-nav-second"
                 onclick="window.location.href = '/addContragent';">Добавить контрагента
         </button>
     </div>

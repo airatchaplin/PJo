@@ -14,13 +14,23 @@
 </head>
 <body>
 <jsp:include page="../nav/nav_first.jsp"></jsp:include>
-<nav class="nav-second">
-    <button class="button-nav-second" style="width: 195px;"
-            onclick="window.location.href = '/addManager';">Добавить менеджера
-    </button>
-</nav>
 
-<div class="main" >
+<c:if test="${setting.get(0).viewing==false && user.roles.get(0).name.equals('ROLE_USER')}">
+    <nav class="nav-second">
+        <button class="button-nav-second"
+                onclick="window.location.href = '/addManager';">Добавить менеджера
+        </button>
+    </nav>
+</c:if>
+<c:if test="${user.roles.get(0).name.equals('ROLE_ADMIN')}">
+    <nav class="nav-second">
+        <button class="button-nav-second"
+                onclick="window.location.href = '/addManager';">Добавить менеджера
+        </button>
+    </nav>
+</c:if>
+
+<div class="main">
     <table class="simple-little-table" cellspacing='0'>
         <thead>
         <tr>
@@ -35,13 +45,13 @@
             <tr>
                 <td class="number" style="text-align: center">${count + 1}</td>
                 <td class="fio"><a style="display: block"
-                       href="managers/${manager.getId()}">${manager.getFio()}</a>
+                                   href="managers/${manager.getId()}">${manager.getFio()}</a>
                 </td>
                 <td class="fio"><a style="display: block"
-                       href="managers/${manager.getId()}">${manager.getName()}</a>
+                                   href="managers/${manager.getId()}">${manager.getName()}</a>
                 </td>
                 <td class="fio"><a style="display: block"
-                       href="managers/${manager.getId()}">${manager.getLastName()}</a>
+                                   href="managers/${manager.getId()}">${manager.getLastName()}</a>
                 </td>
             </tr>
             <c:set var="count" value="${count + 1}" scope="page"/>

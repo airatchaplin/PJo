@@ -4,6 +4,7 @@ import com.example.pozhiloyproject.dto.*;
 import com.example.pozhiloyproject.helper.Db;
 import com.example.pozhiloyproject.models.*;
 import com.example.pozhiloyproject.models.completedOrder.*;
+import com.example.pozhiloyproject.models.detail.*;
 import com.example.pozhiloyproject.repository.CompletedOrderRepository;
 import com.example.pozhiloyproject.repository.OldOrderRepository;
 import com.example.pozhiloyproject.repository.OrderRepository;

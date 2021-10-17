@@ -3,10 +3,10 @@
 
 <nav class="nav-second">
     <div>
-        <button class="button-nav-second" style="width: 195px;"
+        <button class="button-nav-second"
                 onclick="window.location.href = '/details/addWorkbenchMain/${detail.id}';">Добавить станок
         </button>
-        <button class="button-nav-second" style="width: 195px;"
+        <button class="button-nav-second"
                 onclick="window.location.href = '/details/deleteWorkbenchMain/${detail.id}';">Удалить станок
         </button>
     </div>

@@ -1,6 +1,5 @@
 package com.example.pozhiloyproject.models.completedOrder;
 
-import com.example.pozhiloyproject.models.DetailOrderList;
 import com.example.pozhiloyproject.models.Material;
 import lombok.Getter;
 import lombok.Setter;

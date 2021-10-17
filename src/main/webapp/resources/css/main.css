@@ -53,7 +53,6 @@ a {
     /*background: #d1d1d1;*/
     background: #d1d1d100;
     top: 0;
-    height: 52px;
 }
 
 .nav-second {
@@ -68,7 +67,6 @@ a {
     /*padding: 15px;*/
     top: 0;
     /*margin-top: 60px;*/
-    height: 52px;
 }
 
 .nav-third {
@@ -78,7 +76,6 @@ a {
     justify-content: space-between;
     right: 0;
     left: 0;
-    height: 52px;
     /*background: #f2f2f2;*/
     background: #d1d1d100;
     /*padding: 15px;*/
@@ -172,20 +169,24 @@ button {
 
 .button-nav-second {
     color: black;
-    width: 170px;
+    width: auto;
     height: 50px;
     /*background: #f2f2f2;*/
     background: #d1d1d100;
     font-variant: all-small-caps;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .button-nav-first {
     /*background: #d1d1d1;*/
     background: #d1d1d100;
     color: black;
-    width: 120px;
+    width: auto;
     height: 50px;
     font-variant: all-small-caps;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .button-filter {

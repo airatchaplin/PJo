@@ -1,6 +1,6 @@
 package com.example.pozhiloyproject.services;
 
-import com.example.pozhiloyproject.models.DetailDateByWorkbench;
+import com.example.pozhiloyproject.models.detail.DetailDateByWorkbench;
 import com.example.pozhiloyproject.repository.DetailDateByWorkbenchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

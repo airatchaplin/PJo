@@ -1,8 +1,6 @@
 package com.example.pozhiloyproject.models.oldOrder;
 
 import com.example.pozhiloyproject.models.Contragent;
-import com.example.pozhiloyproject.models.DetailsOrder;
-import com.example.pozhiloyproject.models.Order;
 import com.example.pozhiloyproject.models.User;
 import lombok.Getter;
 import lombok.Setter;

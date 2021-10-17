@@ -17,7 +17,7 @@
 <body id="bod">
 <jsp:include page="../nav/nav_first.jsp"></jsp:include>
 <nav class="nav-second">
-    <button class="button-nav-second" style="width: 195px;"
+    <button class="button-nav-second"
             onclick="window.location.href = '/addDetail';">Добавить деталь
     </button>
 </nav>

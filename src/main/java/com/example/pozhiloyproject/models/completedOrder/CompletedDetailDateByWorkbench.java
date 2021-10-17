@@ -1,6 +1,5 @@
 package com.example.pozhiloyproject.models.completedOrder;
 
-import com.example.pozhiloyproject.models.DetailDateByWorkbench;
 import com.example.pozhiloyproject.models.WorkBench;
 import lombok.Getter;
 import lombok.Setter;

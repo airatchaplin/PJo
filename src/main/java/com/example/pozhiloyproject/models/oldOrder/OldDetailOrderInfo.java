@@ -1,7 +1,6 @@
 package com.example.pozhiloyproject.models.oldOrder;
 
-import com.example.pozhiloyproject.models.DetailInfo;
-import com.example.pozhiloyproject.models.WorkBench;
+import com.example.pozhiloyproject.models.detail.DetailInfo;
 import lombok.Getter;
 import lombok.Setter;
 

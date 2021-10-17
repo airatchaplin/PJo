@@ -2,14 +2,14 @@
 
 <nav class="nav-second">
     <div>
-        <button class="button-nav-second" style="width: 195px;"
+        <button class="button-nav-second"
                 onclick="window.location.href = '/addContragent';">Добавить контрагента
         </button>
-        <button class="button-nav-second" style="width: 195px;"
+        <button class="button-nav-second"
                 onclick="window.location.href = '/contragents/change/${contragent.id}';">Изменить
             контрагента
         </button>
-        <button class="button-nav-second" style="width: 195px;"
+        <button class="button-nav-second"
                 onclick="window.location.href = '/contragents/deletion/${contragent.id}';">Удалить
             контрагента
         </button>

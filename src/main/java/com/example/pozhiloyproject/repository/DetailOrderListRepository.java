@@ -1,6 +1,6 @@
 package com.example.pozhiloyproject.repository;
 
-import com.example.pozhiloyproject.models.DetailOrderList;
+import com.example.pozhiloyproject.models.detail.DetailOrderList;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

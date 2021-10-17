@@ -14,13 +14,23 @@
 </head>
 <body>
 <jsp:include page="../nav/nav_first.jsp"></jsp:include>
-<nav class="nav-second">
-    <button class="button-nav-second" style="width: 195px;"
-            onclick="window.location.href = '/addMaterial';">Добавить материал
-    </button>
-</nav>
+<c:if test="${setting.get(0).viewing==false && user.roles.get(0).name.equals('ROLE_USER')}">
+    <nav class="nav-second">
+        <button class="button-nav-second"
+                onclick="window.location.href = '/addMaterial';">Добавить материал
+        </button>
+    </nav>
+</c:if>
+<c:if test="${user.roles.get(0).name.equals('ROLE_ADMIN')}">
+    <nav class="nav-second">
+        <button class="button-nav-second"
+                onclick="window.location.href = '/addMaterial';">Добавить материал
+        </button>
+    </nav>
+</c:if>
 
-<div class="main" >
+
+<div class="main">
     <table class="simple-little-table" cellspacing='0'>
         <thead>
         <tr>

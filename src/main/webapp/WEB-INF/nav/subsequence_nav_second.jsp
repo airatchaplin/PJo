@@ -2,10 +2,10 @@
 
 <nav class="nav-second">
     <div>
-        <button class="button-nav-second" style="width: 260px;"
+        <button class="button-nav-second"
                 onclick="window.location.href = '/typeOperations/addSubsequenceTypeOperation';">Добавить очередь операций
         </button>
-        <button class="button-nav-second" style="width: 260px;"
+        <button class="button-nav-second"
                 onclick="window.location.href = '/deletion/subsequenceTypeOperation/${operation.id}';">Удалить очередь операций
         </button>
     </div>

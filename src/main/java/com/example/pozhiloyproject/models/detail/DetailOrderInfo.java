@@ -1,5 +1,6 @@
-package com.example.pozhiloyproject.models;
+package com.example.pozhiloyproject.models.detail;
 
+import com.example.pozhiloyproject.models.WorkBench;
 import lombok.Getter;
 import lombok.Setter;
 

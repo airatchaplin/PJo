@@ -4,13 +4,14 @@ import com.example.pozhiloyproject.dto.*;
 import com.example.pozhiloyproject.helper.Db;
 import com.example.pozhiloyproject.models.*;
 import com.example.pozhiloyproject.models.completedOrder.CompletedOrder;
+import com.example.pozhiloyproject.models.detail.*;
+import com.example.pozhiloyproject.models.setting.SettingView;
 import com.example.pozhiloyproject.services.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -62,6 +63,9 @@ public class OrderController {
     @Autowired
     Db db;
 
+    @Autowired
+    SettingService settingService;
+
     /**
      * Страница всех заказов метод GET
      *
@@ -72,6 +76,8 @@ public class OrderController {
     public String getAllOrders(Model model) {
         model.addAttribute("orders", orderService.getAllOrders());
         model.addAttribute("user", userService.getUserWeb());
+        List<SettingView> settingViews = settingService.getSetting().getSettingViews();
+        model.addAttribute("setting",settingViews.stream().filter(x -> x.getName().equals("Заказы")).collect(Collectors.toList()));
         return "orders";
     }
 
@@ -86,6 +92,8 @@ public class OrderController {
     public String getOneOrder(@PathVariable(value = "id") String id, Model model) {
         model.addAttribute("order", orderService.getOrderDtoById(UUID.fromString(id)));
         model.addAttribute("user", userService.getUserWeb());
+        List<SettingView> settingViews = settingService.getSetting().getSettingViews();
+        model.addAttribute("setting",settingViews.stream().filter(x -> x.getName().equals("Заказы")).collect(Collectors.toList()));
         return "oneOrder";
     }
 

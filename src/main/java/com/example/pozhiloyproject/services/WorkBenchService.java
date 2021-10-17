@@ -1,11 +1,8 @@
 package com.example.pozhiloyproject.services;
 
-import com.example.pozhiloyproject.dto.DetailDto;
 import com.example.pozhiloyproject.dto.WorkBenchDto;
 import com.example.pozhiloyproject.helper.Db;
-import com.example.pozhiloyproject.models.Detail;
 import com.example.pozhiloyproject.models.WorkBench;
-import com.example.pozhiloyproject.repository.DetailRepository;
 import com.example.pozhiloyproject.repository.WorkBenchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

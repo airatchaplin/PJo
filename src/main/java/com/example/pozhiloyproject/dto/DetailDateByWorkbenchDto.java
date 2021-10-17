@@ -1,13 +1,9 @@
 package com.example.pozhiloyproject.dto;
 
-import com.example.pozhiloyproject.models.DetailDateByWorkbench;
 import com.example.pozhiloyproject.models.WorkBench;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;

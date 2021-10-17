@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Контрагент</title>
+    <title>Контрагент ${contragent.name}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
@@ -13,9 +13,14 @@
 </head>
 <body>
 <jsp:include page="../nav/nav_first.jsp"></jsp:include>
-<jsp:include page="../nav/contragent_nav_second.jsp"></jsp:include>
+<c:if test="${setting.get(0).viewing==false && user.roles.get(0).name.equals('ROLE_USER')}">
+    <jsp:include page="../nav/contragent_nav_second.jsp"></jsp:include>
+</c:if>
+<c:if test="${user.roles.get(0).name.equals('ROLE_ADMIN')}">
+    <jsp:include page="../nav/contragent_nav_second.jsp"></jsp:include>
+</c:if>
 
-<div class="main" >
+<div class="main">
     <table class="simple-little-table" cellspacing='0'>
         <thead>
         <tr>

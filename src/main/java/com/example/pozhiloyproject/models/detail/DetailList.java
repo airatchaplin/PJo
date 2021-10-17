@@ -1,4 +1,4 @@
-package com.example.pozhiloyproject.models;
+package com.example.pozhiloyproject.models.detail;
 
 import lombok.Getter;
 import lombok.Setter;

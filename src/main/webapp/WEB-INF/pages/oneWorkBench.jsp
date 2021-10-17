@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Станок</title>
+    <title>Станок ${workbench.name}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="../../resources/css/table.css">
     <link rel="stylesheet" href="../../resources/css/main.css">
@@ -15,9 +15,13 @@
 <body>
 
 <jsp:include page="../nav/nav_first.jsp"></jsp:include>
-<jsp:include page="../nav/workbench_nav.jsp"></jsp:include>
-
-<div class="main" >
+<c:if test="${setting.get(0).viewing==false && user.roles.get(0).name.equals('ROLE_USER')}">
+    <jsp:include page="../nav/workbench_nav.jsp"></jsp:include>
+</c:if>
+<c:if test="${user.roles.get(0).name.equals('ROLE_ADMIN')}">
+    <jsp:include page="../nav/workbench_nav.jsp"></jsp:include>
+</c:if>
+<div class="main">
     <table class="simple-little-table" cellspacing='0'>
         <thead>
         <tr>

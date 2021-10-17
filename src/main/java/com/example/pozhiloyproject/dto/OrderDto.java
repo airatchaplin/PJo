@@ -1,18 +1,8 @@
 package com.example.pozhiloyproject.dto;
 
-import com.example.pozhiloyproject.models.Contragent;
-import com.example.pozhiloyproject.models.DetailsOrder;
-import com.example.pozhiloyproject.models.Order;
-import com.example.pozhiloyproject.models.User;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;

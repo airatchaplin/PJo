@@ -2,6 +2,7 @@ package com.example.pozhiloyproject.services;
 
 import com.example.pozhiloyproject.helper.Db;
 import com.example.pozhiloyproject.models.*;
+import com.example.pozhiloyproject.models.detail.*;
 import com.example.pozhiloyproject.models.oldOrder.*;
 import com.example.pozhiloyproject.repository.OldOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -48,7 +48,7 @@ public class OldOrderService {
 
     public void fillOldOrderByOrder(Order order) {
         OldOrder oldOrder = new OldOrder();
-        oldOrder.setId(UUID.randomUUID());
+        oldOrder.setId(order.getId());
         oldOrder.setNumberOrder(order.getNumberOrder());
         oldOrder.setObjectName(order.getObjectName());
         oldOrder.setManager(order.getManager());
@@ -64,13 +64,13 @@ public class OldOrderService {
         List<OldDetailsOrder> oldDetailsOrders = new ArrayList<>();
         for (DetailsOrder detailsOrder : detailsOrders) {
             OldDetailsOrder oldDetailsOrder = new OldDetailsOrder();
-            oldDetailsOrder.setId(UUID.randomUUID());
+            oldDetailsOrder.setId(detailsOrder.getId());
             oldDetailsOrder.setCount(detailsOrder.getCount());
             oldDetailsOrder.setIncrement(detailsOrder.getIncrement());
 
             DetailOrder detailOrder = detailsOrder.getDetailOrder();
             OldDetailOrder oldDetailOrder = new OldDetailOrder();
-            oldDetailOrder.setId(UUID.randomUUID());
+            oldDetailOrder.setId(detailOrder.getId());
             oldDetailOrder.setName(detailOrder.getName());
             oldDetailOrder.setMaterial(detailOrder.getMaterial());
             oldDetailOrder.setTimePacking(detailOrder.getTimePacking());
@@ -80,7 +80,7 @@ public class OldOrderService {
 
             for (DetailOrderList detailOrderList : detailOrderLists) {
                 OldDetailOrderList oldDetailOrderList = new OldDetailOrderList();
-                oldDetailOrderList.setId(UUID.randomUUID());
+                oldDetailOrderList.setId(detailOrderList.getId());
                 oldDetailOrderList.setSelected(false);
                 oldDetailOrderList.setMainOrAlternative(detailOrderList.getMainOrAlternative());
 
@@ -89,7 +89,7 @@ public class OldOrderService {
 
                 for (DetailOrderInfo detailOrderInfo : detailOrderInfos) {
                     OldDetailOrderInfo oldDetailOrderInfo = new OldDetailOrderInfo();
-                    oldDetailOrderInfo.setId(UUID.randomUUID());
+                    oldDetailOrderInfo.setId(detailOrderInfo.getId());
                     oldDetailOrderInfo.setComment(detailOrderInfo.getComment());
                     oldDetailOrderInfo.setPriority(detailOrderInfo.getPriority());
                     oldDetailOrderInfo.setSetting(false);
@@ -116,7 +116,7 @@ public class OldOrderService {
 
                 for (DetailDateByWorkbench detailDateByWorkbench : detailDateByWorkbenches) {
                     OldDetailDateByWorkbench oldDetailDateByWorkbench = new OldDetailDateByWorkbench();
-                    oldDetailDateByWorkbench.setId(UUID.randomUUID());
+                    oldDetailDateByWorkbench.setId(detailDateByWorkbench.getId());
                     oldDetailDateByWorkbench.setDetailDateStart(detailDateByWorkbench.getDetailDateStart());
                     oldDetailDateByWorkbench.setDetailDateEnd(detailDateByWorkbench.getDetailDateEnd());
                     oldDetailDateByWorkbench.setPriority(detailDateByWorkbench.getPriority());
@@ -148,14 +148,16 @@ public class OldOrderService {
         List<OldDetailsOrder> oldDetailsOrders = oldOrder.getDetailsOrders();
         List<DetailsOrder> detailsOrders = new ArrayList<>();
         for (OldDetailsOrder oldDetailsOrder : oldDetailsOrders) {
+
+
             DetailsOrder detailsOrder = new DetailsOrder();
-            detailsOrder.setId(UUID.randomUUID());
+            detailsOrder.setId(oldDetailsOrder.getId());
             detailsOrder.setCount(oldDetailsOrder.getCount());
             detailsOrder.setIncrement(oldDetailsOrder.getIncrement());
 
             OldDetailOrder oldDetailOrder = oldDetailsOrder.getDetailOrder();
             DetailOrder detailOrder = new DetailOrder();
-            detailOrder.setId(UUID.randomUUID());
+            detailOrder.setId(oldDetailOrder.getId());
             detailOrder.setName(oldDetailOrder.getName());
             detailOrder.setMaterial(oldDetailOrder.getMaterial());
             detailOrder.setTimePacking(oldDetailOrder.getTimePacking());
@@ -165,7 +167,7 @@ public class OldOrderService {
 
             for (OldDetailOrderList oldDetailOrderList : oldDetailOrderLists) {
                 DetailOrderList detailOrderList = new DetailOrderList();
-                detailOrderList.setId(UUID.randomUUID());
+                detailOrderList.setId(oldDetailOrderList.getId());
                 detailOrderList.setSelected(false);
                 detailOrderList.setMainOrAlternative(oldDetailOrderList.getMainOrAlternative());
 
@@ -174,7 +176,7 @@ public class OldOrderService {
 
                 for (OldDetailOrderInfo oldDetailOrderInfo : oldDetailOrderInfos) {
                     DetailOrderInfo detailOrderInfo = new DetailOrderInfo();
-                    detailOrderInfo.setId(UUID.randomUUID());
+                    detailOrderInfo.setId(oldDetailOrderInfo.getId());
                     detailOrderInfo.setComment(oldDetailOrderInfo.getComment());
                     detailOrderInfo.setPriority(oldDetailOrderInfo.getPriority());
                     detailOrderInfo.setSetting(false);
@@ -195,7 +197,7 @@ public class OldOrderService {
 
                 for (OldDetailDateByWorkbench oldDetailDateByWorkbench : oldDetailDateByWorkbenches) {
                     DetailDateByWorkbench detailDateByWorkbench = new DetailDateByWorkbench();
-                    detailDateByWorkbench.setId(UUID.randomUUID());
+                    detailDateByWorkbench.setId(oldDetailDateByWorkbench.getId());
                     detailDateByWorkbench.setDetailDateStart(oldDetailDateByWorkbench.getDetailDateStart());
                     detailDateByWorkbench.setDetailDateEnd(oldDetailDateByWorkbench.getDetailDateEnd());
                     detailDateByWorkbench.setPriority(oldDetailDateByWorkbench.getPriority());

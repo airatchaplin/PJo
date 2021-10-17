@@ -1,7 +1,9 @@
 package com.example.pozhiloyproject.controllers;
 
 import com.example.pozhiloyproject.models.Material;
+import com.example.pozhiloyproject.models.setting.SettingView;
 import com.example.pozhiloyproject.services.MaterialService;
+import com.example.pozhiloyproject.services.SettingService;
 import com.example.pozhiloyproject.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Контроллер материалов
@@ -25,6 +29,9 @@ public class MaterialController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    SettingService settingService;
+
     /**
      * Страница всех материалов метод GET
      *
@@ -35,6 +42,8 @@ public class MaterialController {
     public String getAllMaterials(Model model) {
         model.addAttribute("materials", Material.compare(materialService.getAllMaterials()));
         model.addAttribute("user", userService.getUserWeb());
+        List<SettingView> settingViews = settingService.getSetting().getSettingViews();
+        model.addAttribute("setting",settingViews.stream().filter(x -> x.getName().equals("Материалы")).collect(Collectors.toList()));
         return "materials";
     }
 
@@ -90,6 +99,8 @@ public class MaterialController {
     public String getOneMaterial(@PathVariable(name = "id") String id, Model model) {
         model.addAttribute("material", materialService.getOneMaterial(UUID.fromString(id)));
         model.addAttribute("user", userService.getUserWeb());
+        List<SettingView> settingViews = settingService.getSetting().getSettingViews();
+        model.addAttribute("setting",settingViews.stream().filter(x -> x.getName().equals("Материалы")).collect(Collectors.toList()));
         return "oneMaterial";
     }
 

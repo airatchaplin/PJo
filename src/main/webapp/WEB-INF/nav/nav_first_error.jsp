@@ -25,7 +25,14 @@
     </div>
     <div>
         <button class="button-nav-first"
+                onclick="window.location.href = '/statistics';">Статистика
+        </button>
+        <button class="button-nav-first"
                 onclick="window.location.href = '/admin/allUsers';">Пользователи
+        </button>
+        <button style="width: 50px;" class="button-nav-first"
+                onclick="window.location.href = '/settings';"><img style="width: 12px"
+                                                                   src="../../resources/icon/settings.png" alt="">
         </button>
         <button class="button-nav-first"
                 onclick="window.location.href = '/logout';">Выход

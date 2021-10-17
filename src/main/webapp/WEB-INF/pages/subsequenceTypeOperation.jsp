@@ -14,11 +14,24 @@
 <body>
 
 <jsp:include page="../nav/nav_first.jsp"></jsp:include>
-<nav class="nav-second">
-    <button class="button-nav-second" style="width: 260px;"
-            onclick="window.location.href = '/typeOperations/addSubsequenceTypeOperation';">Добавить очередь операций
-    </button>
-</nav>
+
+
+<c:if test="${setting.get(0).viewing==false && user.roles.get(0).name.equals('ROLE_USER')}">
+    <nav class="nav-second">
+        <button class="button-nav-second" style="width: 260px;"
+                onclick="window.location.href = '/typeOperations/addSubsequenceTypeOperation';">Добавить очередь
+            операций
+        </button>
+    </nav>
+</c:if>
+<c:if test="${user.roles.get(0).name.equals('ROLE_ADMIN')}">
+    <nav class="nav-second">
+        <button class="button-nav-second" style="width: 260px;"
+                onclick="window.location.href = '/typeOperations/addSubsequenceTypeOperation';">Добавить очередь
+            операций
+        </button>
+    </nav>
+</c:if>
 
 <div class="main">
     <table class="simple-little-table" cellspacing='0'>

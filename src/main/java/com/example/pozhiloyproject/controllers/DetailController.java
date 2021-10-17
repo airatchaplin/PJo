@@ -4,6 +4,10 @@ import com.example.pozhiloyproject.dto.DetailDto;
 import com.example.pozhiloyproject.dto.DetailInfoDto;
 import com.example.pozhiloyproject.helper.Db;
 import com.example.pozhiloyproject.models.*;
+import com.example.pozhiloyproject.models.detail.Detail;
+import com.example.pozhiloyproject.models.detail.DetailInfo;
+import com.example.pozhiloyproject.models.detail.DetailList;
+import com.example.pozhiloyproject.models.setting.SettingView;
 import com.example.pozhiloyproject.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,8 +44,12 @@ public class DetailController {
 
     @Autowired
     SubsequenceTypeOperationService subsequenceTypeOperationService;
+
     @Autowired
     DetailInfoService detailInfoService;
+
+    @Autowired
+    SettingService settingService;
 
     @Autowired
     Db db;
@@ -70,6 +78,8 @@ public class DetailController {
         } else {
             model.addAttribute("details", detailService.getAllDetails());
         }
+        List<SettingView> settingViews = settingService.getSetting().getSettingViews();
+        model.addAttribute("setting",settingViews.stream().filter(x -> x.getName().equals("Детали")).collect(Collectors.toList()));
         model.addAttribute("user", userService.getUserWeb());
         return "details";
     }
@@ -109,6 +119,8 @@ public class DetailController {
     public String getOneDetail(@PathVariable(value = "id") String id, Model model) {
         model.addAttribute("detail", detailService.getDetailDtoById(UUID.fromString(id)));
         model.addAttribute("user", userService.getUserWeb());
+        List<SettingView> settingViews = settingService.getSetting().getSettingViews();
+        model.addAttribute("setting",settingViews.stream().filter(x -> x.getName().equals("Детали")).collect(Collectors.toList()));
         return "oneDetail";
     }
 

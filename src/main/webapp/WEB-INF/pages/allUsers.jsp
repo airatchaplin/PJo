@@ -16,12 +16,17 @@
 <jsp:include page="../nav/nav_first.jsp"></jsp:include>
 <jsp:include page="../nav/admin_nav_second.jsp"></jsp:include>
 
-<div class="main" >
-    <div style="margin: 10px ; font-size: 15px">
-        Экономисты
-    </div>
-    <table class="simple-little-table" cellspacing='0'>
+<div class="main">
+    <table class="simple-little-table" cellspacing='0' style="margin-bottom: 10px;">
         <thead>
+        <tr>
+            <th>Экономисты</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
         <tr>
             <th class="number_orders" style="text-align: center">№</th>
             <th class="name">Логин</th>
@@ -46,11 +51,16 @@
         </tbody>
     </table>
 
-    <div style="margin: 10px ; font-size: 15px">
-        Менеджеры
-    </div>
-    <table class="simple-little-table" cellspacing='0'>
+    <table class="simple-little-table" cellspacing='0' >
         <thead>
+        <tr>
+            <th>Менеджеры</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
         <tr>
             <th class="number_orders" style="text-align: center">№</th>
             <th class="name">Логин</th>
