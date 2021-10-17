@@ -77,7 +77,7 @@ public class OrderController {
         model.addAttribute("orders", orderService.getAllOrders());
         model.addAttribute("user", userService.getUserWeb());
         List<SettingView> settingViews = settingService.getSetting().getSettingViews();
-        model.addAttribute("setting",settingViews.stream().filter(x -> x.getName().equals("Заказы")).collect(Collectors.toList()));
+        model.addAttribute("setting", settingViews.stream().filter(x -> x.getName().equals("Заказы")).collect(Collectors.toList()));
         return "orders";
     }
 
@@ -93,7 +93,7 @@ public class OrderController {
         model.addAttribute("order", orderService.getOrderDtoById(UUID.fromString(id)));
         model.addAttribute("user", userService.getUserWeb());
         List<SettingView> settingViews = settingService.getSetting().getSettingViews();
-        model.addAttribute("setting",settingViews.stream().filter(x -> x.getName().equals("Заказы")).collect(Collectors.toList()));
+        model.addAttribute("setting", settingViews.stream().filter(x -> x.getName().equals("Заказы")).collect(Collectors.toList()));
         return "oneOrder";
     }
 
@@ -264,31 +264,35 @@ public class OrderController {
         model.addAttribute("order", order);
         model.addAttribute("user", userService.getUserWeb());
 
-        if (order.getDateStartOrder()!= null) {
+        if (order.getDateStartOrder() != null) {
             model.addAttribute("dateStartOrder", order.getDateStartOrder().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
         }
-        if (order.getDateEndOrder()!= null) {
+        if (order.getDateEndOrder() != null) {
             model.addAttribute("dateEndOrder", order.getDateEndOrder().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
         }
 
-        if (order.getDateStartFirstPackage()!= null) {
+        if (order.getDateEnd() != null) {
+            model.addAttribute("dateEnd", order.getDateEnd().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+        }
+
+        if (order.getDateStartFirstPackage() != null) {
             model.addAttribute("dateStartFirstPackage", order.getDateStartFirstPackage().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
         }
-        if (order.getDateEndFirstPackage()!= null) {
+        if (order.getDateEndFirstPackage() != null) {
             model.addAttribute("dateEndFirstPackage", order.getDateEndFirstPackage().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
         }
 
-        if (order.getDateStartPainting()!= null) {
+        if (order.getDateStartPainting() != null) {
             model.addAttribute("dateStartPainting", order.getDateStartPainting().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm")));
         }
-        if (order.getDateEndPainting()!= null) {
+        if (order.getDateEndPainting() != null) {
             model.addAttribute("dateEndPainting", order.getDateEndPainting().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm")));
         }
 
-        if (order.getDateStartSecondPackage()!= null) {
+        if (order.getDateStartSecondPackage() != null) {
             model.addAttribute("dateStartSecondPackage", order.getDateStartSecondPackage().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
         }
-        if (order.getDateEndSecondPackage()!= null) {
+        if (order.getDateEndSecondPackage() != null) {
             model.addAttribute("dateEndSecondPackage", order.getDateEndSecondPackage().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
         }
         return "changeOrder";
@@ -325,8 +329,8 @@ public class OrderController {
 
     @PostMapping("/orders/changeDatePainting/{id}")
     public String changeDatePaintingOrderPost(@PathVariable(value = "id") String id,
-                                  @RequestParam(required = true) String dateStartPainting,
-                                  @RequestParam(required = true) String dateEndPainting) {
+                                              @RequestParam(required = true) String dateStartPainting,
+                                              @RequestParam(required = true) String dateEndPainting) {
 
         Order order = orderService.getOrderById(UUID.fromString(id));
         LocalDateTime startPainting = LocalDateTime.parse(dateStartPainting);
@@ -334,9 +338,9 @@ public class OrderController {
         order.setDateStartPainting(startPainting);
         order.setDateEndPainting(endPainting);
         orderService.setSecondPackageOrder(order);
-        if (order.getDateEndSecondPackage()!=null){
+        if (order.getDateEndSecondPackage() != null) {
             order.setDateEnd(order.getDateEndSecondPackage());
-        }else {
+        } else {
             order.setDateEnd(order.getDateEndFirstPackage());
         }
         orderService.saveOrder(order);
@@ -356,6 +360,13 @@ public class OrderController {
         model.addAttribute("managers", userService.getManagers());
         List<DetailDto> allDetails = detailService.getAllDetails();
         Order order = orderService.getOrderById(UUID.fromString(id));
+
+        if (order.getDateStartOrder() != null) {
+            model.addAttribute("dateStartOrder", order.getDateStartOrder().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+        }
+        if (order.getDateEnd() != null) {
+            model.addAttribute("dateEnd", order.getDateEnd().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+        }
         for (int i = 0; i < order.getDetailsOrders().size(); i++) {
             int finalI = i;
             allDetails.removeIf(x -> x.getName().equals(order.getDetailsOrders().get(finalI).getDetailOrder().getName()));
@@ -470,8 +481,15 @@ public class OrderController {
      */
     @GetMapping("orders/deletion/{id}")
     public String deletionElementOrOrder(@PathVariable(value = "id") String id, Model model) {
-        model.addAttribute("order", orderService.getOrderById(UUID.fromString(id)));
+        Order order = orderService.getOrderById(UUID.fromString(id));
+        model.addAttribute("order", order);
         model.addAttribute("user", userService.getUserWeb());
+        if (order.getDateStartOrder() != null) {
+            model.addAttribute("dateStartOrder", order.getDateStartOrder().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+        }
+        if (order.getDateEnd() != null) {
+            model.addAttribute("dateEnd", order.getDateEnd().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+        }
         return "deletionOrder";
     }
 

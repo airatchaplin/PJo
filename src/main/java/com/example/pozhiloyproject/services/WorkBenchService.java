@@ -64,6 +64,29 @@ public class WorkBenchService {
         return workBenchDtos;
     }
 
+    public WorkBenchDto getWorkBenchDtoById(UUID id){
+        List<Map<String, Object>> rows = db.call(String.format("select workbench.id   as workbenchId,\n" +
+                "       workbench.name as workbenchName,\n" +
+                "       date_end_detail,\n" +
+                "       towb.name      as typeOperationId,\n" +
+                "       current_thickness\n" +
+                "from workbench\n" +
+                "         left join type_operation towb on workbench.type_operation_id = towb.id\n" +
+                "\n" +
+                "where workbench.id = '%1$s'", id));
+        WorkBenchDto workBenchDto = null;
+        for (Map<String, Object> row : rows) {
+            workBenchDto = new WorkBenchDto();
+            workBenchDto.setId((UUID) row.get("workbenchId"));
+            workBenchDto.setName(String.valueOf(row.get("workbenchName")));
+            LocalDateTime parse = LocalDateTime.parse(row.get("date_end_detail").toString().replace(" ", "T"));
+            workBenchDto.setDateEndDetail(parse.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+            workBenchDto.setTypeOperation(String.valueOf(row.get("typeOperationId")));
+            workBenchDto.setCurrentThickness((Double) row.get("current_thickness"));
+        }
+        return workBenchDto;
+    }
+
     /**
      * Получение станка по наименованию
      *

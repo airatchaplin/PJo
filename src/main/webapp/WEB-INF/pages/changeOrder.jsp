@@ -55,8 +55,8 @@
                 <td> ${order.objectName.name} </td>
                 <td>${order.manager.fio_i_o} </td>
                 <td>${order.manager.fio_i_o} </td>
-                <td>${order.dateStartOrder}</td>
-                <td>${order.dateEnd}</td>
+                <td>${dateStartOrder}</td>
+                <td>${dateEnd}</td>
                 <td>
                     <input type="text" class="form-control" id="comment" name="comment"
                            placeholder="Новый коментарий">

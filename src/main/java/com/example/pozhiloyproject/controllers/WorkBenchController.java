@@ -144,7 +144,7 @@ public class WorkBenchController {
      */
     @GetMapping("workbenches/{id}")
     public String getOneWorkBench(@PathVariable(name = "id") String id, Model model) {
-        model.addAttribute("workbench", workBenchService.getOneWorkBenchById(UUID.fromString(id)));
+        model.addAttribute("workbench", workBenchService.getWorkBenchDtoById(UUID.fromString(id)));
         model.addAttribute("user", userService.getUserWeb());
         List<SettingView> settingViews = settingService.getSetting().getSettingViews();
         model.addAttribute("setting",settingViews.stream().filter(x -> x.getName().equals("Станки")).collect(Collectors.toList()));

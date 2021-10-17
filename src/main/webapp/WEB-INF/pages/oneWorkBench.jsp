@@ -34,7 +34,7 @@
         <tbody>
         <tr>
             <td>${workbench.name}</td>
-            <td class="th_workbench_typeOperation">${workbench.typeOperation.name}</td>
+            <td class="th_workbench_typeOperation">${workbench.typeOperation}</td>
             <td class="th_workbench_currentThickness">${workbench.currentThickness}</td>
             <td class="th_workbench_dateEnd">${workbench.dateEndDetail}</td>
         </tr>

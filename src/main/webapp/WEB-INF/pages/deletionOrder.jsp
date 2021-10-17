@@ -40,10 +40,10 @@
             <td>${order.manager.fio_i_o} </td>
             <td>${order.manager.fio_i_o} </td>
             <td>
-                ${order.dateStartOrder}
+                ${dateStartOrder}
             </td>
             <td>
-                ${order.dateEnd}
+                ${dateEnd}
             </td>
             <td>
                 ${order.comment}
