@@ -144,6 +144,15 @@ public class OldOrderService {
         order.setCalculated(false);
         order.setDateStartOrder(null);
         order.setDateEndOrder(null);
+        order.setDateStartFirstPackage(null);
+        order.setDateEndFirstPackage(null);
+
+        order.setDateStartSecondPackage(null);
+        order.setDateEndSecondPackage(null);
+
+        order.setDateStartPainting(null);
+        order.setDateEndPainting(null);
+        order.setDateEnd(null);
 
         List<OldDetailsOrder> oldDetailsOrders = oldOrder.getDetailsOrders();
         List<DetailsOrder> detailsOrders = new ArrayList<>();
