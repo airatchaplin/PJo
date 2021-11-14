@@ -54,22 +54,6 @@
             </tbody>
         </table>
 
-        <table style="margin-bottom: 10px" class="simple-little-table" cellspacing='0'>
-            <thead>
-            <tr>
-                <th>Время переналадки</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
-                    <input type="text" value="${setting.timeWorkAdjustment}" placeholder="00:00"
-                           name="timeWorkAdjustment" required>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-
         <table id="tableAdd" class="simple-little-table" cellspacing='0' style="margin-bottom: 10px;">
             <thead>
             <tr>
@@ -131,6 +115,39 @@
                 <td></td>
             </tr>
 
+            </tbody>
+        </table>
+
+        <table style="margin-bottom: 10px" class="simple-little-table" cellspacing='0'>
+            <thead>
+            <tr>
+                <th>Расписание</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th style="width: 50%;">Название</th>
+                <th>Начало</th>
+                <th>Окончание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach items="${settingDaily}" var="settingDay">
+                <tr>
+                    <td>
+                        <input type="text" value="${settingDay.name}"
+                               name="settingDayName" placeholder="Введите название" required>
+                    </td>
+                    <td>
+                        <input type="text" value="${settingDay.startDay}"
+                               name="settingDayStartDay" placeholder="00:00" required>
+                    </td>
+                    <td>
+                        <input type="text" value="${settingDay.endDay}"
+                               name="settingEndStartDay" placeholder="00:00" required>
+                    </td>
+                </tr>
+            </c:forEach>
             </tbody>
         </table>
     </div>

@@ -19,13 +19,15 @@ public class Setting {
     @Id
     UUID id;
 
-    String timeWorkAdjustment;
 
     @OneToMany(cascade = CascadeType.ALL)
     List<SettingWeekend> settingWeekends;
 
     @OneToMany(cascade = CascadeType.ALL)
     List<SettingView> settingViews;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    List<SettingDailySchedule> settingDailySchedules;
 
     /**
      * Сортировка по наименованию
@@ -35,6 +37,16 @@ public class Setting {
      */
     public static List<SettingView> compare(List<SettingView> settingViews) {
         return settingViews.stream().sorted(Comparator.comparing(SettingView::getName)).collect(Collectors.toList());
+    }
+
+    /**
+     * Сортировка по наименованию
+     *
+     * @param settingDailySchedules Список
+     * @return Отсортированный список
+     */
+    public static List<SettingDailySchedule> compareSettingDailySchedule(List<SettingDailySchedule> settingDailySchedules) {
+        return settingDailySchedules.stream().sorted(Comparator.comparing(SettingDailySchedule::getPriority)).collect(Collectors.toList());
     }
 
 }

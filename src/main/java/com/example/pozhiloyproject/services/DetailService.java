@@ -141,25 +141,24 @@ public class DetailService {
             detailListDto.setMainOrAlternative(detail.getDetailLists().get(i).getMainOrAlternative());
 
             List<DetailInfo> detailInfos = detail.getDetailLists().get(i).getDetailInfos();
-            for (int j = 0; j < detailInfos.size(); j++) {
+            for (DetailInfo detailInfo : detailInfos) {
                 DetailInfoDto detailInfoDto = new DetailInfoDto();
-                detailInfoDto.setId(detailInfos.get(j).getId());
-                detailInfoDto.setPriority(detailInfos.get(j).getPriority());
-                detailInfoDto.setComment(detailInfos.get(j).getComment());
-                detailInfoDto.setTimeWork(detailInfos.get(j).getTimeWork());
+                detailInfoDto.setId(detailInfo.getId());
+                detailInfoDto.setPriority(detailInfo.getPriority());
+                detailInfoDto.setComment(detailInfo.getComment());
+                detailInfoDto.setTimeWork(detailInfo.getTimeWork());
 
                 WorkBenchDto workBenchDto = new WorkBenchDto();
-                workBenchDto.setId(detailInfos.get(j).getWorkBenches().getId());
-                workBenchDto.setName(detailInfos.get(j).getWorkBenches().getName());
-                String format = detailInfos.get(j).getWorkBenches().getDateEndDetail().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+                workBenchDto.setId(detailInfo.getWorkBenches().getId());
+                workBenchDto.setName(detailInfo.getWorkBenches().getName());
+                String format = detailInfo.getWorkBenches().getDateEndDetail().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
                 workBenchDto.setDateEndDetail(format);
-                workBenchDto.setPriority(detailInfos.get(j).getPriority());
-                workBenchDto.setTypeOperation(detailInfos.get(j).getWorkBenches().getTypeOperation().getName());
-                workBenchDto.setCurrentThickness(detailInfos.get(j).getWorkBenches().getCurrentThickness());
+                workBenchDto.setPriority(detailInfo.getPriority());
+                workBenchDto.setTypeOperation(detailInfo.getWorkBenches().getTypeOperation().getName());
+                workBenchDto.setCurrentThickness(detailInfo.getWorkBenches().getCurrentThickness());
 
                 detailInfoDto.setWorkBenchDto(workBenchDto);
                 detailInfoDtos.add(detailInfoDto);
-
             }
             detailListDto.setDetailInfoDtos(detailInfoDtos);
             detailInfoDtos = new ArrayList<>();
@@ -186,9 +185,9 @@ public class DetailService {
 
     public DetailList getDetailLists(List<String> workBenchId, List<String> timeWork, List<String> comment, int mainOrAlternative) {
         List<WorkBench> workBenches = new ArrayList<>();
-        for (String id : workBenchId) {
-            if (!id.equals("Выберите станок")) {
-                Optional<WorkBench> workBench = workBenchRepository.findById(UUID.fromString(id));
+        for (String name : workBenchId) {
+            if (!name.equals("Выберите станок")) {
+                Optional<WorkBench> workBench = Optional.ofNullable(workBenchRepository.findByName(name));
                 workBenches.add(workBench.orElse(new WorkBench()));
             }
         }
@@ -203,8 +202,6 @@ public class DetailService {
             detailInfo.setPriority(i);
             detailInfo.setWorkBenches(workBenches.get(i));
             detailInfos.add(detailInfo);
-//            detailInfoService.saveDetailInfo(detailInfo);
-
         }
         DetailList detailList = new DetailList();
         detailList.setId(UUID.randomUUID());

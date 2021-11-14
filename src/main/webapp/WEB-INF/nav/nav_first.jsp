@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <nav class="nav-first">
     <div>
-        <button class="button-nav-first"
-                onclick="window.location.href = '/';">Главная
-        </button>
+<%--        <button class="button-nav-first"--%>
+<%--                onclick="window.location.href = '/';">Главная--%>
+<%--        </button>--%>
         <button class="button-nav-first"
                 onclick="window.location.href = '/orders';">Заказы
         </button>

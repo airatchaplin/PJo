@@ -158,8 +158,9 @@ public class OrderController {
             incr = (long) call.get(0).get("max");
             incr++;
         }
+        UUID id = UUID.randomUUID();
         order.setIncrement(incr);
-        order.setId(UUID.randomUUID());
+        order.setId(id);
         order.setNumberOrder(Integer.parseInt(numberOrder));
         order.setObjectName(contragentService.getOneContragentById(UUID.fromString(contragentId)));
         order.setManager(userService.getUserById(UUID.fromString(managerId)));
@@ -244,7 +245,7 @@ public class OrderController {
 
         oldOrderService.fillOldOrderByOrder(order);
         orderService.saveOrder(order);
-        return "redirect:/orders";
+        return "redirect:/orders/" + id;
     }
 
     /**
@@ -276,10 +277,10 @@ public class OrderController {
         }
 
         if (order.getDateStartFirstPackage() != null) {
-            model.addAttribute("dateStartFirstPackage", order.getDateStartFirstPackage().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+            model.addAttribute("dateStartFirstPackage", order.getDateStartFirstPackage().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm")));
         }
         if (order.getDateEndFirstPackage() != null) {
-            model.addAttribute("dateEndFirstPackage", order.getDateEndFirstPackage().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+            model.addAttribute("dateEndFirstPackage", order.getDateEndFirstPackage().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm")));
         }
 
         if (order.getDateStartPainting() != null) {
@@ -310,9 +311,11 @@ public class OrderController {
     public String changeOrderPost(@PathVariable(value = "id") String id,
                                   @RequestParam(required = true) List<String> detailId,
                                   @RequestParam(required = true) List<Integer> countDetail,
-                                  @RequestParam(required = true) String comment) {
+                                  @RequestParam(required = true) String comment,
+                                  @RequestParam(required = true) String managerId) {
 
         Order order = orderService.getOrderById(UUID.fromString(id));
+        order.setManager(userService.getUserById(UUID.fromString(managerId)));
         for (int i = 0; i < detailId.size(); i++) {
             if (order.getDetailsOrders().get(i).getDetailOrder().getId().toString().equals(detailId.get(i))) {
                 order.getDetailsOrders().get(i).setCount(countDetail.get(i));
@@ -330,18 +333,25 @@ public class OrderController {
     @PostMapping("/orders/changeDatePainting/{id}")
     public String changeDatePaintingOrderPost(@PathVariable(value = "id") String id,
                                               @RequestParam(required = true) String dateStartPainting,
-                                              @RequestParam(required = true) String dateEndPainting) {
+                                              @RequestParam(required = true) String dateEndPainting,
+                                              @RequestParam(required = true) String dateStartFirstPackage,
+                                              @RequestParam(required = true) String dateEndFirstPackage,
+                                              @RequestParam(required = true) String dateStartSecondPackage,
+                                              @RequestParam(required = true) String dateEndSecondPackage,
+                                              @RequestParam(required = true) String managerId) {
 
         Order order = orderService.getOrderById(UUID.fromString(id));
-        LocalDateTime startPainting = LocalDateTime.parse(dateStartPainting);
-        LocalDateTime endPainting = LocalDateTime.parse(dateEndPainting);
-        order.setDateStartPainting(startPainting);
-        order.setDateEndPainting(endPainting);
-        orderService.setSecondPackageOrder(order);
-        if (order.getDateEndSecondPackage() != null) {
-            order.setDateEnd(order.getDateEndSecondPackage());
-        } else {
-            order.setDateEnd(order.getDateEndFirstPackage());
+        order.setManager(userService.getUserById(UUID.fromString(managerId)));
+        orderService.setFirstPackageOrder(order, LocalDateTime.parse(dateStartFirstPackage), dateEndFirstPackage);
+
+        if (!dateStartPainting.equals("") && !dateEndPainting.equals("")) {
+            order.setDateStartPainting(LocalDateTime.parse(dateStartPainting));
+            order.setDateEndPainting(LocalDateTime.parse(dateEndPainting));
+        }
+
+        if (!dateStartSecondPackage.equals("") && !dateEndSecondPackage.equals("")) {
+            order.setDateStartSecondPackage(LocalDateTime.parse(dateStartSecondPackage));
+            order.setDateEndSecondPackage(LocalDateTime.parse(dateEndSecondPackage));
         }
         orderService.saveOrder(order);
         return "redirect:/orders/" + id;
@@ -453,12 +463,11 @@ public class OrderController {
                 }
                 detailOrderList.setDetailDateByWorkbench(detailDateByWorkbenches);
                 detailOrderList.setDetailOrderInfos(detailOrderInfos);
-                detailOrderListService.saveDetailOrderList(detailOrderList);
                 detailOrderLists.add(detailOrderList);
             }
             detailOrder.setDetailOrderLists(detailOrderLists);
             detailsOrder.setDetailOrder(detailOrder);
-            detailOrderService.saveDetailOrder(detailOrder);
+
 
             detailsOrder.setCount(Integer.parseInt(countDetail.get(i)));
             detailsOrders.add(detailsOrder);
@@ -467,6 +476,7 @@ public class OrderController {
         order.setDetailsOrders(detailsOrders);
 
         oldOrderService.deleteOldOrder(order.getNumberOrder());
+        orderService.deleteOrder(order);
         oldOrderService.fillOldOrderByOrder(order);
         orderService.saveOrder(order);
         return "redirect:/orders/" + id;
@@ -500,8 +510,25 @@ public class OrderController {
      * @return Страница всех заказов
      */
     @PostMapping("/orders/deletion/{id}")
-    public String deleteOrderPost(@PathVariable(value = "id") String id) {
+    public String deleteOrderPost(@PathVariable(value = "id") String id, Model model) {
+
         Order order = orderService.getOrderById(UUID.fromString(id));
+        List<Map<String, Object>> call = db.call("select max(increment) from orders");
+        long maxIncrement = (long) call.get(0).get("max");
+        if (maxIncrement == order.getIncrement()) {
+            oldOrderService.fillOrderByOldOrder(UUID.fromString(id), order);
+        } else {
+            if (order.getDateStartOrder() != null) {
+                model.addAttribute("dateStartOrder", order.getDateStartOrder().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+            }
+            if (order.getDateEnd() != null) {
+                model.addAttribute("dateEnd", order.getDateEnd().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
+            }
+            model.addAttribute("order", order);
+            model.addAttribute("user", userService.getUserWeb());
+            model.addAttribute("errorDelete", "Удалить можно только последний нерасчитанный заказ");
+            return "deletionOrder";
+        }
         oldOrderService.deleteOldOrder(order.getNumberOrder());
         orderService.deleteOrder(order);
         return "redirect:/orders";
@@ -527,7 +554,7 @@ public class OrderController {
         oldOrderService.deleteOldOrder(order.getNumberOrder());
         oldOrderService.fillOldOrderByOrder(order);
         orderService.saveOrder(order);
-        return "redirect:/orders";
+        return "redirect:/orders/deletion/" + id;
     }
 
     /**
@@ -573,7 +600,7 @@ public class OrderController {
                 }
             }
             orderService.saveOrder(order);
-            orderService.raschet(order);
+            orderService.calculation(order);
         }
         return "redirect:/orders/calculationOrder/" + id;
     }
@@ -650,7 +677,7 @@ public class OrderController {
         } else {
             model.addAttribute("order", orderDto);
             model.addAttribute("user", userService.getUserWeb());
-            model.addAttribute("errorRollback", "Откатить можео только последний");
+            model.addAttribute("errorRollback", "Откатить можно только последний нерасчитанный заказ");
             return "calculationOrder";
         }
         return "redirect:/orders/calculationOrder/" + id;

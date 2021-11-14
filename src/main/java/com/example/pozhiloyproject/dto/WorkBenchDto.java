@@ -28,6 +28,8 @@ public class WorkBenchDto {
 
     int priority;
 
+    private String timeWorkAdjustment;
+
     /**
      * Толщина материала
      */

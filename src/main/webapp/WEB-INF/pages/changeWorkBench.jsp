@@ -26,17 +26,18 @@
                 <th>Станок</th>
                 <th class="th_workbench_typeOperation">Операция</th>
                 <th class="th_workbench_currentThickness">Толщина</th>
+                <th class="th_workbench_currentThickness">Наладка</th>
                 <th class="th_workbench_dateEnd">Время окончния</th>
             </tr>
             </thead>
             <tbody>
             <tr>
                 <td>
-                        ${workbench.name}
-<%--                    <input type="text" id="workBenchName" name="workBenchName"--%>
-<%--                           placeholder="Введите название станка" value="${workbench.name}" required>--%>
+                    <input type="text" id="workBenchName" name="workBenchName"
+                           placeholder="Введите название станка" value="${workbench.name}" required>
                 </td>
                 <td class="th_workbench_typeOperation">
+
                         ${workbench.typeOperation.name}
 <%--                    <select class="form-control" name="typeOperationId">--%>
 <%--                        <option selected value="${workbench.typeOperation.id}">Выбранная--%>
@@ -49,6 +50,10 @@
                 <td class="th_workbench_currentThickness">
                     <input type="text" class="form-control" id="currentThickness" name="currentThickness"
                            value="${workbench.currentThickness}" required>
+                </td>
+                <td class="th_workbench_currentThickness">
+                    <input type="text" class="form-control" id="timeWorkAdjustment" name="timeWorkAdjustment"
+                           value="${workbench.timeWorkAdjustment}" required>
                 </td>
                 <td class="th_workbench_dateEnd">
                     <input type="datetime-local" class="form-control" id="dateEndDetail" name="dateEndDetail"

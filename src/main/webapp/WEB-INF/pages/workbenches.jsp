@@ -36,6 +36,7 @@
                     </button>
                 </th>
                 <th class="th_workbench_currentThickness">Толщина</th>
+                <th class="th_workbench_currentThickness">Наладка</th>
                 <th class="th_workbench_dateEnd">Время окончния
                     <button class="button-filter" name="filter" value="dateEnd"
                             style="border: none;" type="submit">
@@ -49,10 +50,19 @@
         <c:forEach items="${workbenches}" var="workbench">
             <tr>
                 <td class="number" style="text-align: center">${count + 1}</td>
-                <td><a class="table-href"  href="workbenches/${workbench.id}">${workbench.name}</a></td>
-                <td class="th_workbench_typeOperation"><a class="table-href"  href="workbenches/${workbench.id}">${workbench.typeOperation}</a></td>
-                <td class="th_workbench_currentThickness"><a class="table-href"  href="workbenches/${workbench.id}">${workbench.currentThickness}</a></td>
-                <td class="th_workbench_dateEnd"><a class="table-href"  href="workbenches/${workbench.id}">${workbench.dateEndDetail}</a></td>
+                <td><a class="table-href" href="workbenches/${workbench.id}">${workbench.name}</a></td>
+                <td class="th_workbench_typeOperation"><a class="table-href"
+                                                          href="workbenches/${workbench.id}">${workbench.typeOperation}</a>
+                </td>
+                <td class="th_workbench_currentThickness"><a class="table-href"
+                                                             href="workbenches/${workbench.id}">${workbench.currentThickness}</a>
+                </td>
+                <td class="th_workbench_currentThickness"><a class="table-href"
+                                                             href="workbenches/${workbench.id}">${workbench.timeWorkAdjustment}</a>
+                </td>
+                <td class="th_workbench_dateEnd"><a class="table-href"
+                                                    href="workbenches/${workbench.id}">${workbench.dateEndDetail}</a>
+                </td>
             </tr>
             <c:set var="count" value="${count + 1}" scope="page"/>
         </c:forEach>

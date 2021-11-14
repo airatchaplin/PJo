@@ -116,6 +116,7 @@ public class WorkBenchController {
      */
     @PostMapping("/addWorkBench")
     public String addWorkBenchPost(@RequestParam(required = false) String nameWorkBench,
+                                   @RequestParam(required = false) String timeWorkAdjustment,
                                    @RequestParam(required = false) String dateEndDetail,
                                    @RequestParam(required = false) String currentThickness,
                                    @RequestParam(required = false) String typeOperationId, Model model) {
@@ -131,6 +132,7 @@ public class WorkBenchController {
         workBench.setTypeOperation(typeOperationService.getOneTypeOperation(UUID.fromString(typeOperationId)));
         workBench.setCurrentThickness(Double.valueOf(currentThickness.replace(",", ".")));
         workBench.setDateEndDetail(LocalDateTime.parse(dateEndDetail));
+        workBench.setTimeWorkAdjustment(timeWorkAdjustment);
         workBenchService.save(workBench);
         return "redirect:/workbenches";
     }
@@ -178,11 +180,15 @@ public class WorkBenchController {
      */
     @PostMapping("workbenches/change/{id}")
     public String changeWorkBenchPost(@PathVariable(name = "id") String id,
+                                      @RequestParam(required = false) String workBenchName,
                                       @RequestParam(required = false) String currentThickness,
+                                      @RequestParam(required = false) String timeWorkAdjustment,
                                       @RequestParam(required = false) String dateEndDetail, Model model) {
 
         WorkBench workBench = workBenchService.getOneWorkBenchById(UUID.fromString(id));
+        workBench.setName(workBenchName);
         workBench.setCurrentThickness(Double.valueOf(currentThickness.replace(",", ".")));
+        workBench.setTimeWorkAdjustment(timeWorkAdjustment);
         workBench.setDateEndDetail(LocalDateTime.parse(dateEndDetail));
         workBenchService.save(workBench);
         return "redirect:/workbenches";

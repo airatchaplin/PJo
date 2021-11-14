@@ -79,7 +79,7 @@ public class DetailController {
             model.addAttribute("details", detailService.getAllDetails());
         }
         List<SettingView> settingViews = settingService.getSetting().getSettingViews();
-        model.addAttribute("setting",settingViews.stream().filter(x -> x.getName().equals("Детали")).collect(Collectors.toList()));
+        model.addAttribute("setting", settingViews.stream().filter(x -> x.getName().equals("Детали")).collect(Collectors.toList()));
         model.addAttribute("user", userService.getUserWeb());
         return "details";
     }
@@ -120,7 +120,7 @@ public class DetailController {
         model.addAttribute("detail", detailService.getDetailDtoById(UUID.fromString(id)));
         model.addAttribute("user", userService.getUserWeb());
         List<SettingView> settingViews = settingService.getSetting().getSettingViews();
-        model.addAttribute("setting",settingViews.stream().filter(x -> x.getName().equals("Детали")).collect(Collectors.toList()));
+        model.addAttribute("setting", settingViews.stream().filter(x -> x.getName().equals("Детали")).collect(Collectors.toList()));
         return "oneDetail";
     }
 
@@ -136,11 +136,6 @@ public class DetailController {
         model.addAttribute("workbenches", workBenchService.getAllWorkBench());
         model.addAttribute("materials", Material.compare(materialService.getAllMaterials()));
         model.addAttribute("user", userService.getUserWeb());
-        model.addAttribute("operations", subsequenceTypeOperationService.getAllSubsequenceTypeOperation());
-        for (TypeOperation typeOperation : typeOperationService.getAllTypeOperations()) {
-            List<WorkBench> workBenches = workBenchService.getWorkBenchesFilterOperationName(typeOperation.getId());
-            model.addAttribute(typeOperation.getName(), workBenches);
-        }
         return "addDetail";
     }
 
@@ -171,36 +166,21 @@ public class DetailController {
             model.addAttribute("workbenches", workBenchService.getAllWorkBench());
             model.addAttribute("materials", materialService.getAllMaterials());
             model.addAttribute("user", userService.getUserWeb());
-            model.addAttribute("operations", subsequenceTypeOperationService.getAllSubsequenceTypeOperation());
             model.addAttribute("detailError", "Деталь с таким наименованием уже существует. Придумайте другое название!");
-            for (TypeOperation typeOperation : typeOperationService.getAllTypeOperations()) {
-                List<WorkBench> workBenches = workBenchService.getWorkBenchesFilterOperationName(typeOperation.getId());
-                model.addAttribute(typeOperation.getName(), workBenches);
-            }
             return "addDetail";
         } else if (materialId.equals("Выберите материал")) {
             model.addAttribute("details", detailService.getAllDetails());
             model.addAttribute("workbenches", workBenchService.getAllWorkBench());
             model.addAttribute("materials", materialService.getAllMaterials());
             model.addAttribute("user", userService.getUserWeb());
-            model.addAttribute("operations", subsequenceTypeOperationService.getAllSubsequenceTypeOperation());
             model.addAttribute("detailError", "Выбирите материал!");
-            for (TypeOperation typeOperation : typeOperationService.getAllTypeOperations()) {
-                List<WorkBench> workBenches = workBenchService.getWorkBenchesFilterOperationName(typeOperation.getId());
-                model.addAttribute(typeOperation.getName(), workBenches);
-            }
             return "addDetail";
         } else if (workBenchId == null && workBenchId1 == null) {
             model.addAttribute("details", detailService.getAllDetails());
             model.addAttribute("workbenches", workBenchService.getAllWorkBench());
             model.addAttribute("materials", materialService.getAllMaterials());
             model.addAttribute("user", userService.getUserWeb());
-            model.addAttribute("operations", subsequenceTypeOperationService.getAllSubsequenceTypeOperation());
             model.addAttribute("detailError", "Выбирите станки!");
-            for (TypeOperation typeOperation : typeOperationService.getAllTypeOperations()) {
-                List<WorkBench> workBenches = workBenchService.getWorkBenchesFilterOperationName(typeOperation.getId());
-                model.addAttribute(typeOperation.getName(), workBenches);
-            }
             return "addDetail";
         }
         Detail detail = new Detail();
@@ -434,26 +414,11 @@ public class DetailController {
      */
     @GetMapping("/addAlternative/{id}")
     public String addAlternativeDetailGet(@PathVariable(value = "id") String id, Model model) {
-        DetailDto detailDto = detailService.getDetailDtoById(UUID.fromString(id));
-        List<DetailInfoDto> detailInfoDtos = detailDto.getDetailListDtos().get(0).getDetailInfoDtos();
-
-        List<String> typeOperationsName = new ArrayList<>();
-        for (DetailInfoDto detailInfoDto : detailInfoDtos) {
-            typeOperationsName.add(detailInfoDto.getWorkBenchDto().getTypeOperation());
-        }
-        String distinctTypeOperations = String.join(" -> ", new LinkedHashSet<>(typeOperationsName));
-
         model.addAttribute("details", DetailDto.compareMaterialName(detailService.getAllDetails()));
         model.addAttribute("workbenches", workBenchService.getAllWorkBench());
-        model.addAttribute("typeOperationsName", distinctTypeOperations);
         model.addAttribute("detail", detailService.getDetailDtoById(UUID.fromString(id)));
         model.addAttribute("materials", Material.compare(materialService.getAllMaterials()));
         model.addAttribute("user", userService.getUserWeb());
-        model.addAttribute("operations", subsequenceTypeOperationService.getAllSubsequenceTypeOperation());
-        for (TypeOperation typeOperation : typeOperationService.getAllTypeOperations()) {
-            List<WorkBench> workBenches = workBenchService.getWorkBenchesFilterOperationName(typeOperation.getId());
-            model.addAttribute(typeOperation.getName(), workBenches);
-        }
         return "addAlternativeForDetail";
     }
 
@@ -470,51 +435,16 @@ public class DetailController {
                                            @RequestParam(required = false) List<String> comment1,
                                            Model model) {
 
-        List<String> workbenchesId = workBenchId1.stream().filter(x -> !x.equals("Выберите станок")).collect(Collectors.toList());
-
-        if (workbenchesId.isEmpty()) {
-            DetailDto detailDto = detailService.getDetailDtoById(UUID.fromString(id));
-            List<DetailInfoDto> detailInfoDtos = detailDto.getDetailListDtos().get(0).getDetailInfoDtos();
-            List<String> typeOperationsName = new ArrayList<>();
-            for (DetailInfoDto detailInfoDto : detailInfoDtos) {
-                typeOperationsName.add(detailInfoDto.getWorkBenchDto().getTypeOperation());
-            }
-            String distinctTypeOperations = String.join(" -> ", new LinkedHashSet<>(typeOperationsName));
-
-            model.addAttribute("details", DetailDto.compareMaterialName(detailService.getAllDetails()));
-            model.addAttribute("workbenches", workBenchService.getAllWorkBench());
-            model.addAttribute("typeOperationsName", distinctTypeOperations);
-            model.addAttribute("detail", detailService.getDetailDtoById(UUID.fromString(id)));
-            model.addAttribute("materials", Material.compare(materialService.getAllMaterials()));
-            model.addAttribute("user", userService.getUserWeb());
-            model.addAttribute("operations", subsequenceTypeOperationService.getAllSubsequenceTypeOperation());
-            for (TypeOperation typeOperation : typeOperationService.getAllTypeOperations()) {
-                List<WorkBench> workBenches = workBenchService.getWorkBenchesFilterOperationName(typeOperation.getId());
-                model.addAttribute(typeOperation.getName(), workBenches);
-            }
-            return "addAlternativeForDetail";
+        if (workBenchId1 == null) {
+            return "redirect:/addAlternative/" + id;
         }
         Detail detail = detailService.getDetailById(UUID.fromString(id));
-        DetailList detailList = new DetailList();
-        detailList.setId(UUID.randomUUID());
-        detailList.setMainOrAlternative(2);
-        detailList.setSelected(false);
 
-        List<DetailInfo> detailInfos = new ArrayList<>();
-        for (int i = 0; i < workbenchesId.size(); i++) {
-            DetailInfo detailInfo = new DetailInfo();
-            detailInfo.setId(UUID.randomUUID());
-            detailInfo.setSetting(false);
-            detailInfo.setTimeWork(timeWork1.get(i));
-            if (comment1 != null && !comment1.isEmpty()) {
-                detailInfo.setComment(comment1.get(i));
-            }
-            detailInfo.setPriority(i);
-            detailInfo.setWorkBenches(workBenchService.getOneWorkBenchById(UUID.fromString(workbenchesId.get(i))));
-            detailInfos.add(detailInfo);
+        List<DetailList> detailLists = detail.getDetailLists();
+        if (workBenchId1 != null) {
+            detailLists.add(detailService.getDetailLists(workBenchId1, timeWork1, comment1, 2));
         }
-        detailList.setDetailInfos(detailInfos);
-        detail.getDetailLists().add(detailList);
+
         detailService.saveDetail(detail);
         return "redirect:/details/" + id;
     }

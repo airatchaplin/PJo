@@ -12,6 +12,6 @@ INSERT INTO public.users_roles (user_id, roles_id)
 VALUES ('5290a208-d616-4552-94a2-5bc124458199'::uuid, '08425470-c8bc-48d3-b4a9-97ef7fe3c369'::uuid);
 
 INSERT INTO public.setting
-(id, time_work_adjustment)
-VALUES('a7566ccd-7729-4592-a675-28638ca72e65'::uuid, '00:00');
+(id)
+VALUES('a7566ccd-7729-4592-a675-28638ca72e65'::uuid);
 

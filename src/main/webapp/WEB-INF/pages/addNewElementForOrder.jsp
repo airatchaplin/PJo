@@ -36,7 +36,7 @@
             <tr>
                 <td class="number_orders" style="text-align: center"> ${order.numberOrder} </td>
                 <td> ${order.objectName.name} </td>
-                <td>${order.manager.fio_i_o} </td>
+                <td>${order.economist.fio_i_o} </td>
                 <td>${order.manager.fio_i_o} </td>
                 <td>
                         ${dateStartOrder}
@@ -93,8 +93,6 @@
                         <input type="text" class="form-control" id="countDetail" name="countDetail"
                                placeholder="Количество" required>
                     </td>
-
-
                 </tr>
                 </tbody>
             </table>
@@ -109,7 +107,7 @@
     $('#add_more_fields').click(function () {
         var html = '';
         html += '<tr id="row1">';
-        html += '<td><select class="form-control" name="detailName"> <option value="Выбирите деталь">Выбирите деталь</option><c:forEach items="${details}" var="detail"> <option value="${detail.getName()}">${detail.getName()}</option></c:forEach> </select> </td>';
+        html += '<td><select class="form-control" name="detailId"><option value="Выбирите деталь">Выбирите деталь</option><c:forEach items="${details}" var="detail"><option value="${detail.id}">${detail.name}</option></c:forEach> </select></td>';
         html += '<td><input type="text" class="form-control" id="countDetail" name="countDetail" placeholder="Количество"> </td>';
         html += '</tr>';
         var tabl = document.getElementById('tablAdd')

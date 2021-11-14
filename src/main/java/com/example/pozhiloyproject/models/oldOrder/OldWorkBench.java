@@ -45,4 +45,6 @@ public class OldWorkBench {
     private Double currentThickness;
 
     UUID idWorkbench;
+
+    String timeWorkAdjustment;
 }

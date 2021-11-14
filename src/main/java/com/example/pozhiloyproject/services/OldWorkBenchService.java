@@ -14,4 +14,6 @@ public class OldWorkBenchService {
     public void saveOldWorkBench(OldWorkBench oldWorkBench){
         oldWorkBenchRepository.save(oldWorkBench);
     }
+
+    public void deleteOldWorkBench(OldWorkBench oldWorkBench){oldWorkBenchRepository.delete(oldWorkBench);}
 }

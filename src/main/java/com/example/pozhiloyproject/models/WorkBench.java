@@ -41,4 +41,6 @@ public class WorkBench {
      * Толщина материала
      */
     private Double currentThickness;
+
+    private String timeWorkAdjustment;
 }

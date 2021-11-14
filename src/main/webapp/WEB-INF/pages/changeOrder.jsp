@@ -53,8 +53,17 @@
             <tr>
                 <td class="number_orders" style="text-align: center"> ${order.numberOrder} </td>
                 <td> ${order.objectName.name} </td>
-                <td>${order.manager.fio_i_o} </td>
-                <td>${order.manager.fio_i_o} </td>
+                <td>
+                        ${order.economist.fio_i_o}
+                </td>
+                <td>
+                    <select name="managerId">
+                        <option selected value="${order.manager.id}">${order.manager.fio_i_o}</option>
+                        <c:forEach items="${managers}" var="manager">
+                            <option value="${manager.id}">${manager.fio_i_o}</option>
+                        </c:forEach>
+                    </select>
+                </td>
                 <td>${dateStartOrder}</td>
                 <td>${dateEnd}</td>
                 <td>
@@ -81,8 +90,26 @@
             </tr>
             <tr>
                 <td>Упаковка</td>
-                <td>${dateStartFirstPackage}</td>
-                <td>${dateEndFirstPackage}</td>
+                <c:if test="${order.calculated}">
+                    <td>
+                        <input type="datetime-local" id="dateStartFirstPackage" name="dateStartFirstPackage"
+                               value="${dateStartFirstPackage}"
+                               required>
+                    </td>
+                    <td>
+                        <input type="datetime-local" id="dateEndFirstPackage" name="dateEndFirstPackage"
+                               value="${dateEndFirstPackage}">
+                    </td>
+                </c:if>
+                <c:if test="${!order.calculated}">
+                    <td>
+                            ${dateStartFirstPackage}
+                    </td>
+                    <td>
+                            ${dateEndFirstPackage}
+                    </td>
+                </c:if>
+
             </tr>
             <tr>
                 <td>Покраска</td>
@@ -90,12 +117,12 @@
                     <td>
                         <input type="datetime-local" id="dateStartPainting" name="dateStartPainting"
                                value="${dateStartPainting}"
-                               required>
+                        >
                     </td>
                     <td>
                         <input type="datetime-local" id="dateEndPainting" name="dateEndPainting"
                                value="${dateEndPainting}"
-                               required>
+                        >
                     </td>
                 </c:if>
                 <c:if test="${!order.calculated}">
@@ -109,12 +136,24 @@
             </tr>
             <tr>
                 <td>Упаковка после покраски</td>
-                <td>
-                        ${dateStartSecondPackage}
-                </td>
-                <td>
-                        ${dateEndSecondPackage}
-                </td>
+                <c:if test="${order.calculated}">
+                    <td>
+                        <input type="datetime-local" id="dateStartSecondPackage" name="dateStartSecondPackage"
+                               value="${dateStartSecondPackage}">
+                    </td>
+                    <td>
+                        <input type="datetime-local" id="dateEndSecondPackage" name="dateEndSecondPackage"
+                               value="${dateEndSecondPackage}">
+                    </td>
+                </c:if>
+                <c:if test="${!order.calculated}">
+                    <td>
+                            ${dateStartSecondPackage}
+                    </td>
+                    <td>
+                            ${dateEndSecondPackage}
+                    </td>
+                </c:if>
             </tr>
             </tbody>
         </table>
@@ -134,13 +173,11 @@
                         <td>
                                 ${ord.detailOrder.name}
                                 <%--                            <input type="text" name="detailId" value="${ord.detailOrder.id}" style="display: none;">--%>
-
                         </td>
                         <td>
                                 ${ord.count}
                                 <%--                                <input type="text" class="form-control" id="countDetail" name="countDetail"--%>
                                 <%--                                       placeholder="${ord.count}" value="${ord.count}" required>--%>
-
                         </td>
                     </c:if>
                     <c:if test="${!order.calculated}">
@@ -164,5 +201,6 @@
 
     </div>
 </form:form>
+
 </body>
 </html>

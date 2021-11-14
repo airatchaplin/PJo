@@ -30,8 +30,6 @@
             <thead>
             <tr>
                 <th>Очередь операций
-                        <%--                    <input class="input_js" type="button" style="margin: 10px;cursor: pointer" value="+" id="add_more_fields"/>--%>
-                        <%--                    <input class="input_js" type="button" style="cursor: pointer" onclick="deleteRow()" value=" - ">--%>
                     <button style="background: #89e1fe;" class="input_js" type="button" id="add_more_fields">
                         <img style="width: 12px" src="../../resources/icon/plus.png" alt=""></button>
                     <button style="background: #89e1fe;" class="input_js" type="button" onclick="deleteRow()">
@@ -52,7 +50,6 @@
                             ${errorSubsequenceTypeOperation}
                     </div>
                 </td>
-
             </tr>
             </tbody>
         </table>

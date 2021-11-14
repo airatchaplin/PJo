@@ -28,6 +28,7 @@
             <th>Станок</th>
             <th class="th_workbench_typeOperation">Операция</th>
             <th class="th_workbench_currentThickness">Толщина</th>
+            <th class="th_workbench_currentThickness">Наладка</th>
             <th class="th_workbench_dateEnd">Время окончния</th>
         </tr>
         </thead>
@@ -36,6 +37,7 @@
             <td>${workbench.name}</td>
             <td class="th_workbench_typeOperation">${workbench.typeOperation}</td>
             <td class="th_workbench_currentThickness">${workbench.currentThickness}</td>
+            <td class="th_workbench_currentThickness">${workbench.timeWorkAdjustment}</td>
             <td class="th_workbench_dateEnd">${workbench.dateEndDetail}</td>
         </tr>
         </tbody>

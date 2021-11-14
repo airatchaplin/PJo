@@ -45,7 +45,8 @@ public class WorkBenchService {
                 "       workbench.name as workbenchName,\n" +
                 "       date_end_detail,\n" +
                 "       towb.name      as typeOperationId,\n" +
-                "       current_thickness\n" +
+                "       current_thickness,\n" +
+                "       time_work_adjustment\n" +
                 "from workbench\n" +
                 "         left join type_operation towb on workbench.type_operation_id = towb.id");
         List<WorkBenchDto> workBenchDtos = new ArrayList<>();
@@ -59,17 +60,19 @@ public class WorkBenchService {
             workBenchDto.setDateEndDetail(parse.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
             workBenchDto.setTypeOperation(String.valueOf(row.get("typeOperationId")));
             workBenchDto.setCurrentThickness((Double) row.get("current_thickness"));
+            workBenchDto.setTimeWorkAdjustment(String.valueOf(row.get("time_work_adjustment")));
             workBenchDtos.add(workBenchDto);
         }
         return workBenchDtos;
     }
 
-    public WorkBenchDto getWorkBenchDtoById(UUID id){
+    public WorkBenchDto getWorkBenchDtoById(UUID id) {
         List<Map<String, Object>> rows = db.call(String.format("select workbench.id   as workbenchId,\n" +
                 "       workbench.name as workbenchName,\n" +
                 "       date_end_detail,\n" +
                 "       towb.name      as typeOperationId,\n" +
-                "       current_thickness\n" +
+                "       current_thickness," +
+                "       time_work_adjustment\n" +
                 "from workbench\n" +
                 "         left join type_operation towb on workbench.type_operation_id = towb.id\n" +
                 "\n" +
@@ -83,6 +86,7 @@ public class WorkBenchService {
             workBenchDto.setDateEndDetail(parse.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
             workBenchDto.setTypeOperation(String.valueOf(row.get("typeOperationId")));
             workBenchDto.setCurrentThickness((Double) row.get("current_thickness"));
+            workBenchDto.setTimeWorkAdjustment(String.valueOf(row.get("time_work_adjustment")));
         }
         return workBenchDto;
     }

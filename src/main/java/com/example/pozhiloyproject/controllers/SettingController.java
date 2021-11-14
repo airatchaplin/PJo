@@ -1,6 +1,7 @@
 package com.example.pozhiloyproject.controllers;
 
 import com.example.pozhiloyproject.models.setting.Setting;
+import com.example.pozhiloyproject.models.setting.SettingDailySchedule;
 import com.example.pozhiloyproject.models.setting.SettingView;
 import com.example.pozhiloyproject.models.setting.SettingWeekend;
 import com.example.pozhiloyproject.services.SettingService;
@@ -39,13 +40,14 @@ public class SettingController {
         model.addAttribute("user", userService.getUserWeb());
         model.addAttribute("setting", setting);
         model.addAttribute("settingView", Stream.of("Просмотр", "Редактирование").collect(Collectors.toList()));
+        model.addAttribute("settingDaily", Setting.compareSettingDailySchedule(setting.getSettingDailySchedules()));
 
         return "settings";
     }
 
     @PostMapping("/settings")
     public String settings(
-            @RequestParam(required = true) String timeWorkAdjustment,
+
             @RequestParam(required = true) List<String> idOld,
             @RequestParam(required = true) List<String> nameOld,
             @RequestParam(required = true) List<String> dateStartOld,
@@ -55,6 +57,9 @@ public class SettingController {
             @RequestParam(required = true) List<String> dateEnd,
             @RequestParam(required = true) List<String> nameView,
             @RequestParam(required = true) List<String> viewing,
+            @RequestParam(required = true) List<String> settingDayName,
+            @RequestParam(required = true) List<String> settingDayStartDay,
+            @RequestParam(required = true) List<String> settingEndStartDay,
             Model model) {
 
         List<SettingWeekend> settingWeekends = new LinkedList<>();
@@ -80,7 +85,6 @@ public class SettingController {
         }
         Setting setting = settingService.getSetting();
         setting.setSettingWeekends(settingWeekends);
-        setting.setTimeWorkAdjustment(timeWorkAdjustment);
 
 
         List<SettingView> settingViews = Setting.compare(setting.getSettingViews());
@@ -88,12 +92,22 @@ public class SettingController {
             if (settingViews.get(i).getName().equals(nameView.get(i))) {
                 if (viewing.get(i).equals("Просмотр")) {
                     settingViews.get(i).setViewing(true);
-                }else{
+                } else {
                     settingViews.get(i).setViewing(false);
                 }
             }
         }
         setting.setSettingViews(Setting.compare(settingViews));
+
+        List<SettingDailySchedule> settingDailySchedules = setting.getSettingDailySchedules();
+        for (int i = 0; i < settingDailySchedules.size(); i++) {
+            SettingDailySchedule settingDailySchedule = settingDailySchedules.get(i);
+            settingDailySchedule.setName(settingDayName.get(i));
+            settingDailySchedule.setStartDay(settingDayStartDay.get(i));
+            settingDailySchedule.setEndDay(settingEndStartDay.get(i));
+            settingDailySchedule.setPriority(i);
+        }
+
         settingService.saveSetting(setting);
         model.addAttribute("user", userService.getUserWeb());
         return "redirect:/admin/settings";

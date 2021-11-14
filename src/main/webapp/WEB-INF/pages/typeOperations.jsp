@@ -14,11 +14,11 @@
 <body>
 
 <jsp:include page="../nav/nav_first.jsp"></jsp:include>
-<%--<nav class="nav-second">--%>
-<%--        <button class="button-nav-second" style="width: 195px;"--%>
-<%--                onclick="window.location.href = '/typeOperations/addTypeOperation';">Добавить операцию--%>
-<%--        </button>--%>
-<%--</nav>--%>
+<nav class="nav-second">
+        <button class="button-nav-second" style="width: 195px;"
+                onclick="window.location.href = '/typeOperations/addTypeOperation';">Добавить операцию
+        </button>
+</nav>
 
 <div class="main">
     <table class="simple-little-table" cellspacing='0'>

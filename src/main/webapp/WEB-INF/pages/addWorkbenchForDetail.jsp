@@ -72,11 +72,6 @@
         <tr>
             <th>
                 Станки
-
-                <%--                    <input class="input_js" type="button" value="+"--%>
-                <%--                           id="add_more_fields"/>--%>
-                <%--                <input class="input_js" type="button" onclick="deleteRow()" value=" - ">--%>
-
                 <select style="width: 60%;margin-left: 10px;" onchange="OnSelectionChange (this)">
                     <option value="">Выберите станок для добавления</option>
                     <c:forEach items="${workbenches}" var="workbench">

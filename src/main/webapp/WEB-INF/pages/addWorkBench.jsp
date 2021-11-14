@@ -28,6 +28,7 @@
             <th>Станок</th>
             <th class="th_workbench_typeOperation">Операция</th>
             <th class="th_workbench_currentThickness">Толщина</th>
+            <th class="th_workbench_currentThickness">Время переналадки</th>
             <th class="th_workbench_dateEnd">Время окончния</th>
         </tr>
         </thead>
@@ -51,6 +52,10 @@
             <td class="th_workbench_currentThickness">
                 <input type="text" id="currentThickness" name="currentThickness"
                        placeholder="Толщина" value="${currentThickness}" required>
+            </td>
+            <td>
+                <input type="text"  placeholder="00:00"
+                       name="timeWorkAdjustment" required>
             </td>
             <td class="th_workbench_dateEnd">
                 <input type="datetime-local" id="dateEndDetail" name="dateEndDetail"

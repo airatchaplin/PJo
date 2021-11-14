@@ -6,6 +6,8 @@ import com.example.pozhiloyproject.helper.Helper;
 import com.example.pozhiloyproject.models.*;
 import com.example.pozhiloyproject.models.detail.*;
 import com.example.pozhiloyproject.models.setting.Setting;
+import com.example.pozhiloyproject.models.setting.SettingDailySchedule;
+import com.example.pozhiloyproject.models.setting.SettingWeekend;
 import com.example.pozhiloyproject.repository.OrderRepository;
 import com.example.pozhiloyproject.repository.WorkBenchRepository;
 
@@ -287,7 +289,7 @@ public class OrderService {
     }
 
 
-    public void raschet(Order order) {
+    public void calculation(Order order) {
         if (order.isCalculated()) {
             return;
         }
@@ -337,7 +339,7 @@ public class OrderService {
                             order.setDateStartOrder(dateEndDetailWorkbench);
                         }
                     } else if (!detailThickness.equals(currentThickness) && j == 0) {
-                        dateEndDetailWorkbench = addTwoHoursWithoutDayOff(dateEndDetailWorkbench);
+                        dateEndDetailWorkbench = addTwoHoursWithoutDayOff(dateEndDetailWorkbench, workBenches.getTimeWorkAdjustment());
                         detailOrderList.getDetailDateByWorkbench().get(j).setSetting(true);
 
                         //Сохраняем дату старта заказа с первой детали
@@ -345,7 +347,7 @@ public class OrderService {
                             order.setDateStartOrder(dateEndDetailWorkbench);
                         }
                     } else if (!detailThickness.equals(currentThickness) && j > 0) {
-                        dateEndDetailWorkbench = addTwoHoursWithoutDayOff(dateEndDetailWorkbench);
+                        dateEndDetailWorkbench = addTwoHoursWithoutDayOff(dateEndDetailWorkbench, workBenches.getTimeWorkAdjustment());
                         detailOrderList.getDetailDateByWorkbench().get(j).setSetting(true);
                     }
 
@@ -426,7 +428,7 @@ public class OrderService {
                         currentThickness = detailInfo.getWorkBenches().getCurrentThickness();
                         dateEndDetailWorkbench = detailInfo.getWorkBenches().getDateEndDetail();
                         if (!currentThickness.equals(detailThickness)) {
-                            dateEndDetailWorkbench = addTwoHoursWithoutDayOff(dateEndDetailWorkbench);
+                            dateEndDetailWorkbench = addTwoHoursWithoutDayOff(dateEndDetailWorkbench, workBenches.getTimeWorkAdjustment());
                             for (int k = 0; k < detailOrderList.getDetailDateByWorkbench().size(); k++) {
                                 for (DetailOrderInfo detailOrderInfo : gibkaList) {
                                     if (detailOrderList.getDetailOrderInfos().get(k).equals(detailOrderInfo)) {
@@ -511,25 +513,26 @@ public class OrderService {
             }
         }
         order.setCalculated(true);
-        setFirstPackageOrder(order);
         orderRepository.save(order);
     }
 
     /**
      * Добавление два дня если это выходные
      */
-    public LocalDateTime addTwoHoursWithoutDayOff(LocalDateTime localDateTime) {
+    public LocalDateTime addTwoHoursWithoutDayOff(LocalDateTime localDateTime, String timeWorkAdjustment) {
         LocalDateTime dateStartDay = LocalDateTime.parse(localDateTime.toLocalDate() + "T08:30");
         LocalDateTime dateEndDay = LocalDateTime.parse(localDateTime.toLocalDate() + "T16:30");
 
         Setting setting = settingService.getSetting();
 
-        int hour = Integer.parseInt(Arrays.asList(setting.getTimeWorkAdjustment().split(":")).get(0));
-        int minute = Integer.parseInt(Arrays.asList(setting.getTimeWorkAdjustment().split(":")).get(1));
+        int hour = Integer.parseInt(Arrays.asList(timeWorkAdjustment.split(":")).get(0));
+        int minute = Integer.parseInt(Arrays.asList(timeWorkAdjustment.split(":")).get(1));
 
         int allMinutes = hour * 60 + minute;
+
         if (localDateTime.getDayOfWeek().equals(DayOfWeek.FRIDAY)) {
             for (int i = 0; i < allMinutes; i++) {
+
                 if (!localDateTime.isAfter(dateEndDay)) {
                     localDateTime = localDateTime.plusMinutes(1);
                 } else {
@@ -537,6 +540,7 @@ public class OrderService {
                     dateEndDay = dateEndDay.plusDays(3);
                     localDateTime = dateStartDay;
                 }
+
             }
         } else {
             for (int i = 0; i < allMinutes; i++) {
@@ -552,10 +556,10 @@ public class OrderService {
         return localDateTime;
     }
 
-    public void setFirstPackageOrder(Order order) {
+    public void setFirstPackageOrder(Order order, LocalDateTime dateStartFirstPackage, String dateEndFirstPackage) {
         List<DetailsOrder> detailsOrders = order.getDetailsOrders();
-        LocalDateTime dateEndOrder = order.getDateEndOrder();
-        order.setDateStartFirstPackage(order.getDateEndOrder());
+        LocalDateTime dateEndOrder = dateStartFirstPackage;
+        order.setDateStartFirstPackage(dateStartFirstPackage);
 
         int countMaterialPO = 0;
         for (DetailsOrder detailsOrder : detailsOrders) {
@@ -573,7 +577,11 @@ public class OrderService {
         }
 
         order.setDateEndFirstPackage(dateEndOrder);
-        if (countMaterialPO == 0) {
+        if (countMaterialPO == 0 && !dateEndFirstPackage.equals("")){
+            order.setDateEndFirstPackage(LocalDateTime.parse(dateEndFirstPackage));
+            order.setDateEnd(LocalDateTime.parse(dateEndFirstPackage));
+        }
+        else if (countMaterialPO == 0) {
             order.setDateEnd(dateEndOrder);
         }
     }
@@ -603,16 +611,28 @@ public class OrderService {
     private LocalDateTime calculate(int countDetail, LocalDateTime dateEndDetailWorkbench
             , int hour, int minute, int second) {
 
-        LocalDateTime dateStartDay = LocalDateTime.parse(dateEndDetailWorkbench.toLocalDate() + "T08:30");
-        LocalDateTime dateEndDay = LocalDateTime.parse(dateEndDetailWorkbench.toLocalDate() + "T16:30");
-        LocalDateTime dateLunchStartDay = LocalDateTime.parse(dateEndDetailWorkbench.toLocalDate() + "T11:00");
-        LocalDateTime dateLunchEndDay = LocalDateTime.parse(dateEndDetailWorkbench.toLocalDate() + "T12:00");
+        Setting setting = settingService.getSetting();
+        List<SettingDailySchedule> settingDailySchedules = setting.getSettingDailySchedules();
 
-        LocalDateTime dateSmokeBreakStartDay1 = LocalDateTime.parse(dateEndDetailWorkbench.toLocalDate() + "T09:00");
-        LocalDateTime dateSmokeBreakEndDay1 = LocalDateTime.parse(dateEndDetailWorkbench.toLocalDate() + "T09:10");
+        LocalDateTime dateStartDay = LocalDateTime.parse(dateEndDetailWorkbench.toLocalDate() + "T"
+                + settingDailySchedules.stream().filter(x -> x.getPriority() == 0).collect(Collectors.toList()).get(0).getStartDay());
+        LocalDateTime dateEndDay = LocalDateTime.parse(dateEndDetailWorkbench.toLocalDate() + "T"
+                + settingDailySchedules.stream().filter(x -> x.getPriority() == 0).collect(Collectors.toList()).get(0).getEndDay());
 
-        LocalDateTime dateSmokeBreakStartDay2 = LocalDateTime.parse(dateEndDetailWorkbench.toLocalDate() + "T13:00");
-        LocalDateTime dateSmokeBreakEndDay2 = LocalDateTime.parse(dateEndDetailWorkbench.toLocalDate() + "T13:10");
+        LocalDateTime dateSmokeBreakStartDay1 = LocalDateTime.parse(dateEndDetailWorkbench.toLocalDate() + "T"
+                + settingDailySchedules.stream().filter(x -> x.getPriority() == 1).collect(Collectors.toList()).get(0).getStartDay());
+        LocalDateTime dateSmokeBreakEndDay1 = LocalDateTime.parse(dateEndDetailWorkbench.toLocalDate() + "T"
+                + settingDailySchedules.stream().filter(x -> x.getPriority() == 1).collect(Collectors.toList()).get(0).getEndDay());
+
+        LocalDateTime dateLunchStartDay = LocalDateTime.parse(dateEndDetailWorkbench.toLocalDate() + "T"
+                + settingDailySchedules.stream().filter(x -> x.getPriority() == 2).collect(Collectors.toList()).get(0).getStartDay());
+        LocalDateTime dateLunchEndDay = LocalDateTime.parse(dateEndDetailWorkbench.toLocalDate() + "T"
+                + settingDailySchedules.stream().filter(x -> x.getPriority() == 2).collect(Collectors.toList()).get(0).getEndDay());
+
+        LocalDateTime dateSmokeBreakStartDay2 = LocalDateTime.parse(dateEndDetailWorkbench.toLocalDate() + "T"
+                + settingDailySchedules.stream().filter(x -> x.getPriority() == 3).collect(Collectors.toList()).get(0).getStartDay());
+        LocalDateTime dateSmokeBreakEndDay2 = LocalDateTime.parse(dateEndDetailWorkbench.toLocalDate() + "T"
+                + settingDailySchedules.stream().filter(x -> x.getPriority() == 3).collect(Collectors.toList()).get(0).getEndDay());
 
         LocalDateTime localDateTime;
 

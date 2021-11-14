@@ -16,9 +16,12 @@
 <jsp:include page="../nav/order_nav_second.jsp"></jsp:include>
 <form:form method="post">
     <nav class="nav-third" style="justify-content: normal;">
-        <div>
-            <button class="button-nav-second" formaction="/orders/select/${order.id}" type="submit">Применить</button>
-        </div>
+        <c:if test="${!order.calculated}">
+            <div>
+                <button class="button-nav-second" formaction="/orders/select/${order.id}" type="submit">Применить
+                </button>
+            </div>
+        </c:if>
         <div>
             <button class="button-nav-second" formaction="/orders/rollback/${order.id}" type="submit">Отменить</button>
         </div>
@@ -37,8 +40,6 @@
                 <th>Контрагент</th>
                 <th>Экономист</th>
                 <th>Менеджер</th>
-                <th>Покраска</th>
-                <th>Упаковка</th>
                 <th>Дата запуска в производство</th>
                 <th>Дата готовности заказа</th>
                 <th>Коментарий</th>
@@ -51,12 +52,6 @@
                 <td> ${order.objectName} </td>
                 <td>${order.economist} </td>
                 <td>${order.manager} </td>
-                <td>
-                        ${order.painting}
-                </td>
-                <td>
-                        ${order.packing}
-                </td>
                 <td>${order.dateStartOrder}</td>
                 <td>${order.dateEnd}</td>
                 <td>
@@ -326,10 +321,9 @@
             </c:forEach>
             </tbody>
         </table>
-        <div style="color: red">
+        <div class="error-text">
                 ${errorRollback}
         </div>
-
     </div>
 </form:form>
 </body>

@@ -14,4 +14,8 @@ public class OldDetailOrderListService {
     public void saveOldDetailOrderList(OldDetailOrderList oldDetailOrderList){
         oldDetailOrderListRepository.save(oldDetailOrderList);
     }
+
+    public void deleteOldDetailOrderList(OldDetailOrderList oldDetailOrderList) {
+        oldDetailOrderListRepository.delete(oldDetailOrderList);
+    }
 }

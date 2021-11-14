@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -232,5 +233,26 @@ public class OldOrderService {
 
     public void deleteOldOrder(int numberOrder) {
         oldOrderRepository.delete(oldOrderRepository.findByNumberOrder(numberOrder));
+    }
+
+
+    public void deleteOldOrder(UUID id) {
+        OldOrder oldOrder = oldOrderRepository.findById(id).orElse(new OldOrder());
+
+        List<OldDetailsOrder> detailsOrders = oldOrder.getDetailsOrders();
+        for (int i = 0; i < detailsOrders.size(); i++) {
+            OldDetailOrder detailOrder = detailsOrders.get(i).getDetailOrder();
+            List<OldDetailOrderList> detailOrderLists = detailOrder.getDetailOrderLists();
+            for (int j = 0; j <detailOrderLists.size() ; j++) {
+                OldDetailOrderList oldDetailOrderList = detailOrderLists.get(j);
+
+                for (OldDetailOrderInfo detailOrderInfo : oldDetailOrderList.getDetailOrderInfos()) {
+                    OldWorkBench workBenches = detailOrderInfo.getWorkBenches();
+                    oldWorkBenchService.deleteOldWorkBench(workBenches);
+                }
+                oldDetailOrderListService.deleteOldDetailOrderList(oldDetailOrderList);
+            }
+        }
+        oldOrderRepository.delete(oldOrder);
     }
 }

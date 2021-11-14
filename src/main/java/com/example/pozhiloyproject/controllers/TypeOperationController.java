@@ -82,7 +82,7 @@ public class TypeOperationController {
         typeOperation.setName(nameTypeOperation);
         typeOperationService.save(typeOperation);
         model.addAttribute("operations", typeOperationService.getAllTypeOperations());
-        return "redirect:/workbenches/typeOperations";
+        return "redirect:/typeOperations";
     }
 
     /**

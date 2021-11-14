@@ -49,7 +49,7 @@
 
                 <td class="number_orders" style="text-align: center"> ${order.numberOrder}</td>
                 <td> ${order.objectName}</td>
-                <td>${order.manager}</td>
+                <td>${order.economist}</td>
                 <td>${order.manager}</td>
                 <td>
                         ${order.dateStartOrder}

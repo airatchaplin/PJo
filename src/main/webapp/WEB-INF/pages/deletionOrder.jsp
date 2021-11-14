@@ -37,7 +37,7 @@
 
             <td class="number_orders" style="text-align: center"> ${order.numberOrder} </td>
             <td> ${order.objectName.name} </td>
-            <td>${order.manager.fio_i_o} </td>
+            <td>${order.economist.fio_i_o} </td>
             <td>${order.manager.fio_i_o} </td>
             <td>
                 ${dateStartOrder}
@@ -92,6 +92,9 @@
         </c:forEach>
         </tbody>
     </table>
+</div>
+<div class="error-text">
+    ${errorDelete}
 </div>
 
 </body>
